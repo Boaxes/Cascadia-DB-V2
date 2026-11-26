@@ -26,7 +26,7 @@ Phase 1: Spec And Mockup. In progress, step 2 (asking), on branch `phase-1-spec`
 
 ## Next
 
-- `docs/spec/spec.md` written (step 3): 168 requirements with IDs and checks, sections 1 to 7, no open assumptions (Q-001 to Q-058).
+- `docs/spec/spec.md` written (step 3): 158 requirements with IDs and checks, sections 1 to 7, no open assumptions (Q-001 to Q-058).
 - Step 4: build the static HTML mockups in `mockups/` (one file per page, shared `style.css`), preview each with the `mockups` launch configuration, then iterate with Brandon.
 
 ## Waiting On Brandon
