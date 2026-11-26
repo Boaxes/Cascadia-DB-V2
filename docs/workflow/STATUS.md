@@ -26,11 +26,10 @@ Phase 1: Spec And Mockup. In progress, step 2 (asking), on branch `phase-1-spec`
 
 ## Next
 
-- `docs/spec/spec.md` drafted (step 3): 167 requirements with IDs and checks, sections 1 to 7. It cites the Q numbers behind each section.
-- After Brandon's review of the spec and its assumptions (A-01 to A-10 settled in Q-057; A-11 open), update the spec, empty the Assumptions section, then build the mockups (step 4).
+- `docs/spec/spec.md` written (step 3): 168 requirements with IDs and checks, sections 1 to 7, no open assumptions (Q-001 to Q-058).
+- Step 4: build the static HTML mockups in `mockups/` (one file per page, shared `style.css`), preview each with the `mockups` launch configuration, then iterate with Brandon.
 
 ## Waiting On Brandon
 
-- Review `docs/spec/spec.md`. One assumption is open: A-11, the No-Track Path setting on by default.
 - Commit the refreshed `V1/` on `phase-1-spec` (the gate stops the agent from doing it).
 - Edit the V1 line in `CLAUDE.md` (Sources section): change `f4b2a36` to `3a637f1` and `2026-09-29` to `2026-11-21`.

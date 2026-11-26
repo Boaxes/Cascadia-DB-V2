@@ -378,3 +378,9 @@ Affects: spec.md FDBK-02, FDBK-03; Phase 4 server setup (gh)
 Asked: 2026-11-26
 Answer: A-01 to A-07 and A-09 confirmed as written. A-10 dropped (Q-056). A-08 rejected: drawing a line through an effort's recorded positions when it has no track file is a user track setting, not fixed behaviour.
 Affects: spec.md section 7, EDET-05, SET-02, TRACK-03
+
+### Q-058: No-Track Path Default (Phase 1)
+Asked: 2026-11-26
+Options: A On by default, as V1 (recommended), B Off by default
+Answer: A. The No-Track Path setting is on by default. Closes assumption A-11; the spec has no open assumptions.
+Affects: spec.md TRACK-08

@@ -348,7 +348,7 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 | TRACK-05 | A gap is drawn as Dashed Line (default), Faint Line or Nothing (Q-030). | |
 | TRACK-06 | Gaps are worked out when drawing, from a time on every stored point, so each user's rules apply (Phase 2 keeps the times). | Changing the minutes redraws gaps without reloading data. |
 | TRACK-07 | Settings come from Settings (cookie). Each map has a layer panel that flips a setting for that view only, without changing the saved default (Q-027). | Flipping Show Points on a map leaves the cookie unchanged. |
-| TRACK-08 | No-Track Path: when an effort has no track file, a dashed line joins its recorded timeline positions in time order. This is a user setting, on by default as in V1 (A-11). | Turning it off removes the line from an effort with no track. |
+| TRACK-08 | No-Track Path: when an effort has no track file, a dashed line joins its recorded timeline positions in time order. This is a user setting, on by default as in V1 (Q-058). | Turning it off removes the line from an effort with no track. |
 
 ### 5.5 History And The Audit Log (Q-018, Q-044, Q-015)
 
@@ -408,8 +408,4 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 
 ## 7. Assumptions
 
-Assumptions A-01 to A-07 and A-09, chosen while writing this spec, were confirmed in Q-057 and are now part of the requirements that cite it. A-08 was rejected (it became TRACK-08) and A-10 was dropped (Q-056). This list must be empty before Phase 1 closes.
-
-| ID | Assumption | Used in |
-|---|---|---|
-| A-11 | The No-Track Path setting is on by default, matching V1. | TRACK-08 |
+None open. Assumptions A-01 to A-07 and A-09, chosen while writing this spec, were confirmed in Q-057 and are written into the requirements that cite it. A-08 was rejected and became TRACK-08, A-10 was dropped (Q-056), and A-11 was confirmed in Q-058.
