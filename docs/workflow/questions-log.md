@@ -241,3 +241,14 @@ Asked: 2026-11-26
 Options: A Read only (recommended), B Editor and up, C New Catalog Editor role
 Answer: Editing and history work exactly as for efforts and sightings: Editor and above edit and delete through the same two-step form, every change goes through the audit log, and the record shows its History. "Don't make this overly complicated." Which catalog fields are editable is settled with the page details.
 Affects: spec.md Users and Permissions, Photo-ID pages
+
+### Q-036: Photo-ID Images (Phase 1)
+Asked: 2026-11-26, in three steps
+Options (first): A No images, link to HappyWhale (recommended), B Store and show photos
+Answer (first): Check whether HappyWhale has an API for pulling images. Cascadia's own images are not supported for now.
+Finding: Happywhale has no documented public API. The unofficial CLI `open-oceans/happywhale` (last updated 2023-11) used undocumented endpoints on `critterspot.happywhale.com`, all behind a Happywhale username and password login. MnID holds 112,613 HappyWhale media IDs and 121,730 encounter links, with mixed licences (public domain, CC variants, copyright, 5,510 PRIVATE).
+Answer (second): Check whether the API would work under load or hit rate limits.
+Finding: `critterspot.happywhale.com` no longer resolves (DNS: non-existent domain); `happywhale.com` itself answers. No working API exists to test. No load test was run against Happywhale.
+Answer (final): For now, every place a photo would go shows a whale icon in a random colour, generated on each render and never stored in the database. Brandon notes Happywhale says its images are held at OBIS-SEAMAP (https://seamap.env.duke.edu/), a lead for adding real photos later.
+Assumption, to confirm at the spec review: the HappyWhale encounter link stored on MnID records is shown as a plain link field on the record, since it is part of the data.
+Affects: spec.md Photo-ID pages, mockups/individual.html, Out Of Scope (real photos)
