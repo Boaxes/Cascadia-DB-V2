@@ -1,5 +1,7 @@
 # V1 Inventory
 
+> **Stale, to be redone.** This draft was written from `V1/` at `f4b2a36` (2026-09-29). GitHub `Boaxes/Cascadia-DB` main is at `3a637f1` (2026-11-21), 83 commits ahead, and replaced `admintools` with `datahealth` among other changes (Q-009). Every row is re-checked against current main before it is confirmed.
+
 Every page and feature in V1 (`V1/Django`, commit `f4b2a36`), what it does today, who uses it, and a proposal for V2. Proposals marked **Confirmed** have Brandon's answer in [questions-log.md](../workflow/questions-log.md); the rest are proposals until he confirms them.
 
 Who uses it: **All** means any signed-in user. **Staff** means `is_staff` (all four V1 logins today).
