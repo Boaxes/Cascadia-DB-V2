@@ -12,7 +12,7 @@ Phase 1: Spec And Mockup. In progress, step 2 (asking), on branch `phase-1-spec`
 - Branch `phase-1-spec` created (2026-11-26).
 - `V1/` refreshed by Brandon to `Boaxes/Cascadia-DB` main `3a637f1` (2026-11-21). The first draft of the inventory came from a stale copy (`f4b2a36`) and was redone.
 - `docs/spec/v1-inventory.md` redone against `3a637f1` and confirmed (Q-017).
-- Every earlier decision re-checked against current V1. Rounds 1 to 11 are logged as Q-001 to Q-044 in `questions-log.md`. Decided:
+- Every earlier decision re-checked against current V1. Rounds 1 to 12 are logged as Q-001 to Q-048 in `questions-log.md`. Decided:
   - **Access:** Nothing public. Five roles (Viewer, Editor, Track Manager, Audit Manager, Admin), assigned by role only. Every role can export and use SQL.
   - **Map:** MapLibre plus deck.gl. Basemaps as V1. Explore keeps Fullscreen, Screenshot and the Clustering toggle; Measure is dropped.
   - **Tracks:** One component. Settings (cookie, with per-map toggles): points, gaps, timeline events, direction arrows; gap rules by time, distance and speed; gap style dashed, faint line or nothing. One colour from the colour profile; suspect tracks red and dashed. Detail levels as V1; the site reads points from PostGIS, DuckLake is the source of truth.
@@ -26,7 +26,7 @@ Phase 1: Spec And Mockup. In progress, step 2 (asking), on branch `phase-1-spec`
 ## Next
 
 - Continue asking. Remaining topics:
-  - Page details still to ask: Audit Log page layout, Users, Server, Feedback, Track File Manager, record edit forms, empty and error states. (Done: Q-037 to Q-044.)
+  - Page details still to ask: Feedback form, edit forms for Individuals, empty and error states. (Done: Q-037 to Q-048.)
   - The Audit Log page.
   - Proposed extra features.
 - Assumptions to confirm at the spec review: gap rule defaults and ranges (Q-029); HappyWhale encounter link shown as a plain field (Q-036).

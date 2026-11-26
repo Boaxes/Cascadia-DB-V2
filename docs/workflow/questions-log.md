@@ -300,3 +300,27 @@ Asked: 2026-11-26
 Options: A Add a reversing entry (recommended), B As V1: delete it
 Answer: B. Undo deletes the entry fully, as in V1, so the log lists only changes in effect. Clarification from Brandon: V2Spec's "over time" means a record's History explains its current state in order (pipeline changes, then user edits, and so on). It does not mean keeping undone changes.
 Affects: spec.md Audit Log; Phase 2 audit design
+
+### Q-045: Audit Log Page (Phase 1)
+Asked: 2026-11-26
+Options: A As proposed (recommended), B Keep fit-to-window
+Answer: A. Filters: Record (type and number), Who (each person, plus Pipeline), Change type, date range. Columns: When, Who, Change, Record, What Changed, Note. 50 per page with no picker; V1's row-measuring JS and the DB167 status are dropped. Each entry opens in the modal with Before/After, Removed With It, and Undo for Audit Manager and Admin.
+Affects: spec.md Audit Log, mockups/audit.html
+
+### Q-046: Undoing Pipeline Changes (Phase 1)
+Asked: 2026-11-26
+Options: A View only (recommended), B Undoable
+Answer: A. Pipeline entries can be viewed but not undone. The entry says to change the pipeline rule to reverse it.
+Affects: spec.md Audit Log
+
+### Q-047: Users Page (Phase 1)
+Asked: 2026-11-26
+Options: A Django Admin (recommended), B New site page
+Answer: A. Admins manage users in Django Admin's user pages, stripped down and styled like the site: list users with roles, add a user, set roles (one person may hold several), set a password, deactivate. The sidebar's Users link opens it.
+Affects: spec.md Users and Permissions
+
+### Q-048: Server Page Placement (Phase 1)
+Asked: 2026-11-26
+Options: A Site layout (recommended), B Django Admin
+Answer: A. V1's Server content (event console with Advanced toggle, 24-hour CPU, memory and disk graph, facts, 5-second refresh) moves into the site's own layout under Manage.
+Affects: spec.md Server, mockups/server.html
