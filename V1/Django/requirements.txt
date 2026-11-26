@@ -1,0 +1,14 @@
+# Django 6 has not been tried against this application. Move the ceiling
+# deliberately, not by a fresh install picking up whatever is newest.
+Django>=5.2,<6.0
+
+# The server on the droplet. The development server is Django's own.
+gunicorn>=23.0
+psycopg[binary]>=3.2
+django-environ>=0.11
+
+# The Excel export.
+openpyxl>=3.1
+
+# The GPS track files in DigitalOcean Spaces, which is S3 compatible.
+boto3>=1.34

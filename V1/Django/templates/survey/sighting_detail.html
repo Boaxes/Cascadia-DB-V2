@@ -1,0 +1,181 @@
+{% extends "survey/base.html" %}
+
+{% block title %}Sighting {{ sighting.legacy_sighting_id }} &middot; Sightings and Effort Explorer{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}
+
+{% block content %}
+  <p class="small"><a href="{% url 'sighting_list' %}">&larr; All sightings</a></p>
+  <div id="detail">
+  {% comment %}
+    The inner detail for one sighting. Rendered on its own into the modal, and
+    wrapped by sighting_detail.html for the standalone page.
+  {% endcomment %}
+  {% load survey_tags static %}
+
+  <div class="detail-head">
+    <h1>Sighting {{ sighting.legacy_sighting_id }}</h1>
+    {% include "survey/_record_tools.html" with kind="sightings" pk=sighting.legacy_sighting_id %}
+  </div>
+
+  {% comment %}
+    Rows rather than two free columns, so the sides end together: the map
+    stretches to the height of Summary and GPS Data beside it.
+  {% endcomment %}
+  <div class="detail-row">
+    <div class="stack">
+        <div class="card">
+          <h2>Summary</h2>
+          <div class="detail-grid">
+            <div class="pair" style="grid-column:1/-1"><dt>Species</dt>
+              <dd>
+                {% if sighting.species %}
+                  {% if sighting.species.scientific_name %}<em>{{ sighting.species.scientific_name }}</em> ({{ sighting.species }}){% else %}{{ sighting.species }}{% endif %}
+                {% elif sighting.species_raw %}{{ sighting.species_raw }} {% tip "species_raw" %}
+                {% else %}Not identified{% endif %}
+                {% if sighting.species_uncertain %}<span class="pill pill-amber" title="Recorded as &ldquo;{{ sighting.species_raw }}&rdquo;">uncertain</span>{% endif %}
+                {% if sighting.species and not sighting.species.name_is_authoritative %}<span class="pill pill-grey">name unconfirmed</span>{% endif %}
+              </dd></div>
+            <div class="pair"><dt>Date</dt><dd>{{ sighting.sighting_date|date:"Y-m-d"|dash }}</dd></div>
+            <div class="pair"><dt>Time</dt><dd>{{ sighting.sighting_time|time:"H:i:s"|unknown }}</dd></div>
+            <div class="pair"><dt>Vessel</dt><dd>{{ sighting.vessel.label|dash }}</dd></div>
+            <div class="pair"><dt>Group size</dt><dd>{{ sighting.est_size_best|unknown }}</dd></div>
+          </div>
+
+          {% if sighting.comments %}
+            <h3 style="margin-top:16px">Comments</h3>
+            <p style="margin:0">{{ sighting.comments }}</p>
+          {% endif %}
+        </div>
+
+        <div class="card">
+          <h2>GPS Data</h2>
+          <div class="detail-grid" style="grid-template-columns:1fr">
+            <div class="pair"><dt>Latitude, longitude {% tip "position" %}</dt>
+              <dd>{% if sighting.lat and sighting.lon %}{{ sighting.lat|floatformat:5 }}, {{ sighting.lon|floatformat:5 }}
+                {% if sighting.position_type %}<span class="muted">({{ sighting.position_type|lower }})</span>{% endif %}
+                {% else %}Unknown{% endif %}</dd></div>
+            <div class="pair"><dt>End position {% tip "end_position" %}</dt>
+              <dd>{% if sighting.end_lat and sighting.end_lon %}{{ sighting.end_lat|floatformat:5 }}, {{ sighting.end_lon|floatformat:5 }}{% else %}Unknown{% endif %}</dd></div>
+          </div>
+        </div>
+    </div>
+      <div class="card map-card">
+        <h2>Map</h2>
+        <div id="sighting-map-{{ sighting.legacy_sighting_id }}" class="map"></div>
+        <p class="small muted" style="margin:8px 0 0">
+          The line is the GPS track of the effort this sighting belongs to.
+        </p>
+      </div>
+  </div>
+
+  <div class="detail-row">
+    <div class="stack">
+        <div class="card">
+          <h2>Effort</h2>
+          {% if effort %}
+            <div class="detail-grid" style="grid-template-columns:1fr">
+              <div class="pair"><dt>Effort</dt>
+                <dd><a href="{{ effort.get_absolute_url }}" data-modal-url="{{ effort.get_absolute_url }}">{{ effort.legacy_daily_effort_id }}</a></dd></div>
+              <div class="pair"><dt>Date</dt><dd>{{ effort.effort_date|date:"Y-m-d"|dash }}</dd></div>
+              <div class="pair"><dt>Vessel</dt><dd>{{ effort.vessel.label|dash }}</dd></div>
+              <div class="pair"><dt>Locality</dt><dd>{{ effort.locality|dash }}</dd></div>
+              <div class="pair"><dt>Region</dt><dd>{{ effort.region|dash }}</dd></div>
+              <div class="pair"><dt>Survey type</dt><dd>{{ effort.survey_type|dash }}</dd></div>
+            </div>
+          {% else %}
+            <p class="muted" style="margin:0">
+              This sighting is not attached to any effort.
+            </p>
+          {% endif %}
+        </div>
+
+        <div class="card collapsed">
+          <h2>Extra info</h2>
+          <div class="detail-grid">
+            <div class="pair"><dt>Group behaviour</dt><dd>{{ sighting.group_behavior|unknown }}</dd></div>
+            <div class="pair"><dt>Group type {% tip "group_type" %}</dt><dd>{{ sighting.group_type|unknown }}</dd></div>
+            <div class="pair"><dt>Sighting type
+              {% value_tip "sight_type" sighting.sight_type %}</dt>
+              <dd>{{ sighting.sight_type|unknown }}</dd></div>
+            <div class="pair"><dt>Photos taken</dt><dd>{{ sighting.photos_taken|yesno:"Yes,No" }}</dd></div>
+            <div class="pair"><dt>Individuals identified {% tip "identified" %}</dt><dd>{{ sighting.identified_individual_count }}</dd></div>
+            <div class="pair"><dt>Calves</dt><dd>{{ sighting.num_calves|unknown }}</dd></div>
+            <div class="pair"><dt>Minimum</dt><dd>{{ sighting.est_size_min|unknown }}</dd></div>
+            <div class="pair"><dt>Maximum</dt><dd>{{ sighting.est_size_max|unknown }}</dd></div>
+            <div class="pair"><dt>Depth (m)</dt><dd>{{ sighting.depth_m|unknown }}</dd></div>
+            <div class="pair"><dt>Number on the day</dt><dd>{{ sighting.sighting_number|unknown }}</dd></div>
+            <div class="pair"><dt>Research group</dt><dd>{{ sighting.research_group|dash }}</dd></div>
+          </div>
+        </div>
+    </div>
+      <div class="card card-tight">
+        <h2 style="padding:16px 16px 10px;margin:0">
+          Samples <span class="muted">({{ samples|length }})</span>
+        </h2>
+        <table class="data">
+          <thead>
+            <tr><th>Number</th><th>Type</th><th>Species</th><th>Preservation</th><th>Taken by</th></tr>
+          </thead>
+          <tbody>
+            {% for sample in samples %}
+              <tr>
+                <td>{{ sample.sample_number|dash }}</td>
+                <td>{{ sample.sample_type|dash }}</td>
+                <td>{{ sample.species|default_if_none:""|dash }}</td>
+                <td>{{ sample.preservation|dash }}</td>
+                <td>{{ sample.sampled_by|dash }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="5" class="empty">No samples were taken at this sighting.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+  </div>
+
+  {% if attached %}
+    <div class="card">
+      <h2>Attached records</h2>
+      <p class="small muted" style="margin:-6px 0 14px">
+        Events, other species, tag deployments and photo identifications
+        recorded during this sighting.
+      </p>
+
+      {% for group in attached %}
+        <h3>{{ group.label }} ({{ group.rows|length }})</h3>
+        <div style="overflow-x:auto;margin-bottom:16px">
+          <table class="data">
+            <thead>
+              <tr>{% for column in group.columns %}<th>{{ column }}</th>{% endfor %}</tr>
+            </thead>
+            <tbody>
+              {% for row in group.rows %}
+                <tr>{% for value in row %}<td>{{ value|dash }}</td>{% endfor %}</tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% include "survey/_provenance.html" with record_label="Sighting" record_id=sighting.legacy_sighting_id %}
+
+
+  <script>
+    window.SIGHTING_MAP = {
+      container: "sighting-map-{{ sighting.legacy_sighting_id }}",
+      trackUrl: {% if track_geojson_url %}"{{ track_geojson_url }}"{% else %}null{% endif %},
+      point: {% if sighting.lat and sighting.lon %}[{{ sighting.lat }}, {{ sighting.lon }}]{% else %}null{% endif %},
+      label: "{{ sighting.species|default:'Not identified'|escapejs }}",
+      colour: "{{ sighting.species_id|species_colour:colour_profile }}"
+    };
+  </script>
+  <script src="{% static 'survey/basemap.js' %}"></script>
+  <script src="{% static 'survey/sighting-map.js' %}"></script>
+  </div>
+{% endblock %}

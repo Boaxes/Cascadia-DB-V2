@@ -1,0 +1,42 @@
+{% extends "survey/base.html" %}
+{% block title %}Delete {{ label }} {{ pk }} &middot; Sightings and Effort Explorer{% endblock %}
+
+{% block content %}
+{# Lifted into the pop-over by modal.js, like a record's detail. #}
+<div id="detail">
+<div class="detail-head"><h1>Delete {{ label }} {{ pk }}</h1></div>
+
+<div class="card danger">
+  <h2>This will remove the {{ label }}</h2>
+
+  {% if also %}
+    <p>
+      Records attached to this {{ label }} are removed with it, because they
+      cannot exist without it:
+    </p>
+    <ul class="also-list">
+      {% for line in also %}<li>{{ line }}</li>{% endfor %}
+    </ul>
+  {% else %}
+    <p>Nothing else is attached to this {{ label }}.</p>
+  {% endif %}
+
+  <p class="small muted">
+    The whole record is kept, along with everything removed with it, so this can
+    be put back from the audit log. It is not gone for good.
+  </p>
+
+  <form method="post" style="margin-top:16px">
+    {% csrf_token %}
+    <label for="comment" class="stacked">Why (optional)</label>
+    <textarea id="comment" name="comment" rows="2"
+              placeholder="A note for whoever reads this later."></textarea>
+    <p style="margin-top:12px">
+      <input type="hidden" name="confirmed" value="1">
+      <button class="btn btn-danger" type="submit">Delete {{ label }} {{ pk }}</button>
+      <a class="btn" href="{{ back }}">Cancel</a>
+    </p>
+  </form>
+</div>
+</div>
+{% endblock %}

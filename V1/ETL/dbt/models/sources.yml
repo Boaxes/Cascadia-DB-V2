@@ -1,0 +1,68 @@
+# What dbt reads and never drops.
+#
+# raw is DB167 as import_raw.py copied it: the same names, the same values. It
+# is replaced only by import_raw.py. app.audit_log is written by the website
+# (Django/admintools/audit.py) and is the one record of changes to individual
+# records; the build replays it.
+#
+# raw also holds the build's other inputs, which import_raw.py leaves alone:
+# the lists people curate (species, event_code_name, vessel_list) and each GPS
+# file's line (track_geometry). See macros/persistent_tables.sql.
+
+sources:
+  - name: raw
+    description: "DB167, copied by ETL/import_raw.py. Never changed by the build."
+    schema: raw
+    quoting:
+      identifier: true
+    tables:
+      - name: species
+        description: "The species list: stable ids, names people curate."
+      - name: event_code_name
+        description: "A short display name for each daily event code."
+      - name: vessel_list
+        description: "The vessel list: stable ids, one row per vessel text."
+      - name: track_geometry
+        description: "One row per GPS file in the bucket. Written only by Django/admintools/gps/tracks.py."
+      - name: AdditionalCameraT
+      - name: CollaboratorT
+      - name: CRC_Vessels_ByYear_T
+      - name: DailyConditionT
+      - name: DailyEffortT
+      - name: DailyEventT
+      - name: DataStatusT
+      - name: DataStatusTypeT
+      - name: DroneDeploymentT
+      - name: DroneTargetAnimalT
+      - name: EffortCrewT
+      - name: EffortProblemT
+      - name: EventCodeT
+      - name: IdentificationT
+      - name: IndividualT
+      - name: OtherSpeciesT
+      - name: PermitTakeT
+      - name: ResearchGroupT
+      - name: SampleIdentificationT
+      - name: SampleT
+      - name: ServerSystemT
+      - name: SightingEventT
+      - name: SightingFollowT
+      - name: SightingIdentificationT
+      - name: SightingT
+      - name: SourceT
+      - name: TagSummaryT
+      - name: TrackCompleteCodeT
+      - name: TrackFileList
+      - name: TrackFolderT
+      - name: TrackingT
+      - name: TrackT
+      - name: UserT
+      - name: VesselT
+
+  - name: app
+    description: "Tables the website writes. The build reads them and never drops them."
+    schema: app
+    tables:
+      - name: audit_log
+        description: "One row per change made through the website, and the historical corrections, deletions and links written by the old ETL."
+

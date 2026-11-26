@@ -1,0 +1,66 @@
+code,common_name,scientific_name,category
+Mn,Humpback Whale,Megaptera novaeangliae,cetacean
+Bm,Blue Whale,Balaenoptera musculus,cetacean
+Bp,Fin Whale,Balaenoptera physalus,cetacean
+Ba,Minke Whale,Balaenoptera acutorostrata,cetacean
+Bbo,Sei Whale,Balaenoptera borealis,cetacean
+Be,Bryde's Whale,Balaenoptera edeni,cetacean
+Er,Gray Whale,Eschrichtius robustus,cetacean
+Pm,Sperm Whale,Physeter macrocephalus,cetacean
+Oo,Killer Whale,Orcinus orca,cetacean
+OoTr,Killer Whale (Transient / Bigg's),Orcinus orca,cetacean
+OoSR,Killer Whale (Southern Resident),Orcinus orca,cetacean
+OoNR,Killer Whale (Northern Resident),Orcinus orca,cetacean
+OoOff,Killer Whale (Offshore),Orcinus orca,cetacean
+Gg,Risso's Dolphin,Grampus griseus,cetacean
+Dd,Short-beaked Common Dolphin,Delphinus delphis,cetacean
+Dc,Long-beaked Common Dolphin,Delphinus capensis,cetacean
+Ddd,Short-beaked Common Dolphin (subspecies),Delphinus delphis delphis,cetacean
+Ddc,Long-beaked Common Dolphin (subspecies),Delphinus delphis bairdii,cetacean
+Dsp,Common Dolphin (unidentified),Delphinus sp.,cetacean
+Tt,Common Bottlenose Dolphin,Tursiops truncatus,cetacean
+Lo,Pacific White-sided Dolphin,Lagenorhynchus obliquidens,cetacean
+Lb,Northern Right Whale Dolphin,Lissodelphis borealis,cetacean
+Pd,Dall's Porpoise,Phocoenoides dalli,cetacean
+Pp,Harbor Porpoise,Phocoena phocoena,cetacean
+Zc,Cuvier's Beaked Whale,Ziphius cavirostris,cetacean
+Bba,Baird's Beaked Whale,Berardius bairdii,cetacean
+Meso,Mesoplodont Beaked Whale,Mesoplodon sp.,cetacean
+Gm,Short-finned Pilot Whale,Globicephala macrorhynchus,cetacean
+Pc,False Killer Whale,Pseudorca crassidens,cetacean
+Sb,Rough-toothed Dolphin,Steno bredanensis,cetacean
+Sa,Pantropical Spotted Dolphin,Stenella attenuata,cetacean
+Sc,Striped Dolphin,Stenella coeruleoalba,cetacean
+Mv,,,cetacean
+Ziph,Beaked Whale (unidentified),Ziphiidae,cetacean
+Zaca,California Sea Lion,Zalophus californianus,pinniped
+Ej,Steller Sea Lion,Eumetopias jubatus,pinniped
+Cu,Northern Fur Seal,Callorhinus ursinus,pinniped
+Ma,Northern Elephant Seal,Mirounga angustirostris,pinniped
+Pv,Harbor Seal,Phoca vitulina,pinniped
+At,Guadalupe Fur Seal,Arctocephalus townsendi,pinniped
+AA,,,unidentified
+El,Sea Otter,Enhydra lutris,other_marine
+TURT-LB,Leatherback Sea Turtle,Dermochelys coriacea,other_marine
+TURT-LH,Loggerhead Sea Turtle,Caretta caretta,other_marine
+TURT-OR,Olive Ridley Sea Turtle,Lepidochelys olivacea,other_marine
+TURT-UN,Sea Turtle (unidentified),,other_marine
+UnLgCet,Unidentified Large Cetacean,,unidentified
+UnMedCet,Unidentified Medium Cetacean,,unidentified
+UnSmCet,Unidentified Small Cetacean,,unidentified
+UnCet,Unidentified Cetacean,,unidentified
+UnDelph,Unidentified Delphinid,,unidentified
+UnMyst,Unidentified Mysticete,,unidentified
+UnPorp,Unidentified Porpoise,,unidentified
+UnBeak,Unidentified Beaked Whale,,unidentified
+UnPinn,Unidentified Pinniped,,unidentified
+UnPhoc,Unidentified Phocid Seal,,unidentified
+UnFurSeal,Unidentified Fur Seal,,unidentified
+UnMM,Unidentified Marine Mammal,,unidentified
+UnOt,,,unidentified
+ULW,Unidentified Large Whale,,unidentified
+UW,Unidentified Whale,,unidentified
+UNKNOWN,Unknown,,unidentified
+Ship,Ship,,non_animal
+Boat,Boat,,non_animal
+OTHER,Other (unspecified),,non_animal

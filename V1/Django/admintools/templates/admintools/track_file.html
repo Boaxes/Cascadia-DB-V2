@@ -1,0 +1,83 @@
+{% extends "admintools/base.html" %}
+{% load survey_tags %}
+{% block admin_title %}{{ track.object_key }}{% endblock %}
+
+{% block admin_body %}
+<main class="page">
+<div id="detail" data-fit>
+  <div class="detail-head"><h1 class="mono-title">{{ track.object_key|default:"Track record" }}</h1></div>
+  {% include "admintools/_messages.html" %}
+
+  <div class="fix-status">
+    {% if track.problem %}
+      <span class="pill problem-{{ track.problem }}">{% for k, v in labels.items %}{% if k == track.problem %}{{ v.0 }}{% endif %}{% endfor %}</span>
+      {% for k, v in labels.items %}{% if k == track.problem %}{{ v.1 }}{% endif %}{% endfor %}
+    {% else %}
+      <span class="pill pill-green">Complete</span> Linked to an effort, with its file in storage.
+    {% endif %}
+  </div>
+
+  <div class="fix-grid">
+    <section class="card">
+      <h2>File</h2>
+      <dl class="fix-facts">
+        <dt>Date</dt><dd>{{ track.survey_date|date:"Y-m-d"|dash }}</dd>
+        <dt>Vessel</dt><dd>{{ track.vessel.label|dash }}</dd>
+        <dt>Points</dt><dd>{{ track.point_count|dash }}</dd>
+        <dt>In storage</dt><dd>{% if track.problem == "missing_file" or track.problem == "lost" %}No{% else %}Yes{% endif %}</dd>
+      </dl>
+    </section>
+
+    <section class="card">
+      <h2>Effort</h2>
+      {% if track.daily_effort %}
+        <div class="fix-row">
+          <a href="/efforts/{{ track.daily_effort.legacy_daily_effort_id }}/" data-modal-url="/efforts/{{ track.daily_effort.legacy_daily_effort_id }}/">Effort {{ track.daily_effort.legacy_daily_effort_id }}</a>
+          <form method="post">{% csrf_token %}
+            <input type="hidden" name="action" value="unlink">
+            <button class="btn btn-small" type="submit">Unlink</button>
+          </form>
+        </div>
+      {% else %}
+        <p class="muted small">Not linked. Pick a match below, or type an effort number.</p>
+        <form method="post" class="upload-row">{% csrf_token %}
+          <input type="hidden" name="action" value="link">
+          <input type="text" name="effort" inputmode="numeric" placeholder="Effort number" required>
+          <button class="btn btn-primary btn-small" type="submit">Link</button>
+        </form>
+      {% endif %}
+    </section>
+  </div>
+
+  {% if not track.daily_effort %}
+    <section class="card">
+      <h2><em>Potential Matches({{ track.survey_date|date:"Y-m-d"|default:"no date" }}):</em></h2>
+      {% for e in matches %}
+        <div class="fix-row">
+          <div>Effort {{ e.legacy_daily_effort_id }}
+            <span class="muted small">&middot; {{ e.vessel.label|default:"vessel not recorded" }} &middot; {{ e.locality|default:"locality not recorded" }}</span></div>
+          <form method="post">{% csrf_token %}
+            <input type="hidden" name="action" value="link"><input type="hidden" name="effort" value="{{ e.legacy_daily_effort_id }}">
+            <button class="btn btn-primary btn-small" type="submit">Link to this effort</button>
+          </form>
+        </div>
+      {% empty %}
+        <p class="muted small" style="margin:0">No efforts were recorded on this date.</p>
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  {% if track.problem == "missing_file" or track.problem == "lost" %}
+    <section class="card">
+      <h2>Upload the file</h2>
+      <p class="small muted">Stored as {{ track.object_key }}, cleaned the way the import cleans.</p>
+      <form method="post" enctype="multipart/form-data" class="upload-row">{% csrf_token %}
+        <input type="hidden" name="action" value="upload">
+        <input type="file" name="file" accept=".csv,text/csv" required {% if not storage_ok %}disabled{% endif %}>
+        <button class="btn btn-primary btn-small" type="submit" {% if not storage_ok %}disabled{% endif %}>Upload</button>
+      </form>
+    </section>
+  {% endif %}
+</div>
+</main>
+{% endblock %}

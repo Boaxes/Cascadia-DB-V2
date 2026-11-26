@@ -1,0 +1,76 @@
+name: Deploy
+
+# Every push to main goes straight to the server. There is one environment, so
+# there is nothing to promote between and nothing to forget.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up the key for the server
+        run: |
+          install -d -m 700 ~/.ssh
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy
+          chmod 600 ~/.ssh/deploy
+          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null
+        env:
+          HOST: ${{ vars.DEPLOY_HOST || '143.198.155.64' }}
+
+      - name: Send the application
+        run: |
+          tar czf app.tgz \
+            --exclude='__pycache__' --exclude='*.pyc' --exclude='staticfiles' \
+            -C Django config survey admintools templates static manage.py requirements.txt
+          tar czf ops.tgz ops
+          scp -i ~/.ssh/deploy -o StrictHostKeyChecking=no \
+            app.tgz ops.tgz "root@${HOST}:/root/"
+        env:
+          HOST: ${{ vars.DEPLOY_HOST || '143.198.155.64' }}
+
+      - name: Install and restart
+        run: |
+          ssh -i ~/.ssh/deploy -o StrictHostKeyChecking=no "root@${HOST}" bash -eu <<'REMOTE'
+            cd /srv/sedb/app
+            # .env holds the passwords and is not in the repository, so it stays.
+            find . -mindepth 1 -maxdepth 1 ! -name '.env' -exec rm -rf {} +
+            tar xzf /root/app.tgz -C /srv/sedb/app
+            rm -rf /srv/sedb/ops && mkdir -p /srv/sedb/ops
+            tar xzf /root/ops.tgz -C /srv/sedb --strip-components=0
+            rm -f /root/app.tgz /root/ops.tgz
+            chmod +x /srv/sedb/ops/*.sh
+
+            /srv/sedb/venv/bin/pip install -q -r /srv/sedb/app/requirements.txt
+
+            chown -R sedb:sedb /srv/sedb
+            chmod 755 /srv/sedb /srv/sedb/app
+            chmod 600 /srv/sedb/app/.env
+            sudo -u sedb /srv/sedb/venv/bin/python manage.py collectstatic --noinput >/dev/null
+            # nginx serves the static files as www-data and has to be able to read them.
+            chmod -R a+rX /srv/sedb/app/staticfiles
+
+            systemctl restart sedb
+          REMOTE
+        env:
+          HOST: ${{ vars.DEPLOY_HOST || '143.198.155.64' }}
+
+      - name: Check it came back up
+        run: |
+          for i in $(seq 1 12); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "http://${HOST}/login/" || true)
+            if [ "$code" = "200" ]; then echo "Site responding: $code"; exit 0; fi
+            echo "  waiting, got '$code'"; sleep 5
+          done
+          echo "The site did not come back up."
+          exit 1
+        env:
+          HOST: ${{ vars.DEPLOY_HOST || '143.198.155.64' }}

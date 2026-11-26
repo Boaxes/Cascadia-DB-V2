@@ -1,0 +1,19 @@
+# Live credentials
+.env
+
+# Brandon's native Windows setup (no Docker on his machine)
+local/
+
+# Agent working space
+scratch/
+
+# Real research data snapshots: kept locally, not published
+Data/**/*.parquet
+
+# Claude Code personal overrides
+.claude/settings.local.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/

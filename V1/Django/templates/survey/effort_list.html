@@ -1,0 +1,80 @@
+{% extends "survey/base.html" %}
+{% load survey_tags %}
+
+{% block title %}Efforts &middot; Sightings and Effort Explorer{% endblock %}
+
+
+{% block body %}
+{# The same filter sidebar as Explore, beside the table. #}
+<div class="panel-layout list-layout">
+  {% include "survey/_filter_panel.html" with page="efforts" %}
+  <main class="list-main">
+<h1>Efforts</h1>
+
+{% if error %}
+  <div class="notice">{{ error }}</div>
+{% endif %}
+
+{% if applied %}
+  <p class="small muted">
+    Showing efforts {{ applied|join:", " }}.
+  </p>
+{% endif %}
+
+{% if excluded_no_position %}
+  <p class="list-summary">
+    {{ excluded_no_position }} without a position {{ excluded_no_position|pluralize:"isn't,aren't" }} in the area search.
+    {% tip "excluded_no_position" %}
+  </p>
+{% endif %}
+
+<div class="card card-tight">
+  <table class="data">
+    <thead>
+      <tr>
+        {% sort_header "date" "Date" %}
+        {% sort_header "id" "Effort" %}
+        {% sort_header "vessel" "Vessel" %}
+        {% sort_header "locality" "Locality" %}
+        {% sort_header "survey_type" "Survey type" %}
+        <th>Track</th>
+        {% sort_header "distance" "Distance (nm)" %}
+        {% sort_header "sightings" "Sightings" %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for effort in page %}
+        <tr class="clickable" data-modal-url="{{ effort.get_absolute_url }}">
+          <td class="nowrap">{{ effort.effort_date|date:"Y-m-d"|dash }}</td>
+          <td><a href="{{ effort.get_absolute_url }}">{{ effort.legacy_daily_effort_id }}</a></td>
+          <td>{{ effort.vessel.label|dash }}</td>
+          <td>{{ effort.locality|dash }}</td>
+          <td>{{ effort.survey_type|dash }}</td>
+          <td><span class="pill {{ effort.track_state.0 }}">{{ effort.track_state.1 }}</span></td>
+          <td class="num">{{ effort.distance_recorded_nm|nm }}{% if effort.distance_recorded_nm is not None %}<span class="muted"> nm</span>{% endif %}</td>
+          <td class="num">{{ effort.sighting_count }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="8" class="empty">No efforts match these filters.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% include "survey/_pagination.html" %}
+  </main>
+</div>
+{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+  {% load static %}
+  <script src="{% static 'survey/basemap.js' %}"></script>
+  <script src="{% static 'survey/draw-filter.js' %}"></script>
+{% endblock %}

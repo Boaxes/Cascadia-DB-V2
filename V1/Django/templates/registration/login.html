@@ -1,0 +1,40 @@
+{% load static %}<!doctype html>
+{% comment %}
+  Signed out, so no top bar: its links all lead back here, and a navigation
+  bar over a sign in form suggests there is somewhere to go.
+{% endcomment %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in &middot; Sightings and Effort Explorer</title>
+  <link rel="stylesheet" href="{% static 'survey/app.css' %}">
+</head>
+<body class="signin">
+
+<div class="login">
+  <img src="{% static 'survey/cascadia-wordmark.png' %}" alt="Cascadia Research Collective">
+  <h1>Sightings and Effort Explorer</h1>
+  <p class="muted">Cascadia Research Collective. Sign in to continue.</p>
+
+  {% if form.errors %}
+    <p class="notice">That username and password do not match an account.</p>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="field">
+      <label for="id_username">Username</label>
+      {{ form.username }}
+    </div>
+    <div class="field">
+      <label for="id_password">Password</label>
+      {{ form.password }}
+    </div>
+    <input type="hidden" name="next" value="{{ next }}">
+    <button class="btn btn-primary" type="submit">Sign in</button>
+  </form>
+</div>
+
+</body>
+</html>

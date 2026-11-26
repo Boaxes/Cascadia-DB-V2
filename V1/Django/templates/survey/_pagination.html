@@ -1,0 +1,28 @@
+{% load survey_tags %}
+{% elided_pages page as page_numbers %}
+<div class="pagination">
+  {% if page.has_previous %}
+    <a href="{% page_url 1 %}" title="First page">&laquo;</a>
+    <a href="{% page_url page.previous_page_number %}" title="Previous page">&lsaquo;</a>
+  {% endif %}
+
+  {% for n in page_numbers %}
+    {% if n == "…" %}
+      <span class="gap">{{ n }}</span>
+    {% elif n == page.number %}
+      <span class="current">{{ n }}</span>
+    {% else %}
+      <a href="{% page_url n %}">{{ n }}</a>
+    {% endif %}
+  {% endfor %}
+
+  {% if page.has_next %}
+    <a href="{% page_url page.next_page_number %}" title="Next page">&rsaquo;</a>
+    <a href="{% page_url page.paginator.num_pages %}" title="Last page">&raquo;</a>
+  {% endif %}
+
+  <span class="count">
+    {{ page.start_index|default:0 }}&ndash;{{ page.end_index|default:0 }}
+    of {{ page.paginator.count }}
+  </span>
+</div>

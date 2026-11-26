@@ -1,0 +1,138 @@
+{% load survey_tags %}{% comment %}
+  The filters for Explore, Efforts and Sightings. `page` says which, and each
+  shows only the filters its records have: efforts have no species.
+
+  A sidebar on all three pages. On Explore species and vessel are always in
+  view; on the lists they are a section like the rest: Vessel (with Species
+  on Sightings), Location, Time and Other, all folded to start. Each heading counts the filters set under it, so a closed one
+  never hides a filter.
+{% endcomment %}
+<aside class="filter-panel" id="filter-panel">
+<form method="get" id="filters">
+  <h2>Filters</h2>
+  {% if page != "explore" %}
+  <details class="fsec" data-key="general" {% section_open "general" %}>
+    <summary><svg class="fsec-ico" viewBox="0 0 24 24"><path d="M2 20c1.5 1 3 1 4.5 0s3-1 4.5 0 3 1 4.5 0 3-1 4.5 0"/><path d="M4 16 3 12h18l-2 4"/><path d="M12 12V3l6 5h-6"/></svg>{% if page == "efforts" %}Vessel{% else %}Species &amp; vessel{% endif %} <span class="fsec-count"></span></summary>
+  {% endif %}
+  <div class="filters">
+    {% if page != "efforts" %}
+      {% include "survey/_tagpicker.html" with name="species" label="Species" items=species_list selected=selected.species grouped=True %}
+    {% endif %}
+    {% if page == "efforts" %}
+      {% include "survey/_tagpicker.html" with name="vessel" label="Vessel" items=options.vessels selected=selected.vessels count="efforts" %}
+    {% else %}
+      {% include "survey/_tagpicker.html" with name="vessel" label="Vessel" items=options.vessels selected=selected.vessels count="sightings" %}
+    {% endif %}
+  </div>
+  {% if page != "explore" %}</details>{% endif %}
+
+  <details class="fsec" data-key="location" {% section_open "location" %}>
+    <summary><svg class="fsec-ico" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>Location <span class="fsec-count"></span></summary>
+    <div class="filters">
+      <div class="field">
+        <label for="region">Region</label>
+        <select id="region" name="region">
+          <option value="">All regions</option>
+          {% for r in options.regions %}
+            <option value="{{ r }}" {% if params.region == r %}selected{% endif %}>{{ r }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="locality">Locality</label>
+        <select id="locality" name="locality">
+          <option value="">All localities</option>
+          {% for l in options.localities %}
+            <option value="{{ l }}" {% if params.locality == l %}selected{% endif %}>{{ l }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <input type="hidden" name="area" id="area" value="{{ params.area|default:'' }}">
+      {% if page == "explore" %}
+        <p class="small muted" id="area-state">{% if params.area %}An area is applied. {% else %}Draw an area on the map with the shape tools. {% endif %}<a href="#" id="clear-area">Clear</a></p>
+      {% else %}
+        {% comment %} Folded until wanted: the map is the tallest thing here. {% endcomment %}
+        <details class="area-picker" {% if params.area %}open{% endif %}>
+          <summary>Draw an area {% if params.area %}<span class="muted">(applied)</span>{% endif %}</summary>
+          <div id="filter-map" class="map filter-map"></div>
+          <a href="#" id="clear-area" class="small">Clear the area</a>
+        </details>
+      {% endif %}
+    </div>
+  </details>
+
+  <details class="fsec" data-key="time" {% section_open "time" %}>
+    <summary><svg class="fsec-ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Time <span class="fsec-count"></span></summary>
+    <div class="filters">{% include "survey/_time_filters.html" %}</div>
+  </details>
+
+  <details class="fsec" data-key="other" {% section_open "other" %}>
+    <summary><svg class="fsec-ico" viewBox="0 0 24 24"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg>Other <span class="fsec-count"></span></summary>
+    <div class="filters">
+      <div class="field">
+        <label for="survey_type">Survey type</label>
+        <select id="survey_type" name="survey_type">
+          <option value="">All types</option>
+          {% for t in options.survey_types %}
+            <option value="{{ t }}" {% if params.survey_type == t %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="track">GPS track</label>
+        <select id="track" name="track">
+          <option value="">Any</option>
+          <option value="available" {% if params.track == 'available' %}selected{% endif %}>Available</option>
+          <option value="none" {% if params.track == 'none' %}selected{% endif %}>No track file</option>
+          <option value="missing_file" {% if params.track == 'missing_file' %}selected{% endif %}>File missing</option>
+        </select>
+      </div>
+      <div class="field">
+        {% comment %}
+          Free text, not a drop-down: personnel holds 1,602 distinct values
+          mixing initials and full names.
+        {% endcomment %}
+        <label for="crew">Crew member</label>
+        <input type="search" id="crew" name="crew" placeholder="e.g. JC or Calambokidis" value="{{ params.crew|default:'' }}">
+      </div>
+      {% if page != "efforts" %}
+        <div class="field">
+          <label for="position_type">Position type</label>
+          <select id="position_type" name="position_type">
+            <option value="">Any</option>
+            {% for p in options.position_types %}
+              <option value="{{ p }}" {% if params.position_type == p %}selected{% endif %}>{{ p }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="field checks">
+          <label class="check">
+            <input type="checkbox" name="uncertain" value="1" {% if params.uncertain == '1' %}checked{% endif %}>
+            Only uncertain species {% tip "species_uncertain" %}
+          </label>
+          <label class="check">
+            <input type="checkbox" name="include_non_animal" value="1" {% if include_non_animal %}checked{% endif %}>
+            Include ships, boats and other non-animal records
+          </label>
+        </div>
+      {% endif %}
+      {% comment %}
+        Not a filter: it has no name, so it is never submitted, and choosing
+        one stores it in a cookie and reloads (filters.js).
+      {% endcomment %}
+      <div class="field">
+        <label for="colour-profile">Color Profile</label>
+        <select id="colour-profile">
+          <option value="cascadia" {% if colour_profile == "cascadia" %}selected{% endif %}>Cascadia</option>
+          <option value="generic" {% if colour_profile == "generic" %}selected{% endif %}>Generic</option>
+        </select>
+      </div>
+    </div>
+  </details>
+
+  <div class="panel-actions">
+    <button class="btn btn-primary" type="submit">Apply filters</button>
+    <a class="btn" href="{% if page == 'efforts' %}{% url 'effort_list' %}{% elif page == 'sightings' %}{% url 'sighting_list' %}{% else %}{% url 'explore' %}{% endif %}">Reset</a>
+  </div>
+</form>
+</aside>

@@ -1,0 +1,92 @@
+# Local development stack. Everything the project needs to run is in here, so
+# a new machine needs Docker and nothing else -- no Postgres, no PostGIS, no
+# GDAL/GEOS, no Microsoft ODBC driver installed by hand.
+#
+#     cp .env.example .env      # once
+#     docker compose up         # database + web application
+#
+# The ETL is a one-shot, so it sits behind a profile and is run on demand:
+#
+#     docker compose run --rm etl python import_raw.py
+#     docker compose run --rm etl dbt build
+
+name: cascadia
+
+services:
+  # -------------------------------------------------------------------------
+  # Postgres 18 + PostGIS 3.6, matching the managed cluster this replaces
+  # (PostgreSQL 18.6, PostGIS 3.6.4).
+  #
+  # imresamu/postgis rather than the postgis/postgis image the PostGIS project
+  # publishes: postgis/postgis has no arm64 build, so on an Apple Silicon Mac
+  # it runs emulated. This one is the same Dockerfile built for both
+  # architectures, and is the multi-architecture build the PostGIS project
+  # itself points at.
+  # -------------------------------------------------------------------------
+  db:
+    image: imresamu/postgis:18-3.6
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cascadia}
+      POSTGRES_USER: ${POSTGRES_USER:-cascadia}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cascadia}
+    ports:
+      # 5433 on the host, so a Postgres already installed locally on 5432 is
+      # left alone. This is the port pgAdmin and psql connect to.
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cascadia} -d ${POSTGRES_DB:-cascadia}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  # -------------------------------------------------------------------------
+  # The Django application. The image carries GDAL and GEOS, which GeoDjango
+  # loads at import time.
+  # -------------------------------------------------------------------------
+  web:
+    build: ./Django
+    command: python manage.py runserver 0.0.0.0:8000
+    env_file: .env
+    volumes:
+      # The source is mounted, so an edit on the host reloads the server.
+      - ./Django:/app
+      # The pipeline, which the tests run to rebuild their database.
+      - ./ETL/dbt:/dbt
+    ports:
+      - "${WEB_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # -------------------------------------------------------------------------
+  # The import. Separate image because it is the only thing that needs the
+  # Microsoft ODBC driver, and only it talks to DB167.
+  # -------------------------------------------------------------------------
+  etl:
+    build: ./ETL
+    profiles: ["etl"]
+    env_file: .env
+    environment:
+      # So a plain `dbt build` finds the project and its profile.
+      DBT_PROJECT_DIR: /app/dbt
+      DBT_PROFILES_DIR: /app/dbt
+    ports:
+      # dbt's documentation site, with the lineage graph. Only published by
+      # `docker compose run --service-ports etl dbt docs serve ...`.
+      - "${DBT_DOCS_PORT:-8580}:8080"
+    volumes:
+      - ./ETL:/app
+      # The GPS cleaner lives with the application, because the track tool uses
+      # it too. The import reads the same module rather than a copy.
+      - ./Django/admintools/gps:/app/gps
+      # The original GPS files. Read only -- they are the archive.
+      - ${GPS_ARCHIVE:-./ETL/seed}:/archive:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

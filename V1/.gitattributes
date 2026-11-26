@@ -1,0 +1,9 @@
+# Line endings, settled here rather than left to each machine.
+#
+# Git on Windows would otherwise check files out with CRLF, and a shell script
+# with CRLF endings fails to run at all: bash reports "bad interpreter", which
+# gives no hint of the real cause. Fixing it here means nobody has to configure
+# anything on their own machine.
+* text=auto eol=lf
+
+*.png binary

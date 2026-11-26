@@ -1,0 +1,1247 @@
+schema,table,kind,column,position,data_type,max_length,nullable,primary_key
+dbo,AdditionalCameraT,BASE TABLE,AdditionalCameraID,1,int,,NO,1
+dbo,AdditionalCameraT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,AdditionalCameraT,BASE TABLE,Research Group,3,nvarchar,50,YES,0
+dbo,AdditionalCameraT,BASE TABLE,Vessel,4,nvarchar,50,YES,0
+dbo,AdditionalCameraT,BASE TABLE,ResearchGroupID,5,int,,YES,0
+dbo,AdditionalCameraT,BASE TABLE,SurveyDate,6,datetime,,YES,0
+dbo,AdditionalCameraT,BASE TABLE,VesselID,7,int,,YES,0
+dbo,AdditionalCameraT,BASE TABLE,SightingID,8,int,,YES,0
+dbo,AdditionalCameraT,BASE TABLE,SightingNum,9,nvarchar,255,YES,0
+dbo,AdditionalCameraT,BASE TABLE,FieldIDs,10,nvarchar,255,YES,0
+dbo,AdditionalCameraT,BASE TABLE,PhotographerID,11,int,,YES,0
+dbo,AdditionalCameraT,BASE TABLE,PhotographerInitials,12,nvarchar,255,YES,0
+dbo,AdditionalCameraT,BASE TABLE,ImageSeriesName,13,nvarchar,255,YES,0
+dbo,AdditionalCameraT,BASE TABLE,StartFrame,14,int,,YES,0
+dbo,AdditionalCameraT,BASE TABLE,EndFrame,15,int,,YES,0
+dbo,AdditionalCameraT,BASE TABLE,Notes,16,ntext,1073741823,YES,0
+dbo,AnnualDBT,BASE TABLE,AnnualDBID,1,int,,NO,0
+dbo,AnnualDBT,BASE TABLE,dbYear,2,int,,YES,0
+dbo,AnnualDBT,BASE TABLE,AnnualDBFileName,3,nvarchar,255,YES,0
+dbo,AnnualDBT,BASE TABLE,AnnualDBName,4,nvarchar,255,YES,0
+dbo,AnnualDBT,BASE TABLE,AnnualDBPath,5,nvarchar,255,YES,0
+dbo,AnnualDBT,BASE TABLE,SortOrder,6,int,,YES,0
+dbo,CollaboratorT,BASE TABLE,CollaboratorID,1,int,,NO,1
+dbo,CollaboratorT,BASE TABLE,Collaborator,2,nvarchar,50,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,IanConditionID,1,int,,NO,1
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Research Group,2,nvarchar,50,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Date,3,datetime,,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Vessel,4,nvarchar,50,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Time,5,datetime,,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Lat,6,nvarchar,255,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Long,7,nvarchar,255,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Dec Lat,8,decimal,,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Dec Long,9,decimal,,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Quality,10,nvarchar,50,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Visibility,11,nvarchar,50,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Precipitation,12,nvarchar,50,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,% Cloud Cover,13,int,,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Beaufort,14,int,,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Swell,15,int,,YES,0
+dbo,ConditionsT_IanDB_SnapshotT,BASE TABLE,Comments,16,ntext,1073741823,YES,0
+dbo,CRC_Vessels_ByYear_T,BASE TABLE,CRCVesselID,1,int,,NO,0
+dbo,CRC_Vessels_ByYear_T,BASE TABLE,Research Group,2,nvarchar,255,YES,0
+dbo,CRC_Vessels_ByYear_T,BASE TABLE,Vessel,3,nvarchar,255,YES,0
+dbo,CRC_Vessels_ByYear_T,BASE TABLE,EffortYear,4,smallint,,YES,0
+dbo,CRC_Vessels_ByYear_T,BASE TABLE,RecordCount,5,int,,YES,0
+dbo,CRC_Vessels_ByYear_T,BASE TABLE,IncludeVessel,6,bit,,NO,0
+dbo,CRC_Vessels_ByYear_T,BASE TABLE,Comments,7,nvarchar,-1,YES,0
+dbo,CRC_Vessels_ByYear_T,BASE TABLE,FlaggedToCheck,8,bit,,NO,0
+dbo,DailyConditionT,BASE TABLE,DailyConditionID,1,int,,NO,1
+dbo,DailyConditionT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,DailyConditionT,BASE TABLE,Research Group,3,nvarchar,255,YES,0
+dbo,DailyConditionT,BASE TABLE,Vessel,4,nvarchar,255,YES,0
+dbo,DailyConditionT,BASE TABLE,Date,5,datetime,,YES,0
+dbo,DailyConditionT,BASE TABLE,ConditionDateTime,6,datetime,,YES,0
+dbo,DailyConditionT,BASE TABLE,ConditionTime,7,time,,YES,0
+dbo,DailyConditionT,BASE TABLE,Dec Lat,8,float,,YES,0
+dbo,DailyConditionT,BASE TABLE,Dec Long,9,float,,YES,0
+dbo,DailyConditionT,BASE TABLE,% Cloud Cover,10,int,,YES,0
+dbo,DailyConditionT,BASE TABLE,Beaufort,11,int,,YES,0
+dbo,DailyConditionT,BASE TABLE,Precipitation,12,nvarchar,255,YES,0
+dbo,DailyConditionT,BASE TABLE,Quality,13,nvarchar,255,YES,0
+dbo,DailyConditionT,BASE TABLE,Swell,14,int,,YES,0
+dbo,DailyConditionT,BASE TABLE,Visibility,15,nvarchar,255,YES,0
+dbo,DailyConditionT,BASE TABLE,Visibility (nm),16,nvarchar,255,YES,0
+dbo,DailyConditionT,BASE TABLE,Comments,17,nvarchar,-1,YES,0
+dbo,DailyConditionT,BASE TABLE,SourceDB,18,nvarchar,50,YES,0
+dbo,DailyEffortT,BASE TABLE,DailyEffortID,1,int,,NO,1
+dbo,DailyEffortT,BASE TABLE,Research Group,2,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Vessel,3,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Date,4,datetime,,YES,0
+dbo,DailyEffortT,BASE TABLE,Start Time,5,time,,YES,0
+dbo,DailyEffortT,BASE TABLE,End Time,6,time,,YES,0
+dbo,DailyEffortT,BASE TABLE,Distance Units,7,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Launch,8,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Locality,9,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Personnel,10,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,PhotoDataBy,11,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,PhotoDataDate,12,datetime,,YES,0
+dbo,DailyEffortT,BASE TABLE,Project/Objective,13,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Record Source,14,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Region,15,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Return,16,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Sub-area,17,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Survey Comments,18,nvarchar,-1,YES,0
+dbo,DailyEffortT,BASE TABLE,Survey Type,19,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Time Off Effort,20,time,,YES,0
+dbo,DailyEffortT,BASE TABLE,Total Distance,21,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Total Survey Effort,22,time,,YES,0
+dbo,DailyEffortT,BASE TABLE,SourceDB,23,nvarchar,255,YES,0
+dbo,DailyEffortT,BASE TABLE,Start Dec Lat,24,float,,YES,0
+dbo,DailyEffortT,BASE TABLE,Start Dec Long,25,float,,YES,0
+dbo,DailyEffortT,BASE TABLE,End Dec Lat,26,float,,YES,0
+dbo,DailyEffortT,BASE TABLE,End Dec Long,27,float,,YES,0
+dbo,DailyEffortT,BASE TABLE,SentToAnnualDB,28,bit,,NO,0
+dbo,DailyEffortT,BASE TABLE,Finalized,29,bit,,NO,0
+dbo,DailyEffortT,BASE TABLE,MnSent,30,nvarchar,50,YES,0
+dbo,DailyEffortT,BASE TABLE,BmSent,31,nvarchar,50,YES,0
+dbo,DailyEffortT,BASE TABLE,ErSent,32,nvarchar,50,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,EffortID,1,int,,NO,1
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Research Group,2,nvarchar,50,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Vessel,3,nvarchar,50,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,EffortDate,4,datetime,,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Survey type,5,nvarchar,50,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Project/Objective,6,nvarchar,50,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Region,7,nvarchar,50,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Sub-area,8,nvarchar,50,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Locality,9,nvarchar,50,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Launch,10,nvarchar,255,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Return,11,nvarchar,255,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Launch Loc Code,12,nvarchar,50,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Personnel,13,nvarchar,255,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Start Time,14,time,,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,End Time,15,time,,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Time Off Effort,16,time,,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Total Survey Effort,17,time,,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Start Dec Lat,18,float,,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Start Dec Long,19,float,,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,End Dec Lat,20,float,,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,End Dec Long,21,float,,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Permit,22,nvarchar,50,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Distance,23,float,,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,DIst Unit,24,nvarchar,255,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,CRCTrackFolder,25,nvarchar,-1,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,SentToAnnualDB,26,bit,,NO,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,AnnualDBID,27,int,,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Imported20251214,28,bit,,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,ImportedDate,29,nvarchar,10,YES,0
+dbo,DailyEffortT_IanDB_SnapshotT,BASE TABLE,Survey Comments,30,nvarchar,-1,YES,0
+dbo,DailyEffortV,VIEW,DailyEffortID,1,int,,NO,0
+dbo,DailyEffortV,VIEW,Research Group,2,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Vessel,3,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Date,4,datetime,,YES,0
+dbo,DailyEffortV,VIEW,Start Time,5,time,,YES,0
+dbo,DailyEffortV,VIEW,End Time,6,time,,YES,0
+dbo,DailyEffortV,VIEW,Distance Units,7,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Launch,8,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Locality,9,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Personnel,10,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,PhotoDataBy,11,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Project/Objective,12,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Record Source,13,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Region,14,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Return,15,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Sub-area,16,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Survey Comments,17,nvarchar,-1,YES,0
+dbo,DailyEffortV,VIEW,Survey Type,18,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Time Off Effort,19,time,,YES,0
+dbo,DailyEffortV,VIEW,Total Distance,20,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Total Survey Effort,21,time,,YES,0
+dbo,DailyEffortV,VIEW,SourceDB,22,nvarchar,50,YES,0
+dbo,DailyEffortV,VIEW,Start Dec Lat,23,float,,YES,0
+dbo,DailyEffortV,VIEW,Start Dec Long,24,float,,YES,0
+dbo,DailyEffortV,VIEW,End Dec Lat,25,float,,YES,0
+dbo,DailyEffortV,VIEW,End Dec Long,26,float,,YES,0
+dbo,DailyEffortV,VIEW,TrackFileName,27,ntext,1073741823,YES,0
+dbo,DailyEffortV,VIEW,TrackFileType,28,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,Useable,29,bit,,YES,0
+dbo,DailyEffortV,VIEW,HitRate,30,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,TrackFileSize,31,nvarchar,255,YES,0
+dbo,DailyEffortV,VIEW,TrackComments,32,ntext,1073741823,YES,0
+dbo,DailyEffortV,VIEW,TrackStartTime,33,datetime,,YES,0
+dbo,DailyEffortV,VIEW,TrackEndTime,34,datetime,,YES,0
+dbo,DailyEffortV,VIEW,GPSPointCount,35,float,,YES,0
+dbo,DailyEffortV,VIEW,TrackDuration,36,float,,YES,0
+dbo,DailyEventT,BASE TABLE,DailyEventID,1,int,,NO,1
+dbo,DailyEventT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,DailyEventT,BASE TABLE,Research Group,3,nvarchar,255,YES,0
+dbo,DailyEventT,BASE TABLE,Date,4,datetime,,YES,0
+dbo,DailyEventT,BASE TABLE,Vessel,5,nvarchar,255,YES,0
+dbo,DailyEventT,BASE TABLE,Time,6,time,,YES,0
+dbo,DailyEventT,BASE TABLE,Code,7,nvarchar,255,YES,0
+dbo,DailyEventT,BASE TABLE,Dec Lat,8,float,,YES,0
+dbo,DailyEventT,BASE TABLE,Dec Long,9,float,,YES,0
+dbo,DailyEventT,BASE TABLE,Line,10,nvarchar,255,YES,0
+dbo,DailyEventT,BASE TABLE,ObsL,11,nvarchar,255,YES,0
+dbo,DailyEventT,BASE TABLE,ObsR,12,nvarchar,255,YES,0
+dbo,DailyEventT,BASE TABLE,Rec,13,nvarchar,255,YES,0
+dbo,DailyEventT,BASE TABLE,Comments,14,nvarchar,-1,YES,0
+dbo,DailyEventT,BASE TABLE,SourceDB,15,nvarchar,50,YES,0
+dbo,DailyEventT,BASE TABLE,EventDateTime,16,datetime,,YES,0
+dbo,DatabaseFieldT,BASE TABLE,FieldID,1,int,,NO,1
+dbo,DatabaseFieldT,BASE TABLE,TableID,2,int,,NO,0
+dbo,DatabaseFieldT,BASE TABLE,ColumnOrder,3,int,,NO,0
+dbo,DatabaseFieldT,BASE TABLE,FieldName,4,nvarchar,128,NO,0
+dbo,DatabaseFieldT,BASE TABLE,DataType,5,nvarchar,300,NO,0
+dbo,DatabaseFieldT,BASE TABLE,AllowsNull,6,bit,,NO,0
+dbo,DatabaseFieldT,BASE TABLE,IsIdentity,7,bit,,NO,0
+dbo,DatabaseFieldT,BASE TABLE,IsComputed,8,bit,,NO,0
+dbo,DatabaseFieldT,BASE TABLE,Description,9,nvarchar,-1,YES,0
+dbo,DatabaseTableT,BASE TABLE,TableID,1,int,,NO,1
+dbo,DatabaseTableT,BASE TABLE,SchemaName,2,nvarchar,128,NO,0
+dbo,DatabaseTableT,BASE TABLE,TableName,3,nvarchar,128,NO,0
+dbo,DatabaseTableT,BASE TABLE,Description,4,nvarchar,-1,YES,0
+dbo,DataStatusT,BASE TABLE,DataStatusID,1,int,,NO,1
+dbo,DataStatusT,BASE TABLE,Research Group,2,nvarchar,255,YES,0
+dbo,DataStatusT,BASE TABLE,StatusStartDate,3,datetime,,YES,0
+dbo,DataStatusT,BASE TABLE,StatusEndDate,4,datetime,,YES,0
+dbo,DataStatusT,BASE TABLE,DataStatusTypeID,5,int,,YES,0
+dbo,DataStatusTypeT,BASE TABLE,DataStatusTypeID,1,int,,NO,1
+dbo,DataStatusTypeT,BASE TABLE,DataStatusType,2,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,DroneEventID,1,int,,NO,1
+dbo,DroneDeploymentT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,DroneDeploymentT,BASE TABLE,Research Group,3,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,DroneDate,4,date,,YES,0
+dbo,DroneDeploymentT,BASE TABLE,Vessel,5,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,Drone,6,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,SightingNum,7,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,FieldID,8,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,LidarUnit,9,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,FlightNum,10,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,LaunchTime,11,datetime,,YES,0
+dbo,DroneDeploymentT,BASE TABLE,LaunchLatitude,12,float,,YES,0
+dbo,DroneDeploymentT,BASE TABLE,LaunchLongitude,13,float,,YES,0
+dbo,DroneDeploymentT,BASE TABLE,ReturnTime,14,datetime,,YES,0
+dbo,DroneDeploymentT,BASE TABLE,ReturnLatitude,15,float,,YES,0
+dbo,DroneDeploymentT,BASE TABLE,ReturnLongitude,16,float,,YES,0
+dbo,DroneDeploymentT,BASE TABLE,StartFrame,17,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,EndFrame,18,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,GPSPhoto,19,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,VideoFile,20,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,TargetVessels,21,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,Comments,22,nvarchar,-1,YES,0
+dbo,DroneDeploymentT,BASE TABLE,SerialNumber,23,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,Pilot,24,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,LaunchStaff,25,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,CalibrationObject,26,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,Description,27,nvarchar,255,YES,0
+dbo,DroneDeploymentT,BASE TABLE,CalibrationObjectType,28,nvarchar,255,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,DroneTargetAnimalID,1,int,,NO,1
+dbo,DroneTargetAnimalT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,DroneEventID,3,int,,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,SightingNum,4,nvarchar,255,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,TargetAnimal,5,nvarchar,255,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,TimeOverThisAnimal,6,datetime,,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,LatitudeOver,7,float,,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,LongitudeOver,8,float,,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,Field ID,9,nvarchar,255,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,CRC ID,10,nvarchar,255,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,FlightNum,11,nvarchar,255,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,Abbreviation,12,nvarchar,255,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,Comments,13,nvarchar,-1,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,Research Group,14,nvarchar,50,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,EffortDate,15,date,,YES,0
+dbo,DroneTargetAnimalT,BASE TABLE,Vessel,16,nvarchar,50,YES,0
+dbo,DuplicateDailyEffortV,VIEW,Research Group,1,nvarchar,255,YES,0
+dbo,DuplicateDailyEffortV,VIEW,Vessel,2,nvarchar,255,YES,0
+dbo,DuplicateDailyEffortV,VIEW,Date,3,datetime,,YES,0
+dbo,DuplicateDailyEffortV,VIEW,DuplicateCount,4,int,,YES,0
+dbo,EffortCrewT,BASE TABLE,EffortCrewID,1,int,,NO,1
+dbo,EffortCrewT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,EffortCrewT,BASE TABLE,CrewName,3,nvarchar,50,YES,0
+dbo,EffortCrewT,BASE TABLE,Initials,4,nvarchar,10,YES,0
+dbo,EffortProblemT,BASE TABLE,ProblemID,1,int,,NO,1
+dbo,EffortProblemT,BASE TABLE,Research Group,2,nvarchar,255,YES,0
+dbo,EffortProblemT,BASE TABLE,EffortDate,3,datetime,,YES,0
+dbo,EffortProblemT,BASE TABLE,RecSource,4,nvarchar,255,YES,0
+dbo,EffortProblemT,BASE TABLE,DailyEffortNum,5,int,,YES,0
+dbo,EffortProblemT,BASE TABLE,ThisVessel,6,nvarchar,255,YES,0
+dbo,EffortProblemT,BASE TABLE,PreferredRecordSource,7,nvarchar,255,YES,0
+dbo,EffortProblemT,BASE TABLE,PreferredVesselName,8,nvarchar,255,YES,0
+dbo,EffortProblemT,BASE TABLE,PreferredResearchGroup,9,nvarchar,255,YES,0
+dbo,EffortProblemT,BASE TABLE,Comments,10,nvarchar,-1,YES,0
+dbo,EffortProblemT,BASE TABLE,LinkedProblemID,11,int,,YES,0
+dbo,EffortProblemT,BASE TABLE,MissingInAnnualUnionDB,12,bit,,NO,0
+dbo,EffortProblemT,BASE TABLE,MissingInIanDB,13,bit,,NO,0
+dbo,EffortProblemT,BASE TABLE,OriginalRG,14,nvarchar,255,YES,0
+dbo,EffortProblemT,BASE TABLE,OriginalVessel,15,nvarchar,255,YES,0
+dbo,EffortProblemT,BASE TABLE,FixedByUserID,16,int,,YES,0
+dbo,EventCodeT,BASE TABLE,EventCodeID,1,int,,NO,1
+dbo,EventCodeT,BASE TABLE,EventCode,2,nvarchar,50,YES,0
+dbo,EventCodeT,BASE TABLE,CodeDescription,3,nvarchar,50,YES,0
+dbo,EventCodeT,BASE TABLE,SortOrder,4,int,,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,DailyConditionID,1,int,,NO,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,DailyEffortID,2,int,,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,Research Group,3,nvarchar,255,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,Vessel,4,nvarchar,255,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,Date,5,datetime,,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,ConditionDateTime,6,datetime,,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,ConditionTime,7,time,,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,Dec Lat,8,float,,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,Dec Long,9,float,,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,% Cloud Cover,10,int,,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,Beaufort,11,int,,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,Precipitation,12,nvarchar,255,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,Quality,13,nvarchar,255,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,Swell,14,int,,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,Visibility,15,nvarchar,255,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,Visibility (nm),16,nvarchar,255,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,Comments,17,nvarchar,-1,YES,0
+dbo,IanDB_DailyCondition_NotInDailyConditionV,VIEW,SourceDB,18,nvarchar,50,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,DailyEffortID,1,int,,NO,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Research Group,2,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Vessel,3,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Date,4,datetime,,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Start Time,5,time,,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,End Time,6,time,,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Distance Units,7,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Launch,8,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Locality,9,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Personnel,10,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,PhotoDataBy,11,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,PhotoDataDate,12,datetime,,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Project/Objective,13,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Record Source,14,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Region,15,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Return,16,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Sub-area,17,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Survey Comments,18,nvarchar,-1,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Survey Type,19,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Time Off Effort,20,time,,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Total Distance,21,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Total Survey Effort,22,time,,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,SourceDB,23,nvarchar,255,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Start Dec Lat,24,float,,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Start Dec Long,25,float,,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,End Dec Lat,26,float,,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,End Dec Long,27,float,,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,SentToAnnualDB,28,bit,,NO,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,Finalized,29,bit,,NO,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,MnSent,30,nvarchar,50,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,BmSent,31,nvarchar,50,YES,0
+dbo,IanDB_DailyEffort_NotInDailyEffortV,VIEW,ErSent,32,nvarchar,50,YES,0
+dbo,IanDB_EffortLinksV,VIEW,Table Name,1,varchar,13,NO,0
+dbo,IanDB_EffortLinksV,VIEW,Effort Link,2,varchar,16,NO,0
+dbo,IanDB_EffortLinksV,VIEW,Row Count,3,int,,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,DailyEffortID,1,int,,NO,0
+dbo,IanDB_EffortsToInsertV,VIEW,Research Group,2,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Vessel,3,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Date,4,datetime,,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Start Time,5,time,,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,End Time,6,time,,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Distance Units,7,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Launch,8,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Locality,9,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Personnel,10,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,PhotoDataBy,11,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,PhotoDataDate,12,datetime,,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Project/Objective,13,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Record Source,14,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Region,15,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Return,16,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Sub-area,17,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Survey Comments,18,nvarchar,-1,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Survey Type,19,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Time Off Effort,20,time,,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Total Distance,21,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Total Survey Effort,22,time,,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,SourceDB,23,nvarchar,255,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Start Dec Lat,24,float,,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,Start Dec Long,25,float,,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,End Dec Lat,26,float,,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,End Dec Long,27,float,,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,SentToAnnualDB,28,bit,,NO,0
+dbo,IanDB_EffortsToInsertV,VIEW,Finalized,29,bit,,NO,0
+dbo,IanDB_EffortsToInsertV,VIEW,MnSent,30,nvarchar,50,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,BmSent,31,nvarchar,50,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,ErSent,32,nvarchar,50,YES,0
+dbo,IanDB_EffortsToInsertV,VIEW,rn,33,bigint,,YES,0
+dbo,IanDB_MigrationIssuesV,VIEW,Issue,1,varchar,14,NO,0
+dbo,IanDB_MigrationIssuesV,VIEW,Table Name,2,varchar,9,NO,0
+dbo,IanDB_MigrationIssuesV,VIEW,Value,3,nvarchar,255,YES,0
+dbo,IanDB_MigrationIssuesV,VIEW,Row Count,4,int,,YES,0
+dbo,IanDB_MigrationSummaryV,VIEW,Sort,1,int,,NO,0
+dbo,IanDB_MigrationSummaryV,VIEW,Table Name,2,varchar,13,NO,0
+dbo,IanDB_MigrationSummaryV,VIEW,IanDB Rows,3,int,,YES,0
+dbo,IanDB_MigrationSummaryV,VIEW,Main Table Rows,4,int,,YES,0
+dbo,IanDB_MigrationSummaryV,VIEW,Missing Rows,5,int,,YES,0
+dbo,IanDB_MigrationSummaryV,VIEW,Rows Added,6,int,,YES,0
+dbo,IanDB_MissingByYearV,VIEW,Table Name,1,varchar,13,NO,0
+dbo,IanDB_MissingByYearV,VIEW,Year,2,int,,YES,0
+dbo,IanDB_MissingByYearV,VIEW,IanDB Rows,3,int,,YES,0
+dbo,IanDB_MissingByYearV,VIEW,Main Table Rows,4,int,,YES,0
+dbo,IanDB_MissingByYearV,VIEW,Missing Rows,5,int,,YES,0
+dbo,IanDB_MissingByYearV,VIEW,Era,6,varchar,16,NO,0
+dbo,IanDB_OtherSpecies_NotInOtherSpeciesV,VIEW,OtherSpeciesID,1,int,,NO,0
+dbo,IanDB_OtherSpecies_NotInOtherSpeciesV,VIEW,DailyEffortID,2,int,,YES,0
+dbo,IanDB_OtherSpecies_NotInOtherSpeciesV,VIEW,Research Group,3,nvarchar,255,YES,0
+dbo,IanDB_OtherSpecies_NotInOtherSpeciesV,VIEW,Vessel,4,nvarchar,255,YES,0
+dbo,IanDB_OtherSpecies_NotInOtherSpeciesV,VIEW,Date,5,datetime,,YES,0
+dbo,IanDB_OtherSpecies_NotInOtherSpeciesV,VIEW,Sighting,6,nvarchar,255,YES,0
+dbo,IanDB_OtherSpecies_NotInOtherSpeciesV,VIEW,Species,7,nvarchar,255,YES,0
+dbo,IanDB_OtherSpecies_NotInOtherSpeciesV,VIEW,Class,8,nvarchar,255,YES,0
+dbo,IanDB_OtherSpecies_NotInOtherSpeciesV,VIEW,Count,9,int,,YES,0
+dbo,IanDB_OtherSpecies_NotInOtherSpeciesV,VIEW,Comments,10,nvarchar,-1,YES,0
+dbo,IanDB_OtherSpecies_NotInOtherSpeciesV,VIEW,SourceDB,11,nvarchar,50,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,SightingID,1,int,,NO,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,DailyEffortID,2,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Research Group,3,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Vessel,4,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Date,5,datetime,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Sighting,6,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Species,7,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Start Time,8,time,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,StartDateTime,9,datetime,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Start Dec Lat,10,float,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Start Dec Long,11,float,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,End Time,12,time,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,EndDateTime,13,datetime,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,End Dec Lat,14,float,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,End Dec Long,15,float,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,TargetDecLat,16,float,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,TargetDecLong,17,float,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Est Size Best,18,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Est Size Max,19,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Est Size Min,20,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Acoustics,21,nvarchar,-1,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Est ID,22,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Actual ID,23,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,AltSighting,24,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,AltVessel,25,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Angle,26,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Bearing,27,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,CloseApproachCount,28,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,D units,29,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Depth,30,float,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,DOT,31,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Frames 1,32,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Frames 2,33,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Frames 3,34,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,GEX,35,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,GEY,36,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Group Beh,37,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Group Type,38,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Heading,39,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Height,40,float,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Height1,41,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Loc Code,42,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,LocDesc,43,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Num Calves,44,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Obs,45,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Obs1,46,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Other Beh 1,47,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Other Beh 2,48,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Other Beh 3,49,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Permit,50,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Photographer 1,51,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Photographer 2,52,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Photographer 3,53,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Photos?,54,bit,,NO,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Position Type,55,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,PreyType,56,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Range,57,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,RangeSource,58,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,RangeSource1,59,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Reticle,60,float,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Reticle1,61,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Roll/File Number 1,62,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Roll/File Number 2,63,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Roll/File Number 3,64,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Scattering,65,nvarchar,-1,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Series Number 1,66,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Series Number 2,67,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Series Number 3,68,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Sight Type,69,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Temp,70,nvarchar,255,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Total Samples,71,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Total Tags,72,int,,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Comments,73,nvarchar,-1,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,SourceDB,74,nvarchar,50,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,RG_hash,75,binary,32,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Vessel_hash,76,binary,32,YES,0
+dbo,IanDB_Sighting_NotInSightingV,VIEW,Sighting_hash,77,binary,32,YES,0
+dbo,IanDB_SightingEffortIdCheckV,VIEW,Outcome,1,varchar,36,NO,0
+dbo,IanDB_SightingEffortIdCheckV,VIEW,Sighting Count,2,int,,YES,0
+dbo,IanDB_SkippedEffortsV,VIEW,IanEffortID,1,int,,NO,0
+dbo,IanDB_SkippedEffortsV,VIEW,Research Group,2,nvarchar,255,YES,0
+dbo,IanDB_SkippedEffortsV,VIEW,Vessel,3,nvarchar,255,YES,0
+dbo,IanDB_SkippedEffortsV,VIEW,Date,4,datetime,,YES,0
+dbo,IanDB_SkippedEffortsV,VIEW,Ian Start Time,5,time,,YES,0
+dbo,IanDB_SkippedEffortsV,VIEW,Ian End Time,6,time,,YES,0
+dbo,IanDB_SkippedEffortsV,VIEW,Existing DailyEffortID,7,int,,YES,0
+dbo,IanDB_SkippedEffortsV,VIEW,Existing Start Time,8,time,,YES,0
+dbo,IanDB_SkippedEffortsV,VIEW,Existing End Time,9,time,,YES,0
+dbo,IanDB_SkippedEffortsV,VIEW,Reason,10,varchar,54,NO,0
+dbo,IdentificationsBySightingV,VIEW,DailyEffortID,1,int,,YES,0
+dbo,IdentificationsBySightingV,VIEW,Research Group,2,nvarchar,255,YES,0
+dbo,IdentificationsBySightingV,VIEW,CRCID_list,3,varchar,8000,YES,0
+dbo,IdentificationsBySightingV,VIEW,Vessel,4,nvarchar,255,YES,0
+dbo,IdentificationsBySightingV,VIEW,Date,5,datetime,,YES,0
+dbo,IdentificationsBySightingV,VIEW,Sighting,6,nvarchar,255,YES,0
+dbo,IdentificationsBySightingV,VIEW,Start Time,7,time,,YES,0
+dbo,IdentificationsBySightingV,VIEW,SightingID,8,int,,NO,0
+dbo,IdentificationT,BASE TABLE,IdentificationID,1,int,,NO,1
+dbo,IdentificationT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,IdentificationT,BASE TABLE,SightingID,3,int,,YES,0
+dbo,IdentificationT,BASE TABLE,IndividualID,4,int,,YES,0
+dbo,IdentificationT,BASE TABLE,Research Group,5,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Vessel,6,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Date,7,datetime,,YES,0
+dbo,IdentificationT,BASE TABLE,Sighting,8,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Beh Role,9,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Best Fluke,10,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Best Left,11,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Best Right,12,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Best Tail Stock,13,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Biopsy Photo,14,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Category,15,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,CRC ID,16,int,,YES,0
+dbo,IdentificationT,BASE TABLE,Field ID,17,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,FieldID,18,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,ForeLeft,19,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,ForeRight,20,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,HW ID,21,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,TempID,22,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,MatchPQ?,23,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,MatchNotes,24,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,MeasureAngle,25,int,,YES,0
+dbo,IdentificationT,BASE TABLE,MeasureImage,26,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Other ID,27,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Qual F,28,int,,YES,0
+dbo,IdentificationT,BASE TABLE,Qual L,29,int,,YES,0
+dbo,IdentificationT,BASE TABLE,Qual R,30,int,,YES,0
+dbo,IdentificationT,BASE TABLE,Record Type,31,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Scarring,32,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Scarring&Injury,33,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,ScarringInjury,34,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Tag #,35,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Tag Photo,36,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Tag Type,37,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,TagType,38,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Drone Image,39,nvarchar,255,YES,0
+dbo,IdentificationT,BASE TABLE,Comments,40,nvarchar,-1,YES,0
+dbo,IdentificationT,BASE TABLE,SourceDB,41,nvarchar,50,YES,0
+dbo,IdentificationT,BASE TABLE,Species,42,nvarchar,20,YES,0
+dbo,IdentificationT,BASE TABLE,SentToMatching,43,date,,YES,0
+dbo,IdentificationT,BASE TABLE,SentToMnID,44,date,,YES,0
+dbo,IdentificationT,BASE TABLE,Tag,45,bit,,NO,0
+dbo,IdentificationT,BASE TABLE,Priority,46,bit,,NO,0
+dbo,IndividualT,BASE TABLE,IndividualID,1,int,,NO,1
+dbo,IndividualT,BASE TABLE,Species,2,nvarchar,255,YES,0
+dbo,IndividualT,BASE TABLE,CRC ID,3,int,,YES,0
+dbo,Mislabelled_IanRecsV,VIEW,RecSource,1,nvarchar,255,YES,0
+dbo,Mislabelled_IanRecsV,VIEW,Research Group,2,nvarchar,255,YES,0
+dbo,Mislabelled_IanRecsV,VIEW,EffortDate,3,datetime,,YES,0
+dbo,Mislabelled_IanRecsV,VIEW,Vessel,4,nvarchar,255,YES,0
+dbo,Mislabelled_IanRecsV,VIEW,IanRecs,5,nvarchar,255,YES,0
+dbo,Mislabelled_IanRecsV,VIEW,IanEffortID,6,int,,NO,0
+dbo,Mislabelled_IanRecsV,VIEW,IanRG,7,nvarchar,50,YES,0
+dbo,Mislabelled_IanRecsV,VIEW,IanVessel,8,nvarchar,50,YES,0
+dbo,Mislabelled_IanRecsV,VIEW,IanDate,9,datetime,,YES,0
+dbo,Mislabelled_IanRecsV,VIEW,Locality,10,nvarchar,50,YES,0
+dbo,Mislabelled_IanRecsV,VIEW,Survey type,11,nvarchar,50,YES,0
+dbo,Mislabelled_IanRecsV,VIEW,Personnel,12,nvarchar,255,YES,0
+dbo,OtherSpeciesT,BASE TABLE,OtherSpeciesID,1,int,,NO,1
+dbo,OtherSpeciesT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,OtherSpeciesT,BASE TABLE,Research Group,3,nvarchar,255,YES,0
+dbo,OtherSpeciesT,BASE TABLE,Vessel,4,nvarchar,255,YES,0
+dbo,OtherSpeciesT,BASE TABLE,Date,5,datetime,,YES,0
+dbo,OtherSpeciesT,BASE TABLE,Sighting,6,nvarchar,255,YES,0
+dbo,OtherSpeciesT,BASE TABLE,Species,7,nvarchar,255,YES,0
+dbo,OtherSpeciesT,BASE TABLE,Class,8,nvarchar,255,YES,0
+dbo,OtherSpeciesT,BASE TABLE,Count,9,int,,YES,0
+dbo,OtherSpeciesT,BASE TABLE,Comments,10,nvarchar,-1,YES,0
+dbo,OtherSpeciesT,BASE TABLE,SourceDB,11,nvarchar,50,YES,0
+dbo,OtherSpeciesT_IanDB_SnapshotT,BASE TABLE,Research Group,1,nvarchar,255,YES,0
+dbo,OtherSpeciesT_IanDB_SnapshotT,BASE TABLE,Date,2,datetime,,YES,0
+dbo,OtherSpeciesT_IanDB_SnapshotT,BASE TABLE,Vessel,3,nvarchar,255,YES,0
+dbo,OtherSpeciesT_IanDB_SnapshotT,BASE TABLE,Sighting,4,nvarchar,255,YES,0
+dbo,OtherSpeciesT_IanDB_SnapshotT,BASE TABLE,Class,5,nvarchar,255,YES,0
+dbo,OtherSpeciesT_IanDB_SnapshotT,BASE TABLE,Species Code,6,nvarchar,255,YES,0
+dbo,OtherSpeciesT_IanDB_SnapshotT,BASE TABLE,Number,7,float,,YES,0
+dbo,OtherSpeciesT_IanDB_SnapshotT,BASE TABLE,Comments,8,nvarchar,255,YES,0
+dbo,PermitTakeT,BASE TABLE,PermitTakeID,1,int,,NO,1
+dbo,PermitTakeT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,PermitTakeT,BASE TABLE,Research Group,3,nvarchar,255,YES,0
+dbo,PermitTakeT,BASE TABLE,Vessel,4,nvarchar,255,YES,0
+dbo,PermitTakeT,BASE TABLE,Date,5,datetime,,YES,0
+dbo,PermitTakeT,BASE TABLE,Sighting,6,nvarchar,255,YES,0
+dbo,PermitTakeT,BASE TABLE,ApprTakes,7,int,,YES,0
+dbo,PermitTakeT,BASE TABLE,BiopTakes,8,int,,YES,0
+dbo,PermitTakeT,BASE TABLE,DartTagTakes,9,int,,YES,0
+dbo,PermitTakeT,BASE TABLE,Permit,10,nvarchar,255,YES,0
+dbo,PermitTakeT,BASE TABLE,SCTagTakes,11,int,,YES,0
+dbo,PermitTakeT,BASE TABLE,SoundTakes,12,int,,YES,0
+dbo,PermitTakeT,BASE TABLE,UWTakes,13,int,,YES,0
+dbo,PermitTakeT,BASE TABLE,Comments,14,nvarchar,-1,YES,0
+dbo,PermitTakeT,BASE TABLE,SourceDB,15,nvarchar,50,YES,0
+dbo,PositionLogAll_IanDB_SnapShotT,BASE TABLE,Research Group,1,nvarchar,255,YES,0
+dbo,PositionLogAll_IanDB_SnapShotT,BASE TABLE,Date,2,datetime,,YES,0
+dbo,PositionLogAll_IanDB_SnapShotT,BASE TABLE,Vessel,3,nvarchar,255,YES,0
+dbo,PositionLogAll_IanDB_SnapShotT,BASE TABLE,Time,4,datetime,,YES,0
+dbo,PositionLogAll_IanDB_SnapShotT,BASE TABLE,Lat,5,nvarchar,255,YES,0
+dbo,PositionLogAll_IanDB_SnapShotT,BASE TABLE,Long,6,nvarchar,255,YES,0
+dbo,PositionLogAll_IanDB_SnapShotT,BASE TABLE,Dec Lat,7,float,,YES,0
+dbo,PositionLogAll_IanDB_SnapShotT,BASE TABLE,Dec Long,8,float,,YES,0
+dbo,PositionLogAll_IanDB_SnapShotT,BASE TABLE,RecType,9,nvarchar,255,YES,0
+dbo,PositionLogAll_IanDB_SnapShotT,BASE TABLE,PosType,10,nvarchar,255,YES,0
+dbo,ResearchGroupT,BASE TABLE,ResearchGroupID,1,int,,NO,1
+dbo,ResearchGroupT,BASE TABLE,Code,2,nvarchar,255,YES,0
+dbo,ResearchGroupT,BASE TABLE,ResearchGroup,3,nvarchar,255,YES,0
+dbo,SampleEventSightingV,VIEW,Research Group,1,nvarchar,255,YES,0
+dbo,SampleEventSightingV,VIEW,Vessel,2,nvarchar,255,YES,0
+dbo,SampleEventSightingV,VIEW,Date,3,datetime,,YES,0
+dbo,SampleEventSightingV,VIEW,Sighting,4,nvarchar,255,YES,0
+dbo,SampleEventSightingV,VIEW,Species,5,nvarchar,255,YES,0
+dbo,SampleEventSightingV,VIEW,StartTime,6,time,,YES,0
+dbo,SampleEventSightingV,VIEW,SampleTime,7,time,,YES,0
+dbo,SampleEventSightingV,VIEW,Event,8,nvarchar,255,YES,0
+dbo,SampleEventSightingV,VIEW,Field ID,9,nvarchar,255,YES,0
+dbo,SampleEventSightingV,VIEW,Sample #,10,nvarchar,255,YES,0
+dbo,SampleEventSightingV,VIEW,Sample Number,11,nvarchar,255,YES,0
+dbo,SampleEventSightingV,VIEW,Sampled by,12,nvarchar,255,YES,0
+dbo,SampleEventSightingV,VIEW,Latitude,13,float,,YES,0
+dbo,SampleEventSightingV,VIEW,Longitude,14,float,,YES,0
+dbo,SampleEventSightingV,VIEW,Dec Lat,15,float,,YES,0
+dbo,SampleEventSightingV,VIEW,Dec Long,16,float,,YES,0
+dbo,SampleEventSightingV,VIEW,EventFieldID,17,nvarchar,255,YES,0
+dbo,SampleEventSightingV,VIEW,SightEvent,18,nvarchar,255,YES,0
+dbo,SampleIdentificationT,BASE TABLE,SampleIdentificationID,1,int,,NO,1
+dbo,SampleIdentificationT,BASE TABLE,SightingID,2,int,,YES,0
+dbo,SampleIdentificationT,BASE TABLE,IdentificationID,3,int,,NO,0
+dbo,SampleIdentificationT,BASE TABLE,SightingDate,4,date,,YES,0
+dbo,SampleIdentificationT,BASE TABLE,Research Group,5,nvarchar,255,YES,0
+dbo,SampleIdentificationT,BASE TABLE,Vessel,6,nvarchar,255,YES,0
+dbo,SampleIdentificationT,BASE TABLE,Sighting,7,nvarchar,255,YES,0
+dbo,SampleIdentificationT,BASE TABLE,CRC ID,8,int,,YES,0
+dbo,SampleIdentificationT,BASE TABLE,Field ID,9,nvarchar,255,YES,0
+dbo,SampleIdentificationT,BASE TABLE,Sample #,10,nvarchar,255,YES,0
+dbo,SampleIdentificationT,BASE TABLE,Sample Type,11,nvarchar,255,YES,0
+dbo,SampleIdentificationT,BASE TABLE,Certainty of Sample ID,12,nvarchar,255,YES,0
+dbo,SampleIdentificationT,BASE TABLE,Sampled By,13,nvarchar,255,YES,0
+dbo,SampleIdentificationT,BASE TABLE,IndividualID,14,int,,YES,0
+dbo,SampleT,BASE TABLE,SampleID,1,int,,NO,1
+dbo,SampleT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,SampleT,BASE TABLE,SightingID,3,int,,YES,0
+dbo,SampleT,BASE TABLE,SightingEventID,4,int,,YES,0
+dbo,SampleT,BASE TABLE,IndividualID,5,int,,YES,0
+dbo,SampleT,BASE TABLE,Species,6,nvarchar,50,YES,0
+dbo,SampleT,BASE TABLE,Research Group,7,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Vessel,8,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Date,9,datetime,,YES,0
+dbo,SampleT,BASE TABLE,Sighting,10,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,SampleTime,11,time,,YES,0
+dbo,SampleT,BASE TABLE,Angle,12,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Certainty of Sample ID,13,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Distance,14,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Event,15,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Field ID,16,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Preservation,17,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Reaction,18,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Sample #,19,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Sample Number,20,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Sample Photo,21,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Sample Type,22,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Sampled by,23,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,SampleEvent,24,nvarchar,255,YES,0
+dbo,SampleT,BASE TABLE,Comments,25,nvarchar,-1,YES,0
+dbo,SampleT,BASE TABLE,SourceDB,26,nvarchar,50,YES,0
+dbo,SampleT,BASE TABLE,Latitude,27,float,,YES,0
+dbo,SampleT,BASE TABLE,Longitude,28,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_SightingID,1,int,,NO,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Research Group,2,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Vessel,3,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Date,4,datetime,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Sighting,5,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Species,6,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Start Time,7,time,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_StartDateTime,8,datetime,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Start Dec Lat,9,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Start Dec Long,10,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_End Time,11,time,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_EndDateTime,12,datetime,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_End Dec Lat,13,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_End Dec Long,14,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_TargetDecLat,15,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_TargetDecLong,16,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Est Size Best,17,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Est Size Max,18,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Est Size Min,19,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Acoustics,20,nvarchar,-1,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Est ID,21,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Actual ID,22,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_AltSighting,23,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_AltVessel,24,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Angle,25,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Bearing,26,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_CloseApproachCount,27,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_D units,28,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Depth,29,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_DOT,30,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Frames 1,31,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Frames 2,32,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Frames 3,33,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_GEX,34,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_GEY,35,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Group Beh,36,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Group Type,37,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Heading,38,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Height,39,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Height1,40,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Loc Code,41,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_LocDesc,42,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Num Calves,43,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Obs,44,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Obs1,45,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Other Beh 1,46,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Other Beh 2,47,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Other Beh 3,48,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Permit,49,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Photographer 1,50,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Photographer 2,51,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Photographer 3,52,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Photos?,53,bit,,NO,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Position Type,54,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_PreyType,55,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Range,56,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_RangeSource,57,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_RangeSource1,58,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Reticle,59,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Reticle1,60,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Roll/File Number 1,61,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Roll/File Number 2,62,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Roll/File Number 3,63,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Scattering,64,nvarchar,-1,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Series Number 1,65,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Series Number 2,66,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Series Number 3,67,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Sight Type,68,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Temp,69,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Total Samples,70,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Total Tags,71,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Comments,72,nvarchar,-1,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_SourceDB,73,nvarchar,50,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_RG_hash,74,binary,32,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Vessel_hash,75,binary,32,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Sighting_hash,76,binary,32,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_DailyEffortID,77,int,,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_SightEvent,78,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_OtherSpecies,79,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Sighting_Sample Type,80,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_DailyEffortID,81,int,,NO,0
+dbo,SightingEffortTrackV,VIEW,Effort_Research Group,82,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Vessel,83,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Date,84,datetime,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Start Time,85,time,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_End Time,86,time,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Distance Units,87,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Launch,88,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Locality,89,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Personnel,90,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_PhotoDataBy,91,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Project/Objective,92,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Record Source,93,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Region,94,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Return,95,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Sub-area,96,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Survey Comments,97,nvarchar,-1,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Survey Type,98,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Time Off Effort,99,time,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Total Distance,100,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Total Survey Effort,101,time,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_SourceDB,102,nvarchar,50,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Start Dec Lat,103,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Start Dec Long,104,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_End Dec Lat,105,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_End Dec Long,106,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_TrackFileName,107,ntext,1073741823,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_TrackFileType,108,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_Useable,109,bit,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_HitRate,110,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_TrackFileSize,111,nvarchar,255,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_TrackComments,112,ntext,1073741823,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_TrackStartTime,113,datetime,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_TrackEndTime,114,datetime,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_GPSPointCount,115,float,,YES,0
+dbo,SightingEffortTrackV,VIEW,Effort_TrackDuration,116,float,,YES,0
+dbo,SightingEventSummaryByEffortV,VIEW,Research Group,1,nvarchar,255,YES,0
+dbo,SightingEventSummaryByEffortV,VIEW,Vessel,2,nvarchar,255,YES,0
+dbo,SightingEventSummaryByEffortV,VIEW,Date,3,datetime,,YES,0
+dbo,SightingEventSummaryByEffortV,VIEW,SightEvent,4,nvarchar,255,YES,0
+dbo,SightingEventSummaryByEffortV,VIEW,EventCount,5,int,,YES,0
+dbo,SightingEventT,BASE TABLE,SightingEventID,1,int,,NO,1
+dbo,SightingEventT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,SightingEventT,BASE TABLE,Research Group,3,nvarchar,255,YES,0
+dbo,SightingEventT,BASE TABLE,Vessel,4,nvarchar,255,YES,0
+dbo,SightingEventT,BASE TABLE,Date,5,datetime,,YES,0
+dbo,SightingEventT,BASE TABLE,EventTime,6,time,,YES,0
+dbo,SightingEventT,BASE TABLE,EventDateTime,7,datetime,,YES,0
+dbo,SightingEventT,BASE TABLE,Sighting,8,nvarchar,255,YES,0
+dbo,SightingEventT,BASE TABLE,EventID,9,nvarchar,255,YES,0
+dbo,SightingEventT,BASE TABLE,Bearing,10,nvarchar,255,YES,0
+dbo,SightingEventT,BASE TABLE,Dec Lat,11,float,,YES,0
+dbo,SightingEventT,BASE TABLE,Dec Long,12,float,,YES,0
+dbo,SightingEventT,BASE TABLE,Field ID,13,nvarchar,255,YES,0
+dbo,SightingEventT,BASE TABLE,NumReact,14,int,,YES,0
+dbo,SightingEventT,BASE TABLE,PosType,15,nvarchar,255,YES,0
+dbo,SightingEventT,BASE TABLE,Range,16,int,,YES,0
+dbo,SightingEventT,BASE TABLE,Reaction,17,nvarchar,255,YES,0
+dbo,SightingEventT,BASE TABLE,SightEvent,18,nvarchar,255,YES,0
+dbo,SightingEventT,BASE TABLE,SightEventComments,19,nvarchar,-1,YES,0
+dbo,SightingEventT,BASE TABLE,SourceDB,20,nvarchar,50,YES,0
+dbo,SightingEventT,BASE TABLE,Time,21,time,,YES,0
+dbo,SightingFollowT,BASE TABLE,SightingFollowID,1,int,,NO,1
+dbo,SightingFollowT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,SightingFollowT,BASE TABLE,Research Group,3,nvarchar,255,YES,0
+dbo,SightingFollowT,BASE TABLE,Vessel,4,nvarchar,255,YES,0
+dbo,SightingFollowT,BASE TABLE,Date,5,datetime,,YES,0
+dbo,SightingFollowT,BASE TABLE,Sighting,6,nvarchar,255,YES,0
+dbo,SightingFollowT,BASE TABLE,StartTime,7,time,,YES,0
+dbo,SightingFollowT,BASE TABLE,EndTime,8,time,,YES,0
+dbo,SightingFollowT,BASE TABLE,FollowNum,9,int,,YES,0
+dbo,SightingFollowT,BASE TABLE,Playback,10,nvarchar,255,YES,0
+dbo,SightingFollowT,BASE TABLE,SourceDB,11,nvarchar,50,YES,0
+dbo,SightingIdentificationT,BASE TABLE,SightingIdentificationID,1,int,,NO,1
+dbo,SightingIdentificationT,BASE TABLE,IndividualID,2,int,,YES,0
+dbo,SightingIdentificationT,BASE TABLE,SightingID,3,int,,NO,0
+dbo,SightingIdentificationT,BASE TABLE,IdentificationID,4,int,,YES,0
+dbo,SightingIdentificationT,BASE TABLE,Research Group,5,nvarchar,255,YES,0
+dbo,SightingIdentificationT,BASE TABLE,SightingDate,6,date,,YES,0
+dbo,SightingIdentificationT,BASE TABLE,Vessel,7,nvarchar,255,YES,0
+dbo,SightingIdentificationT,BASE TABLE,Sighting,8,nvarchar,255,YES,0
+dbo,SightingIdentificationT,BASE TABLE,Species,9,nvarchar,255,YES,0
+dbo,SightingIdentificationT,BASE TABLE,CRC ID,10,int,,YES,0
+dbo,SightingIdentificationT,BASE TABLE,Field ID,11,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,SightingID,1,int,,NO,1
+dbo,SightingT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,SightingT,BASE TABLE,Research Group,3,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Vessel,4,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Date,5,datetime,,YES,0
+dbo,SightingT,BASE TABLE,Sighting,6,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Species,7,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Start Time,8,time,,YES,0
+dbo,SightingT,BASE TABLE,StartDateTime,9,datetime,,YES,0
+dbo,SightingT,BASE TABLE,Start Dec Lat,10,float,,YES,0
+dbo,SightingT,BASE TABLE,Start Dec Long,11,float,,YES,0
+dbo,SightingT,BASE TABLE,End Time,12,time,,YES,0
+dbo,SightingT,BASE TABLE,EndDateTime,13,datetime,,YES,0
+dbo,SightingT,BASE TABLE,End Dec Lat,14,float,,YES,0
+dbo,SightingT,BASE TABLE,End Dec Long,15,float,,YES,0
+dbo,SightingT,BASE TABLE,TargetDecLat,16,float,,YES,0
+dbo,SightingT,BASE TABLE,TargetDecLong,17,float,,YES,0
+dbo,SightingT,BASE TABLE,Est Size Best,18,int,,YES,0
+dbo,SightingT,BASE TABLE,Est Size Max,19,int,,YES,0
+dbo,SightingT,BASE TABLE,Est Size Min,20,int,,YES,0
+dbo,SightingT,BASE TABLE,Acoustics,21,nvarchar,-1,YES,0
+dbo,SightingT,BASE TABLE,Est ID,22,int,,YES,0
+dbo,SightingT,BASE TABLE,Actual ID,23,int,,YES,0
+dbo,SightingT,BASE TABLE,AltSighting,24,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,AltVessel,25,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Angle,26,int,,YES,0
+dbo,SightingT,BASE TABLE,Bearing,27,int,,YES,0
+dbo,SightingT,BASE TABLE,CloseApproachCount,28,int,,YES,0
+dbo,SightingT,BASE TABLE,D units,29,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Depth,30,float,,YES,0
+dbo,SightingT,BASE TABLE,DOT,31,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Frames 1,32,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Frames 2,33,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Frames 3,34,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,GEX,35,int,,YES,0
+dbo,SightingT,BASE TABLE,GEY,36,int,,YES,0
+dbo,SightingT,BASE TABLE,Group Beh,37,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Group Type,38,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Heading,39,int,,YES,0
+dbo,SightingT,BASE TABLE,Height,40,float,,YES,0
+dbo,SightingT,BASE TABLE,Height1,41,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Loc Code,42,int,,YES,0
+dbo,SightingT,BASE TABLE,LocDesc,43,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Num Calves,44,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Obs,45,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Obs1,46,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Other Beh 1,47,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Other Beh 2,48,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Other Beh 3,49,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Permit,50,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Photographer 1,51,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Photographer 2,52,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Photographer 3,53,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Photos?,54,bit,,NO,0
+dbo,SightingT,BASE TABLE,Position Type,55,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,PreyType,56,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Range,57,int,,YES,0
+dbo,SightingT,BASE TABLE,RangeSource,58,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,RangeSource1,59,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Reticle,60,float,,YES,0
+dbo,SightingT,BASE TABLE,Reticle1,61,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Roll/File Number 1,62,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Roll/File Number 2,63,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Roll/File Number 3,64,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Scattering,65,nvarchar,-1,YES,0
+dbo,SightingT,BASE TABLE,Series Number 1,66,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Series Number 2,67,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Series Number 3,68,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Sight Type,69,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Temp,70,nvarchar,255,YES,0
+dbo,SightingT,BASE TABLE,Total Samples,71,int,,YES,0
+dbo,SightingT,BASE TABLE,Total Tags,72,int,,YES,0
+dbo,SightingT,BASE TABLE,Comments,73,nvarchar,-1,YES,0
+dbo,SightingT,BASE TABLE,SourceDB,74,nvarchar,50,YES,0
+dbo,SightingT,BASE TABLE,RG_hash,75,binary,32,YES,0
+dbo,SightingT,BASE TABLE,Vessel_hash,76,binary,32,YES,0
+dbo,SightingT,BASE TABLE,Sighting_hash,77,binary,32,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,SightingID,1,int,,NO,1
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,EffortID,2,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Research Group,3,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,ResearchGroupID,4,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,SightingDate,5,datetime,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Vessel,6,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Sighting,7,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,SpeciesID,8,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,SpeciesCertaintyID,9,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,SightingTypeID,10,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Start Time,11,time,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Start Dec Lat,12,float,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Start Dec Long,13,float,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Depth,14,float,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Temp,15,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,PreyType,16,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,End Time,17,time,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,End Dec Lat,18,float,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,End Dec Long,19,float,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Position Type,20,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Species,21,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Est Size Best,22,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Est Size Min,23,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Est Size Max,24,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,CloseApproachCount,25,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Num Calves,26,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,EstIDs,27,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,NumIDs,28,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Group Type,29,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,GroupBehaviorID,30,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Group Beh,31,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Other Beh 1,32,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Other Beh 2,33,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Other Beh 3,34,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Scattering,35,nvarchar,-1,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Feed,36,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Reaction,37,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,PhotosYN,38,bit,,NO,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,PhotographerID,39,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,ImageSeriesName,40,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,StartFrame,41,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,EndFrame,42,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Comments,43,nvarchar,-1,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,TotalSamples,44,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,TotalTags,45,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Bearing,46,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Heading,47,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Angle,48,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Range,49,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,RangeTypeID,50,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,EyeHeight,51,int,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,TargetLatitude,52,float,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,TargetLongitude,53,float,,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Photographer 1,54,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,RollFile Number 1,55,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Frames 1,56,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Photographer 2,57,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,RollFile Number 2,58,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Frames 2,59,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Photographer 3,60,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,RollFile Number 3,61,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Frames 3,62,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Start Lat,63,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Start Long,64,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,End Lat,65,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,End Long,66,nvarchar,50,YES,0
+dbo,SightingT_IanDB_SnapShotT,BASE TABLE,Sight Type,67,nvarchar,50,YES,0
+dbo,SightingV,VIEW,SightingID,1,int,,NO,0
+dbo,SightingV,VIEW,Research Group,2,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Vessel,3,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Date,4,datetime,,YES,0
+dbo,SightingV,VIEW,Sighting,5,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Species,6,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Start Time,7,time,,YES,0
+dbo,SightingV,VIEW,StartDateTime,8,datetime,,YES,0
+dbo,SightingV,VIEW,Start Dec Lat,9,float,,YES,0
+dbo,SightingV,VIEW,Start Dec Long,10,float,,YES,0
+dbo,SightingV,VIEW,End Time,11,time,,YES,0
+dbo,SightingV,VIEW,EndDateTime,12,datetime,,YES,0
+dbo,SightingV,VIEW,End Dec Lat,13,float,,YES,0
+dbo,SightingV,VIEW,End Dec Long,14,float,,YES,0
+dbo,SightingV,VIEW,TargetDecLat,15,float,,YES,0
+dbo,SightingV,VIEW,TargetDecLong,16,float,,YES,0
+dbo,SightingV,VIEW,Est Size Best,17,int,,YES,0
+dbo,SightingV,VIEW,Est Size Max,18,int,,YES,0
+dbo,SightingV,VIEW,Est Size Min,19,int,,YES,0
+dbo,SightingV,VIEW,Acoustics,20,nvarchar,-1,YES,0
+dbo,SightingV,VIEW,Est ID,21,int,,YES,0
+dbo,SightingV,VIEW,Actual ID,22,int,,YES,0
+dbo,SightingV,VIEW,AltSighting,23,nvarchar,255,YES,0
+dbo,SightingV,VIEW,AltVessel,24,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Angle,25,int,,YES,0
+dbo,SightingV,VIEW,Bearing,26,int,,YES,0
+dbo,SightingV,VIEW,CloseApproachCount,27,int,,YES,0
+dbo,SightingV,VIEW,D units,28,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Depth,29,float,,YES,0
+dbo,SightingV,VIEW,DOT,30,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Frames 1,31,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Frames 2,32,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Frames 3,33,nvarchar,255,YES,0
+dbo,SightingV,VIEW,GEX,34,int,,YES,0
+dbo,SightingV,VIEW,GEY,35,int,,YES,0
+dbo,SightingV,VIEW,Group Beh,36,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Group Type,37,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Heading,38,int,,YES,0
+dbo,SightingV,VIEW,Height,39,float,,YES,0
+dbo,SightingV,VIEW,Height1,40,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Loc Code,41,int,,YES,0
+dbo,SightingV,VIEW,LocDesc,42,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Num Calves,43,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Obs,44,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Obs1,45,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Other Beh 1,46,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Other Beh 2,47,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Other Beh 3,48,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Permit,49,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Photographer 1,50,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Photographer 2,51,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Photographer 3,52,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Photos?,53,bit,,NO,0
+dbo,SightingV,VIEW,Position Type,54,nvarchar,255,YES,0
+dbo,SightingV,VIEW,PreyType,55,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Range,56,int,,YES,0
+dbo,SightingV,VIEW,RangeSource,57,nvarchar,255,YES,0
+dbo,SightingV,VIEW,RangeSource1,58,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Reticle,59,float,,YES,0
+dbo,SightingV,VIEW,Reticle1,60,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Roll/File Number 1,61,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Roll/File Number 2,62,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Roll/File Number 3,63,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Scattering,64,nvarchar,-1,YES,0
+dbo,SightingV,VIEW,Series Number 1,65,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Series Number 2,66,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Series Number 3,67,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Sight Type,68,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Temp,69,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Total Samples,70,int,,YES,0
+dbo,SightingV,VIEW,Total Tags,71,int,,YES,0
+dbo,SightingV,VIEW,Comments,72,nvarchar,-1,YES,0
+dbo,SightingV,VIEW,SourceDB,73,nvarchar,50,YES,0
+dbo,SightingV,VIEW,RG_hash,74,binary,32,YES,0
+dbo,SightingV,VIEW,Vessel_hash,75,binary,32,YES,0
+dbo,SightingV,VIEW,Sighting_hash,76,binary,32,YES,0
+dbo,SightingV,VIEW,DailyEffortID,77,int,,YES,0
+dbo,SightingV,VIEW,SightEvent,78,nvarchar,255,YES,0
+dbo,SightingV,VIEW,OtherSpecies,79,nvarchar,255,YES,0
+dbo,SightingV,VIEW,Sample Type,80,nvarchar,255,YES,0
+dbo,SourceT,BASE TABLE,SourceID,1,int,,NO,1
+dbo,SourceT,BASE TABLE,Source,2,nvarchar,255,YES,0
+dbo,SpeciesSummaryByEffortV,VIEW,Species,1,nvarchar,255,YES,0
+dbo,SpeciesSummaryByEffortV,VIEW,SpeciesCount,2,int,,YES,0
+dbo,SpeciesSummaryByEffortV,VIEW,DailyEffortID,3,int,,NO,0
+dbo,SpeciesT,BASE TABLE,SpeciesID,1,int,,NO,1
+dbo,SpeciesT,BASE TABLE,CommonName,2,nvarchar,50,YES,0
+dbo,SpeciesT,BASE TABLE,Abbreviation,3,nvarchar,50,YES,0
+dbo,SpeciesT,BASE TABLE,Order,4,nvarchar,50,YES,0
+dbo,SpeciesT,BASE TABLE,Genus,5,nvarchar,50,YES,0
+dbo,SpeciesT,BASE TABLE,Species,6,nvarchar,50,YES,0
+dbo,SpeciesT,BASE TABLE,Class,7,nvarchar,255,YES,0
+dbo,SpeciesT,BASE TABLE,Type,8,nvarchar,255,YES,0
+dbo,SpeciesT,BASE TABLE,SortOrder,9,int,,YES,0
+dbo,SpeciesT,BASE TABLE,TypeSort,10,int,,YES,0
+dbo,TagSummaryT,BASE TABLE,TagSummaryID,1,int,,NO,1
+dbo,TagSummaryT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,TagSummaryT,BASE TABLE,Research Group,3,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,Vessel,4,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,Date,5,datetime,,YES,0
+dbo,TagSummaryT,BASE TABLE,Sighting,6,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,Attachment,7,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,CallTypes,8,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,CEE,9,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,DataCollected,10,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,DeployBodyLoc,11,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,DeployDateTime,12,datetime,,YES,0
+dbo,TagSummaryT,BASE TABLE,DeployRxn,13,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,DeployTime,14,time,,YES,0
+dbo,TagSummaryT,BASE TABLE,DeployType,15,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,Descriptions,16,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,DiveTypes,17,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,Field ID,18,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,GPSTrackSource,19,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,HoursData,20,float,,YES,0
+dbo,TagSummaryT,BASE TABLE,HoursTotal,21,float,,YES,0
+dbo,TagSummaryT,BASE TABLE,PlaybackEnd,22,time,,YES,0
+dbo,TagSummaryT,BASE TABLE,PlaybackStart,23,time,,YES,0
+dbo,TagSummaryT,BASE TABLE,PlaybackType,24,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,PreyData,25,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,RecoverDateTime,26,time,,YES,0
+dbo,TagSummaryT,BASE TABLE,Segments,27,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,SonarLogFilename,28,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,Tag#,29,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,TagDataFilename,30,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,TagOffDateTime,31,datetime,,YES,0
+dbo,TagSummaryT,BASE TABLE,TagType,32,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,VHFChannel,33,float,,YES,0
+dbo,TagSummaryT,BASE TABLE,Video,34,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,TagComments,35,nvarchar,-1,YES,0
+dbo,TagSummaryT,BASE TABLE,SourceDB,36,nvarchar,50,YES,0
+dbo,TagSummaryT,BASE TABLE,Playback,37,nvarchar,255,YES,0
+dbo,TagSummaryT,BASE TABLE,RecoverDate,38,datetime,,YES,0
+dbo,TagSummaryT,BASE TABLE,RecoverTime,39,datetime,,YES,0
+dbo,TagSummaryT,BASE TABLE,TagOffDate,40,datetime,,YES,0
+dbo,TagSummaryT,BASE TABLE,TagOffTime,41,datetime,,YES,0
+dbo,TagSummaryV,VIEW,TagSummaryID,1,int,,NO,0
+dbo,TagSummaryV,VIEW,DailyEffortID,2,int,,YES,0
+dbo,TagSummaryV,VIEW,Research Group,3,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,Vessel,4,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,Date,5,datetime,,YES,0
+dbo,TagSummaryV,VIEW,Sighting,6,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,Attachment,7,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,CallTypes,8,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,CEE,9,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,DataCollected,10,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,DeployBodyLoc,11,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,DeployDateTime,12,datetime,,YES,0
+dbo,TagSummaryV,VIEW,DeployRxn,13,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,DeployTime,14,time,,YES,0
+dbo,TagSummaryV,VIEW,DeployType,15,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,Descriptions,16,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,DiveTypes,17,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,Field_ID,18,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,GPSTrackSource,19,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,HoursData,20,float,,YES,0
+dbo,TagSummaryV,VIEW,HoursTotal,21,float,,YES,0
+dbo,TagSummaryV,VIEW,PlaybackEnd,22,time,,YES,0
+dbo,TagSummaryV,VIEW,PlaybackStart,23,time,,YES,0
+dbo,TagSummaryV,VIEW,PlaybackType,24,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,PreyData,25,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,RecoverDateTime,26,time,,YES,0
+dbo,TagSummaryV,VIEW,Segments,27,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,SonarLogFilename,28,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,TagNum,29,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,TagDataFilename,30,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,TagOffDateTime,31,datetime,,YES,0
+dbo,TagSummaryV,VIEW,TagType,32,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,VHFChannel,33,float,,YES,0
+dbo,TagSummaryV,VIEW,Video,34,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,TagComments,35,nvarchar,-1,YES,0
+dbo,TagSummaryV,VIEW,SourceDB,36,nvarchar,50,YES,0
+dbo,TagSummaryV,VIEW,Start Dec Lat,37,float,,YES,0
+dbo,TagSummaryV,VIEW,Start Dec Long,38,float,,YES,0
+dbo,TagSummaryV,VIEW,Launch,39,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,Locality,40,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,Species,41,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,Est Size Best,42,int,,YES,0
+dbo,TagSummaryV,VIEW,Playback,43,nvarchar,255,YES,0
+dbo,TagSummaryV,VIEW,RecoverDate,44,datetime,,YES,0
+dbo,TagSummaryV,VIEW,RecoverTime,45,datetime,,YES,0
+dbo,TagSummaryV,VIEW,TagOffDate,46,datetime,,YES,0
+dbo,TagSummaryV,VIEW,TagOffTime,47,datetime,,YES,0
+dbo,TrackCompleteCodeT,BASE TABLE,TrackCompleteCodeID,1,int,,NO,1
+dbo,TrackCompleteCodeT,BASE TABLE,TrackCompleteCode,2,nvarchar,50,YES,0
+dbo,TrackCompleteCodeT,BASE TABLE,SortOrder,3,int,,YES,0
+dbo,TrackFileList,BASE TABLE,FileName,1,nvarchar,255,NO,0
+dbo,TrackFolderT,BASE TABLE,TrackFolderID,1,int,,NO,1
+dbo,TrackFolderT,BASE TABLE,TrackFolder,2,ntext,1073741823,YES,0
+dbo,TrackFolderT,BASE TABLE,EffortYear,3,int,,YES,0
+dbo,TrackingT,BASE TABLE,TrackingID,1,int,,NO,1
+dbo,TrackingT,BASE TABLE,DailyEffortID,2,int,,YES,0
+dbo,TrackingT,BASE TABLE,Research Group,3,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,Vessel,4,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,Date,5,datetime,,YES,0
+dbo,TrackingT,BASE TABLE,Sighting,6,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,Time,7,time,,YES,0
+dbo,TrackingT,BASE TABLE,VesselDecLat,8,float,,YES,0
+dbo,TrackingT,BASE TABLE,VesselDecLong,9,float,,YES,0
+dbo,TrackingT,BASE TABLE,TargetDecLat,10,float,,YES,0
+dbo,TrackingT,BASE TABLE,TargetDecLong,11,float,,YES,0
+dbo,TrackingT,BASE TABLE,Angle,12,int,,YES,0
+dbo,TrackingT,BASE TABLE,Bearing,13,int,,YES,0
+dbo,TrackingT,BASE TABLE,BearingType,14,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,BreachCount,15,int,,YES,0
+dbo,TrackingT,BASE TABLE,CalfCount,16,int,,YES,0
+dbo,TrackingT,BASE TABLE,Code,17,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,ContactCount,18,int,,YES,0
+dbo,TrackingT,BASE TABLE,Depth,19,int,,YES,0
+dbo,TrackingT,BASE TABLE,DistBetweenSG,20,int,,YES,0
+dbo,TrackingT,BASE TABLE,FieldID,21,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,FocalGroupSize,22,int,,YES,0
+dbo,TrackingT,BASE TABLE,FollowNum,23,int,,YES,0
+dbo,TrackingT,BASE TABLE,GenBeh,24,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,GEX,25,int,,YES,0
+dbo,TrackingT,BASE TABLE,GEY,26,int,,YES,0
+dbo,TrackingT,BASE TABLE,Heading,27,float,,YES,0
+dbo,TrackingT,BASE TABLE,Height,28,float,,YES,0
+dbo,TrackingT,BASE TABLE,LogCount,29,int,,YES,0
+dbo,TrackingT,BASE TABLE,Orientation,30,int,,YES,0
+dbo,TrackingT,BASE TABLE,Range,31,int,,YES,0
+dbo,TrackingT,BASE TABLE,RangeSource,32,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,RespCount,33,int,,YES,0
+dbo,TrackingT,BASE TABLE,Reticle,34,float,,YES,0
+dbo,TrackingT,BASE TABLE,SlapCount,35,int,,YES,0
+dbo,TrackingT,BASE TABLE,SpacingWithinSG,36,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,SpyhopCount,37,int,,YES,0
+dbo,TrackingT,BASE TABLE,SubGroups,38,int,,YES,0
+dbo,TrackingT,BASE TABLE,SurfaceLungeCount,39,int,,YES,0
+dbo,TrackingT,BASE TABLE,TargetLat,40,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,TargetLong,41,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,TargetPosType,42,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,TrackSighting,43,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,TrackVessel,44,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,VesselLat,45,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,VesselLong,46,nvarchar,255,YES,0
+dbo,TrackingT,BASE TABLE,TrackComments,47,nvarchar,-1,YES,0
+dbo,TrackingT,BASE TABLE,SourceDB,48,nvarchar,50,YES,0
+dbo,TrackT,BASE TABLE,TrackID,1,int,,NO,1
+dbo,TrackT,BASE TABLE,UnifiedDB_DailyEffortID,2,int,,YES,0
+dbo,TrackT,BASE TABLE,ResearchGroupID,3,int,,YES,0
+dbo,TrackT,BASE TABLE,TrackCompleteCodeID,4,int,,YES,0
+dbo,TrackT,BASE TABLE,VesselID,5,int,,YES,0
+dbo,TrackT,BASE TABLE,SourceID,6,int,,YES,0
+dbo,TrackT,BASE TABLE,SurveyDate,7,date,,YES,0
+dbo,TrackT,BASE TABLE,TrackFileName,8,ntext,1073741823,YES,0
+dbo,TrackT,BASE TABLE,TrackFileType,9,nvarchar,255,YES,0
+dbo,TrackT,BASE TABLE,Useable,10,bit,,NO,0
+dbo,TrackT,BASE TABLE,HitRate,11,nvarchar,255,YES,0
+dbo,TrackT,BASE TABLE,TrackFileSize,12,nvarchar,255,YES,0
+dbo,TrackT,BASE TABLE,Comments,13,ntext,1073741823,YES,0
+dbo,TrackT,BASE TABLE,StartTime,14,datetime,,YES,0
+dbo,TrackT,BASE TABLE,EndTime,15,datetime,,YES,0
+dbo,TrackT,BASE TABLE,GPSPointCount,16,float,,YES,0
+dbo,TrackT,BASE TABLE,TrackDuration,17,float,,YES,0
+dbo,TrackT,BASE TABLE,EffortID,18,int,,YES,0
+dbo,TrackT,BASE TABLE,Research Group,19,nvarchar,50,YES,0
+dbo,TrackT,BASE TABLE,Vessel,20,nvarchar,50,YES,0
+dbo,TrackV,VIEW,TrackID,1,int,,NO,0
+dbo,TrackV,VIEW,EffortID,2,int,,YES,0
+dbo,TrackV,VIEW,ResearchGroupID,3,int,,YES,0
+dbo,TrackV,VIEW,TrackCompleteCodeID,4,int,,YES,0
+dbo,TrackV,VIEW,VesselID,5,int,,YES,0
+dbo,TrackV,VIEW,SourceID,6,int,,YES,0
+dbo,TrackV,VIEW,SurveyDate,7,date,,YES,0
+dbo,TrackV,VIEW,TrackFileName,8,ntext,1073741823,YES,0
+dbo,TrackV,VIEW,TrackFileType,9,nvarchar,255,YES,0
+dbo,TrackV,VIEW,Useable,10,bit,,NO,0
+dbo,TrackV,VIEW,HitRate,11,nvarchar,255,YES,0
+dbo,TrackV,VIEW,TrackFileSize,12,nvarchar,255,YES,0
+dbo,TrackV,VIEW,Comments,13,ntext,1073741823,YES,0
+dbo,TrackV,VIEW,StartTime,14,datetime,,YES,0
+dbo,TrackV,VIEW,EndTime,15,datetime,,YES,0
+dbo,TrackV,VIEW,GPSPointCount,16,float,,YES,0
+dbo,TrackV,VIEW,TrackDuration,17,float,,YES,0
+dbo,TrackV,VIEW,Source,18,nvarchar,255,YES,0
+dbo,TrackV,VIEW,Research Group,19,nvarchar,255,YES,0
+dbo,TrackV,VIEW,VesselName,20,nvarchar,255,YES,0
+dbo,TrackV,VIEW,VesselCode,21,nvarchar,255,YES,0
+dbo,TrackV,VIEW,TrackCompleteCode,22,nvarchar,50,YES,0
+dbo,TrackV,VIEW,EffortYear,23,int,,YES,0
+dbo,VesselT,BASE TABLE,VesselID,1,int,,NO,1
+dbo,VesselT,BASE TABLE,ResearchGroupID,2,int,,YES,0
+dbo,VesselT,BASE TABLE,CollaboratorID,3,int,,YES,0
+dbo,VesselT,BASE TABLE,VesselName,4,nvarchar,255,YES,0
+dbo,VesselT,BASE TABLE,VesselCode,5,nvarchar,255,YES,0
+dbo,VesselT,BASE TABLE,VesselDetails,6,ntext,1073741823,YES,0
+dbo,VesselT,BASE TABLE,SortOrder,7,int,,YES,0

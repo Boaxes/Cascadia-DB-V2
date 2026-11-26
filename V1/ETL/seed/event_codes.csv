@@ -1,0 +1,26 @@
+code,name
+B,Begin
+O,Off effort
+R,Resume
+T,End
+P,Position
+C,Comment
+BT,Begin transect
+XT,Break off transect
+RT,Resume transect
+ET,End transect
+Drone_L,Drone launched
+Drone_R,Drone recovered
+EchoLog-Beg,Echosounder start
+EchoLog-End,Echosounder end
+PB-Beg,Playback start
+PB-End,Playback end
+H,Hydrophone
+Ac-Record,Acoustic recording
+Rec-H,Recover hydrophone
+Dep-SS,Deploy sound source
+Rec-SS,Recover sound source
+TagRec,Tag recovery
+Sample,Sample
+OBS,Observer rotation
+V,Vessel approach

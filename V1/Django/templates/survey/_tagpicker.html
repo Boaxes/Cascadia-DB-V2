@@ -1,0 +1,26 @@
+{% comment %}
+  A multiple select that tagpicker.js turns into tags and a drop-down. Without
+  JavaScript it stays a plain multiple select, so the filter still works.
+
+  Takes: name, label, items, selected, count ("sightings" or "efforts": which
+  number to show beside each vessel), grouped (species only).
+{% endcomment %}
+<div class="field">
+  <label for="{{ name }}">{{ label }}</label>
+  <select id="{{ name }}" name="{{ name }}" multiple size="6" data-tagpicker="All {{ label|lower }}{% if not grouped %}s{% endif %}">
+    {% if grouped %}
+      {% regroup items by group as groups %}
+      {% for g in groups %}
+        <optgroup label="{{ g.list.0.group_label }}" data-colour="{% if colour_profile == "generic" %}{{ g.list.0.group_colour }}{% endif %}">
+          {% for o in g.list %}
+            <option value="{{ o.id }}" data-count="{{ o.count }}" data-colour="{% if colour_profile == "generic" %}{{ o.colour }}{% else %}{{ o.cascadia_colour }}{% endif %}" {% if o.id|stringformat:"s" in selected %}selected{% endif %}>{{ o.label }}{% if not o.authoritative %} (name unconfirmed){% endif %}</option>
+          {% endfor %}
+        </optgroup>
+      {% endfor %}
+    {% else %}
+      {% for o in items %}
+        <option value="{{ o.id }}" data-count="{% if count == 'efforts' %}{{ o.efforts }}{% else %}{{ o.sightings }}{% endif %}" {% if o.id|stringformat:"s" in selected %}selected{% endif %}>{{ o.label }}</option>
+      {% endfor %}
+    {% endif %}
+  </select>
+</div>

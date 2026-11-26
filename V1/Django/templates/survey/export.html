@@ -1,0 +1,62 @@
+{% extends "survey/base.html" %}
+{% load survey_tags %}
+{% block title %}Export &middot; Sightings and Effort Explorer{% endblock %}
+
+{% block content %}
+<h1>Export</h1>
+<p class="muted">
+  Download what you are looking at, with the GPS files that go with it.
+</p>
+
+<form method="get" action="{% url 'export_download' %}" class="card export-form">
+
+  <h2>1. What to export
+    {% tip "export_areas" %}
+  </h2>
+  <div class="export-sources">
+    {% for area in areas %}
+      <label class="export-source {% if not area.visited %}is-unvisited{% endif %}">
+        <input type="radio" name="area" value="{{ area.key }}"
+               {% if forloop.first %}checked{% endif %}>
+        <span class="t">{{ area.label }}</span>
+        <span class="s">
+          {% if area.visited %}
+            {{ area.count }} {{ area.record }}
+            {% if area.filters %}with your filters{% else %}, unfiltered{% endif %}
+          {% else %}
+            Not opened yet. Visit {{ area.label }} first.
+          {% endif %}
+        </span>
+      </label>
+    {% endfor %}
+  </div>
+
+  <h2>2. Format</h2>
+  <div class="export-formats">
+    <label><input type="radio" name="format" value="csv" checked> CSV
+      {% tip "export_csv" %}
+    </label>
+    <label><input type="radio" name="format" value="excel"> Excel
+      {% tip "export_excel" %}
+    </label>
+    <label><input type="radio" name="format" value="geojson"> GeoJSON
+      {% tip "export_geojson" %}
+    </label>
+  </div>
+
+  <h2>3. GPS files</h2>
+  <label class="export-tracks">
+    <input type="checkbox" name="tracks" value="1">
+    Include the GPS track files
+    {% tip "export_tracks" %}
+  </label>
+  <p class="small muted" style="margin:6px 0 0">
+    The download becomes a zip: your data file, and a <code>tracks/</code>
+    folder beside it.
+  </p>
+
+  <div class="export-actions">
+    <button class="btn btn-primary" type="submit">Download</button>
+  </div>
+</form>
+{% endblock %}

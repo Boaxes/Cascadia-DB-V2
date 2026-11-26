@@ -1,0 +1,1101 @@
+/* Cascadia Marine Mammal Survey - hand written, no build step. */
+
+:root {
+  /* One ocean hue (200°) from light to dark. The header, buttons, links,
+     chips and tabs are all steps of it, and the greys carry a trace of it,
+     so nothing on the page is a stray blue. */
+  --sea-50:  #eef4f7;
+  --sea-100: #dce8ee;
+  --sea-300: #8cc0d4;
+  --sea-400: #4f8ea9;
+  --sea-600: #1f5f7c;
+  --sea-700: #174c65;
+  --sea-900: #0b2c3d;
+  --sea-950: #071f2c;
+
+  --navy: var(--sea-900);
+  --navy-dark: var(--sea-950);
+  --accent: var(--sea-600);
+  --accent-dark: var(--sea-700);
+  --accent-light: var(--sea-100);
+  --accent-soft: var(--sea-300);
+
+  --page: #f2f5f7;
+  --card: #ffffff;
+  --border: #d5dfe5;
+  --border-soft: #e8eef2;
+  --hover: var(--sea-50);
+
+  /* Three text colours, used everywhere: body text, secondary, and empty. */
+  --text: #1a2a33;
+  --muted: #56697a;
+  --faint: #95a6b1;
+
+  /* Status colours, muted to sit beside the sea rather than shout over it. */
+  --green-bg: #e5f1ea;
+  --green-fg: #2e6b48;
+  --red-bg: #f8eceb;
+  --red-fg: #a3322b;
+  --amber-bg: #f6eedf;
+  --amber-fg: #86611d;
+  --grey-bg: #e8eef1;
+  --grey-fg: var(--muted);
+  --danger: #b3372f;
+  --danger-dark: #962c25;
+
+  /* Tracks on every map: a lemon yellow that reads on satellite and street,
+     and stays clear of the Cascadia profile's gold Fin Whale. */
+  --track: #ffeb3b;
+}
+
+/* The Generic colour profile keeps its pale sea line. */
+:root[data-colour-profile="generic"] { --track: #7fb6cc; }
+
+/* The site's own base, in place of Bootstrap's: margins start at zero and
+   form controls take the page's font, so every page is styled by this file
+   alone. */
+*, *::before, *::after { box-sizing: border-box; }
+h1, h2, h3, h4, h5, h6 { margin-top: 0; line-height: 1.25; color: var(--text); }
+p, ul, ol, dl { margin-top: 0; margin-bottom: 1rem; }
+dd { margin-left: 0; }
+b, strong { font-weight: 600; }
+button, input, select, textarea { font: inherit; color: inherit; margin: 0; }
+table { border-collapse: collapse; }
+img, svg { vertical-align: middle; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 1rem 0; }
+
+/* Controls are clicked, not read, so a click, double-click or Shift-click
+   never highlights them. Safari still needs the prefix. Data text (tables,
+   comments, values) stays selectable for copying. */
+button, label, summary, .btn, .chip, .seasons, .tp-field, .tp-menu, .tp-tag,
+.card > h2, .results-tabs, .map-legend, .site-header, .pagination,
+.chips-clear, .fsec-count, .tip {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text);
+  font: 14px/1.5 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+a { color: var(--accent); text-decoration: none; }
+input[type=checkbox], input[type=radio] { accent-color: var(--accent); }
+a:hover { text-decoration: underline; }
+
+/* ---------------------------------------------------------------- header */
+
+.site-header {
+  background: var(--navy);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 0 24px;
+  height: 58px;
+}
+.site-header .brand {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+.site-header .brand:hover { text-decoration: none; }
+.site-header .brand img { height: 30px; width: auto; display: block; }
+.site-header nav { display: flex; gap: 4px; height: 100%; }
+.site-header nav a {
+  color: rgba(255, 255, 255, .72);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 3px solid transparent;
+  font-weight: 500;
+}
+.site-header nav a:hover { color: #fff; text-decoration: none; }
+.site-header nav a.active {
+  color: #fff;
+  border-bottom-color: var(--accent-soft);
+}
+
+/* ------------------------------------------------------------------ page */
+
+.page { padding: 24px; max-width: 1600px; margin: 0 auto; }
+.page-wide { max-width: none; }
+
+h1 { font-size: 22px; margin: 0 0 18px; font-weight: 600; }
+h2 { font-size: 16px; margin: 0 0 12px; font-weight: 600; }
+h3 { font-size: 13px; margin: 0 0 8px; font-weight: 600; color: var(--muted);
+     text-transform: uppercase; letter-spacing: .04em; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.card-tight { padding: 0; overflow: hidden; }
+
+/* Folding a card. The heading is the control, so there is no extra button. */
+.card > h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.card > h2::after {
+  content: "";
+  margin-left: auto;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform .15s;
+}
+.card.collapsed > h2::after { transform: rotate(-45deg) translate(-2px, 2px); }
+.card.collapsed > h2 { margin-bottom: 0; }
+.card.collapsed > *:not(h2) { display: none; }
+
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+.nowrap { white-space: nowrap; }
+.right { text-align: right; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* --------------------------------------------------------------- filters */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.field input, .field select {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 7px 9px;
+  font: inherit;
+  background: #fff;
+  min-width: 150px;
+}
+/* Every single-choice drop-down on the site draws the same chevron. */
+select:not([multiple]) {
+  appearance: none; -webkit-appearance: none; padding-right: 28px;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2356697a' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
+}
+/* Browsers draw an empty date as a grey placeholder with dark separators.
+   Separators are always secondary, and an empty date (filters.js marks it)
+   is grey throughout. */
+input[type=date]::-webkit-datetime-edit-text { color: var(--faint); }
+input[type=date].empty { color: var(--muted); }
+.field input:focus, .field select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+.field-wide input { min-width: 230px; }
+.field label .muted { font-weight: 400; }
+
+/* Two controls sharing one label: a year range, a pair of dates. */
+.field-pair { display: flex; gap: 6px; }
+.field-pair > * { flex: 1; }
+.field .field-pair select { min-width: 110px; }
+
+/* Toggle chips (years, months), with season shortcuts beneath. */
+.field .chip { position: relative; margin: 0; }
+.field .chip input { position: absolute; opacity: 0; min-width: 0; width: 0; pointer-events: none; }
+.chip span {
+  display: block; padding: 4px 0; text-align: center; cursor: pointer;
+  border: 1px solid var(--border); border-radius: 4px; background: #fff;
+  font-size: 12px; font-weight: 500; color: var(--text);
+}
+.chip span:hover { border-color: var(--faint); background: var(--hover); }
+.chip input:checked + span { background: var(--accent); border-color: var(--accent); color: #fff; }
+.chip input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 1px; }
+.seasons { display: flex; gap: 4px; }
+.seasons button {
+  flex: 1; border: 0; border-radius: 4px; padding: 3px 0; cursor: pointer;
+  background: none; color: var(--accent); font: inherit; font-size: 12px;
+}
+.seasons button:hover { background: var(--hover); }
+.seasons button.on { background: var(--accent-light); font-weight: 600; }
+
+.btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 4px;
+  padding: 7px 14px;
+  font: inherit;
+  cursor: pointer;
+  color: var(--text);
+}
+.btn:hover { background: var(--hover); }
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--accent-dark); }
+
+/* ---------------------------------------------------------------- tables */
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+table.data th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--hover);
+  border-bottom: 1px solid var(--border);
+  padding: 9px 12px;
+  white-space: nowrap;
+}
+table.data th a { color: var(--muted); }
+table.data th a:hover { color: var(--text); }
+table.data th.sorted a { color: var(--text); }
+table.data td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: top;
+}
+table.data tbody tr:hover { background: var(--hover); }
+table.data tbody tr.clickable { cursor: pointer; }
+table.data .empty { text-align: center; padding: 36px; color: var(--muted); }
+
+/* Values the database does not have. Shown as a dash, never invented. */
+.none { color: var(--faint); }
+
+/* ----------------------------------------------------------------- pills */
+
+.pill {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pill-green { background: var(--green-bg); color: var(--green-fg); }
+.pill-red   { background: var(--red-bg);   color: var(--red-fg); }
+.pill-amber { background: var(--amber-bg); color: var(--amber-fg); }
+.pill-grey  { background: var(--grey-bg);  color: var(--grey-fg); }
+
+/* ------------------------------------------------------------ pagination */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 4px 0;
+  flex-wrap: wrap;
+}
+.pagination a, .pagination span.current, .pagination span.gap {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 11px;
+  background: #fff;
+  color: var(--text);
+  min-width: 34px;
+  text-align: center;
+}
+.pagination a:hover { background: var(--hover); text-decoration: none; }
+.pagination span.current {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+.pagination span.gap { border: 0; background: none; color: var(--muted); }
+.pagination .count { margin-left: auto; color: var(--muted); font-size: 13px; }
+
+/* ------------------------------------------------------------ detail page */
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 4px 28px;
+}
+/* One label and its value, the label left and the value right. */
+.detail-grid .pair {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+.detail-grid .pair dt { color: var(--muted); font-weight: 500; }
+.detail-grid .pair dd { margin: 0; text-align: right; font-weight: 500; }
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 1100px) { .two-col { grid-template-columns: 1fr; } }
+
+/* A statement about the data the reader needs before trusting a number. */
+.notice {
+  border-left: 3px solid var(--amber-fg);
+  background: var(--amber-bg);
+  color: var(--amber-fg);
+  padding: 10px 14px;
+  border-radius: 0 4px 4px 0;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+.notice-blue {
+  border-left-color: var(--accent);
+  background: var(--accent-light);
+  color: var(--accent-dark);
+}
+
+/* ------------------------------------------------------------------ maps */
+
+.map { height: 380px; border-radius: 4px; border: 1px solid var(--border); }
+/* Leaflet layers its panes and controls at z-index 400 to 1000. Isolated, a
+   map keeps that layering to itself instead of drawing over the pop-over's
+   sticky title bar as it scrolls underneath. */
+.leaflet-container { isolation: isolate; }
+.map-tall { height: calc(100vh - 106px); border-radius: 0; border: 0; }
+
+/* ---------------------------------------------------------------- modal */
+
+/* A framed panel between the top bar and the bottom of the window. It never
+   runs off the screen: the panel keeps its height and its content scrolls. */
+#modal {
+  position: fixed;
+  top: 58px; left: 0; right: 0; bottom: 0;
+  background: rgba(11, 44, 61, .35);
+  display: none;
+  z-index: 2000;
+  padding: 16px;
+}
+#modal.open { display: block; }
+#modal .modal-box {
+  background: var(--page);
+  max-width: 1200px;
+  /* Always the same 16px under the top bar as above the bottom of the
+     window, however short the record: the panel keeps its height and a long
+     record scrolls inside it. */
+  height: calc(100vh - 58px - 32px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  box-shadow: 0 18px 40px rgba(11, 44, 61, .25);
+}
+/* The bar: Back, the record's title and tools, then the close button set
+   apart behind a divider so it never reads as one of the tools. The bar is
+   outside the scrolling content, so it spans the panel edge to edge. */
+#modal .modal-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px 12px 20px; background: #fff; border-bottom: 1px solid var(--border);
+}
+#modal .modal-title { flex: 1; min-width: 0; }
+#modal .modal-title .detail-head { margin: 0; }
+#modal .modal-back {
+  height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px;
+  background: #fff; color: var(--accent); font-size: 13px; cursor: pointer;
+}
+#modal .modal-back[hidden] { display: none; }
+#modal .modal-close {
+  width: 32px; height: 32px; padding: 0; margin-left: 2px; position: relative;
+  border: 0; border-radius: 6px; background: none; cursor: pointer;
+  font-size: 24px; line-height: 1; color: var(--muted);
+}
+#modal .modal-close::before {
+  content: ""; position: absolute; left: -8px; top: 4px; bottom: 4px;
+  border-left: 1px solid var(--border);
+}
+#modal .modal-close:hover { background: var(--hover); color: var(--text); }
+#modal-content { flex: 1; overflow-y: auto; padding: 18px 20px 20px; }
+/* A short page: as tall as its content, up to the same limit, and narrower. */
+#modal.modal-fit .modal-box { height: auto; max-height: calc(100vh - 58px - 32px); max-width: 860px; }
+#modal.modal-fit #modal-content > .card:last-child { margin-bottom: 0; }
+
+/* ------------------------------------------------------------ home stats */
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+}
+.stat .value {
+  font-size: 28px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.stat .label { color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+/* --------------------------------------------------------- provenance */
+
+.prov-entry {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+.prov-entry:last-child { border-bottom: 0; }
+.prov-head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.prov-field { font-weight: 600; font-family: ui-monospace, Consolas, monospace; }
+.prov-rule { color: var(--muted); font-size: 12px; }
+.prov-body { margin-top: 3px; color: var(--text); }
+.prov-detail {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--muted);
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+/* --------------------------------------------------------------- explore */
+
+/* Explore: the filter sidebar, the map and the results. */
+.panel-layout {
+  display: grid;
+  grid-template-columns: 320px minmax(520px, 1fr) 430px;
+  height: calc(100vh - 58px);
+  position: relative;
+  background: #fff;
+}
+/* Sightings and Efforts: the same sidebar, then the table. */
+.panel-layout.list-layout { grid-template-columns: 320px minmax(0, 1fr); background: var(--page); }
+.list-main { overflow-y: auto; padding: 24px 28px; }
+/* The buttons follow the filters rather than sitting at the foot of the
+   window. The panel scrolls only if every section is open on a short screen. */
+.filter-panel {
+  background: #fff;
+  border-right: 1px solid var(--border);
+  padding: 20px 22px;
+  overflow-y: auto;
+}
+.list-summary { font-size: 13px; color: var(--muted); margin: 0 0 14px; }
+.area-picker > summary { font-size: 13px; color: var(--accent); cursor: pointer; list-style: none; }
+.area-picker > summary::-webkit-details-marker { display: none; }
+.area-picker > summary::before { content: "\25B8  "; }
+.area-picker[open] > summary::before { content: "\25BE  "; }
+.area-picker[open] > summary { margin-bottom: 8px; }
+.filter-map { width: 100%; height: 200px; margin-bottom: 6px; }
+
+.field label.check { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; font-weight: 400; color: var(--text); }
+.field.checks { gap: 8px; padding-top: 20px; }
+.field label.check input { margin-top: 3px; min-width: 0; width: auto; }
+
+/* A folding group of filters. The chevron matches the cards'. */
+.fsec { border-top: 1px solid var(--border); }
+.fsec:last-of-type { border-bottom: 1px solid var(--border); }
+.fsec > summary {
+  display: flex; align-items: center; gap: 8px; padding: 12px 0;
+  font-weight: 600; color: var(--text); cursor: pointer; list-style: none;
+}
+.fsec > summary::-webkit-details-marker { display: none; }
+.fsec > summary::after {
+  content: ""; margin-left: auto; width: 7px; height: 7px;
+  border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+  transform: rotate(-45deg); transition: transform .15s;
+}
+.fsec[open] > summary::after { transform: rotate(45deg) translate(-2px, -2px); }
+.fsec > .filters { gap: 12px; margin-bottom: 16px; }
+/* Each section's icon, before its name. */
+.fsec-ico { width: 16px; height: 16px; flex: none; fill: none; stroke: var(--accent);
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.fsec-count {
+  min-width: 18px; padding: 0 6px; border-radius: 999px; text-align: center;
+  background: var(--accent); color: #fff; font-size: 11px; line-height: 18px;
+}
+.fsec-count:empty { display: none; }
+.explore-results {
+  background: #fff;
+  border-left: 1px solid var(--border-soft);
+  overflow-y: auto;
+  padding: 14px 16px;
+}
+.explore-map { position: relative; }
+/* A grid, not a wrapping flex column: the column sized the year chips at
+   their narrowest, one year per row, and kept that height. */
+.filter-panel .filters { display: grid; }
+.filter-panel .field input, .filter-panel .field select { min-width: 0; width: 100%; }
+.filter-panel h2 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  color: var(--text);
+}
+.panel-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  padding-top: 18px;
+}
+.panel-actions .btn {
+  width: 100%;
+  text-align: center;
+}
+.map-tall {
+  height: calc(100vh - 74px);
+  margin: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.map-legend {
+  position: absolute;
+  right: 18px;
+  bottom: 34px;
+  width: 190px;
+  background: rgba(255,255,255,.96);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 10px 28px rgba(11, 44, 61,.14);
+  padding: 12px 14px;
+  z-index: 800;
+  font-size: 12px;
+}
+.map-legend label,
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+}
+.map-legend label { font-weight: 600; color: var(--text); }
+.legend-rule {
+  border-top: 1px solid var(--border-soft);
+  margin: 6px 0;
+}
+.legend-row span:first-child {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex: none;
+}
+.results-tabs {
+  display: flex;
+  gap: 22px;
+  border-bottom: 1px solid var(--border);
+}
+.results-tabs button {
+  padding: 10px 0 12px;
+  color: var(--text);
+  font-weight: 600;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.results-tabs button.active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  margin-bottom: -1px;
+}
+.results-summary {
+  border: 1px solid var(--border);
+  border-top: 0;
+  border-radius: 0 0 6px 6px;
+  padding: 16px;
+}
+#results {
+  border: 1px solid var(--border);
+  border-top: 0;
+  border-radius: 0 0 6px 6px;
+  overflow: hidden;
+}
+
+.result-item {
+  display: block;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text);
+}
+.result-item:hover { background: var(--hover); text-decoration: none; }
+.result-item .t {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+.result-item .s { color: var(--muted); font-size: 12px; }
+.result-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+}
+.result-count {
+  margin-left: auto;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.map-loading {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,.95);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 14px;
+  z-index: 1000;
+  font-size: 13px;
+  display: none;
+}
+.map-loading.on { display: block; }
+
+/* Top bar */
+
+.site-header .brand { display: flex; align-items: center; gap: 10px; }
+/* The account menu: initials and name, opening to Admin and Log out. */
+.profile { margin-left: auto; position: relative; }
+.profile summary {
+  display: flex; align-items: center; gap: 8px; cursor: pointer; list-style: none;
+  padding: 4px 10px 4px 4px; border-radius: 999px; color: #fff; font-size: 13px; font-weight: 500;
+}
+.profile summary::-webkit-details-marker { display: none; }
+.profile summary:hover, .profile[open] summary { background: rgba(255, 255, 255, .1); }
+.avatar {
+  width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--accent-soft); color: var(--navy); font-size: 12px; font-weight: 700;
+}
+.profile-menu {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 2500; min-width: 200px;
+  background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 6px;
+  box-shadow: 0 10px 28px rgba(11, 44, 61, .18);
+}
+.profile-who { padding: 8px 10px 10px; border-bottom: 1px solid var(--border-soft); margin-bottom: 4px; }
+.profile-who strong { display: block; color: var(--text); font-size: 13px; }
+.profile-who span { color: var(--muted); font-size: 12px; }
+.profile-menu a, .profile-menu button {
+  display: block; width: 100%; text-align: left; padding: 7px 10px; border: 0; border-radius: 5px;
+  background: none; color: var(--text); font-size: 13px; cursor: pointer;
+}
+.profile-menu a:hover, .profile-menu button:hover { background: var(--hover); text-decoration: none; }
+.profile-menu form { margin: 0; }
+.profile-menu a.menu-admin { color: var(--danger); font-weight: 600; }
+.profile-menu a.menu-admin:hover { background: var(--red-bg); }
+/* On the admin pages the menu's way out: back to the survey site. */
+.profile-menu a.menu-back {
+  display: flex; align-items: center; justify-content: center; gap: 6px; margin: 4px 0;
+  background: var(--accent); color: #fff; font-weight: 600; border-radius: 6px;
+}
+.profile-menu a.menu-back:hover { background: var(--accent-dark); color: #fff; }
+.profile-menu a.menu-back svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* The ? next to anything a reader may not already understand */
+
+.tip {
+  border: 0;
+  background: rgba(86, 105, 122, .15);
+  color: inherit;
+  opacity: .75;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: background .12s, opacity .12s;
+}
+.tip:hover, .tip:focus-visible { opacity: 1; background: rgba(86, 105, 122, .3); }
+
+.tip-bubble {
+  position: absolute;
+  z-index: 3000;
+  max-width: 320px;
+  background: var(--navy-dark);
+  color: var(--sea-100);
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.45;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .28);
+}
+
+/* Track lines. A solid line was recorded, a dashed one bridges a silence. */
+
+.legend-swatch { display: inline-block; width: 22px; height: 0; vertical-align: middle; }
+.legend-swatch.solid { border-top: 3px solid currentColor; }
+.legend-swatch.dashed { border-top: 3px dashed currentColor; }
+
+/* Timeline */
+
+.timeline .tl-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  vertical-align: middle; margin-right: 4px;
+}
+.timeline .tl-condition .tl-dot { background: var(--amber-fg); }
+.timeline .tl-event .tl-dot { background: var(--sea-400); }
+.timeline .tl-sighting .tl-dot { background: var(--accent); }
+
+/* Export */
+
+.export-form h2 { font-size: 15px; margin: 22px 0 8px; }
+.export-form h2:first-child { margin-top: 0; }
+.export-sources { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.export-source {
+  display: block; border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 12px; cursor: pointer;
+}
+.export-source:has(input:checked) { border-color: var(--accent); background: var(--accent-light); }
+.export-source.is-unvisited { opacity: .6; }
+.export-source .t { display: block; font-weight: 600; margin-top: 4px; }
+.export-source .s { display: block; font-size: 12px; color: var(--muted); }
+.export-formats { display: flex; gap: 20px; flex-wrap: wrap; }
+.export-actions { margin-top: 24px; }
+
+/* Login */
+
+body.signin { background: var(--page); }
+.login { max-width: 340px; margin: 90px auto; text-align: center; }
+.login img { height: 56px; width: auto; margin-bottom: 14px; }
+.login h1 { font-size: 20px; margin: 0 0 4px; }
+.login .field { text-align: left; margin: 14px 0; }
+.login input[type=text], .login input[type=password] {
+  width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;
+}
+.login .btn { width: 100%; margin-top: 6px; }
+
+/* The chain on a record's history panel: original, then cleaning, then edits. */
+.chain { list-style: none; margin: .4rem 0 0; padding: 0 0 0 .9rem; border-left: 2px solid var(--border); }
+.chain-step { position: relative; padding: .3rem 0 .3rem .8rem; font-size: .92rem; }
+.chain-step::before { content: ""; position: absolute; left: -1.35rem; top: .65rem;
+  width: .5rem; height: .5rem; border-radius: 50%; background: var(--faint); }
+.chain-original::before { background: var(--muted); }
+.chain-rule::before     { background: var(--accent); }
+.chain-edit::before     { background: var(--amber-fg); }
+.chain-where { display: inline-block; min-width: 9.5rem; color: var(--text); }
+.chain-value { margin-right: .5rem; }
+.chain-when  { color: var(--muted); font-size: .85rem; }
+.chain-why   { display: block; margin-left: 9.5rem; color: var(--muted); font-size: .85rem; }
+
+.field-note { margin: 4px 0 0; font-size: .78rem; color: var(--muted); line-height: 1.35; }
+
+/* Species and vessel take several values: tagpicker.js shows them as tags
+   in a box that looks like every other drop-down on the page. A tag and a
+   dot take their species' colour, the same one the map uses. */
+.tp { position: relative; min-width: 230px; }
+.filter-panel .tp { min-width: 0; }
+.tp-field {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px; cursor: text;
+  border: 1px solid var(--border); border-radius: 4px; padding: 4px 28px 4px 5px;
+  min-height: 36px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2356697a' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
+}
+.tp-search::placeholder { color: var(--text); }
+.tp.open .tp-search::placeholder { color: var(--muted); }
+.tp.open .tp-field { outline: 2px solid var(--accent); outline-offset: -1px; }
+.tp-tags { display: contents; }
+.field .tp-search, .field .tp-search:focus { flex: 1 0 80px; min-width: 0; border: 0; outline: 0; padding: 3px 4px; background: none; }
+.tp-tag {
+  --c: var(--accent);
+  display: inline-flex; align-items: center; gap: 3px; padding: 1px 3px 1px 8px;
+  border-radius: 999px; font-size: 12.5px;
+  background: color-mix(in srgb, var(--c) 13%, #fff);
+  border: 1px solid color-mix(in srgb, var(--c) 32%, #fff);
+  color: color-mix(in srgb, var(--c) 62%, var(--text));
+}
+.tp-tag button { border: 0; background: none; color: inherit; opacity: .6; cursor: pointer; font-size: 15px; line-height: 1; padding: 0 4px; }
+.tp-tag button:hover { opacity: 1; }
+
+.tp-menu {
+  position: absolute; z-index: 1200; left: 0; right: 0; top: calc(100% + 4px);
+  max-height: 340px; overflow-y: auto; padding: 4px 0; background: #fff;
+  border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 8px 24px rgba(11, 44, 61, .14);
+}
+.tp-menu[hidden], .tp-group[hidden], .tp-opt[hidden] { display: none; }
+.tp-group:not(.open) .tp-items { display: none; }
+.tp.searching .tp-items { display: block; }
+.tp-head, .field .tp-opt {
+  display: flex; align-items: center; gap: 8px; padding: 5px 10px;
+  font-size: 13px; font-weight: 400; color: var(--text); cursor: pointer;
+}
+.tp-head { font-weight: 600; padding-left: 4px; }
+.tp-items .tp-opt { padding-left: 46px; }
+.tp-head:hover, .tp-opt:hover { background: var(--hover); }
+.field .tp-head input, .field .tp-opt input { min-width: 0; width: auto; margin: 0; accent-color: var(--accent); }
+.tp-arrow { width: 18px; height: 18px; border: 0; padding: 0; background: none; cursor: pointer; }
+.tp-arrow::before {
+  content: ""; display: block; width: 6px; height: 6px; margin: 0 auto;
+  border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+  transform: rotate(-45deg); transition: transform .15s;
+}
+.tp-group.open .tp-arrow::before, .tp.searching .tp-arrow::before { transform: rotate(45deg); }
+.tp-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.tp-head span, .tp-opt span { flex: 1; }
+.tp-head small, .tp-opt small { color: var(--muted); font-weight: 400; font-variant-numeric: tabular-nums; }
+
+/* Years and months are chips. None ticked means all. */
+.chips { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+.chips-years { grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); width: 100%; min-width: 300px; }
+.chips-years .chip span { font-size: 11.5px; letter-spacing: -.01em; }
+.chips-months { min-width: 260px; }
+.filter-panel .chips-years, .filter-panel .chips-months { min-width: 0; }
+.chips-clear { margin-left: 6px; font-weight: 400; visibility: hidden; }
+.field:has(.chips input:checked) .chips-clear { visibility: visible; }
+
+/* Editing one record. */
+.edit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px 18px; }
+.edit-field label { display: block; font-size: .8rem; font-weight: 600;
+  color: var(--text); margin-bottom: 3px; }
+.edit-field input, .edit-field select, .edit-field textarea {
+  width: 100%; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px;
+  font: inherit; font-size: .9rem; background-color: #fff; }
+.edit-field select { padding-right: 28px; }
+.confirm-table td.was { color: var(--muted); text-decoration: line-through; }
+.confirm-table td.now { color: var(--accent-dark); }
+.card.danger { border-left: 4px solid var(--danger); }
+.card.danger h2 { color: var(--danger); }
+.also-list { margin: 6px 0 10px 1.1rem; }
+.also-list li { margin: 2px 0; }
+.btn-danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+.btn-danger:hover { background: var(--danger-dark); border-color: var(--danger-dark); color: #fff; }
+.messages { margin: 0 0 14px; padding: 0; list-style: none; }
+.messages li { padding: 9px 12px; border-radius: 4px; font-size: .9rem; margin-bottom: 6px; }
+.messages li.success { background: var(--green-bg); border: 1px solid #bcd9c7; color: var(--green-fg); }
+.messages li.info    { background: var(--sea-50); border: 1px solid var(--accent-light); color: var(--accent-dark); }
+.messages li.error   { background: var(--red-bg); border: 1px solid #ebc9c6; color: var(--red-fg); }
+label.stacked { display: block; font-size: .8rem; font-weight: 600;
+  color: var(--text); margin-bottom: 4px; }
+label.stacked + textarea { width: 100%; max-width: 34rem; padding: 6px 8px;
+  border: 1px solid var(--border); border-radius: 4px; font: inherit; font-size: .9rem; }
+
+/* A record's cards in rows, so each row's two sides end together. The map
+   stretches to the height of the cards beside it. */
+.detail-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.stack { display: flex; flex-direction: column; gap: 16px; }
+.detail-row .card { margin-bottom: 0; }
+.map-card { display: flex; flex-direction: column; }
+.map-card .map { flex: 1; height: auto; min-height: 200px; }
+/* Should the side beside the map still come up short, its last card takes
+   the slack, so the row never shows a gap. */
+.stack > .card:last-child { flex: 1; }
+@media (max-width: 1100px) {
+  .detail-row { grid-template-columns: 1fr; }
+  .map-card .map { flex: none; height: 340px; }
+}
+
+/* Where a position came from, small, on its own line under the coordinates. */
+.source { display: block; margin-top: 2px; font-size: 11.5px; color: var(--muted); }
+.source strong { font-weight: 600; color: var(--text); }
+.source em { color: var(--muted); }
+
+/* The record's title, with its tools on the right. */
+.detail-head { display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; margin-bottom: 18px; }
+.detail-head h1 { margin: 0; font-size: 20px; }
+
+/* A record's tools: edit, delete, history, export, as icons with a hint
+   underneath on hover. In the pop-over they sit left of the close button. */
+.record-tools { display: flex; gap: 6px; flex-shrink: 0; }
+.tool {
+  position: relative; width: 32px; height: 32px; display: grid; place-items: center;
+  border: 1px solid var(--border); border-radius: 6px; background: #fff;
+  color: var(--muted); cursor: pointer; padding: 0;
+}
+.tool svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; }
+.tool:hover, .tool.on { color: var(--accent); border-color: var(--accent-soft); background: var(--hover); text-decoration: none; }
+.tool-danger:hover { color: var(--danger); border-color: #ebc9c6; background: var(--red-bg); }
+.tool[data-hint]:hover::after {
+  content: attr(data-hint); position: absolute; top: calc(100% + 6px); left: 50%;
+  transform: translateX(-50%); white-space: nowrap; z-index: 10;
+  background: var(--navy-dark); color: #fff; font-size: 12px; padding: 3px 8px; border-radius: 4px;
+}
+
+/* A window over the record: the history. Its own title bar and close. */
+dialog.window {
+  padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+  width: min(720px, calc(100vw - 32px)); max-height: calc(100vh - 120px);
+  box-shadow: 0 24px 60px rgba(11, 44, 61, .35); color: var(--text);
+}
+dialog.window[open] { display: flex; flex-direction: column; }
+dialog.window::backdrop { background: rgba(11, 44, 61, .35); }
+.window-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 12px 10px 16px; background: var(--navy); color: #fff;
+}
+.window-bar h2 { margin: 0; font-size: 14px; color: #fff; }
+.window-bar form { margin: 0; }
+.window-close {
+  width: 28px; height: 28px; border: 0; border-radius: 5px; cursor: pointer;
+  background: rgba(255, 255, 255, .12); color: #fff; font-size: 18px; line-height: 1;
+}
+.window-close:hover { background: rgba(255, 255, 255, .24); }
+.window-body { overflow-y: auto; padding: 6px 16px 16px; background: #fff; }
+
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Map clusters are grey, so colour on the map only ever means species. The
+   selectors outrank MarkerCluster.Default.css, which loads after this file. */
+.leaflet-container .marker-cluster-small  { background: rgba(232, 238, 242, .55); }
+.leaflet-container .marker-cluster-small div  { background: rgba(232, 238, 242, .92); color: var(--text); }
+.leaflet-container .marker-cluster-medium { background: rgba(174, 191, 202, .55); }
+.leaflet-container .marker-cluster-medium div { background: rgba(174, 191, 202, .92); color: var(--text); }
+.leaflet-container .marker-cluster-large  { background: rgba(86, 105, 122, .55); }
+.leaflet-container .marker-cluster-large div  { background: rgba(86, 105, 122, .92); color: #fff; }
+.leaflet-container .marker-cluster div { font-weight: 600; font-family: inherit; }
+
+/* Clicking a map focuses it, for keyboard panning, and the browser outlines
+   whatever has focus. The map needs no outline to show it is the map. */
+.leaflet-container:focus, .leaflet-container:focus-visible { outline: none; }
+
+/* ================================================================= admin */
+
+.mono { font-family: ui-monospace, Consolas, monospace; font-size: 12px; overflow-wrap: anywhere; }
+.faint { color: var(--faint); }
+.btn-small { padding: 4px 10px; font-size: 12px; }
+
+/* Problems and changes wear a colour each, as pills. */
+.problem-no_track     { background: var(--red-bg);   color: var(--red-fg); }
+.problem-missing_file { background: var(--amber-bg); color: var(--amber-fg); }
+.problem-unlinked     { background: var(--sea-100);  color: var(--accent-dark); }
+.problem-lost         { background: var(--grey-bg);  color: var(--grey-fg); }
+.action-update     { background: var(--sea-100);  color: var(--accent-dark); }
+.action-associate  { background: var(--green-bg); color: var(--green-fg); }
+.action-dissociate { background: var(--amber-bg); color: var(--amber-fg); }
+.action-upload, .action-create { background: var(--green-bg); color: var(--green-fg); }
+.action-delete     { background: var(--red-bg);   color: var(--red-fg); }
+.action-restore    { background: var(--grey-bg);  color: var(--grey-fg); }
+
+/* Track files: one tab per problem, each with its count. */
+.problem-tabs {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.problem-tabs a {
+  padding: 8px 12px; color: var(--muted); font-weight: 600; font-size: 13px;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.problem-tabs a:hover { color: var(--text); text-decoration: none; }
+.problem-tabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.problem-tabs a span {
+  margin-left: 4px; padding: 1px 7px; border-radius: 999px; font-size: 11px;
+  background: var(--grey-bg); color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.problem-tabs a.active span { background: var(--accent); color: #fff; }
+.problem-note { margin: 0 0 12px; }
+
+/* A track or change, opened. */
+.fix-status { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; font-size: 13px; color: var(--muted); }
+.fix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 16px; }
+.fix-facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0 0 10px; font-size: 13px; }
+.fix-facts dt { color: var(--muted); }
+.fix-facts dd { margin: 0; overflow-wrap: anywhere; }
+.fix-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 0; border-top: 1px solid var(--border-soft);
+}
+.fix-row:first-of-type { border-top: 0; padding-top: 0; }
+.fix-row form { margin: 0; flex: none; }
+.fix-row .pill { margin-top: 4px; }
+.upload-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 6px 0 4px; }
+.upload-row input[type=file] { font-size: 12px; max-width: 100%; }
+.card h2 em { font-weight: 600; }
+.undo-card form { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 0; }
+
+/* ---------------------------------------------------------- dashboard */
+
+/* One screen: the page is exactly the window under the header, the work band
+   takes what it needs, and the charts share whatever is left. */
+.admin-dash {
+  height: calc(100vh - 58px); display: flex; flex-direction: column; gap: 16px;
+  padding: 16px 24px; overflow: hidden;
+}
+.dash-band { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+/* Two sections on the same white panel: the work to do, then statistics.
+   Each folds away by clicking its title, and a folded one is just its title. */
+.dash-band { border-radius: 8px; padding: 12px 14px 14px; background: #fff; border: 1px solid var(--border); }
+.dash-title {
+  display: flex; align-items: center; gap: 8px; margin: 0;
+  font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text);
+}
+.dash-title svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.dash-title span { font-size: 12px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted); margin-left: 4px; }
+.dash-facts { flex: 1; }
+.dash-toggle { cursor: pointer; user-select: none; }
+.dash-toggle::after {
+  content: ""; margin-left: auto; width: 7px; height: 7px;
+  border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg) translate(-2px, -2px); transition: transform .15s;
+}
+.dash-band.folded .dash-toggle::after { transform: rotate(-45deg); }
+.dash-band.folded > :not(.dash-title) { display: none; }
+.dash-band.folded { flex: 0 0 auto; }
+.ops-grid { display: grid; grid-template-columns: minmax(320px, 2fr) 3fr; gap: 12px; }
+.ops-grid .card { margin: 0; }
+.ops-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.ops-head h3 { margin: 0; text-transform: none; letter-spacing: 0; font-size: 14px; color: var(--text); }
+.ops-recent .ops-head { padding: 12px 14px 0; }
+.coverage { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; margin-bottom: 8px; }
+.coverage > strong { font-size: 26px; font-variant-numeric: tabular-nums; }
+.meter { height: 6px; border-radius: 3px; background: var(--sea-100); margin-bottom: 4px; overflow: hidden; }
+.meter span { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
+.problem-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+.problem-stats a {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 5px 6px; border-radius: 4px; color: var(--text);
+}
+.problem-stats a:hover { background: var(--hover); text-decoration: none; }
+.problem-stats strong { font-size: 16px; font-variant-numeric: tabular-nums; }
+table.data.compact-rows td { padding: 6px 12px; }
+.recent-what { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kpi { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; }
+.kpi-label { font-size: 12px; font-weight: 600; color: var(--muted); }
+.kpi-value { font-size: 22px; font-weight: 600; line-height: 1.25; font-variant-numeric: tabular-nums; }
+
+.chart-grid { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 12px; }
+.chart-row { flex: 1; min-height: 0; display: grid; gap: 12px; grid-template-columns: 1.4fr 1fr; }
+.chart-card { margin: 0; min-height: 0; display: flex; flex-direction: column; padding: 10px 14px; }
+.chart-card h3 { margin: 0 0 6px; text-transform: none; letter-spacing: 0; font-size: 13px; color: var(--text); }
+.chart-body { flex: 1; min-height: 0; }
+.chart-body svg { display: block; }
+.chart-axis { font-size: 10.5px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+.chart-label { font-size: 11.5px; fill: var(--text); }
+.chart-value { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+.chart-tip {
+  position: fixed; z-index: 3000; display: none; pointer-events: none;
+  background: var(--navy); color: #fff; border-radius: 4px; padding: 6px 9px; font-size: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+}
+.chart-tip strong { display: block; font-variant-numeric: tabular-nums; }
+.chart-tip span { color: #c9dbe4; }
+.problem-stats .pill { justify-self: start; }
+/* A small window scrolls rather than squashing the charts to nothing. */
+@media (max-height: 700px), (max-width: 900px) {
+  .admin-dash { height: auto; overflow: visible; }
+  .chart-row { flex: 0 0 auto; height: 240px; }
+}
+@media (max-width: 900px) { .ops-grid, .chart-row { grid-template-columns: 1fr; } .chart-row { height: auto; } .chart-card { height: 220px; } }
+.admin-layout .list-main > .card-tight { overflow-x: auto; }
+.admin-layout table.data td.mono { white-space: nowrap; overflow-wrap: normal; }
+/* One line per change, so a page of them is a known height; the full text
+   is in the pop-over and on hover. */
+.audit-table { table-layout: fixed; width: 100%; }
+.audit-table td { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

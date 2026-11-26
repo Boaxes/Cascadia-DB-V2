@@ -1,0 +1,31 @@
+-- DroneTargetAnimalT: DB167's rows, with the website's changes applied. No columns of its own.
+--
+-- 1. cleaned: nothing in DB167's copy of this table is cleaned.
+-- 2. r: the website's edits applied on top (macros/replay.sql).
+-- 3. the final select: DB167's columns.
+
+with cleaned as (
+    select
+        "DroneTargetAnimalID",
+        "DailyEffortID",
+        "DroneEventID",
+        "SightingNum",
+        "TargetAnimal",
+        "TimeOverThisAnimal",
+        "LatitudeOver",
+        "LongitudeOver",
+        "Field ID",
+        "CRC ID",
+        "FlightNum",
+        "Abbreviation",
+        "Comments",
+        "Research Group",
+        "EffortDate",
+        "Vessel"
+    from {{ source('raw', 'DroneTargetAnimalT') }}
+),
+r as (
+    {{ replay_rows('cleaned', 'DroneTargetAnimalT', 'DroneTargetAnimalID') }}
+)
+select {{ replayed_columns('DroneTargetAnimalT', 'r') }}
+from r

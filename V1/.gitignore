@@ -1,0 +1,51 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Defensive: planning and working notes live OUTSIDE this directory and must
+# never be copied in. Listed anyway so an accidental copy cannot be committed.
+PLAN.md
+BRIEF.md
+CREDENTIALS*.md
+handover/
+checklist.md
+CLAUDE.md
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Data — large, and reproducible from source
+*.csv
+!ETL/seed/*.csv
+!Django/survey/species_colours.csv
+db_dumps/
+*.dump
+*.sql.gz
+
+# Django
+staticfiles/
+media/
+db.sqlite3
+
+# Throwaway scripts run inside the containers, which share these folders.
+*_test.py
+smoke*.py
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# dbt
+ETL/dbt/target/
+ETL/dbt/logs/
+ETL/dbt/dbt_packages/
+ETL/dbt/.user.yml

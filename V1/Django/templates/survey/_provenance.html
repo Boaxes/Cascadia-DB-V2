@@ -1,0 +1,58 @@
+{% comment %}
+  A window over the record, opened by the History tool at its top.
+
+  One record's history: what the original database held, what cleaning made of
+  it, and every edit since. A field nobody has touched is not listed, and a
+  record nothing has happened to says so rather than looking broken.
+{% endcomment %}
+
+<dialog class="window history">
+  <div class="window-bar">
+    <h2>History &middot; {{ record_label }} {{ record_id }}</h2>
+    <form method="dialog"><button class="window-close" aria-label="Close">&times;</button></form>
+  </div>
+  <div class="window-body">
+
+  {% if history or record_actions %}
+    {% for entry in history %}
+      <div class="prov-entry">
+        <div class="prov-head"><span class="prov-field">{{ entry.label }}</span></div>
+        <ol class="chain">
+          {% for step in entry.steps %}
+            <li class="chain-step chain-{{ step.source }}">
+              <span class="chain-where">
+                {% if step.source == "original" %}Original database{% endif %}
+                {% if step.source == "rule" %}After cleaning{% endif %}
+                {% if step.source == "edit" %}{{ step.actor }}{% endif %}
+              </span>
+              <span class="chain-value">
+                {% if step.is_empty %}<em class="muted">empty</em>
+                {% else %}<strong>{{ step.value }}</strong>{% endif %}
+              </span>
+              {% if step.at %}<span class="chain-when">{{ step.at|date:"j M Y" }}</span>{% endif %}
+              {% if step.detail %}<span class="chain-why">{{ step.detail }}</span>{% endif %}
+              {% if step.comment %}<span class="chain-why">{{ step.comment }}</span>{% endif %}
+            </li>
+          {% endfor %}
+        </ol>
+      </div>
+    {% endfor %}
+
+    {% for action in record_actions %}
+      <div class="prov-entry">
+        <div class="prov-head">
+          <span class="prov-field">{{ action.action }}</span>
+          <span>{{ action.actor }}</span>
+          <span class="chain-when">{{ action.at|date:"j M Y" }}</span>
+        </div>
+        {% if action.comment %}<div class="prov-body">{{ action.comment }}</div>{% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="muted" style="margin:0">
+      Nothing has been changed on this record. Every value is exactly as it
+      appears in the original database.
+    </p>
+  {% endif %}
+  </div>
+</dialog>

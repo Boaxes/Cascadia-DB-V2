@@ -1,0 +1,8 @@
+# The audit log, read once for the whole build: what every edit set
+# (audit_changes) and which records the website created or deleted
+# (audit_rows). Not built as tables: dbt writes them into each dbo model,
+# where macros/replay.sql applies them.
+
+models:
+  - name: audit_changes
+  - name: audit_rows

@@ -1,0 +1,234 @@
+{% extends "survey/base.html" %}
+
+{% block title %}Effort {{ effort.legacy_daily_effort_id }} &middot; Sightings and Effort Explorer{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}
+
+{% block content %}
+  <p class="small"><a href="{% url 'effort_list' %}">&larr; All efforts</a></p>
+  <div id="detail">
+  {% comment %}
+    The inner detail for one effort. Rendered on its own into the modal, and
+    wrapped by effort_detail.html for the standalone page, so the two can
+    never drift apart.
+  {% endcomment %}
+  {% load survey_tags static %}
+
+  <div class="detail-head">
+    <h1>Effort {{ effort.legacy_daily_effort_id }}</h1>
+    {% include "survey/_record_tools.html" with kind="efforts" pk=effort.legacy_daily_effort_id %}
+  </div>
+
+  {% comment %}
+    Rows rather than two free columns, so the sides end together: the map
+    stretches to the height of Summary and GPS Data beside it.
+  {% endcomment %}
+  <div class="detail-row">
+    <div class="stack">
+        <div class="card">
+          <h2>Summary</h2>
+          <div class="detail-grid">
+            <div class="pair"><dt>Date</dt><dd>{{ effort.effort_date|date:"Y-m-d"|dash }}</dd></div>
+            <div class="pair"><dt>Time</dt><dd>{{ effort.start_time|time:"H:i"|default:"?" }}&ndash;{{ effort.end_time|time:"H:i"|default:"?" }}</dd></div>
+            <div class="pair"><dt>Vessel</dt><dd>{{ effort.vessel.label|dash }}</dd></div>
+            <div class="pair"><dt>Locality</dt><dd>{{ effort.locality|dash }}</dd></div>
+            <div class="pair"><dt>Region</dt><dd>{{ effort.region|dash }}</dd></div>
+            <div class="pair"><dt>Survey type</dt><dd>{{ effort.survey_type|dash }}</dd></div>
+            <div class="pair"><dt>Time searching</dt><dd>{{ effort.total_survey_effort|duration }}</dd></div>
+            <div class="pair"><dt>Sightings</dt><dd>{{ sightings|length }}</dd></div>
+          </div>
+
+          {% if effort.survey_comments %}
+            <h3 style="margin-top:16px">Comments</h3>
+            <p style="margin:0">{{ effort.survey_comments }}</p>
+          {% endif %}
+        </div>
+
+        <div class="card">
+          <h2>GPS Data</h2>
+          <div class="detail-grid" style="grid-template-columns:1fr">
+            <div class="pair">
+              <dt>Start</dt>
+              <dd>{% if effort.start_point %}{{ effort.start_lat|floatformat:5 }}, {{ effort.start_lon|floatformat:5 }}
+                <span class="source">Source: <strong>{{ effort.start_source.0 }}</strong>{% if effort.start_source.1 %}<em>({{ effort.start_source.1 }})</em>{% endif %}</span>{% else %}Unknown{% endif %}</dd>
+            </div>
+            <div class="pair">
+              <dt>End</dt>
+              <dd>{% if effort.end_point %}{{ effort.end_lat|floatformat:5 }}, {{ effort.end_lon|floatformat:5 }}
+                <span class="source">Source: <strong>{{ effort.end_source.0 }}</strong>{% if effort.end_source.1 %}<em>({{ effort.end_source.1 }})</em>{% endif %}</span>{% else %}Unknown{% endif %}</dd>
+            </div>
+            <div class="pair">
+              <dt>GPS track file</dt>
+              <dd>{% for track in tracks %}<span class="pill {{ track.status_class }}">{{ track.status_label }}</span> {% empty %}<span class="pill problem-no_track">No track file</span>{% endfor %}</dd>
+            </div>
+          </div>
+        </div>
+    </div>
+      <div class="card map-card">
+        <h2>Map</h2>
+        <div id="effort-map-{{ effort.legacy_daily_effort_id }}" class="map"></div>
+        {% if track_is_suspect %}
+          <div class="notice" style="margin:10px 0 0">
+            This effort's track has corrupted geometry, so the line on the map
+            is not where the vessel went. The map is framed on the sightings
+            instead.
+          </div>
+        {% endif %}
+        <p class="small muted" style="margin:8px 0 0">
+          Track lines are simplified to roughly 11 metres. The full resolution
+          file is held in object storage.
+        </p>
+      </div>
+  </div>
+
+  <div class="detail-row">
+    <div class="stack">
+        <div class="card">
+          <h2>Sightings <span class="muted">({{ sightings|length }})</span></h2>
+          {% if species_seen %}
+            <div class="detail-grid" style="grid-template-columns:1fr">
+              {% for row in species_seen %}
+                <div class="pair">
+                  <dt>{{ row.name }}</dt>
+                  <dd>{{ row.count }} sighting{{ row.count|pluralize }}{% if row.animals %},
+                    {{ row.animals }} animal{{ row.animals|pluralize }}{% endif %}</dd>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="muted" style="margin:0">No sightings were recorded on this effort.</p>
+          {% endif %}
+        </div>
+
+        <div class="card collapsed">
+          <h2>Extra info</h2>
+          <div class="detail-grid">
+            <div class="pair" style="grid-column:1/-1"><dt>Crew</dt><dd>{{ effort.personnel|dash }}</dd></div>
+            <div class="pair"><dt>Sub area</dt><dd>{{ effort.sub_area|dash }}</dd></div>
+            <div class="pair"><dt>Objective</dt><dd>{{ effort.project_objective|dash }}</dd></div>
+            <div class="pair"><dt>Launch</dt><dd>{{ effort.launch|dash }}</dd></div>
+            <div class="pair"><dt>Return</dt><dd>{{ effort.return_location|dash }}</dd></div>
+            <div class="pair"><dt>Off effort</dt><dd>{{ effort.time_off_effort|duration }}</dd></div>
+            <div class="pair"><dt>Research group</dt><dd>{{ effort.research_group|dash }}</dd></div>
+          </div>
+          {% if distance %}
+            <div class="detail-grid" style="grid-template-columns:1fr">
+              <div class="pair">
+                <dt>Recorded on the datasheet</dt>
+                <dd>{{ distance.recorded|nm }}{% if distance.recorded %} nm{% endif %}</dd>
+              </div>
+              <div class="pair">
+                <dt>Length of the GPS track</dt>
+                <dd>{{ distance.track|nm }}{% if distance.track %} nm{% endif %}</dd>
+              </div>
+              {% if distance.difference is not None %}
+                <div class="pair">
+                  <dt>Difference</dt>
+                  <dd>
+                    {{ distance.difference|nm }} nm
+                    {% if distance.percent is not None %}
+                      <span class="muted">({{ distance.percent|floatformat:1 }}%)</span>
+                    {% endif %}
+                  </dd>
+                </div>
+              {% endif %}
+            </div>
+            {% if distance.note %}
+              <div class="notice" style="margin:12px 0 0">{{ distance.note }}</div>
+            {% endif %}
+          {% endif %}
+        </div>
+    </div>
+      <div class="card card-tight">
+        <h2 style="padding:16px 16px 10px;margin:0">
+          Tracks <span class="muted">({{ tracks|length }})</span>
+        </h2>
+        <table class="data">
+          <thead>
+            <tr><th>Track</th><th>Status</th><th>Source</th><th>Points</th><th class="right">Length (nm)</th></tr>
+          </thead>
+          <tbody>
+            {% for track in tracks %}
+              <tr>
+                <td>{{ track.legacy_track_id|dash }}</td>
+                <td><span class="pill {{ track.status_class }}">{{ track.status_label }}</span></td>
+                <td>{{ track.track_source|dash }}</td>
+                <td class="num">{{ track.point_count|dash }}</td>
+                <td class="num">
+                  {{ track.length_nm|nm }}
+                  {% if track.length_is_plausible is False %}
+                    <span class="pill pill-red" title="Implied speed {{ track.implied_speed_kn|floatformat:0 }} knots">suspect</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="5" class="empty">None.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+  </div>
+
+  {# Closed by default: it is long, and the sightings are summarised above. #}
+  <div class="card card-tight collapsed">
+    <h2 style="padding:16px 16px 10px;margin:0">
+      Timeline <span class="muted">({{ timeline|length }})</span>
+    </h2>
+    <table class="data timeline">
+      <thead>
+        <tr><th>Time</th><th>Kind</th><th>Detail</th><th>Position</th></tr>
+      </thead>
+      <tbody>
+        {% for row in timeline %}
+          <tr class="tl-{{ row.kind }}{% if row.url %} clickable{% endif %}"
+              {% if row.url %}data-modal-url="{{ row.url }}"{% endif %}>
+            <td class="nowrap">{{ row.at|time:"H:i"|dash }}</td>
+            <td class="nowrap"><span class="tl-dot"></span> {{ row.kind_label }}</td>
+            <td>
+              {% if row.url %}
+                <a href="{{ row.url }}">{{ row.label|default:"Not identified" }}</a>
+              {% else %}
+                {{ row.label|dash }}
+              {% endif %}
+            </td>
+            <td class="nowrap small muted">
+              {% if row.lat %}{{ row.lat|floatformat:4 }}, {{ row.lon|floatformat:4 }}{% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="empty">Nothing was recorded during this effort.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% include "survey/_provenance.html" with record_label="Effort" record_id=effort.legacy_daily_effort_id %}
+
+
+  <script>
+    window.EFFORT_MAP = {
+      container: "effort-map-{{ effort.legacy_daily_effort_id }}",
+      trackUrl: {% if track_geojson_url %}"{{ track_geojson_url }}"{% else %}null{% endif %},
+      trackIsSuspect: {{ track_is_suspect|yesno:"true,false" }},
+      start: {% if effort.start_point %}[{{ effort.start_lat }}, {{ effort.start_lon }}]{% else %}null{% endif %},
+      startIsDeparture: {{ effort.position_is_departure_point|yesno:"true,false" }},
+      end: {% if effort.end_point %}[{{ effort.end_lat }}, {{ effort.end_lon }}]{% else %}null{% endif %},
+      endSource: "{{ effort.end_source_label|escapejs }}",
+      path: {{ interpolated_path|default:"null"|safe }},
+      sightings: [
+        {% for s in sightings %}{% if s.lat and s.lon %}
+          {"id": {{ s.legacy_sighting_id }}, "lat": {{ s.lat }}, "lon": {{ s.lon }},
+           "label": "{{ s.species|default:'Not identified'|escapejs }}",
+           "colour": "{{ s.species_id|species_colour:colour_profile }}",
+           "time": "{{ s.sighting_time|time:'H:i'|escapejs }}"},
+        {% endif %}{% endfor %}
+      ]
+    };
+  </script>
+  <script src="{% static 'survey/basemap.js' %}"></script>
+  <script src="{% static 'survey/effort-map.js' %}"></script>
+  </div>
+{% endblock %}

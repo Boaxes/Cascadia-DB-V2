@@ -1,0 +1,893 @@
+schema,table,kind,column,position,data_type,udt,nullable,primary_key
+app,daily_condition,VIEW,id,1,bigint,int8,YES,False
+app,daily_condition,VIEW,legacy_daily_condition_id,2,integer,int4,YES,False
+app,daily_condition,VIEW,research_group,3,text,text,YES,False
+app,daily_condition,VIEW,daily_effort_id,4,bigint,int8,YES,False
+app,daily_condition,VIEW,vessel_id,5,integer,int4,YES,False
+app,daily_condition,VIEW,condition_datetime,6,timestamp without time zone,timestamp,YES,False
+app,daily_condition,VIEW,condition_time,7,time without time zone,time,YES,False
+app,daily_condition,VIEW,lat,8,double precision,float8,YES,False
+app,daily_condition,VIEW,lon,9,double precision,float8,YES,False
+app,daily_condition,VIEW,geom,10,USER-DEFINED,geometry,YES,False
+app,daily_condition,VIEW,beaufort,11,integer,int4,YES,False
+app,daily_condition,VIEW,swell_ft,12,integer,int4,YES,False
+app,daily_condition,VIEW,cloud_cover_pct,13,integer,int4,YES,False
+app,daily_condition,VIEW,precipitation,14,text,text,YES,False
+app,daily_condition,VIEW,quality,15,text,text,YES,False
+app,daily_condition,VIEW,visibility_nm,16,numeric,numeric,YES,False
+app,daily_condition,VIEW,comments,17,text,text,YES,False
+app,daily_effort,VIEW,id,1,bigint,int8,YES,False
+app,daily_effort,VIEW,legacy_daily_effort_id,2,integer,int4,YES,False
+app,daily_effort,VIEW,research_group,3,text,text,YES,False
+app,daily_effort,VIEW,effort_date,4,date,date,YES,False
+app,daily_effort,VIEW,start_time,5,time without time zone,time,YES,False
+app,daily_effort,VIEW,end_time,6,time without time zone,time,YES,False
+app,daily_effort,VIEW,vessel_id,7,integer,int4,YES,False
+app,daily_effort,VIEW,locality,8,text,text,YES,False
+app,daily_effort,VIEW,launch,9,text,text,YES,False
+app,daily_effort,VIEW,return_location,10,text,text,YES,False
+app,daily_effort,VIEW,survey_type,11,text,text,YES,False
+app,daily_effort,VIEW,region,12,text,text,YES,False
+app,daily_effort,VIEW,sub_area,13,text,text,YES,False
+app,daily_effort,VIEW,project_objective,14,text,text,YES,False
+app,daily_effort,VIEW,personnel,15,text,text,YES,False
+app,daily_effort,VIEW,survey_comments,16,text,text,YES,False
+app,daily_effort,VIEW,time_off_effort,17,interval,interval,YES,False
+app,daily_effort,VIEW,total_survey_effort,18,interval,interval,YES,False
+app,daily_effort,VIEW,distance_recorded_nm,19,numeric,numeric,YES,False
+app,daily_effort,VIEW,start_lat,20,double precision,float8,YES,False
+app,daily_effort,VIEW,start_lon,21,double precision,float8,YES,False
+app,daily_effort,VIEW,start_point,22,USER-DEFINED,geometry,YES,False
+app,daily_effort,VIEW,start_coord_source,23,text,text,YES,False
+app,daily_effort,VIEW,end_lat,24,double precision,float8,YES,False
+app,daily_effort,VIEW,end_lon,25,double precision,float8,YES,False
+app,daily_effort,VIEW,end_point,26,USER-DEFINED,geometry,YES,False
+app,daily_effort,VIEW,end_coord_source,27,text,text,YES,False
+app,daily_event,VIEW,id,1,bigint,int8,YES,False
+app,daily_event,VIEW,legacy_daily_event_id,2,integer,int4,YES,False
+app,daily_event,VIEW,research_group,3,text,text,YES,False
+app,daily_event,VIEW,daily_effort_id,4,bigint,int8,YES,False
+app,daily_event,VIEW,vessel_id,5,integer,int4,YES,False
+app,daily_event,VIEW,code,6,text,text,YES,False
+app,daily_event,VIEW,event_datetime,7,timestamp without time zone,timestamp,YES,False
+app,daily_event,VIEW,event_time,8,time without time zone,time,YES,False
+app,daily_event,VIEW,lat,9,double precision,float8,YES,False
+app,daily_event,VIEW,lon,10,double precision,float8,YES,False
+app,daily_event,VIEW,geom,11,USER-DEFINED,geometry,YES,False
+app,daily_event,VIEW,observer_left,12,text,text,YES,False
+app,daily_event,VIEW,observer_right,13,text,text,YES,False
+app,daily_event,VIEW,recorder,14,text,text,YES,False
+app,daily_event,VIEW,comments,15,text,text,YES,False
+app,daily_event,VIEW,event_code_id,16,integer,int4,YES,False
+app,effort_timeline,VIEW,row_key,1,text,text,YES,False
+app,effort_timeline,VIEW,daily_effort_id,2,bigint,int8,YES,False
+app,effort_timeline,VIEW,kind,3,text,text,YES,False
+app,effort_timeline,VIEW,at,4,timestamp without time zone,timestamp,YES,False
+app,effort_timeline,VIEW,legacy_id,5,integer,int4,YES,False
+app,effort_timeline,VIEW,lat,6,double precision,float8,YES,False
+app,effort_timeline,VIEW,lon,7,double precision,float8,YES,False
+app,effort_timeline,VIEW,geom,8,USER-DEFINED,geometry,YES,False
+app,effort_timeline,VIEW,label,9,text,text,YES,False
+app,event_code,VIEW,id,1,integer,int4,YES,False
+app,event_code,VIEW,code,2,text,text,YES,False
+app,event_code,VIEW,name,3,text,text,YES,False
+app,event_code,VIEW,description,4,text,text,YES,False
+app,event_code,VIEW,sort_order,5,integer,int4,YES,False
+app,pipeline_run,BASE TABLE,run_id,1,text,text,NO,True
+app,pipeline_run,BASE TABLE,started_at,2,timestamp with time zone,timestamptz,NO,False
+app,pipeline_run,BASE TABLE,finished_at,3,timestamp with time zone,timestamptz,YES,False
+app,pipeline_run,BASE TABLE,result,4,text,text,NO,False
+app,pipeline_run,BASE TABLE,git_commit,5,text,text,YES,False
+app,pipeline_run,BASE TABLE,run_url,6,text,text,YES,False
+app,pipeline_run,BASE TABLE,deployment_url,7,text,text,YES,False
+app,pipeline_run,BASE TABLE,tests_passed,8,integer,int4,YES,False
+app,pipeline_run,BASE TABLE,tests_failed,9,integer,int4,YES,False
+app,rule_column,BASE TABLE,rule_id,1,text,text,YES,False
+app,rule_column,BASE TABLE,description,2,text,text,YES,False
+app,rule_column,BASE TABLE,target_table,3,text,text,YES,False
+app,rule_column,BASE TABLE,column_name,4,text,text,YES,False
+app,sample,VIEW,id,1,bigint,int8,YES,False
+app,sample,VIEW,legacy_sample_id,2,integer,int4,YES,False
+app,sample,VIEW,research_group,3,text,text,YES,False
+app,sample,VIEW,sighting_id,4,bigint,int8,YES,False
+app,sample,VIEW,daily_effort_id,5,bigint,int8,YES,False
+app,sample,VIEW,vessel_id,6,integer,int4,YES,False
+app,sample,VIEW,species_id,7,integer,int4,YES,False
+app,sample,VIEW,sample_number,8,text,text,YES,False
+app,sample,VIEW,sample_type,9,text,text,YES,False
+app,sample,VIEW,sample_datetime,10,timestamp without time zone,timestamp,YES,False
+app,sample,VIEW,certainty_of_id,11,text,text,YES,False
+app,sample,VIEW,preservation,12,text,text,YES,False
+app,sample,VIEW,sampled_by,13,text,text,YES,False
+app,sample,VIEW,field_id,14,text,text,YES,False
+app,sample,VIEW,reaction,15,text,text,YES,False
+app,sample,VIEW,comments,16,text,text,YES,False
+app,sighting,VIEW,id,1,bigint,int8,YES,False
+app,sighting,VIEW,legacy_sighting_id,2,integer,int4,YES,False
+app,sighting,VIEW,research_group,3,text,text,YES,False
+app,sighting,VIEW,daily_effort_id,4,bigint,int8,YES,False
+app,sighting,VIEW,sighting_number,5,text,text,YES,False
+app,sighting,VIEW,vessel_id,6,integer,int4,YES,False
+app,sighting,VIEW,species_id,7,integer,int4,YES,False
+app,sighting,VIEW,species_uncertain,8,boolean,bool,YES,False
+app,sighting,VIEW,species_raw,9,text,text,YES,False
+app,sighting,VIEW,sighting_date,10,date,date,YES,False
+app,sighting,VIEW,sighting_time,11,time without time zone,time,YES,False
+app,sighting,VIEW,sighting_datetime,12,timestamp without time zone,timestamp,YES,False
+app,sighting,VIEW,lat,13,double precision,float8,YES,False
+app,sighting,VIEW,lon,14,double precision,float8,YES,False
+app,sighting,VIEW,geom,15,USER-DEFINED,geometry,YES,False
+app,sighting,VIEW,end_lat,16,double precision,float8,YES,False
+app,sighting,VIEW,end_lon,17,double precision,float8,YES,False
+app,sighting,VIEW,end_geom,18,USER-DEFINED,geometry,YES,False
+app,sighting,VIEW,position_type,19,text,text,YES,False
+app,sighting,VIEW,sight_type,20,text,text,YES,False
+app,sighting,VIEW,est_size_best,21,integer,int4,YES,False
+app,sighting,VIEW,est_size_min,22,integer,int4,YES,False
+app,sighting,VIEW,est_size_max,23,integer,int4,YES,False
+app,sighting,VIEW,num_calves,24,integer,int4,YES,False
+app,sighting,VIEW,group_behavior,25,text,text,YES,False
+app,sighting,VIEW,group_type,26,text,text,YES,False
+app,sighting,VIEW,depth_m,27,numeric,numeric,YES,False
+app,sighting,VIEW,photos_taken,28,boolean,bool,YES,False
+app,sighting,VIEW,comments,29,text,text,YES,False
+app,sighting,VIEW,identified_individual_count,30,integer,int4,YES,False
+app,sighting,VIEW,bearing,31,integer,int4,YES,False
+app,sighting,VIEW,range_m,32,integer,int4,YES,False
+app,sighting,VIEW,reticle,33,double precision,float8,YES,False
+app,sighting,VIEW,range_source,34,text,text,YES,False
+app,sighting,VIEW,photo_series_1,35,text,text,YES,False
+app,sighting,VIEW,photo_frames_1,36,text,text,YES,False
+app,sighting,VIEW,photographer_1,37,text,text,YES,False
+app,species,VIEW,id,1,integer,int4,YES,False
+app,species,VIEW,code,2,text,text,YES,False
+app,species,VIEW,common_name,3,text,text,YES,False
+app,species,VIEW,scientific_name,4,text,text,YES,False
+app,species,VIEW,category,5,text,text,YES,False
+app,track,VIEW,id,1,integer,int4,YES,False
+app,track,VIEW,legacy_track_id,2,integer,int4,YES,False
+app,track,VIEW,research_group,3,text,text,YES,False
+app,track,VIEW,daily_effort_id,4,bigint,int8,YES,False
+app,track,VIEW,object_key,5,text,text,YES,False
+app,track,VIEW,track_status,6,text,text,YES,False
+app,track,VIEW,vessel_id,7,integer,int4,YES,False
+app,track,VIEW,track_source,8,text,text,YES,False
+app,track,VIEW,track_complete_code,9,text,text,YES,False
+app,track,VIEW,survey_date,10,date,date,YES,False
+app,track,VIEW,useable,11,boolean,bool,YES,False
+app,track,VIEW,geom,12,USER-DEFINED,geometry,YES,False
+app,track,VIEW,point_count,13,integer,int4,YES,False
+app,track,VIEW,start_time_utc,14,timestamp without time zone,timestamp,YES,False
+app,track,VIEW,end_time_utc,15,timestamp without time zone,timestamp,YES,False
+app,track,VIEW,length_nm,16,numeric,numeric,YES,False
+app,track,VIEW,comments,17,text,text,YES,False
+app,track_geometry,BASE TABLE,object_key,1,text,text,NO,True
+app,track_geometry,BASE TABLE,etag,2,text,text,YES,False
+app,track_geometry,BASE TABLE,geom,3,USER-DEFINED,geometry,YES,False
+app,track_geometry,BASE TABLE,point_count,4,integer,int4,YES,False
+app,track_geometry,BASE TABLE,length_nm,5,numeric,numeric,YES,False
+app,track_geometry,BASE TABLE,built_at,6,timestamp with time zone,timestamptz,NO,False
+app,track_geometry,BASE TABLE,track_id,7,integer,int4,YES,False
+app,track_geometry,BASE TABLE,first_time,8,timestamp without time zone,timestamp,YES,False
+app,track_geometry,BASE TABLE,last_time,9,timestamp without time zone,timestamp,YES,False
+app,vessel,VIEW,id,1,integer,int4,YES,False
+app,vessel,VIEW,legacy_vessel_id,2,integer,int4,YES,False
+app,vessel,VIEW,code,3,text,text,YES,False
+app,vessel,VIEW,name,4,text,text,YES,False
+app,vessel_number,BASE TABLE,vessel_key,1,text,text,NO,True
+app,vessel_number,BASE TABLE,vessel_id,2,integer,int4,NO,False
+dbo,DailyConditionT,BASE TABLE,id,1,bigint,int8,NO,True
+dbo,DailyConditionT,BASE TABLE,DailyConditionID,2,integer,int4,YES,False
+dbo,DailyConditionT,BASE TABLE,DailyEffortID,3,integer,int4,YES,False
+dbo,DailyConditionT,BASE TABLE,Research Group,4,text,text,YES,False
+dbo,DailyConditionT,BASE TABLE,Vessel,5,text,text,YES,False
+dbo,DailyConditionT,BASE TABLE,Date,6,timestamp without time zone,timestamp,YES,False
+dbo,DailyConditionT,BASE TABLE,ConditionDateTime,7,timestamp without time zone,timestamp,YES,False
+dbo,DailyConditionT,BASE TABLE,ConditionTime,8,time without time zone,time,YES,False
+dbo,DailyConditionT,BASE TABLE,Dec Lat,9,double precision,float8,YES,False
+dbo,DailyConditionT,BASE TABLE,Dec Long,10,double precision,float8,YES,False
+dbo,DailyConditionT,BASE TABLE,% Cloud Cover,11,integer,int4,YES,False
+dbo,DailyConditionT,BASE TABLE,Beaufort,12,integer,int4,YES,False
+dbo,DailyConditionT,BASE TABLE,Precipitation,13,text,text,YES,False
+dbo,DailyConditionT,BASE TABLE,Quality,14,text,text,YES,False
+dbo,DailyConditionT,BASE TABLE,Swell,15,integer,int4,YES,False
+dbo,DailyConditionT,BASE TABLE,Visibility,16,text,text,YES,False
+dbo,DailyConditionT,BASE TABLE,Visibility (nm),17,text,text,YES,False
+dbo,DailyConditionT,BASE TABLE,Comments,18,text,text,YES,False
+dbo,DailyConditionT,BASE TABLE,SourceDB,19,text,text,YES,False
+dbo,DailyConditionT,BASE TABLE,daily_effort_id,20,bigint,int8,YES,False
+dbo,DailyConditionT,BASE TABLE,research_group_id,21,integer,int4,YES,False
+dbo,DailyConditionT,BASE TABLE,vessel_id,22,integer,int4,YES,False
+dbo,DailyConditionT,BASE TABLE,geom,23,USER-DEFINED,geometry,YES,False
+dbo,DailyConditionT,BASE TABLE,visibility_nm,24,numeric,numeric,YES,False
+dbo,DailyEffortT,BASE TABLE,id,1,bigint,int8,NO,True
+dbo,DailyEffortT,BASE TABLE,DailyEffortID,2,integer,int4,YES,False
+dbo,DailyEffortT,BASE TABLE,Research Group,3,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Vessel,4,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Date,5,timestamp without time zone,timestamp,YES,False
+dbo,DailyEffortT,BASE TABLE,Start Time,6,time without time zone,time,YES,False
+dbo,DailyEffortT,BASE TABLE,End Time,7,time without time zone,time,YES,False
+dbo,DailyEffortT,BASE TABLE,Distance Units,8,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Launch,9,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Locality,10,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Personnel,11,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,PhotoDataBy,12,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,PhotoDataDate,13,timestamp without time zone,timestamp,YES,False
+dbo,DailyEffortT,BASE TABLE,Project/Objective,14,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Record Source,15,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Region,16,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Return,17,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Sub-area,18,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Survey Comments,19,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Survey Type,20,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Time Off Effort,21,time without time zone,time,YES,False
+dbo,DailyEffortT,BASE TABLE,Total Distance,22,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Total Survey Effort,23,time without time zone,time,YES,False
+dbo,DailyEffortT,BASE TABLE,SourceDB,24,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,Start Dec Lat,25,double precision,float8,YES,False
+dbo,DailyEffortT,BASE TABLE,Start Dec Long,26,double precision,float8,YES,False
+dbo,DailyEffortT,BASE TABLE,End Dec Lat,27,double precision,float8,YES,False
+dbo,DailyEffortT,BASE TABLE,End Dec Long,28,double precision,float8,YES,False
+dbo,DailyEffortT,BASE TABLE,SentToAnnualDB,29,boolean,bool,YES,False
+dbo,DailyEffortT,BASE TABLE,Finalized,30,boolean,bool,YES,False
+dbo,DailyEffortT,BASE TABLE,MnSent,31,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,BmSent,32,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,ErSent,33,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,research_group_id,34,integer,int4,YES,False
+dbo,DailyEffortT,BASE TABLE,vessel_id,35,integer,int4,YES,False
+dbo,DailyEffortT,BASE TABLE,total_distance_nm,36,numeric,numeric,YES,False
+dbo,DailyEffortT,BASE TABLE,start_point,37,USER-DEFINED,geometry,YES,False
+dbo,DailyEffortT,BASE TABLE,end_point,38,USER-DEFINED,geometry,YES,False
+dbo,DailyEffortT,BASE TABLE,start_coord_source,39,text,text,YES,False
+dbo,DailyEffortT,BASE TABLE,end_coord_source,40,text,text,YES,False
+dbo,DailyEffortV,VIEW,DailyEffortID,1,integer,int4,YES,False
+dbo,DailyEffortV,VIEW,Research Group,2,text,text,YES,False
+dbo,DailyEffortV,VIEW,Vessel,3,text,text,YES,False
+dbo,DailyEffortV,VIEW,Date,4,timestamp without time zone,timestamp,YES,False
+dbo,DailyEffortV,VIEW,Start Time,5,time without time zone,time,YES,False
+dbo,DailyEffortV,VIEW,End Time,6,time without time zone,time,YES,False
+dbo,DailyEffortV,VIEW,Distance Units,7,text,text,YES,False
+dbo,DailyEffortV,VIEW,Launch,8,text,text,YES,False
+dbo,DailyEffortV,VIEW,Locality,9,text,text,YES,False
+dbo,DailyEffortV,VIEW,Personnel,10,text,text,YES,False
+dbo,DailyEffortV,VIEW,PhotoDataBy,11,text,text,YES,False
+dbo,DailyEffortV,VIEW,Project/Objective,12,text,text,YES,False
+dbo,DailyEffortV,VIEW,Record Source,13,text,text,YES,False
+dbo,DailyEffortV,VIEW,Region,14,text,text,YES,False
+dbo,DailyEffortV,VIEW,Return,15,text,text,YES,False
+dbo,DailyEffortV,VIEW,Sub-area,16,text,text,YES,False
+dbo,DailyEffortV,VIEW,Survey Comments,17,text,text,YES,False
+dbo,DailyEffortV,VIEW,Survey Type,18,text,text,YES,False
+dbo,DailyEffortV,VIEW,Time Off Effort,19,time without time zone,time,YES,False
+dbo,DailyEffortV,VIEW,Total Distance,20,text,text,YES,False
+dbo,DailyEffortV,VIEW,Total Survey Effort,21,time without time zone,time,YES,False
+dbo,DailyEffortV,VIEW,SourceDB,22,text,text,YES,False
+dbo,DailyEffortV,VIEW,Start Dec Lat,23,double precision,float8,YES,False
+dbo,DailyEffortV,VIEW,Start Dec Long,24,double precision,float8,YES,False
+dbo,DailyEffortV,VIEW,End Dec Lat,25,double precision,float8,YES,False
+dbo,DailyEffortV,VIEW,End Dec Long,26,double precision,float8,YES,False
+dbo,DailyEffortV,VIEW,TrackFileName,27,text,text,YES,False
+dbo,DailyEffortV,VIEW,TrackFileType,28,text,text,YES,False
+dbo,DailyEffortV,VIEW,Useable,29,boolean,bool,YES,False
+dbo,DailyEffortV,VIEW,HitRate,30,text,text,YES,False
+dbo,DailyEffortV,VIEW,TrackFileSize,31,text,text,YES,False
+dbo,DailyEffortV,VIEW,TrackComments,32,text,text,YES,False
+dbo,DailyEffortV,VIEW,TrackStartTime,33,timestamp without time zone,timestamp,YES,False
+dbo,DailyEffortV,VIEW,TrackEndTime,34,timestamp without time zone,timestamp,YES,False
+dbo,DailyEffortV,VIEW,GPSPointCount,35,double precision,float8,YES,False
+dbo,DailyEffortV,VIEW,TrackDuration,36,double precision,float8,YES,False
+dbo,DailyEventT,BASE TABLE,id,1,bigint,int8,NO,True
+dbo,DailyEventT,BASE TABLE,DailyEventID,2,integer,int4,YES,False
+dbo,DailyEventT,BASE TABLE,DailyEffortID,3,integer,int4,YES,False
+dbo,DailyEventT,BASE TABLE,Research Group,4,text,text,YES,False
+dbo,DailyEventT,BASE TABLE,Date,5,timestamp without time zone,timestamp,YES,False
+dbo,DailyEventT,BASE TABLE,Vessel,6,text,text,YES,False
+dbo,DailyEventT,BASE TABLE,Time,7,time without time zone,time,YES,False
+dbo,DailyEventT,BASE TABLE,Code,8,text,text,YES,False
+dbo,DailyEventT,BASE TABLE,Dec Lat,9,double precision,float8,YES,False
+dbo,DailyEventT,BASE TABLE,Dec Long,10,double precision,float8,YES,False
+dbo,DailyEventT,BASE TABLE,Line,11,text,text,YES,False
+dbo,DailyEventT,BASE TABLE,ObsL,12,text,text,YES,False
+dbo,DailyEventT,BASE TABLE,ObsR,13,text,text,YES,False
+dbo,DailyEventT,BASE TABLE,Rec,14,text,text,YES,False
+dbo,DailyEventT,BASE TABLE,Comments,15,text,text,YES,False
+dbo,DailyEventT,BASE TABLE,SourceDB,16,text,text,YES,False
+dbo,DailyEventT,BASE TABLE,EventDateTime,17,timestamp without time zone,timestamp,YES,False
+dbo,DailyEventT,BASE TABLE,daily_effort_id,18,bigint,int8,YES,False
+dbo,DailyEventT,BASE TABLE,research_group_id,19,integer,int4,YES,False
+dbo,DailyEventT,BASE TABLE,vessel_id,20,integer,int4,YES,False
+dbo,DailyEventT,BASE TABLE,event_code_id,21,integer,int4,YES,False
+dbo,DailyEventT,BASE TABLE,geom,22,USER-DEFINED,geometry,YES,False
+dbo,EventCodeT,BASE TABLE,EventCodeID,1,integer,int4,NO,True
+dbo,EventCodeT,BASE TABLE,EventCode,2,text,text,YES,False
+dbo,EventCodeT,BASE TABLE,CodeDescription,3,text,text,YES,False
+dbo,EventCodeT,BASE TABLE,SortOrder,4,integer,int4,YES,False
+dbo,EventCodeT,BASE TABLE,name,5,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,id,1,bigint,int8,NO,True
+dbo,IdentificationT,BASE TABLE,IdentificationID,2,integer,int4,YES,False
+dbo,IdentificationT,BASE TABLE,DailyEffortID,3,integer,int4,YES,False
+dbo,IdentificationT,BASE TABLE,SightingID,4,integer,int4,YES,False
+dbo,IdentificationT,BASE TABLE,IndividualID,5,integer,int4,YES,False
+dbo,IdentificationT,BASE TABLE,Research Group,6,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Vessel,7,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Date,8,timestamp without time zone,timestamp,YES,False
+dbo,IdentificationT,BASE TABLE,Sighting,9,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Beh Role,10,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Best Fluke,11,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Best Left,12,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Best Right,13,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Best Tail Stock,14,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Biopsy Photo,15,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Category,16,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,CRC ID,17,integer,int4,YES,False
+dbo,IdentificationT,BASE TABLE,Field ID,18,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,FieldID,19,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,ForeLeft,20,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,ForeRight,21,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,HW ID,22,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,TempID,23,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,MatchPQ?,24,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,MatchNotes,25,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,MeasureAngle,26,integer,int4,YES,False
+dbo,IdentificationT,BASE TABLE,MeasureImage,27,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Other ID,28,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Qual F,29,integer,int4,YES,False
+dbo,IdentificationT,BASE TABLE,Qual L,30,integer,int4,YES,False
+dbo,IdentificationT,BASE TABLE,Qual R,31,integer,int4,YES,False
+dbo,IdentificationT,BASE TABLE,Record Type,32,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Scarring,33,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Scarring&Injury,34,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,ScarringInjury,35,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Tag #,36,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Tag Photo,37,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Tag Type,38,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,TagType,39,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Drone Image,40,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Comments,41,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,SourceDB,42,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,Species,43,text,text,YES,False
+dbo,IdentificationT,BASE TABLE,SentToMatching,44,date,date,YES,False
+dbo,IdentificationT,BASE TABLE,SentToMnID,45,date,date,YES,False
+dbo,IdentificationT,BASE TABLE,Tag,46,boolean,bool,YES,False
+dbo,IdentificationT,BASE TABLE,Priority,47,boolean,bool,YES,False
+dbo,IdentificationT,BASE TABLE,daily_effort_id,48,bigint,int8,YES,False
+dbo,IdentificationT,BASE TABLE,sighting_id,49,bigint,int8,YES,False
+dbo,IdentificationT,BASE TABLE,research_group_id,50,integer,int4,YES,False
+dbo,IdentificationT,BASE TABLE,vessel_id,51,integer,int4,YES,False
+dbo,IdentificationT,BASE TABLE,species_id,52,integer,int4,YES,False
+dbo,IdentificationsBySightingV,VIEW,DailyEffortID,1,integer,int4,YES,False
+dbo,IdentificationsBySightingV,VIEW,Research Group,2,text,text,YES,False
+dbo,IdentificationsBySightingV,VIEW,CRCID_list,3,text,text,YES,False
+dbo,IdentificationsBySightingV,VIEW,Vessel,4,text,text,YES,False
+dbo,IdentificationsBySightingV,VIEW,Date,5,timestamp without time zone,timestamp,YES,False
+dbo,IdentificationsBySightingV,VIEW,Sighting,6,text,text,YES,False
+dbo,IdentificationsBySightingV,VIEW,Start Time,7,time without time zone,time,YES,False
+dbo,IdentificationsBySightingV,VIEW,SightingID,8,integer,int4,YES,False
+dbo,IndividualT,BASE TABLE,IndividualID,1,integer,int4,NO,True
+dbo,IndividualT,BASE TABLE,Species,2,text,text,YES,False
+dbo,IndividualT,BASE TABLE,CRC ID,3,integer,int4,YES,False
+dbo,IndividualT,BASE TABLE,species_id,4,integer,int4,YES,False
+dbo,OtherSpeciesT,BASE TABLE,id,1,bigint,int8,NO,True
+dbo,OtherSpeciesT,BASE TABLE,OtherSpeciesID,2,integer,int4,YES,False
+dbo,OtherSpeciesT,BASE TABLE,DailyEffortID,3,integer,int4,YES,False
+dbo,OtherSpeciesT,BASE TABLE,Research Group,4,text,text,YES,False
+dbo,OtherSpeciesT,BASE TABLE,Vessel,5,text,text,YES,False
+dbo,OtherSpeciesT,BASE TABLE,Date,6,timestamp without time zone,timestamp,YES,False
+dbo,OtherSpeciesT,BASE TABLE,Sighting,7,text,text,YES,False
+dbo,OtherSpeciesT,BASE TABLE,Species,8,text,text,YES,False
+dbo,OtherSpeciesT,BASE TABLE,Class,9,text,text,YES,False
+dbo,OtherSpeciesT,BASE TABLE,Count,10,integer,int4,YES,False
+dbo,OtherSpeciesT,BASE TABLE,Comments,11,text,text,YES,False
+dbo,OtherSpeciesT,BASE TABLE,SourceDB,12,text,text,YES,False
+dbo,OtherSpeciesT,BASE TABLE,daily_effort_id,13,bigint,int8,YES,False
+dbo,OtherSpeciesT,BASE TABLE,sighting_id,14,bigint,int8,YES,False
+dbo,OtherSpeciesT,BASE TABLE,research_group_id,15,integer,int4,YES,False
+dbo,OtherSpeciesT,BASE TABLE,vessel_id,16,integer,int4,YES,False
+dbo,OtherSpeciesT,BASE TABLE,species_id,17,integer,int4,YES,False
+dbo,ResearchGroupT,BASE TABLE,ResearchGroupID,1,integer,int4,NO,True
+dbo,ResearchGroupT,BASE TABLE,Code,2,text,text,YES,False
+dbo,ResearchGroupT,BASE TABLE,ResearchGroup,3,text,text,YES,False
+dbo,SampleT,BASE TABLE,id,1,bigint,int8,NO,True
+dbo,SampleT,BASE TABLE,SampleID,2,integer,int4,YES,False
+dbo,SampleT,BASE TABLE,DailyEffortID,3,integer,int4,YES,False
+dbo,SampleT,BASE TABLE,SightingID,4,integer,int4,YES,False
+dbo,SampleT,BASE TABLE,SightingEventID,5,integer,int4,YES,False
+dbo,SampleT,BASE TABLE,IndividualID,6,integer,int4,YES,False
+dbo,SampleT,BASE TABLE,Species,7,text,text,YES,False
+dbo,SampleT,BASE TABLE,Research Group,8,text,text,YES,False
+dbo,SampleT,BASE TABLE,Vessel,9,text,text,YES,False
+dbo,SampleT,BASE TABLE,Date,10,timestamp without time zone,timestamp,YES,False
+dbo,SampleT,BASE TABLE,Sighting,11,text,text,YES,False
+dbo,SampleT,BASE TABLE,SampleTime,12,time without time zone,time,YES,False
+dbo,SampleT,BASE TABLE,Angle,13,text,text,YES,False
+dbo,SampleT,BASE TABLE,Certainty of Sample ID,14,text,text,YES,False
+dbo,SampleT,BASE TABLE,Distance,15,text,text,YES,False
+dbo,SampleT,BASE TABLE,Event,16,text,text,YES,False
+dbo,SampleT,BASE TABLE,Field ID,17,text,text,YES,False
+dbo,SampleT,BASE TABLE,Preservation,18,text,text,YES,False
+dbo,SampleT,BASE TABLE,Reaction,19,text,text,YES,False
+dbo,SampleT,BASE TABLE,Sample #,20,text,text,YES,False
+dbo,SampleT,BASE TABLE,Sample Number,21,text,text,YES,False
+dbo,SampleT,BASE TABLE,Sample Photo,22,text,text,YES,False
+dbo,SampleT,BASE TABLE,Sample Type,23,text,text,YES,False
+dbo,SampleT,BASE TABLE,Sampled by,24,text,text,YES,False
+dbo,SampleT,BASE TABLE,SampleEvent,25,text,text,YES,False
+dbo,SampleT,BASE TABLE,Comments,26,text,text,YES,False
+dbo,SampleT,BASE TABLE,SourceDB,27,text,text,YES,False
+dbo,SampleT,BASE TABLE,Latitude,28,double precision,float8,YES,False
+dbo,SampleT,BASE TABLE,Longitude,29,double precision,float8,YES,False
+dbo,SampleT,BASE TABLE,daily_effort_id,30,bigint,int8,YES,False
+dbo,SampleT,BASE TABLE,sighting_id,31,bigint,int8,YES,False
+dbo,SampleT,BASE TABLE,sighting_event_id,32,bigint,int8,YES,False
+dbo,SampleT,BASE TABLE,research_group_id,33,integer,int4,YES,False
+dbo,SampleT,BASE TABLE,vessel_id,34,integer,int4,YES,False
+dbo,SampleT,BASE TABLE,species_id,35,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_SightingID,1,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_DailyEffortID,2,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Research Group,3,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Vessel,4,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Date,5,timestamp without time zone,timestamp,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Sighting,6,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Species,7,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Start Time,8,time without time zone,time,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_StartDateTime,9,timestamp without time zone,timestamp,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Start Dec Lat,10,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Start Dec Long,11,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_End Time,12,time without time zone,time,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_EndDateTime,13,timestamp without time zone,timestamp,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_End Dec Lat,14,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_End Dec Long,15,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_TargetDecLat,16,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_TargetDecLong,17,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Est Size Best,18,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Est Size Max,19,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Est Size Min,20,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Acoustics,21,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Est ID,22,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Actual ID,23,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_AltSighting,24,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_AltVessel,25,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Angle,26,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Bearing,27,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_CloseApproachCount,28,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_D units,29,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Depth,30,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_DOT,31,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Frames 1,32,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Frames 2,33,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Frames 3,34,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_GEX,35,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_GEY,36,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Group Beh,37,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Group Type,38,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Heading,39,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Height,40,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Height1,41,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Loc Code,42,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_LocDesc,43,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Num Calves,44,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Obs,45,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Obs1,46,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Other Beh 1,47,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Other Beh 2,48,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Other Beh 3,49,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Permit,50,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Photographer 1,51,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Photographer 2,52,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Photographer 3,53,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Photos?,54,boolean,bool,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Position Type,55,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_PreyType,56,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Range,57,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_RangeSource,58,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_RangeSource1,59,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Reticle,60,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Reticle1,61,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Roll/File Number 1,62,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Roll/File Number 2,63,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Roll/File Number 3,64,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Scattering,65,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Series Number 1,66,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Series Number 2,67,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Series Number 3,68,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Sight Type,69,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Temp,70,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Total Samples,71,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Total Tags,72,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Comments,73,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_SourceDB,74,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_RG_hash,75,bytea,bytea,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Vessel_hash,76,bytea,bytea,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Sighting_hash,77,bytea,bytea,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_SightEvent,78,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_OtherSpecies,79,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Sighting_Sample Type,80,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_DailyEffortID,81,integer,int4,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Research Group,82,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Vessel,83,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Date,84,timestamp without time zone,timestamp,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Start Time,85,time without time zone,time,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_End Time,86,time without time zone,time,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Distance Units,87,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Launch,88,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Locality,89,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Personnel,90,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_PhotoDataBy,91,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Project/Objective,92,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Record Source,93,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Region,94,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Return,95,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Sub-area,96,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Survey Comments,97,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Survey Type,98,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Time Off Effort,99,time without time zone,time,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Total Distance,100,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Total Survey Effort,101,time without time zone,time,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_SourceDB,102,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Start Dec Lat,103,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Start Dec Long,104,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_End Dec Lat,105,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_End Dec Long,106,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_TrackFileName,107,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_TrackFileType,108,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_Useable,109,boolean,bool,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_HitRate,110,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_TrackFileSize,111,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_TrackComments,112,text,text,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_TrackStartTime,113,timestamp without time zone,timestamp,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_TrackEndTime,114,timestamp without time zone,timestamp,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_GPSPointCount,115,double precision,float8,YES,False
+dbo,SightingEffortTrackV,VIEW,Effort_TrackDuration,116,double precision,float8,YES,False
+dbo,SightingEventT,BASE TABLE,id,1,bigint,int8,NO,True
+dbo,SightingEventT,BASE TABLE,SightingEventID,2,integer,int4,YES,False
+dbo,SightingEventT,BASE TABLE,DailyEffortID,3,integer,int4,YES,False
+dbo,SightingEventT,BASE TABLE,Research Group,4,text,text,YES,False
+dbo,SightingEventT,BASE TABLE,Vessel,5,text,text,YES,False
+dbo,SightingEventT,BASE TABLE,Date,6,timestamp without time zone,timestamp,YES,False
+dbo,SightingEventT,BASE TABLE,EventTime,7,time without time zone,time,YES,False
+dbo,SightingEventT,BASE TABLE,EventDateTime,8,timestamp without time zone,timestamp,YES,False
+dbo,SightingEventT,BASE TABLE,Sighting,9,text,text,YES,False
+dbo,SightingEventT,BASE TABLE,EventID,10,text,text,YES,False
+dbo,SightingEventT,BASE TABLE,Bearing,11,text,text,YES,False
+dbo,SightingEventT,BASE TABLE,Dec Lat,12,double precision,float8,YES,False
+dbo,SightingEventT,BASE TABLE,Dec Long,13,double precision,float8,YES,False
+dbo,SightingEventT,BASE TABLE,Field ID,14,text,text,YES,False
+dbo,SightingEventT,BASE TABLE,NumReact,15,integer,int4,YES,False
+dbo,SightingEventT,BASE TABLE,PosType,16,text,text,YES,False
+dbo,SightingEventT,BASE TABLE,Range,17,integer,int4,YES,False
+dbo,SightingEventT,BASE TABLE,Reaction,18,text,text,YES,False
+dbo,SightingEventT,BASE TABLE,SightEvent,19,text,text,YES,False
+dbo,SightingEventT,BASE TABLE,SightEventComments,20,text,text,YES,False
+dbo,SightingEventT,BASE TABLE,SourceDB,21,text,text,YES,False
+dbo,SightingEventT,BASE TABLE,Time,22,time without time zone,time,YES,False
+dbo,SightingEventT,BASE TABLE,daily_effort_id,23,bigint,int8,YES,False
+dbo,SightingEventT,BASE TABLE,sighting_id,24,bigint,int8,YES,False
+dbo,SightingEventT,BASE TABLE,research_group_id,25,integer,int4,YES,False
+dbo,SightingEventT,BASE TABLE,vessel_id,26,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,id,1,bigint,int8,NO,True
+dbo,SightingT,BASE TABLE,SightingID,2,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,DailyEffortID,3,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,Research Group,4,text,text,YES,False
+dbo,SightingT,BASE TABLE,Vessel,5,text,text,YES,False
+dbo,SightingT,BASE TABLE,Date,6,timestamp without time zone,timestamp,YES,False
+dbo,SightingT,BASE TABLE,Sighting,7,text,text,YES,False
+dbo,SightingT,BASE TABLE,Species,8,text,text,YES,False
+dbo,SightingT,BASE TABLE,Start Time,9,time without time zone,time,YES,False
+dbo,SightingT,BASE TABLE,StartDateTime,10,timestamp without time zone,timestamp,YES,False
+dbo,SightingT,BASE TABLE,Start Dec Lat,11,double precision,float8,YES,False
+dbo,SightingT,BASE TABLE,Start Dec Long,12,double precision,float8,YES,False
+dbo,SightingT,BASE TABLE,End Time,13,time without time zone,time,YES,False
+dbo,SightingT,BASE TABLE,EndDateTime,14,timestamp without time zone,timestamp,YES,False
+dbo,SightingT,BASE TABLE,End Dec Lat,15,double precision,float8,YES,False
+dbo,SightingT,BASE TABLE,End Dec Long,16,double precision,float8,YES,False
+dbo,SightingT,BASE TABLE,TargetDecLat,17,double precision,float8,YES,False
+dbo,SightingT,BASE TABLE,TargetDecLong,18,double precision,float8,YES,False
+dbo,SightingT,BASE TABLE,Est Size Best,19,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,Est Size Max,20,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,Est Size Min,21,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,Acoustics,22,text,text,YES,False
+dbo,SightingT,BASE TABLE,Est ID,23,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,Actual ID,24,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,AltSighting,25,text,text,YES,False
+dbo,SightingT,BASE TABLE,AltVessel,26,text,text,YES,False
+dbo,SightingT,BASE TABLE,Angle,27,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,Bearing,28,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,CloseApproachCount,29,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,D units,30,text,text,YES,False
+dbo,SightingT,BASE TABLE,Depth,31,double precision,float8,YES,False
+dbo,SightingT,BASE TABLE,DOT,32,text,text,YES,False
+dbo,SightingT,BASE TABLE,Frames 1,33,text,text,YES,False
+dbo,SightingT,BASE TABLE,Frames 2,34,text,text,YES,False
+dbo,SightingT,BASE TABLE,Frames 3,35,text,text,YES,False
+dbo,SightingT,BASE TABLE,GEX,36,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,GEY,37,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,Group Beh,38,text,text,YES,False
+dbo,SightingT,BASE TABLE,Group Type,39,text,text,YES,False
+dbo,SightingT,BASE TABLE,Heading,40,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,Height,41,double precision,float8,YES,False
+dbo,SightingT,BASE TABLE,Height1,42,text,text,YES,False
+dbo,SightingT,BASE TABLE,Loc Code,43,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,LocDesc,44,text,text,YES,False
+dbo,SightingT,BASE TABLE,Num Calves,45,text,text,YES,False
+dbo,SightingT,BASE TABLE,Obs,46,text,text,YES,False
+dbo,SightingT,BASE TABLE,Obs1,47,text,text,YES,False
+dbo,SightingT,BASE TABLE,Other Beh 1,48,text,text,YES,False
+dbo,SightingT,BASE TABLE,Other Beh 2,49,text,text,YES,False
+dbo,SightingT,BASE TABLE,Other Beh 3,50,text,text,YES,False
+dbo,SightingT,BASE TABLE,Permit,51,text,text,YES,False
+dbo,SightingT,BASE TABLE,Photographer 1,52,text,text,YES,False
+dbo,SightingT,BASE TABLE,Photographer 2,53,text,text,YES,False
+dbo,SightingT,BASE TABLE,Photographer 3,54,text,text,YES,False
+dbo,SightingT,BASE TABLE,Photos?,55,boolean,bool,YES,False
+dbo,SightingT,BASE TABLE,Position Type,56,text,text,YES,False
+dbo,SightingT,BASE TABLE,PreyType,57,text,text,YES,False
+dbo,SightingT,BASE TABLE,Range,58,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,RangeSource,59,text,text,YES,False
+dbo,SightingT,BASE TABLE,RangeSource1,60,text,text,YES,False
+dbo,SightingT,BASE TABLE,Reticle,61,double precision,float8,YES,False
+dbo,SightingT,BASE TABLE,Reticle1,62,text,text,YES,False
+dbo,SightingT,BASE TABLE,Roll/File Number 1,63,text,text,YES,False
+dbo,SightingT,BASE TABLE,Roll/File Number 2,64,text,text,YES,False
+dbo,SightingT,BASE TABLE,Roll/File Number 3,65,text,text,YES,False
+dbo,SightingT,BASE TABLE,Scattering,66,text,text,YES,False
+dbo,SightingT,BASE TABLE,Series Number 1,67,text,text,YES,False
+dbo,SightingT,BASE TABLE,Series Number 2,68,text,text,YES,False
+dbo,SightingT,BASE TABLE,Series Number 3,69,text,text,YES,False
+dbo,SightingT,BASE TABLE,Sight Type,70,text,text,YES,False
+dbo,SightingT,BASE TABLE,Temp,71,text,text,YES,False
+dbo,SightingT,BASE TABLE,Total Samples,72,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,Total Tags,73,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,Comments,74,text,text,YES,False
+dbo,SightingT,BASE TABLE,SourceDB,75,text,text,YES,False
+dbo,SightingT,BASE TABLE,RG_hash,76,bytea,bytea,YES,False
+dbo,SightingT,BASE TABLE,Vessel_hash,77,bytea,bytea,YES,False
+dbo,SightingT,BASE TABLE,Sighting_hash,78,bytea,bytea,YES,False
+dbo,SightingT,BASE TABLE,daily_effort_id,79,bigint,int8,YES,False
+dbo,SightingT,BASE TABLE,research_group_id,80,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,vessel_id,81,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,species_id,82,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,identified_individual_count,83,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,geom,84,USER-DEFINED,geometry,YES,False
+dbo,SightingT,BASE TABLE,end_geom,85,USER-DEFINED,geometry,YES,False
+dbo,SightingT,BASE TABLE,num_calves,86,integer,int4,YES,False
+dbo,SightingT,BASE TABLE,depth_m,87,numeric,numeric,YES,False
+dbo,SightingT,BASE TABLE,species_uncertain,88,boolean,bool,YES,False
+dbo,SightingV,VIEW,SightingID,1,integer,int4,YES,False
+dbo,SightingV,VIEW,DailyEffortID,2,integer,int4,YES,False
+dbo,SightingV,VIEW,Research Group,3,text,text,YES,False
+dbo,SightingV,VIEW,Vessel,4,text,text,YES,False
+dbo,SightingV,VIEW,Date,5,timestamp without time zone,timestamp,YES,False
+dbo,SightingV,VIEW,Sighting,6,text,text,YES,False
+dbo,SightingV,VIEW,Species,7,text,text,YES,False
+dbo,SightingV,VIEW,Start Time,8,time without time zone,time,YES,False
+dbo,SightingV,VIEW,StartDateTime,9,timestamp without time zone,timestamp,YES,False
+dbo,SightingV,VIEW,Start Dec Lat,10,double precision,float8,YES,False
+dbo,SightingV,VIEW,Start Dec Long,11,double precision,float8,YES,False
+dbo,SightingV,VIEW,End Time,12,time without time zone,time,YES,False
+dbo,SightingV,VIEW,EndDateTime,13,timestamp without time zone,timestamp,YES,False
+dbo,SightingV,VIEW,End Dec Lat,14,double precision,float8,YES,False
+dbo,SightingV,VIEW,End Dec Long,15,double precision,float8,YES,False
+dbo,SightingV,VIEW,TargetDecLat,16,double precision,float8,YES,False
+dbo,SightingV,VIEW,TargetDecLong,17,double precision,float8,YES,False
+dbo,SightingV,VIEW,Est Size Best,18,integer,int4,YES,False
+dbo,SightingV,VIEW,Est Size Max,19,integer,int4,YES,False
+dbo,SightingV,VIEW,Est Size Min,20,integer,int4,YES,False
+dbo,SightingV,VIEW,Acoustics,21,text,text,YES,False
+dbo,SightingV,VIEW,Est ID,22,integer,int4,YES,False
+dbo,SightingV,VIEW,Actual ID,23,integer,int4,YES,False
+dbo,SightingV,VIEW,AltSighting,24,text,text,YES,False
+dbo,SightingV,VIEW,AltVessel,25,text,text,YES,False
+dbo,SightingV,VIEW,Angle,26,integer,int4,YES,False
+dbo,SightingV,VIEW,Bearing,27,integer,int4,YES,False
+dbo,SightingV,VIEW,CloseApproachCount,28,integer,int4,YES,False
+dbo,SightingV,VIEW,D units,29,text,text,YES,False
+dbo,SightingV,VIEW,Depth,30,double precision,float8,YES,False
+dbo,SightingV,VIEW,DOT,31,text,text,YES,False
+dbo,SightingV,VIEW,Frames 1,32,text,text,YES,False
+dbo,SightingV,VIEW,Frames 2,33,text,text,YES,False
+dbo,SightingV,VIEW,Frames 3,34,text,text,YES,False
+dbo,SightingV,VIEW,GEX,35,integer,int4,YES,False
+dbo,SightingV,VIEW,GEY,36,integer,int4,YES,False
+dbo,SightingV,VIEW,Group Beh,37,text,text,YES,False
+dbo,SightingV,VIEW,Group Type,38,text,text,YES,False
+dbo,SightingV,VIEW,Heading,39,integer,int4,YES,False
+dbo,SightingV,VIEW,Height,40,double precision,float8,YES,False
+dbo,SightingV,VIEW,Height1,41,text,text,YES,False
+dbo,SightingV,VIEW,Loc Code,42,integer,int4,YES,False
+dbo,SightingV,VIEW,LocDesc,43,text,text,YES,False
+dbo,SightingV,VIEW,Num Calves,44,text,text,YES,False
+dbo,SightingV,VIEW,Obs,45,text,text,YES,False
+dbo,SightingV,VIEW,Obs1,46,text,text,YES,False
+dbo,SightingV,VIEW,Other Beh 1,47,text,text,YES,False
+dbo,SightingV,VIEW,Other Beh 2,48,text,text,YES,False
+dbo,SightingV,VIEW,Other Beh 3,49,text,text,YES,False
+dbo,SightingV,VIEW,Permit,50,text,text,YES,False
+dbo,SightingV,VIEW,Photographer 1,51,text,text,YES,False
+dbo,SightingV,VIEW,Photographer 2,52,text,text,YES,False
+dbo,SightingV,VIEW,Photographer 3,53,text,text,YES,False
+dbo,SightingV,VIEW,Photos?,54,boolean,bool,YES,False
+dbo,SightingV,VIEW,Position Type,55,text,text,YES,False
+dbo,SightingV,VIEW,PreyType,56,text,text,YES,False
+dbo,SightingV,VIEW,Range,57,integer,int4,YES,False
+dbo,SightingV,VIEW,RangeSource,58,text,text,YES,False
+dbo,SightingV,VIEW,RangeSource1,59,text,text,YES,False
+dbo,SightingV,VIEW,Reticle,60,double precision,float8,YES,False
+dbo,SightingV,VIEW,Reticle1,61,text,text,YES,False
+dbo,SightingV,VIEW,Roll/File Number 1,62,text,text,YES,False
+dbo,SightingV,VIEW,Roll/File Number 2,63,text,text,YES,False
+dbo,SightingV,VIEW,Roll/File Number 3,64,text,text,YES,False
+dbo,SightingV,VIEW,Scattering,65,text,text,YES,False
+dbo,SightingV,VIEW,Series Number 1,66,text,text,YES,False
+dbo,SightingV,VIEW,Series Number 2,67,text,text,YES,False
+dbo,SightingV,VIEW,Series Number 3,68,text,text,YES,False
+dbo,SightingV,VIEW,Sight Type,69,text,text,YES,False
+dbo,SightingV,VIEW,Temp,70,text,text,YES,False
+dbo,SightingV,VIEW,Total Samples,71,integer,int4,YES,False
+dbo,SightingV,VIEW,Total Tags,72,integer,int4,YES,False
+dbo,SightingV,VIEW,Comments,73,text,text,YES,False
+dbo,SightingV,VIEW,SourceDB,74,text,text,YES,False
+dbo,SightingV,VIEW,RG_hash,75,bytea,bytea,YES,False
+dbo,SightingV,VIEW,Vessel_hash,76,bytea,bytea,YES,False
+dbo,SightingV,VIEW,Sighting_hash,77,bytea,bytea,YES,False
+dbo,SightingV,VIEW,SightEvent,78,text,text,YES,False
+dbo,SightingV,VIEW,OtherSpecies,79,text,text,YES,False
+dbo,SightingV,VIEW,Sample Type,80,text,text,YES,False
+dbo,SourceT,BASE TABLE,SourceID,1,integer,int4,NO,True
+dbo,SourceT,BASE TABLE,Source,2,text,text,YES,False
+dbo,SpeciesSummaryByEffortV,VIEW,Species,1,text,text,YES,False
+dbo,SpeciesSummaryByEffortV,VIEW,SpeciesCount,2,bigint,int8,YES,False
+dbo,SpeciesSummaryByEffortV,VIEW,DailyEffortID,3,integer,int4,YES,False
+dbo,SpeciesT,BASE TABLE,SpeciesID,1,integer,int4,NO,True
+dbo,SpeciesT,BASE TABLE,CommonName,2,text,text,YES,False
+dbo,SpeciesT,BASE TABLE,Abbreviation,3,text,text,YES,False
+dbo,SpeciesT,BASE TABLE,Order,4,text,text,YES,False
+dbo,SpeciesT,BASE TABLE,Genus,5,text,text,YES,False
+dbo,SpeciesT,BASE TABLE,Species,6,text,text,YES,False
+dbo,SpeciesT,BASE TABLE,Class,7,text,text,YES,False
+dbo,SpeciesT,BASE TABLE,Type,8,text,text,YES,False
+dbo,SpeciesT,BASE TABLE,SortOrder,9,integer,int4,YES,False
+dbo,SpeciesT,BASE TABLE,TypeSort,10,integer,int4,YES,False
+dbo,SpeciesT,BASE TABLE,category,11,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,TagSummaryID,1,integer,int4,NO,True
+dbo,TagSummaryT,BASE TABLE,DailyEffortID,2,integer,int4,YES,False
+dbo,TagSummaryT,BASE TABLE,Research Group,3,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,Vessel,4,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,Date,5,timestamp without time zone,timestamp,YES,False
+dbo,TagSummaryT,BASE TABLE,Sighting,6,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,Attachment,7,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,CallTypes,8,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,CEE,9,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,DataCollected,10,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,DeployBodyLoc,11,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,DeployDateTime,12,timestamp without time zone,timestamp,YES,False
+dbo,TagSummaryT,BASE TABLE,DeployRxn,13,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,DeployTime,14,time without time zone,time,YES,False
+dbo,TagSummaryT,BASE TABLE,DeployType,15,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,Descriptions,16,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,DiveTypes,17,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,Field ID,18,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,GPSTrackSource,19,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,HoursData,20,double precision,float8,YES,False
+dbo,TagSummaryT,BASE TABLE,HoursTotal,21,double precision,float8,YES,False
+dbo,TagSummaryT,BASE TABLE,PlaybackEnd,22,time without time zone,time,YES,False
+dbo,TagSummaryT,BASE TABLE,PlaybackStart,23,time without time zone,time,YES,False
+dbo,TagSummaryT,BASE TABLE,PlaybackType,24,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,PreyData,25,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,RecoverDateTime,26,time without time zone,time,YES,False
+dbo,TagSummaryT,BASE TABLE,Segments,27,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,SonarLogFilename,28,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,Tag#,29,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,TagDataFilename,30,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,TagOffDateTime,31,timestamp without time zone,timestamp,YES,False
+dbo,TagSummaryT,BASE TABLE,TagType,32,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,VHFChannel,33,double precision,float8,YES,False
+dbo,TagSummaryT,BASE TABLE,Video,34,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,TagComments,35,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,SourceDB,36,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,Playback,37,text,text,YES,False
+dbo,TagSummaryT,BASE TABLE,RecoverDate,38,timestamp without time zone,timestamp,YES,False
+dbo,TagSummaryT,BASE TABLE,RecoverTime,39,timestamp without time zone,timestamp,YES,False
+dbo,TagSummaryT,BASE TABLE,TagOffDate,40,timestamp without time zone,timestamp,YES,False
+dbo,TagSummaryT,BASE TABLE,TagOffTime,41,timestamp without time zone,timestamp,YES,False
+dbo,TagSummaryT,BASE TABLE,daily_effort_id,42,bigint,int8,YES,False
+dbo,TagSummaryT,BASE TABLE,sighting_id,43,bigint,int8,YES,False
+dbo,TagSummaryT,BASE TABLE,research_group_id,44,integer,int4,YES,False
+dbo,TagSummaryT,BASE TABLE,vessel_id,45,integer,int4,YES,False
+dbo,TagSummaryV,VIEW,TagSummaryID,1,integer,int4,YES,False
+dbo,TagSummaryV,VIEW,DailyEffortID,2,integer,int4,YES,False
+dbo,TagSummaryV,VIEW,Research Group,3,text,text,YES,False
+dbo,TagSummaryV,VIEW,Vessel,4,text,text,YES,False
+dbo,TagSummaryV,VIEW,Date,5,timestamp without time zone,timestamp,YES,False
+dbo,TagSummaryV,VIEW,Sighting,6,text,text,YES,False
+dbo,TagSummaryV,VIEW,Attachment,7,text,text,YES,False
+dbo,TagSummaryV,VIEW,CallTypes,8,text,text,YES,False
+dbo,TagSummaryV,VIEW,CEE,9,text,text,YES,False
+dbo,TagSummaryV,VIEW,DataCollected,10,text,text,YES,False
+dbo,TagSummaryV,VIEW,DeployBodyLoc,11,text,text,YES,False
+dbo,TagSummaryV,VIEW,DeployDateTime,12,timestamp without time zone,timestamp,YES,False
+dbo,TagSummaryV,VIEW,DeployRxn,13,text,text,YES,False
+dbo,TagSummaryV,VIEW,DeployTime,14,time without time zone,time,YES,False
+dbo,TagSummaryV,VIEW,DeployType,15,text,text,YES,False
+dbo,TagSummaryV,VIEW,Descriptions,16,text,text,YES,False
+dbo,TagSummaryV,VIEW,DiveTypes,17,text,text,YES,False
+dbo,TagSummaryV,VIEW,Field_ID,18,text,text,YES,False
+dbo,TagSummaryV,VIEW,GPSTrackSource,19,text,text,YES,False
+dbo,TagSummaryV,VIEW,HoursData,20,double precision,float8,YES,False
+dbo,TagSummaryV,VIEW,HoursTotal,21,double precision,float8,YES,False
+dbo,TagSummaryV,VIEW,PlaybackEnd,22,time without time zone,time,YES,False
+dbo,TagSummaryV,VIEW,PlaybackStart,23,time without time zone,time,YES,False
+dbo,TagSummaryV,VIEW,PlaybackType,24,text,text,YES,False
+dbo,TagSummaryV,VIEW,PreyData,25,text,text,YES,False
+dbo,TagSummaryV,VIEW,RecoverDateTime,26,time without time zone,time,YES,False
+dbo,TagSummaryV,VIEW,Segments,27,text,text,YES,False
+dbo,TagSummaryV,VIEW,SonarLogFilename,28,text,text,YES,False
+dbo,TagSummaryV,VIEW,TagNum,29,text,text,YES,False
+dbo,TagSummaryV,VIEW,TagDataFilename,30,text,text,YES,False
+dbo,TagSummaryV,VIEW,TagOffDateTime,31,timestamp without time zone,timestamp,YES,False
+dbo,TagSummaryV,VIEW,TagType,32,text,text,YES,False
+dbo,TagSummaryV,VIEW,VHFChannel,33,double precision,float8,YES,False
+dbo,TagSummaryV,VIEW,Video,34,text,text,YES,False
+dbo,TagSummaryV,VIEW,TagComments,35,text,text,YES,False
+dbo,TagSummaryV,VIEW,SourceDB,36,text,text,YES,False
+dbo,TagSummaryV,VIEW,Start Dec Lat,37,double precision,float8,YES,False
+dbo,TagSummaryV,VIEW,Start Dec Long,38,double precision,float8,YES,False
+dbo,TagSummaryV,VIEW,Launch,39,text,text,YES,False
+dbo,TagSummaryV,VIEW,Locality,40,text,text,YES,False
+dbo,TagSummaryV,VIEW,Species,41,text,text,YES,False
+dbo,TagSummaryV,VIEW,Est Size Best,42,integer,int4,YES,False
+dbo,TrackCompleteCodeT,BASE TABLE,TrackCompleteCodeID,1,integer,int4,NO,True
+dbo,TrackCompleteCodeT,BASE TABLE,TrackCompleteCode,2,text,text,YES,False
+dbo,TrackCompleteCodeT,BASE TABLE,SortOrder,3,integer,int4,YES,False
+dbo,TrackT,BASE TABLE,TrackID,1,integer,int4,NO,True
+dbo,TrackT,BASE TABLE,UnifiedDB_DailyEffortID,2,integer,int4,YES,False
+dbo,TrackT,BASE TABLE,ResearchGroupID,3,integer,int4,YES,False
+dbo,TrackT,BASE TABLE,TrackCompleteCodeID,4,integer,int4,YES,False
+dbo,TrackT,BASE TABLE,VesselID,5,integer,int4,YES,False
+dbo,TrackT,BASE TABLE,SourceID,6,integer,int4,YES,False
+dbo,TrackT,BASE TABLE,SurveyDate,7,date,date,YES,False
+dbo,TrackT,BASE TABLE,TrackFileName,8,text,text,YES,False
+dbo,TrackT,BASE TABLE,TrackFileType,9,text,text,YES,False
+dbo,TrackT,BASE TABLE,Useable,10,boolean,bool,YES,False
+dbo,TrackT,BASE TABLE,HitRate,11,text,text,YES,False
+dbo,TrackT,BASE TABLE,TrackFileSize,12,text,text,YES,False
+dbo,TrackT,BASE TABLE,Comments,13,text,text,YES,False
+dbo,TrackT,BASE TABLE,StartTime,14,timestamp without time zone,timestamp,YES,False
+dbo,TrackT,BASE TABLE,EndTime,15,timestamp without time zone,timestamp,YES,False
+dbo,TrackT,BASE TABLE,GPSPointCount,16,double precision,float8,YES,False
+dbo,TrackT,BASE TABLE,TrackDuration,17,double precision,float8,YES,False
+dbo,TrackT,BASE TABLE,EffortID,18,integer,int4,YES,False
+dbo,TrackT,BASE TABLE,Research Group,19,text,text,YES,False
+dbo,TrackT,BASE TABLE,Vessel,20,text,text,YES,False
+dbo,TrackT,BASE TABLE,daily_effort_id,21,bigint,int8,YES,False
+dbo,TrackT,BASE TABLE,vessel_id,22,integer,int4,YES,False
+dbo,TrackT,BASE TABLE,geom,23,USER-DEFINED,geometry,YES,False
+dbo,TrackT,BASE TABLE,length_nm,24,numeric,numeric,YES,False
+dbo,TrackT,BASE TABLE,point_count,25,integer,int4,YES,False
+dbo,TrackT,BASE TABLE,track_status,26,text,text,YES,False
+dbo,TrackT,BASE TABLE,file_name,27,text,text,YES,False
+dbo,TrackV,VIEW,TrackID,1,integer,int4,YES,False
+dbo,TrackV,VIEW,EffortID,2,integer,int4,YES,False
+dbo,TrackV,VIEW,ResearchGroupID,3,integer,int4,YES,False
+dbo,TrackV,VIEW,TrackCompleteCodeID,4,integer,int4,YES,False
+dbo,TrackV,VIEW,VesselID,5,integer,int4,YES,False
+dbo,TrackV,VIEW,SourceID,6,integer,int4,YES,False
+dbo,TrackV,VIEW,SurveyDate,7,date,date,YES,False
+dbo,TrackV,VIEW,TrackFileName,8,text,text,YES,False
+dbo,TrackV,VIEW,TrackFileType,9,text,text,YES,False
+dbo,TrackV,VIEW,Useable,10,boolean,bool,YES,False
+dbo,TrackV,VIEW,HitRate,11,text,text,YES,False
+dbo,TrackV,VIEW,TrackFileSize,12,text,text,YES,False
+dbo,TrackV,VIEW,Comments,13,text,text,YES,False
+dbo,TrackV,VIEW,StartTime,14,timestamp without time zone,timestamp,YES,False
+dbo,TrackV,VIEW,EndTime,15,timestamp without time zone,timestamp,YES,False
+dbo,TrackV,VIEW,GPSPointCount,16,double precision,float8,YES,False
+dbo,TrackV,VIEW,TrackDuration,17,double precision,float8,YES,False
+dbo,TrackV,VIEW,Source,18,text,text,YES,False
+dbo,TrackV,VIEW,Research Group,19,text,text,YES,False
+dbo,TrackV,VIEW,VesselName,20,text,text,YES,False
+dbo,TrackV,VIEW,VesselCode,21,text,text,YES,False
+dbo,TrackV,VIEW,TrackCompleteCode,22,text,text,YES,False
+dbo,VesselListT,BASE TABLE,vessel_id,1,integer,int4,NO,True
+dbo,VesselListT,BASE TABLE,code,2,text,text,YES,False
+dbo,VesselListT,BASE TABLE,name,3,text,text,YES,False
+dbo,VesselListT,BASE TABLE,legacy_vessel_id,4,integer,int4,YES,False

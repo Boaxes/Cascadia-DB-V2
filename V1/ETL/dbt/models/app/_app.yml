@@ -1,0 +1,11 @@
+models:
+  - name: rule_column
+    config:
+      meta:
+        structure:
+          primary_key: [target_table, column_name, rule_id]
+    columns:
+      - {name: rule_id, data_type: text, config: {meta: {not_null: true}}}
+      - {name: description, data_type: text, config: {meta: {not_null: true}}}
+      - {name: target_table, data_type: text, config: {meta: {not_null: true}}}
+      - {name: column_name, data_type: text, config: {meta: {not_null: true}}}

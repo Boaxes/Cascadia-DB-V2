@@ -1,0 +1,82 @@
+{% load static %}<!doctype html>
+<html lang="en" data-colour-profile="{{ colour_profile }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Sightings and Effort Explorer{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'survey/app.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+<header class="site-header">
+  {% comment %} The admin pages put their own name and links in this bar. {% endcomment %}
+  <a class="brand" href="{% block brand_url %}{% url 'explore' %}{% endblock %}">
+    <img src="{% static 'survey/cascadia-logo.png' %}" alt="Cascadia Research Collective">
+    <span>{% block brand %}Sightings and Effort Explorer{% endblock %}</span>
+  </a>
+  <nav>
+    {% block nav %}
+    <a href="{% url 'explore' %}"       class="{% if section == 'explore' %}active{% endif %}">Explore</a>
+    <a href="{% url 'effort_list' %}"   class="{% if section == 'efforts' %}active{% endif %}">Efforts</a>
+    <a href="{% url 'sighting_list' %}" class="{% if section == 'sightings' %}active{% endif %}">Sightings</a>
+    <a href="{% url 'export' %}"        class="{% if section == 'export' %}active{% endif %}">Export</a>
+    {% endblock %}
+  </nav>
+  {% if user.is_authenticated %}
+    <details class="profile">
+      <summary aria-label="Account">
+        <span class="avatar">{% if user.first_name %}{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}{% else %}{{ user.username|first|upper }}{% endif %}</span>
+        <span class="profile-name">{{ user.first_name|default:user.username }}</span>
+      </summary>
+      <div class="profile-menu">
+        <div class="profile-who"><strong>{{ user.get_full_name|default:user.username }}</strong></div>
+        {% if section == "admin" %}<a class="menu-back" href="{% url 'explore' %}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Back to the site</a>
+        {% elif user.is_staff %}<a class="menu-admin" href="/admin/">Admin</a>{% endif %}
+        {% comment %} Django logs out on a POST only, so this is a form. {% endcomment %}
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">Sign Out</button></form>
+      </div>
+    </details>
+  {% endif %}
+</header>
+
+{% block body %}
+  <main class="page {% block page_class %}{% endblock %}">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+{% endblock %}
+
+{% comment %}
+  Detail pages open in a modal over the list while keeping their own URL.
+  modal.js fetches the ordinary page and lifts #detail out of it.
+{% endcomment %}
+<div id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-box">
+    {% comment %}
+      The record's title and tools are moved into this bar by modal.js, so
+      the bar sits above the scrolling content rather than inside it.
+    {% endcomment %}
+    <div class="modal-bar">
+      <button class="modal-back" type="button" hidden>&larr; Back</button>
+      <div class="modal-title"></div>
+      <button class="modal-close" type="button" aria-label="Close">&times;</button>
+    </div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script src="{% static 'survey/modal.js' %}"></script>
+<script src="{% static 'survey/tip.js' %}"></script>
+<script src="{% static 'survey/cards.js' %}"></script>
+<script src="{% static 'survey/tagpicker.js' %}"></script>
+<script src="{% static 'survey/filters.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

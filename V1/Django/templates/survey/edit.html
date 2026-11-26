@@ -1,0 +1,101 @@
+{% extends "survey/base.html" %}
+{% load survey_tags %}
+{% block title %}Edit {{ label }} {{ pk }} &middot; Sightings and Effort Explorer{% endblock %}
+
+{% block content %}
+{# Lifted into the pop-over by modal.js, like a record's detail. #}
+<div id="detail">
+<div class="detail-head"><h1>Edit {{ label }} {{ pk }}</h1></div>
+
+{% if pending %}
+  {# Step two. The form has been filled in; this is what it would do. #}
+  <div class="card">
+    <h2>Confirm these changes</h2>
+    <p class="small muted">
+      {{ pending|length }} field{{ pending|length|pluralize }} will change on
+      <strong>{{ label }} {{ pk }}</strong>. Everything else stays as it is.
+      The change is recorded in the audit log under your name and can be undone
+      from there.
+    </p>
+
+    <table class="data confirm-table">
+      <thead><tr><th>Field</th><th>From</th><th>To</th></tr></thead>
+      <tbody>
+        {% for row in pending_rows %}
+          <tr>
+            <td>{{ row.label }}</td>
+            <td class="was">{% if row.old %}{{ row.old }}{% else %}<em class="muted">empty</em>{% endif %}</td>
+            <td class="now"><strong>{% if row.new %}{{ row.new }}{% else %}<em class="muted">empty</em>{% endif %}</strong></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <form method="post" style="margin-top:16px">
+      {% csrf_token %}
+      {% for field in fields %}
+        <input type="hidden" name="{{ field.name }}"
+               value="{{ values|lookup:field.column|default_if_none:'' }}">
+      {% endfor %}
+      <label for="comment" class="stacked">Why (optional)</label>
+      <textarea id="comment" name="comment" rows="2"
+                placeholder="A note for whoever reads this later.">{{ comment }}</textarea>
+      <p style="margin-top:12px">
+        <input type="hidden" name="confirmed" value="1">
+        <button class="btn btn-primary" type="submit">Save these changes</button>
+        <a class="btn" href="{{ back }}">Cancel</a>
+      </p>
+    </form>
+  </div>
+{% else %}
+  {# Step one. #}
+  <p class="small muted">
+    Change what needs correcting and continue. Nothing is saved until you have
+    seen a list of exactly what is changing.
+  </p>
+
+  {# Review stays off until a field actually changes (cards.js). #}
+  <form method="post" data-needs-change>
+    {% csrf_token %}
+    <div class="card">
+      <div class="edit-grid">
+        {% for field in fields %}
+          <div class="edit-field">
+            <label for="{{ field.name }}">{{ field.label }}</label>
+            {% if field.kind == "species" %}
+              <select id="{{ field.name }}" name="{{ field.name }}">
+                <option value="">Not identified</option>
+                {% for s in species_list %}
+                  <option value="{{ s.id }}"
+                    {% if values|lookup:field.column == s.id %}selected{% endif %}>{{ s }}</option>
+                {% endfor %}
+              </select>
+            {% elif field.kind == "textarea" %}
+              <textarea id="{{ field.name }}" name="{{ field.name }}" rows="3">{{ values|lookup:field.column|default_if_none:"" }}</textarea>
+            {% elif field.choices %}
+              <select id="{{ field.name }}" name="{{ field.name }}">
+                <option value=""></option>
+                {% for choice in field.choices %}
+                  <option value="{{ choice }}"
+                    {% if values|lookup:field.column == choice %}selected{% endif %}>{{ choice }}</option>
+                {% endfor %}
+              </select>
+            {% else %}
+              <input id="{{ field.name }}" name="{{ field.name }}"
+                     type="{% if field.kind == 'date' %}date{% elif field.kind == 'time' %}time{% elif field.kind == 'number' %}number{% elif field.kind == 'integer' %}number{% else %}text{% endif %}"
+                     {% if field.kind == "number" %}step="any"{% elif field.kind == "time" %}step="1"{% endif %}
+                     value="{{ values|lookup:field.column|default_if_none:'' }}">
+            {% endif %}
+            {% if field.note %}<p class="field-note">{{ field.note }}</p>{% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <p style="margin-top:16px">
+      <button class="btn btn-primary" type="submit" disabled>Review changes</button>
+      <a class="btn" href="{{ back }}">Cancel</a>
+    </p>
+  </form>
+{% endif %}
+</div>
+{% endblock %}

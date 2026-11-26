@@ -1,0 +1,5 @@
+# Only in the local image (Dockerfile), never on the server: the tests rebuild
+# the database with dbt after writing through the website, to check a change
+# survives a rebuild. The same versions as ETL/requirements.txt.
+dbt-core>=1.12.5,<1.13
+dbt-postgres>=1.11,<1.12

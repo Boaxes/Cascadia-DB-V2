@@ -1,0 +1,10 @@
+#!/bin/sh
+# Phase gate: every staged file must be writable in the current phase.
+# Brandon may bypass with --no-verify; the agent is blocked from doing so.
+python .claude/hooks/phase_gate.py --staged || exit 1
+
+# Quality checks added in Phase 4 live in .githooks/pre-commit.d/ and run in name order.
+for check in .githooks/pre-commit.d/*; do
+  [ -f "$check" ] || continue
+  sh "$check" || exit 1
+done

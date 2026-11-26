@@ -1,0 +1,99 @@
+{% extends "admintools/base.html" %}
+{% load survey_tags %}
+{% block admin_title %}Audit log{% endblock %}
+
+{% block admin_body %}
+<div class="panel-layout list-layout admin-layout">
+  <aside class="filter-panel">
+    <form method="get" id="filters">
+      <h2>Filters</h2>
+      <div class="filters">
+        <div class="field">
+          <label for="q">Record number</label>
+          <input type="search" id="q" name="q" placeholder="e.g. 28148" value="{{ params.q|default:'' }}">
+        </div>
+        <div class="field">
+          <label for="actor">Person</label>
+          <select id="actor" name="actor">
+            <option value="">Everyone</option>
+            {% for a in actors %}<option value="{{ a }}" {% if params.actor == a %}selected{% endif %}>{{ a }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label for="table">Record type</label>
+          <select id="table" name="table">
+            <option value="">All records</option>
+            {% for t, label in tables %}<option value="{{ t }}" {% if params.table == t %}selected{% endif %}>{{ label }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label for="action">Change</label>
+          <select id="action" name="action">
+            <option value="">All changes</option>
+            {% for a, label in actions %}<option value="{{ a }}" {% if params.action == a %}selected{% endif %}>{{ label }}</option>{% endfor %}
+          </select>
+        </div>
+        <label class="check small">
+          <input type="checkbox" name="legacy" value="1" {% if legacy %}checked{% endif %}>
+          Show the import's corrections
+        </label>
+      </div>
+      <div class="panel-actions">
+        <button class="btn btn-primary" type="submit">Apply filters</button>
+        <a class="btn" href="{% url 'admin_audit' %}">Reset</a>
+      </div>
+    </form>
+  </aside>
+
+  <main class="list-main">
+    <h1>Audit log</h1>
+    {% include "admintools/_messages.html" %}
+    <p class="list-summary">Every change made to the data, newest first. Open one to see it in full or undo it.</p>
+
+    <div class="card card-tight">
+      <table class="data audit-table" data-rows="{{ rows_per_page }}">
+        <colgroup><col style="width:128px"><col style="width:140px"><col style="width:96px"><col style="width:130px"><col style="width:32%"><col></colgroup>
+        <thead><tr><th>When</th><th>Who</th><th>Change</th><th>Record</th><th>What changed</th><th>Note</th></tr></thead>
+        <tbody>
+          {% for r in page %}
+            <tr class="clickable" data-modal-url="{% url 'admin_audit_entry' r.id %}">
+              <td class="nowrap">{{ r.at|date:"Y-m-d H:i" }}</td>
+              <td class="nowrap">{{ r.actor }}</td>
+              <td><span class="pill action-{{ r.action }}">{{ r.action_label }}</span></td>
+              <td class="nowrap">{{ r.table_label }} {{ r.pk }}</td>
+              <td class="small" title="{{ r.summary|default:'' }}">{{ r.summary|default:"" }}</td>
+              <td class="small muted" title="{{ r.comment|default:'' }}">{{ r.comment|default:"" }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="6" class="empty">No changes match these filters.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% include "survey/_pagination.html" %}
+  </main>
+</div>
+<script>
+  /* The page holds as many changes as fit the window, one line each, so the
+     log never runs off the bottom. The count is worked out here and kept in
+     a cookie the server reads; it only reloads when the window size calls for
+     a different count, and keeps the first change shown on screen. */
+  (function () {
+    var table = document.querySelector(".audit-table");
+    var row = table.querySelector("tbody tr.clickable");
+    if (!row) return;
+    var pager = document.querySelector(".pagination");
+    var room = window.innerHeight - table.tBodies[0].getBoundingClientRect().top
+             - (pager ? pager.offsetHeight : 0) - 32;
+    var fit = Math.max(5, Math.min(100, Math.floor(room / row.getBoundingClientRect().height)));
+    var now = Number(table.dataset.rows);
+    if (fit === now) return;
+    document.cookie = "audit_rows=" + fit + "; path=/admin/; max-age=31536000; samesite=lax";
+    if (document.querySelector(".messages")) return;   /* a reload would lose the message */
+    var url = new URL(window.location.href);
+    var page = Number(url.searchParams.get("page") || 1);
+    url.searchParams.set("page", Math.floor((page - 1) * now / fit) + 1);
+    window.location.replace(url);
+  })();
+</script>
+{% endblock %}
