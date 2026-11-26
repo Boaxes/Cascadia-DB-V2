@@ -198,3 +198,28 @@ Asked: 2026-11-26
 Options: A Simplified on Explore, full points on detail views from DuckLake (recommended), B As V1, C Full points everywhere
 Answer: B. Explore draws lines simplified to about 550 m, effort and sighting detail draw the stored line (about 11 m), and only the Track File Manager shows full points. Correction from Brandon: the website reads GPS points from PostGIS, which holds a copy; DuckLake is the source of truth (V2Spec). Option A wrongly had the site reading points from DuckLake. The storage design is Phase 2.
 Affects: spec.md Map Behaviour, Tracks; Phase 2 DuckLake and PostGIS design
+
+### Q-029: What Counts As A Gap (Phase 1)
+Asked: 2026-11-26
+Options: A Time, user minutes (recommended), B Time or distance, C Time, distance, speed
+Answer: C. The user sets three gap rules, and any one met makes a gap: minutes of GPS silence, a jump in metres between consecutive fixes, and an implied speed in knots between consecutive fixes. The stored line keeps a time on every vertex so gaps can be redrawn per user (Phase 2).
+Assumption, to confirm at the spec review: defaults are 30 minutes, distance off, speed off (V1 behaviour). Allowed ranges are 1 to 240 minutes, 50 to 50,000 m, and 5 to 100 kn.
+Affects: spec.md Track Display Settings; Phase 2 track geometry
+
+### Q-030: Gap Render Styles (Phase 1)
+Asked: 2026-11-26
+Options (multi-select): Dashed line, Dotted line, Faint straight line, Nothing
+Answer: Dashed line, Faint straight line, Nothing. The user picks one; Dashed line is the default (V1 behaviour). No dotted style.
+Affects: spec.md Track Display Settings, mockups/settings.html
+
+### Q-031: Explore Map Tools (Phase 1)
+Asked: 2026-11-26
+Options (multi-select): Measure, Fullscreen, Screenshot, Clustering toggle
+Answer: Fullscreen, Screenshot and the Clustering toggle stay. Measure is dropped. The draw-area filter stays as part of the filter panel (Q-017).
+Affects: spec.md Map Behaviour, mockups/explore.html
+
+### Q-032: Basemaps (Phase 1)
+Asked: 2026-11-26
+Options: A Same as V1 (recommended), B V1 plus NOAA charts, C Satellite and Ocean
+Answer: A. Satellite (Esri World Imagery, default), Map (OpenStreetMap), Ocean (Esri World Ocean Base), plus the Place Names overlay.
+Affects: spec.md Map Behaviour
