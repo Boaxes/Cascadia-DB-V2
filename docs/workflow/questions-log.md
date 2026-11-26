@@ -223,3 +223,21 @@ Asked: 2026-11-26
 Options: A Same as V1 (recommended), B V1 plus NOAA charts, C Satellite and Ocean
 Answer: A. Satellite (Esri World Imagery, default), Map (OpenStreetMap), Ocean (Esri World Ocean Base), plus the Place Names overlay.
 Affects: spec.md Map Behaviour
+
+### Q-033: Catalog Pages (Phase 1)
+Asked: 2026-11-26
+Options: A Per-catalog list and Individual page (recommended), B One combined list, C Individual page only
+Answer: B. One combined Individuals list across all photo-ID catalogs (MnID now, Bm and ErId later) with a species filter, plus an Individual page. This changes the sidebar from Q-019: the Photo-ID group holds one Individuals link instead of one link per catalog.
+Affects: spec.md Information Architecture, Pages; mockups/individuals.html, mockups/individual.html
+
+### Q-034: Private Sharing Status (Phase 1)
+Asked: 2026-11-26
+Options: A All see, status shown (recommended), B Hidden from exports, C Some roles only
+Answer: A. Every role sees every record. Sharing status is a column, a filter and an export column.
+Affects: spec.md Photo-ID pages, Exports
+
+### Q-035: Editing Catalogs (Phase 1)
+Asked: 2026-11-26
+Options: A Read only (recommended), B Editor and up, C New Catalog Editor role
+Answer: Editing and history work exactly as for efforts and sightings: Editor and above edit and delete through the same two-step form, every change goes through the audit log, and the record shows its History. "Don't make this overly complicated." Which catalog fields are editable is settled with the page details.
+Affects: spec.md Users and Permissions, Photo-ID pages
