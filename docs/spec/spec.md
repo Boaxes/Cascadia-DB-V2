@@ -117,9 +117,9 @@ Purpose: see survey sightings and tracks on a map and narrow them with filters. 
 | EXPL-02 | The map shows every matching sighting with a position as a dot in its species colour, sized `min(3 + sqrt(group size) * 1.2, 12)` px, or 3 px when size is unknown, plus the matching efforts' tracks through the track component (TRACK). | With a filter matching 3 positioned sightings, the map source holds 3 points. |
 | EXPL-03 | The map legend has toggles for Tracks, Sightings and Group Into Clusters, and a species legend: one row per animal group (Generic profile) or the 9 species most seen in the current results (Cascadia profile). Turning Tracks off hides gap joins too. | Unticking Tracks leaves no track or gap layer drawn. |
 | EXPL-04 | Map tools: Fullscreen, Screenshot (a PNG with a caption of counts and applied filters), the Clustering toggle, and drawing an area (polygon or rectangle) for the area filter. There is no Measure tool (Q-031). | Each control is present; there is no measure control. |
-| EXPL-05 | A sighting popup shows species, year, "About N Animals" and Open Sighting. A track popup shows Effort Date, Vessel, Research Group, File, Points, Length, a Suspect pill when suspect, Open Effort, and Open In Track File Manager for Track Manager and Admin. | Popup content matches a known record. |
-| EXPL-06 | The results panel has tabs Sightings (the default) and Efforts. It shows "N Sightings Across M Efforts", "N Without A Position Are Not On The Map" when any exist, the first 300 rows of the open tab, "Showing The First 300 Of N" beyond that, Open As A List (same filters) and Add To Export (Q-037). | With 301 matches, 300 rows and the note show. |
-| EXPL-07 | The applied filters are written out above the results, for example "Showing CRC Sightings Of Humpback Whale In 2024". V1 computed this but never showed it. | The sentence names each applied filter. |
+| EXPL-05 | A sighting popup shows species, year, "About N animals" and Open Sighting. A track popup shows Effort Date, Vessel, Research Group, File, Points, Length, a Suspect pill when suspect, Open Effort, and Open In Track File Manager for Track Manager and Admin. | Popup content matches a known record. |
+| EXPL-06 | The results panel has tabs Sightings (the default) and Efforts. It shows "N sightings across M efforts", "N without a position are not on the map" when any exist, the first 300 rows of the open tab, "Showing the first 300 of N" beyond that, Open As A List (same filters) and Add To Export (Q-037). | With 301 matches, 300 rows and the note show. |
+| EXPL-07 | The applied filters are written out above the results, for example "Showing CRC sightings of Humpback Whale in 2024". V1 computed this but never showed it. | The sentence names each applied filter. |
 | EXPL-08 | Clicking a result row or a popup link opens the record in the modal (MODAL). | The click opens the modal and pushes the record URL. |
 | EXPL-09 | The map view, basemap, overlay, layer toggles and open filter sections are kept in the URL, so a link reopens the same view. | Reloading the URL restores the view. |
 
@@ -129,7 +129,7 @@ Purpose: see survey sightings and tracks on a map and narrow them with filters. 
 |---|---|---|
 | EFF-01 | Columns: Date, Effort, Vessel, Locality, Survey Type, Track, Distance (nm), Sightings (Q-038). Track is a pill: No Track File, Available or Blank. | The header row matches. |
 | EFF-02 | Every column sorts. Clicking the sorted column again reverses it, and sorting returns to page 1. The default is newest date first. Vessel sorts by name (Q-038). | `?sort=vessel` orders by vessel name. |
-| EFF-03 | 50 rows per page with no page-size picker. Pagination shows first, previous, next, last, nearby page numbers and "A–B Of N" (Q-024). | 120 matches give 3 pages. |
+| EFF-03 | 50 rows per page with no page-size picker. Pagination shows first, previous, next, last, nearby page numbers and "A–B of N" (Q-024). | 120 matches give 3 pages. |
 | EFF-04 | The filter panel (FILT), without the filters that apply only to sightings. | There is no Species filter on this page. |
 | EFF-05 | Clicking a row opens the effort in the modal. Add To Export adds the current filters to the export stack. | The stack count goes up by one. |
 
@@ -142,10 +142,10 @@ Purpose: see survey sightings and tracks on a map and narrow them with filters. 
 | EDET-03 | GPS Data: Start and End positions, each with its source (for example "Log Entry (Begin)", "GPS Track (Start)", "Earliest Position (Not Departure)"), and the track file's status. | The source label matches the stored source. |
 | EDET-04 | Map: the effort's one GPS track through the track component at the stored resolution, about 11 m (Q-008, Q-028), with green start and red end markers and the effort's sightings. A suspect track is drawn red and dashed, left out of the map framing, and a notice explains it. | A suspect track shows the notice. |
 | EDET-05 | With no track file and the No-Track Path setting on (TRACK-08), a dashed line joins the effort's recorded timeline positions in time order, with a popup saying it is not a GPS track (Q-057). | With the setting on, an effort with no track shows the joined line; with it off, none. |
-| EDET-06 | Sightings card: one row per species, "N Sightings, M Animals", or "No Sightings Were Recorded On This Effort." | The empty text shows for an effort with no sightings. |
+| EDET-06 | Sightings card: one row per species, "N sightings, M animals", or "No sightings were recorded on this effort." | The empty text shows for an effort with no sightings. |
 | EDET-07 | Extra Info (collapsed): Crew, Objective, Launch, Return, Off Effort, Research Group, and the distance check (recorded nm, GPS track length, difference and percent, with notes for a suspect or untimed track). | |
 | EDET-08 | Track card: File, Status, Source, Points, Length (nm), and a Suspect pill. Track Manager and Admin also get Open In Track File Manager, Change Track File and Delete. With no track they get Add Track File, Create Track From Positions (when at least 2 positioned timeline rows exist) and Choose Existing File. | A Viewer sees no track buttons. |
-| EDET-09 | Timeline (collapsed): Time, Kind (Weather Reading, Log Entry, Sighting), Detail, Position. Sighting rows open the sighting. Empty: "Nothing Was Recorded During This Effort." | |
+| EDET-09 | Timeline (collapsed): Time, Kind (Weather Reading, Log Entry, Sighting), Detail, Position. Sighting rows open the sighting. Empty: "Nothing was recorded during this effort." | |
 
 ### 4.5 Sightings List (`/sightings/`)
 
@@ -163,9 +163,9 @@ Purpose: see survey sightings and tracks on a map and narrow them with filters. 
 | SDET-01 | Header "Sighting N" with record tools as EDET-01. | |
 | SDET-02 | Summary: Species (scientific and common name, with pills), Date, Time, Vessel, Group Size, Comments. GPS Data: position with position type, and end position. | |
 | SDET-03 | Map: the sighting and its effort's track through the track component, with the same settings as everywhere, including gaps and the suspect style, which V1 left out here. | A suspect effort track is red and dashed on the sighting map. |
-| SDET-04 | Effort card: Effort (link), Date, Vessel, Locality, Region, Sub-Area, Survey Type; or "This Sighting Is Not Attached To Any Effort." | |
+| SDET-04 | Effort card: Effort (link), Date, Vessel, Locality, Region, Sub-Area, Survey Type; or "This sighting is not attached to any effort." | |
 | SDET-05 | Extra Info (collapsed): Group Behaviour, Group Type, Sighting Type, Photos Taken, Individuals Identified, Calves, Minimum, Maximum, Depth, Number On The Day, Research Group. | |
-| SDET-06 | Samples: Number, Type, Species, Preservation, Taken By; or "No Samples Were Taken At This Sighting." | |
+| SDET-06 | Samples: Number, Type, Species, Preservation, Taken By; or "No samples were taken at this sighting." | |
 | SDET-07 | Attached records, shown only when present: Sighting Events, Other Species Present, Tag Deployments, Individuals Identified. Each individual links to its Individual page. | An individual row links to `/individuals/<id>/`. |
 
 ### 4.7 Edit And Delete (Efforts And Sightings)
@@ -177,7 +177,7 @@ Purpose: see survey sightings and tracks on a map and narrow them with filters. 
 | EDIT-03 | Editable effort fields (13): Date, Start Time, End Time, Launch, Locality, Return, Region, Sub-Area, Survey Type, Project Or Objective, Personnel, Distance (nm), Comments. | The form has exactly these fields. |
 | EDIT-04 | Two steps: the form (Review Changes is disabled until a value changes), then a Field, From, To table with an optional Why note and Save These Changes. Only changed fields are written, through the audit log. | Saving one change writes one audit entry with one field. |
 | EDIT-05 | Every input is validated. A bad number, date or time is shown against its field and nothing is saved (ERR-05). V1 showed an error page instead. | Latitude "abc" shows a field error. |
-| EDIT-06 | Delete lists the dependent records that go with it, counted per type ("3 Sightings, 12 Log Entries"), takes an optional note, and says the record can be put back from the Audit Log. The record and every dependent row are kept in the audit entry, so Undo restores them. | Delete, then Undo, restores the record and its dependents. |
+| EDIT-06 | Delete lists the dependent records that go with it, counted per type ("3 sightings, 12 log entries"), takes an optional note, and says the record can be put back from the Audit Log. The record and every dependent row are kept in the audit entry, so Undo restores them. | Delete, then Undo, restores the record and its dependents. |
 | EDIT-07 | After a save or delete, a message confirms it and the page under the modal reloads. | |
 
 ### 4.8 Individuals (`/individuals/`)
@@ -211,7 +211,7 @@ V1's export stack, kept (Q-017), plus whole gold tables and SQL queries (Q-041, 
 | ID | Requirement | Check |
 |---|---|---|
 | EXP-01 | Add To Export (on Explore, the lists and record pages) puts a query on a stack kept in the session: the filters or SQL, never rows. The stack holds up to 20 queries, and adding an identical query again does nothing ("Already In Export"). | A 21st add is refused with a message. |
-| EXP-02 | Queries card: each query with its label, Efforts and Sightings counts, an "Include The Sightings Of These Efforts" or "Include The Efforts Of These Sightings" box (on by default), and Remove. Empty: "Nothing To Export Yet. Use Add To Export On Explore, Efforts Or Sightings." | |
+| EXP-02 | Queries card: each query with its label, Efforts and Sightings counts, an "Include The Sightings Of These Efforts" or "Include The Efforts Of These Sightings" box (on by default), and Remove. Empty: "Nothing to export yet. Use Add To Export on Explore, Efforts or Sightings." | |
 | EXP-03 | Sheets card: Efforts, Sightings, Timeline, Weather, Samples, Identifications, Tags, Sighting Events, Other Species. Each has a tick box and row count; Efforts, Sightings, Timeline, Weather and Samples have Choose Columns. Efforts and Sightings are ticked by default. | |
 | EXP-04 | Whole Tables card: every gold table with a tick box. Each ticked table becomes one more sheet (Q-041). | Ticking a table adds a sheet with all its rows. |
 | EXP-05 | A SQL query sent from the SQL page appears in the Queries card under its name. When the file is built, the server runs that SQL in a read-only DuckDB over the same Parquet files, with a 60-second time limit (Q-057), and the result becomes its own sheet (Q-042). | A write statement is refused; a slow query fails with a message naming the limit. |
@@ -241,7 +241,7 @@ Read-only SQL over gold data, run in the browser with DuckDB WASM (Q-006, Q-019)
 | SET-02 | Track display defaults (TRACK-03): Show Points, Show Timeline Events, Show Direction Arrows, Show Path When There Is No Track, Gap After Minutes Of Silence, Gap After A Jump Of Metres, Gap Above A Speed Of Knots, and Gap Style (Dashed Line, Faint Line, Nothing) (Q-043). | |
 | SET-03 | Everything except the password is saved in cookies for one year; nothing goes in the database (Q-027). | Saving writes cookies and no database row. |
 | SET-04 | Change Password (Django's password change) is on this page for every role. | A Viewer can change their password. |
-| SET-05 | Save shows "Settings Saved."; an out-of-range number shows a field error (ERR-05). | Minutes 0 is refused. |
+| SET-05 | Save shows "Settings saved."; an out-of-range number shows a field error (ERR-05). | Minutes 0 is refused. |
 
 ### 4.13 Track File Manager (`/tracks/`)
 
@@ -267,8 +267,8 @@ Audit Manager and Admin (Q-021, Q-045).
 | AUD-01 | Filters: Record (type and number), Who (each person, plus Pipeline), Change type, date range. | Filtering by Pipeline lists only pipeline entries. |
 | AUD-02 | Columns: When, Who, Change, Record, What Changed (first 3 fields), Note. 50 per page with no picker, newest first. | |
 | AUD-03 | An entry opens in the modal: When, Who, Record (link), Note, a Before and After table, and Removed With It counts for a delete. | |
-| AUD-04 | Undo puts the change back and deletes the entry, so the log lists only changes in effect (Q-044). Undo goes newest first per record: an older entry shows "Undo The Newer Change First." | Undo of a field edit restores the old value and removes the entry. |
-| AUD-05 | Pipeline entries can be viewed but not undone; they say "Change The Pipeline Rule To Reverse This." (Q-046). | A pipeline entry has no Undo button, and a POST is refused. |
+| AUD-04 | Undo puts the change back and deletes the entry, so the log lists only changes in effect (Q-044). Undo goes newest first per record: an older entry shows "Undo the newer change first." | Undo of a field edit restores the old value and removes the entry. |
+| AUD-05 | Pipeline entries can be viewed but not undone; they say "Change the pipeline rule to reverse this." (Q-046). | A pipeline entry has no Undo button, and a POST is refused. |
 
 ### 4.15 Users (`/admin/`)
 
@@ -297,9 +297,9 @@ Admin only, in the site's own layout (Q-048).
 | ID | Requirement | Check |
 |---|---|---|
 | FDBK-01 | Fields: Title (required, up to 200 characters), Details, Type (Bug, Enhancement, Data Problem, Question), Area (Explore, Efforts, Sightings, Individuals, Export, SQL, Track File Manager, Audit Log, Settings, Sign In And Accounts, Other) (Q-051), and up to 3 pictures (PNG, JPEG, GIF or WebP, 5 MB each). | |
-| FDBK-02 | Sending opens a GitHub issue with labels for the type and area, with the pictures attached inline through `gh issue create --attach` (Q-056), and shows "Feedback Sent. It Is Issue Number N." | A test with a stubbed `gh` receives each picture as an `--attach` argument. |
+| FDBK-02 | Sending opens a GitHub issue with labels for the type and area, with the pictures attached inline through `gh issue create --attach` (Q-056), and shows "Feedback sent. It is issue number N." | A test with a stubbed `gh` receives each picture as an `--attach` argument. |
 | FDBK-03 | The site stores no pictures: an upload is held only for the request and removed afterwards, whether sending succeeds or fails (Q-056). | No picture table exists, and no file remains after a send. |
-| FDBK-04 | When GitHub is not set up, the page says "Feedback Is Not Set Up Yet." and shows no form. | |
+| FDBK-04 | When GitHub is not set up, the page says "Feedback is not set up yet." and shows no form. | |
 
 ## 5. Cross-Cutting Behaviour
 
@@ -356,7 +356,7 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 |---|---|---|
 | HIST-01 | One audit log holds every change in effect, by people (edits, deletes, track file actions) and by the pipeline. | |
 | HIST-02 | Each entry holds when, who (a person or Pipeline), the change type, the record (table and key), each changed field's old and new value, an optional note, and for a delete a snapshot of the record and its dependents. This is enough for a later job to write changes back to DB167 (Q-015). | |
-| HIST-03 | Every record page has History, which lists the changes in effect on that record in time order (pipeline changes, then edits, and so on), with who, when, why, and old and new values. It explains the record's current state. Empty: "Nothing Has Been Changed On This Record." | |
+| HIST-03 | Every record page has History, which lists the changes in effect on that record in time order (pipeline changes, then edits, and so on), with who, when, why, and old and new values. It explains the record's current state. Empty: "Nothing has been changed on this record." | |
 | HIST-04 | There is no DB167 state, no T-SQL script, and no "Original Database" or "After Cleaning" step (Q-015, Q-018). | |
 
 ### 5.6 Global Search (Q-052, Q-053)
@@ -367,24 +367,24 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 | SRCH-02 | Matching ignores case, spaces, dashes and prefixes, so `crc 1234`, `CRC-1234` and `1234` find the same whale, and tolerates small typos in names using Postgres `pg_trgm`. | `Humpbak` finds Humpback Whale. |
 | SRCH-03 | Results appear as you type (from 2 characters, Q-057), grouped by kind, best first, up to 5 per kind. Enter opens the best match. | |
 | SRCH-04 | Choosing a record opens it in the modal; choosing a vessel, locality or species opens Sightings filtered by it. | |
-| SRCH-05 | No match: "Nothing Matches [text]." | |
+| SRCH-05 | No match: "Nothing matches [text]." | |
 
 ### 5.7 Empty And Error States (Q-050)
 
 | ID | Requirement | Check |
 |---|---|---|
-| ERR-01 | A list or search with no rows shows "No [Efforts] Match These Filters." with Reset Filters. | |
-| ERR-02 | Map data that fails to load shows a notice on the map, "Could Not Load The Map Data.", with Try Again. | |
-| ERR-03 | A missing record returns 404 with "No [Effort] With ID [N]." and a link to the list. | GET `/efforts/999999999/` returns 404 with that text. |
-| ERR-04 | A page the user's roles do not allow returns 403 with "This Page Needs The [Track Manager] Role." and a link home. | |
+| ERR-01 | A list or search with no rows shows "No [efforts] match these filters." with Reset Filters. | |
+| ERR-02 | Map data that fails to load shows a notice on the map, "Could not load the map data.", with Try Again. | |
+| ERR-03 | A missing record returns 404 with "No [effort] with ID [N]." and a link to the list. | GET `/efforts/999999999/` returns 404 with that text. |
+| ERR-04 | A page the user's roles do not allow returns 403 with "This page needs the [Track Manager] role." and a link home. | |
 | ERR-05 | A form error outlines each bad field with its reason under it, and saves nothing. | |
-| ERR-06 | A server error returns 500 with "Something Went Wrong. It Has Been Logged." and records the error in the Server log. | |
+| ERR-06 | A server error returns 500 with "Something went wrong. It has been logged." and records the error in the Server log. | |
 
 ### 5.8 Interface Rules
 
 | ID | Requirement | Check |
 |---|---|---|
-| UI-01 | All headings, page titles, labels and buttons are in Title Case. | A test scans templates for lower-case labels. |
+| UI-01 | All headings, page titles, labels, buttons, tabs and column heads are in Title Case. Messages and other sentences are in sentence case. | A test scans templates for lower-case labels. |
 | UI-02 | No em dashes anywhere in UI text. | A test scans templates for the em dash character. |
 | UI-03 | Labels name the thing, not whose it is ("Settings", not "My Settings"). | A test scans templates for "My " and "Your " in labels. |
 | UI-04 | Pages use the site's own components and show restraint: no dashboards or panels not in this spec. | |
