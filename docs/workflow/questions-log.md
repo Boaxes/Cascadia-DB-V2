@@ -276,3 +276,27 @@ Asked: 2026-11-26
 Options: A As proposed (recommended), B Without the map, C Different
 Answer: A. Opens in the modal. Sections in order: header (ID, species, random-colour whale icon, Edit, Delete and History for Editor and above); IDs card (cross-catalog IDs, aliases, retired IDs); Summary (sex, colour category, first and last seen, sightings count, dead with date); map of every position seen; Sightings table (date, region, locality, contributor, research group, sharing status, quality, HappyWhale link; 50 per page, newest first); Samples table; Survey Sightings where the whale was identified, each opening the sighting.
 Affects: spec.md Individual, mockups/individual.html
+
+### Q-041: Whole Gold Tables On Export (Phase 1)
+Asked: 2026-11-26
+Options: A Whole Tables card plus Parquet (recommended), B Card with V1 formats, C On the SQL page
+Answer: A. The Export page gets a Whole Tables card listing every gold table; each ticked table becomes one more sheet in the download. Parquet (zip) joins V1's formats (XLSX, CSV zip, GeoJSON zip, GPX, GeoPackage).
+Affects: spec.md Exports, mockups/export.html
+
+### Q-042: SQL Result To Download (Phase 1)
+Asked: 2026-11-26
+Options: A Send To Export (recommended), B Both, C SQL page only
+Answer: A. "Send To Export" adds the named SQL text to the stack. When the file is built, the server re-runs it in a read-only DuckDB over the same Parquet files, with a time limit, and the result is its own sheet. The SQL page has no direct download.
+Affects: spec.md Analysis, Exports; mockups/sql.html, mockups/export.html
+
+### Q-043: Settings Page (Phase 1)
+Asked: 2026-11-26
+Options: A All in Settings (recommended), B Password in user menu
+Answer: A. Settings holds Colour Profile, track display defaults (Show Points, Timeline Events, Direction Arrows, the three gap rules, Gap Style) and Change Password. Everything but the password is stored in a cookie.
+Affects: spec.md Settings, mockups/settings.html
+
+### Q-044: What Undo Does (Phase 1)
+Asked: 2026-11-26
+Options: A Add a reversing entry (recommended), B As V1: delete it
+Answer: B. Undo deletes the entry fully, as in V1, so the log lists only changes in effect. Clarification from Brandon: V2Spec's "over time" means a record's History explains its current state in order (pipeline changes, then user edits, and so on). It does not mean keeping undone changes.
+Affects: spec.md Audit Log; Phase 2 audit design
