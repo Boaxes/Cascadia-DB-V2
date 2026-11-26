@@ -2,7 +2,7 @@
 
 Every page and feature in V1 as committed at `3a637f1` (2026-11-21, `Boaxes/Cascadia-DB` main), what it does today, who uses it, and a proposal for V2. **Every row was confirmed by Brandon on 2026-11-26 (Q-017).** Decisions are in [questions-log.md](../workflow/questions-log.md). An earlier draft was written from a stale copy (`f4b2a36`) and has been replaced (Q-009).
 
-## Access In V1 Today
+## Access in V1 Today
 
 Defined in `V1/Django/datahealth/access.py` and set up by `manage.py setup_access` on every deploy.
 
@@ -24,7 +24,7 @@ Problems found:
 - Only Django Admin users can change their own password.
 - Feedback pictures are served without a login.
 
-## Pages And Features
+## Pages and Features
 
 **Who:** Any = any login. DM = Data Manager and above. Admin = Admin role.
 
@@ -34,16 +34,16 @@ Problems found:
 |---|---|---|---|---|---|
 | 1 | Login, Logout | Django `LoginView`; logout is a POST from the profile menu | Any | **Keep** | Django built-in |
 | 2 | `/` | Redirects to Explore; no home page | Any | **Keep** | Explore stays the landing page (Q-020) |
-| 3 | Explore | Filter panel, Leaflet map (clusters, species dots, simplified tracks with dashed gaps), results tabs (first 300 sightings or efforts), Add To Export, measure, draw area, fullscreen, screenshot, resizable side panels | Any | **Change** | MapLibre plus deck.gl (Q-003) with the single track component; show applied filters, which V1 computes but never renders; show an error when a map fetch fails (V1 hides it); the Tracks toggle must hide gap dashes too |
-| 4 | Efforts list | 8 columns, sortable, 50 per page, filters, Add To Export, rows open the modal | Any | **Keep** | Restyle into the sidebar layout |
+| 3 | Explore | Filter panel, Leaflet map (clusters, species dots, simplified tracks with dashed gaps), results tabs (first 300 sightings or efforts), Add to Export, measure, draw area, fullscreen, screenshot, resizable side panels | Any | **Change** | MapLibre plus deck.gl (Q-003) with the single track component; show applied filters, which V1 computes but never renders; show an error when a map fetch fails (V1 hides it); the Tracks toggle must hide gap dashes too |
+| 4 | Efforts list | 8 columns, sortable, 50 per page, filters, Add to Export, rows open the modal | Any | **Keep** | Restyle into the sidebar layout |
 | 5 | Effort detail | Summary, GPS data with start and end sources, map, species seen, extra info, distance check, tracks table with track actions for DM, timeline, history | Any | **Change** | One GPS track per effort (Q-008), drawn by the single track component; drop the duplicate Sub-Area |
-| 6 | Sightings list | 9 columns, sortable, 50 per page, filters, Add To Export | Any | **Keep** | Restyle |
+| 6 | Sightings list | 9 columns, sortable, 50 per page, filters, Add to Export | Any | **Keep** | Restyle |
 | 7 | Sighting detail | Summary, GPS data, map with the effort's track, effort card, extra info, samples, attached records (events, other species, tags, individuals), history | Any | **Change** | Single track component (V1 shows no gaps or suspect style here); individuals identified link to the photo-ID catalog |
 | 8 | Edit effort or sighting | Two steps: change fields, then review a From/To table with a reason; writes `dbo` through the audit log | Editor+ | **Keep** | Validate input (V1 lets bad numbers and dates raise errors) |
 | 9 | Delete effort or sighting | Lists dependents, hard delete with a full snapshot in the audit log, restorable by Undo | Editor+ | **Keep** | How a delete is stored and reversed is designed in Phase 2 |
 | 10 | Record modal (`modal.js`) | Fetches the whole page, lifts out the detail, re-runs its scripts, `pushState`, Back stack, forms post inside | Any | **Change** | Rebuild with htmx and `<dialog>` (Q-010) |
 | 11 | Filter panel | Research Group (defaults to CRC), species, vessel, region, sub-area, locality, draw area, years, months, seasons, dates, survey type, objective, tags and samples, GPS track, crew, position type, uncertain, sightings on land, non-animal, matching sightings; live facet counts | Any | **Keep** | Core to the site; audit `filters.js` and `tagpicker.js` line by line |
-| 12 | Export stack | Add To Export puts queries (filters, not rows) in a session stack of up to 20; related records on by default | Any | **Keep** | Every role can export (Q-014) |
+| 12 | Export stack | Add to Export puts queries (filters, not rows) in a session stack of up to 20; related records on by default | Any | **Keep** | Every role can export (Q-014) |
 | 13 | Export page and download | Queries table, 9 sheets with column chooser, 8-row preview, XLSX, CSV zip, GeoJSON zip, GPX, GeoPackage, UTC or Pacific, ISO or Excel dates, raw GPS files in a zip | DM | **Change** | Add whole gold tables (Q-004, Q-007) and queries sent from the new SQL page, which runs in DuckDB WASM (Q-006, Q-019) and saves queries in cookies (Q-012); GPS files come from the droplet's disk |
 | 14 | Settings page | One setting: Color Profile (Cascadia or Generic), in a cookie | Any | **Change** | Becomes the one place for display settings, including track display (V1 keeps the track toggles in the Track File Manager's localStorage) |
 | 15 | Map JSON APIs | Compact sightings array, simplified tracks GeoJSON, first 300 efforts, one full track | Any | **Change** | Redesigned for MapLibre and deck.gl in the map app's own `urls.py` |
