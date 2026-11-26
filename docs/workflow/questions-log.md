@@ -366,3 +366,15 @@ Asked: 2026-11-26
 Options: A Show link (recommended), B Don't show
 Answer: A. Confirms the Q-036 assumption: the Individual page's Sightings table has a HappyWhale link column that opens in a new tab. Assumption closed.
 Affects: spec.md Individual, mockups/individual.html
+
+### Q-056: Feedback Pictures (Phase 1)
+Asked: 2026-11-26
+Context: Brandon dropped assumption A-10 ("you're overreading into the rule"): Q-002's "nothing public" was never meant to cover feedback pictures, so the note in Q-016 that pictures move behind the login was the agent's over-reading and is withdrawn. He asked why the site stores pictures at all. Finding: GitHub's REST API has no documented endpoint to attach an image to an issue, which is why V1 stores and serves them. The GitHub CLI can (`gh issue create --attach`, per GitHub's docs), though the API underneath is not documented and the local gh 2.92.0 does not list the flag yet.
+Options: A gh CLI attach (recommended), B Commit pictures to a branch, C No pictures in the form
+Answer: A. The server holds uploaded pictures only for the request and creates the issue with `gh issue create --attach`, so pictures live inline on GitHub and the site stores none. Needs a recent gh on the server and a token with push access.
+Affects: spec.md FDBK-02, FDBK-03; Phase 4 server setup (gh)
+
+### Q-057: Spec Assumptions A-01 To A-10 (Phase 1)
+Asked: 2026-11-26
+Answer: A-01 to A-07 and A-09 confirmed as written. A-10 dropped (Q-056). A-08 rejected: drawing a line through an effort's recorded positions when it has no track file is a user track setting, not fixed behaviour.
+Affects: spec.md section 7, EDET-05, SET-02, TRACK-03

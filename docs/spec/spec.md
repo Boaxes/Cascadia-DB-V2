@@ -68,7 +68,7 @@ Photo-ID catalog data cannot be edited by any role (Q-049).
 | NAV-03 | The current page's link is marked active. | On `/sightings/`, the Sightings link has the active state. |
 | NAV-04 | The Export link shows how many queries are on the export stack, for example "Export (3)", when there are any. | After adding two queries, the link reads "Export (2)". |
 | NAV-05 | `/` redirects to Explore, and signing in lands on Explore unless a `next` page was requested (Q-020). | GET `/` returns a redirect to `/explore/`. |
-| NAV-06 | Below 768 px wide, the sidebar collapses behind a menu button (A-06). | At 390 px wide the sidebar is hidden until the menu button is pressed. |
+| NAV-06 | Below 768 px wide, the sidebar collapses behind a menu button (Q-057). | At 390 px wide the sidebar is hidden until the menu button is pressed. |
 
 ### URL Map
 
@@ -104,7 +104,7 @@ Every page needs a login (Q-002), uses the sidebar (NAV-01) and follows the empt
 | ID | Requirement | Check |
 |---|---|---|
 | AUTH-01 | `/login/` shows Username and Password and has no sidebar. A wrong pair shows "That username and password do not match an account." | POST with a bad password returns the page with that message. |
-| AUTH-02 | Every other URL redirects a signed-out visitor to `/login/?next=<url>`, including feedback pictures (Q-002). | GET `/efforts/` signed out redirects to login. |
+| AUTH-02 | Every other URL redirects a signed-out visitor to `/login/?next=<url>` (Q-002). | GET `/efforts/` signed out redirects to login. |
 | AUTH-03 | Sign Out is a POST from the sidebar and returns to `/login/`. | GET `/logout/` does not sign out; POST does. |
 
 ### 4.2 Explore (`/explore/`)
@@ -141,7 +141,7 @@ Purpose: see survey sightings and tracks on a map and narrow them with filters. 
 | EDET-02 | Summary: Date, Time, Vessel, Locality, Region, Sub-Area, Survey Type, Time Searching, Sightings, and Comments when present. Sub-Area appears once on the page (V1 showed it twice). | Sub-Area appears exactly once. |
 | EDET-03 | GPS Data: Start and End positions, each with its source (for example "Log Entry (Begin)", "GPS Track (Start)", "Earliest Position (Not Departure)"), and the track file's status. | The source label matches the stored source. |
 | EDET-04 | Map: the effort's one GPS track through the track component at the stored resolution, about 11 m (Q-008, Q-028), with green start and red end markers and the effort's sightings. A suspect track is drawn red and dashed, left out of the map framing, and a notice explains it. | A suspect track shows the notice. |
-| EDET-05 | With no track file, a dashed line joins the effort's recorded timeline positions in time order, with a popup saying it is not a GPS track (A-08). | An effort with no track shows the joined line. |
+| EDET-05 | With no track file and the No-Track Path setting on (TRACK-08), a dashed line joins the effort's recorded timeline positions in time order, with a popup saying it is not a GPS track (Q-057). | With the setting on, an effort with no track shows the joined line; with it off, none. |
 | EDET-06 | Sightings card: one row per species, "N Sightings, M Animals", or "No Sightings Were Recorded On This Effort." | The empty text shows for an effort with no sightings. |
 | EDET-07 | Extra Info (collapsed): Crew, Objective, Launch, Return, Off Effort, Research Group, and the distance check (recorded nm, GPS track length, difference and percent, with notes for a suspect or untimed track). | |
 | EDET-08 | Track card: File, Status, Source, Points, Length (nm), and a Suspect pill. Track Manager and Admin also get Open In Track File Manager, Change Track File and Delete. With no track they get Add Track File, Create Track From Positions (when at least 2 positioned timeline rows exist) and Choose Existing File. | A Viewer sees no track buttons. |
@@ -214,7 +214,7 @@ V1's export stack, kept (Q-017), plus whole gold tables and SQL queries (Q-041, 
 | EXP-02 | Queries card: each query with its label, Efforts and Sightings counts, an "Include The Sightings Of These Efforts" or "Include The Efforts Of These Sightings" box (on by default), and Remove. Empty: "Nothing To Export Yet. Use Add To Export On Explore, Efforts Or Sightings." | |
 | EXP-03 | Sheets card: Efforts, Sightings, Timeline, Weather, Samples, Identifications, Tags, Sighting Events, Other Species. Each has a tick box and row count; Efforts, Sightings, Timeline, Weather and Samples have Choose Columns. Efforts and Sightings are ticked by default. | |
 | EXP-04 | Whole Tables card: every gold table with a tick box. Each ticked table becomes one more sheet (Q-041). | Ticking a table adds a sheet with all its rows. |
-| EXP-05 | A SQL query sent from the SQL page appears in the Queries card under its name. When the file is built, the server runs that SQL in a read-only DuckDB over the same Parquet files, with a time limit (A-03), and the result becomes its own sheet (Q-042). | A write statement is refused; a slow query fails with a message naming the limit. |
+| EXP-05 | A SQL query sent from the SQL page appears in the Queries card under its name. When the file is built, the server runs that SQL in a read-only DuckDB over the same Parquet files, with a 60-second time limit (Q-057), and the result becomes its own sheet (Q-042). | A write statement is refused; a slow query fails with a message naming the limit. |
 | EXP-06 | Preview: tabs for the ticked sheets, 8 rows each, with the true total. | |
 | EXP-07 | Download panel: Format (XLSX, CSV zip, GeoJSON zip, GPX, GeoPackage, Parquet zip), Time Zone (UTC or Pacific), Dates (ISO or Excel), and Include The Raw GPS Files Of These Efforts (read from the droplet's disk). Formats that cannot hold a sheet say so. | GPX with only a Samples sheet ticked is refused with a message. |
 | EXP-08 | Rows matching several queries appear once; with 2 or more queries, a Matched Queries column says which. An XLSX sheet over 1,048,576 rows continues on a second sheet. | |
@@ -226,10 +226,10 @@ Read-only SQL over gold data, run in the browser with DuckDB WASM (Q-006, Q-019)
 
 | ID | Requirement | Check |
 |---|---|---|
-| SQL-01 | The page loads DuckDB WASM and registers every gold table, served as Parquet to signed-in users only (A-07). | A signed-out request for a Parquet file is refused. |
-| SQL-02 | Layout: a table list (each table's columns and types), a SQL editor, Run, and a results grid showing the first 1,000 rows and the total (A-01). | `select 1` shows one row. |
+| SQL-01 | The page loads DuckDB WASM and registers every gold table, served as Parquet to signed-in users only. The Parquet files are refreshed whenever gold data changes; Phase 2 designs how (Q-057). | A signed-out request for a Parquet file is refused. |
+| SQL-02 | Layout: a table list (each table's columns and types), a SQL editor, Run, and a results grid showing the first 1,000 rows and the total (Q-057). | `select 1` shows one row. |
 | SQL-03 | Only reading is possible; there is no way to change server data from this page. | |
-| SQL-04 | Save Query stores a named query's text in a cookie (never results), up to the limits in A-02; Saved Queries lists them to open or delete. There is no sharing (Q-012). | A saved query survives a reload in the same browser. |
+| SQL-04 | Save Query stores a named query's text in a cookie (never results), up to 20 queries per browser, one cookie each, up to 3,500 characters of SQL (a longer query cannot be saved, and the page says why) (Q-057); Saved Queries lists them to open or delete. There is no sharing (Q-012). | A saved query survives a reload in the same browser. |
 | SQL-05 | Send To Export puts the named query on the export stack (EXP-05). There is no direct download on this page (Q-042). | The Export count goes up by one. |
 | SQL-06 | A SQL error shows DuckDB's message under the editor. | |
 
@@ -238,7 +238,7 @@ Read-only SQL over gold data, run in the browser with DuckDB WASM (Q-006, Q-019)
 | ID | Requirement | Check |
 |---|---|---|
 | SET-01 | Colour Profile: Cascadia (default) or Generic. | |
-| SET-02 | Track display defaults (TRACK-03): Show Points, Show Timeline Events, Show Direction Arrows, Gap After Minutes Of Silence, Gap After A Jump Of Metres, Gap Above A Speed Of Knots, and Gap Style (Dashed Line, Faint Line, Nothing) (Q-043). | |
+| SET-02 | Track display defaults (TRACK-03): Show Points, Show Timeline Events, Show Direction Arrows, Show Path When There Is No Track, Gap After Minutes Of Silence, Gap After A Jump Of Metres, Gap Above A Speed Of Knots, and Gap Style (Dashed Line, Faint Line, Nothing) (Q-043). | |
 | SET-03 | Everything except the password is saved in cookies for one year; nothing goes in the database (Q-027). | Saving writes cookies and no database row. |
 | SET-04 | Change Password (Django's password change) is on this page for every role. | A Viewer can change their password. |
 | SET-05 | Save shows "Settings Saved."; an out-of-range number shows a field error (ERR-05). | Minutes 0 is refused. |
@@ -256,7 +256,7 @@ Track Manager and Admin. V1's Track File Manager kept with all its features (Q-0
 | TFM-05 | Import (one or many CSV files, 25 MB each, 100 MB a batch) with a preview and a suggested effort; Fill From File with a comparison; Change Track File; Match and Unmatch; Create Track From Positions; Delete and Restore. Every action goes through the audit log. | |
 | TFM-06 | One track per effort is enforced (Q-008); a second file for the same effort is refused with a message. | |
 | TFM-07 | Track checks run after every write and nightly. | |
-| TFM-08 | Restoring a deleted file is the Undo of its delete entry (A-05). | |
+| TFM-08 | Restoring a deleted file is the Undo of its delete entry, so it follows AUD-04 (Q-057). | |
 
 ### 4.14 Audit Log (`/audit/`, `/audit/<id>/`)
 
@@ -279,7 +279,7 @@ Admin only (Q-047).
 | USER-01 | Django Admin's user pages, styled like the site, showing only Users and Groups. | No survey tables are registered in the admin. |
 | USER-02 | The user list shows Username, Name, Email, Roles, Active and Last Login, filterable by role and active. | |
 | USER-03 | An Admin can add a user, set their roles (several allowed), set a password and deactivate them. The per-user permissions field and the superuser flag are not shown. | |
-| USER-04 | A new user is given the Viewer role (A-09). | |
+| USER-04 | A new user is given the Viewer role (Q-057). | |
 
 ### 4.16 Server (`/server/`)
 
@@ -297,8 +297,8 @@ Admin only, in the site's own layout (Q-048).
 | ID | Requirement | Check |
 |---|---|---|
 | FDBK-01 | Fields: Title (required, up to 200 characters), Details, Type (Bug, Enhancement, Data Problem, Question), Area (Explore, Efforts, Sightings, Individuals, Export, SQL, Track File Manager, Audit Log, Settings, Sign In And Accounts, Other) (Q-051), and up to 3 pictures (PNG, JPEG, GIF or WebP, 5 MB each). | |
-| FDBK-02 | Sending opens a GitHub issue with labels for the type and area, and shows "Feedback Sent. It Is Issue Number N." | |
-| FDBK-03 | Pictures are served only to signed-in users (Q-002). | A signed-out request for a picture redirects to login. |
+| FDBK-02 | Sending opens a GitHub issue with labels for the type and area, with the pictures attached inline through `gh issue create --attach` (Q-056), and shows "Feedback Sent. It Is Issue Number N." | A test with a stubbed `gh` receives each picture as an `--attach` argument. |
+| FDBK-03 | The site stores no pictures: an upload is held only for the request and removed afterwards, whether sending succeeds or fails (Q-056). | No picture table exists, and no file remains after a send. |
 | FDBK-04 | When GitHub is not set up, the page says "Feedback Is Not Set Up Yet." and shows no form. | |
 
 ## 5. Cross-Cutting Behaviour
@@ -348,6 +348,7 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 | TRACK-05 | A gap is drawn as Dashed Line (default), Faint Line or Nothing (Q-030). | |
 | TRACK-06 | Gaps are worked out when drawing, from a time on every stored point, so each user's rules apply (Phase 2 keeps the times). | Changing the minutes redraws gaps without reloading data. |
 | TRACK-07 | Settings come from Settings (cookie). Each map has a layer panel that flips a setting for that view only, without changing the saved default (Q-027). | Flipping Show Points on a map leaves the cookie unchanged. |
+| TRACK-08 | No-Track Path: when an effort has no track file, a dashed line joins its recorded timeline positions in time order. This is a user setting, on by default as in V1 (A-11). | Turning it off removes the line from an effort with no track. |
 
 ### 5.5 History And The Audit Log (Q-018, Q-044, Q-015)
 
@@ -364,7 +365,7 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 |---|---|---|
 | SRCH-01 | The sidebar search box searches record IDs (effort, sighting and sample numbers, whale IDs, aliases, retired IDs, cross-catalog IDs) and names (vessels, localities, species common and scientific). | |
 | SRCH-02 | Matching ignores case, spaces, dashes and prefixes, so `crc 1234`, `CRC-1234` and `1234` find the same whale, and tolerates small typos in names using Postgres `pg_trgm`. | `Humpbak` finds Humpback Whale. |
-| SRCH-03 | Results appear as you type (from 2 characters, A-04), grouped by kind, best first, up to 5 per kind. Enter opens the best match. | |
+| SRCH-03 | Results appear as you type (from 2 characters, Q-057), grouped by kind, best first, up to 5 per kind. Enter opens the best match. | |
 | SRCH-04 | Choosing a record opens it in the modal; choosing a vessel, locality or species opens Sightings filtered by it. | |
 | SRCH-05 | No match: "Nothing Matches [text]." | |
 
@@ -407,17 +408,8 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 
 ## 7. Assumptions
 
-Values chosen while writing this spec, to be confirmed or changed at the review. This list must be empty before Phase 1 closes.
+Assumptions A-01 to A-07 and A-09, chosen while writing this spec, were confirmed in Q-057 and are now part of the requirements that cite it. A-08 was rejected (it became TRACK-08) and A-10 was dropped (Q-056). This list must be empty before Phase 1 closes.
 
 | ID | Assumption | Used in |
 |---|---|---|
-| A-01 | The SQL results grid shows the first 1,000 rows and the total count. | SQL-02 |
-| A-02 | Saved queries: up to 20 per browser, one cookie each, up to 3,500 characters of SQL; a longer query cannot be saved and the page says why. | SQL-04 |
-| A-03 | A SQL query run for an export has a 60-second time limit. | EXP-05 |
-| A-04 | Global search starts after 2 characters. | SRCH-03 |
-| A-05 | Restoring a deleted track file is the same action as Undo on its delete entry, so it follows AUD-04 (the entry is deleted). V1 kept a separate Restore that left both entries. | TFM-08 |
-| A-06 | Below 768 px wide, the sidebar collapses behind a menu button. | NAV-06 |
-| A-07 | The gold Parquet files the SQL page reads are refreshed whenever gold data changes; how is designed in Phase 2. | SQL-01 |
-| A-08 | An effort with no track file keeps V1's dashed line joining its recorded positions. It is fixed behaviour, not a setting. | EDET-05 |
-| A-09 | A new user is given the Viewer role; a signed-in user with no role sees only 403 pages. | USER-04, ROLE-04 |
-| A-10 | Because feedback pictures need a login (FDBK-03), a GitHub issue links to each picture rather than showing it inline; opening the link needs a site login. | FDBK-02 |
+| A-11 | The No-Track Path setting is on by default, matching V1. | TRACK-08 |
