@@ -252,3 +252,27 @@ Finding: `critterspot.happywhale.com` no longer resolves (DNS: non-existent doma
 Answer (final): For now, every place a photo would go shows a whale icon in a random colour, generated on each render and never stored in the database. Brandon notes Happywhale says its images are held at OBIS-SEAMAP (https://seamap.env.duke.edu/), a lead for adding real photos later.
 Assumption, to confirm at the spec review: the HappyWhale encounter link stored on MnID records is shown as a plain link field on the record, since it is part of the data.
 Affects: spec.md Photo-ID pages, mockups/individual.html, Out Of Scope (real photos)
+
+### Q-037: Explore Results Panel (Phase 1)
+Asked: 2026-11-26
+Options: A As V1 (recommended), B Paged panel, C No panel
+Answer: A. The panel shows the first 300 sightings or efforts, "Showing the first 300 of N" beyond that, an Open As A List link, and Add To Export.
+Affects: spec.md Explore, mockups/explore.html
+
+### Q-038: Efforts And Sightings Columns (Phase 1)
+Asked: 2026-11-26
+Options: A Same columns, all sortable (recommended), B Exactly as V1, C Different columns
+Answer: A. Efforts: Date, Effort, Vessel, Locality, Survey Type, Track, Distance (nm), Sightings. Sightings: Date, Time, Sighting, Species, Group Size, Min–Max, Vessel, Position, Effort. Every column sorts; vessel sorts by name on both; default newest first.
+Affects: spec.md Efforts, Sightings; mockups/efforts.html, mockups/sightings.html
+
+### Q-039: Individuals List (Phase 1)
+Asked: 2026-11-26
+Options: A As proposed (recommended), B Without Other IDs, C Different
+Answer: A. Columns: ID, Species, Other IDs (shortened), Colour Category, Sex (genetic where known, otherwise behavioural), First Seen, Last Seen, Sightings, Dead. Filters: species, one search box for any ID, alias or retired ID, years seen, region seen, dead. Default sort Last Seen newest first; every column sorts; 50 rows per page with no picker.
+Affects: spec.md Individuals, mockups/individuals.html
+
+### Q-040: Individual Page (Phase 1)
+Asked: 2026-11-26
+Options: A As proposed (recommended), B Without the map, C Different
+Answer: A. Opens in the modal. Sections in order: header (ID, species, random-colour whale icon, Edit, Delete and History for Editor and above); IDs card (cross-catalog IDs, aliases, retired IDs); Summary (sex, colour category, first and last seen, sightings count, dead with date); map of every position seen; Sightings table (date, region, locality, contributor, research group, sharing status, quality, HappyWhale link; 50 per page, newest first); Samples table; Survey Sightings where the whale was identified, each opening the sighting.
+Affects: spec.md Individual, mockups/individual.html
