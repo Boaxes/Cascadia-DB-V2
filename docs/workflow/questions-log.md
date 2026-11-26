@@ -348,3 +348,21 @@ Asked: 2026-11-26
 Options (multi-select): Global ID Search, Individual Filter, Density Layer, Dark Mode
 Answer: Global ID Search, extended to "global search with fuzzy resolving", and the Individual Filter. Density Layer and Dark Mode are not in V2. The scope of fuzzy resolving is asked as Q-053.
 Affects: spec.md Search, Explore and Sightings filters
+
+### Q-053: Global Search Scope (Phase 1)
+Asked: 2026-11-26
+Options: A IDs and names with typo tolerance (recommended), B IDs only, C Plus comments
+Answer: A. Searches record IDs (effort, sighting and sample numbers, whale IDs, aliases, retired IDs, cross-catalog IDs) and names (vessels, localities, species common and scientific). Ignores case, spaces, dashes and prefixes; tolerates small typos in names with Postgres `pg_trgm`. Results grouped by kind, best first, up to 5 per kind; Enter opens the best match; a vessel, locality or species opens Sightings filtered by it.
+Affects: spec.md Search, sidebar in every mockup
+
+### Q-054: Gap Rule Defaults (Phase 1)
+Asked: 2026-11-26
+Options: A As stated (recommended), B Speed on at 40 kn
+Answer: A. Confirms the Q-029 assumption: defaults 30 minutes, distance off, speed off; ranges 1 to 240 minutes, 50 to 50,000 m, 5 to 100 kn. Assumption closed.
+Affects: spec.md Track Display Settings
+
+### Q-055: HappyWhale Link (Phase 1)
+Asked: 2026-11-26
+Options: A Show link (recommended), B Don't show
+Answer: A. Confirms the Q-036 assumption: the Individual page's Sightings table has a HappyWhale link column that opens in a new tab. Assumption closed.
+Affects: spec.md Individual, mockups/individual.html
