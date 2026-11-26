@@ -1,42 +1,14 @@
-{{ config(materialized='updatable_view', meta={'check_option': true}) }}
-SELECT s."SightingID"       AS id,
-       s."SightingID"       AS legacy_sighting_id,
-       s."Research Group"   AS research_group,
-       s."DailyEffortID"    AS daily_effort_id,
-       s."Sighting"         AS sighting_number,
-       s.vessel_id,
-       s.species_id,
-       s.species_uncertain,
-       s."Species"          AS species_raw,
-       s."Date"::date       AS sighting_date,
-       s."Start Time"       AS sighting_time,
-       s."StartDateTime"    AS sighting_datetime,
-       ST_Y(s.geom)         AS lat,
-       ST_X(s.geom)         AS lon,
-       s.geom,
-       s."End Dec Lat"      AS end_lat,
-       s."End Dec Long"     AS end_lon,
-       s.end_geom,
-       s."Position Type"    AS position_type,
-       s."Sight Type"       AS sight_type,
-       s."Est Size Best"    AS est_size_best,
-       s."Est Size Min"     AS est_size_min,
-       s."Est Size Max"     AS est_size_max,
-       s.num_calves,
-       s."Group Beh"        AS group_behavior,
-       s."Group Type"       AS group_type,
-       s.depth_m,
-       s."Photos?"          AS photos_taken,
-       s."Comments"         AS comments,
-       s.identified_individual_count,
-       -- Offered as optional columns on an export. V1 kept these in a JSON
-       -- blob because its import did not carry them; they are plain columns.
-       s."Bearing"          AS bearing,
-       s."Range"            AS range_m,
-       s."Reticle"          AS reticle,
-       s."RangeSource"      AS range_source,
-       s."Series Number 1"  AS photo_series_1,
-       s."Frames 1"         AS photo_frames_1,
-       s."Photographer 1"   AS photographer_1
-FROM   {{ ref('SightingT') }} s
-WHERE  s."Research Group" = 'CRC'
+-- Sightings: the Explore map and list, and each sighting's page. Every
+-- research group. id is the hashed Primary Key; DB167's ID is
+-- legacy_sighting_id, which the website's addresses use.
+select id, "SightingID" as legacy_sighting_id, "Research Group" as research_group, daily_effort_id,
+       "Sighting" as sighting_number, vessel_id, species_id, species_uncertain, "Species" as species_raw,
+       "Date"::date as sighting_date, "Start Time" as sighting_time, "StartDateTime" as sighting_datetime,
+       st_y(geom) as lat, st_x(geom) as lon, geom, "End Dec Lat" as end_lat, "End Dec Long" as end_lon, end_geom,
+       "Position Type" as position_type, "Sight Type" as sight_type, "Est Size Best" as est_size_best,
+       "Est Size Min" as est_size_min, "Est Size Max" as est_size_max, num_calves, "Group Beh" as group_behavior,
+       "Group Type" as group_type, depth_m, "Photos?" as photos_taken, "Comments" as comments,
+       identified_individual_count, "Bearing" as bearing, "Range" as range_m, "Reticle" as reticle,
+       "RangeSource" as range_source, "Series Number 1" as photo_series_1, "Frames 1" as photo_frames_1,
+       "Photographer 1" as photographer_1
+from {{ ref('SightingT') }} s

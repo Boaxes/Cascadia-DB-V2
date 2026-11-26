@@ -1,0 +1,25 @@
+{% extends "survey/base.html" %}
+{% comment %}
+  Cascadia Admin is part of the site: the same header, sign-in and styles.
+  Its own name and pages take the place of the site's in the header bar.
+{% endcomment %}
+{% block title %}{% block admin_title %}Cascadia Admin{% endblock %} &middot; Cascadia Admin{% endblock %}
+{% block brand_url %}{% url 'admin_home' %}{% endblock %}
+{% block brand %}Cascadia Admin{% endblock %}
+{% block nav %}
+  <a href="{% url 'admin_home' %}" class="{% if tab == 'dashboard' %}active{% endif %}">Dashboard</a>
+  <a href="{% url 'admin_tracks' %}" class="{% if tab == 'tracks' %}active{% endif %}">Track File Manager</a>
+  <a href="{% url 'admin_audit' %}" class="{% if tab == 'audit' %}active{% endif %}">Audit Log</a>
+  <a href="{% url 'admin_pipeline' %}" class="{% if tab == 'pipeline' %}active{% endif %}">Data Pipeline</a>
+{% endblock %}
+
+{% comment %}
+  Pages with filters (Track File Manager, Audit Log) lay out the whole page in
+  admin_body. The others fill content, inside the site's usual main.
+{% endcomment %}
+{% block body %}{% block admin_body %}
+  <main class="page {% block page_class %}{% endblock %}">
+    {% include "datahealth/_messages.html" %}
+    {% block content %}{% endblock %}
+  </main>
+{% endblock %}{% endblock %}

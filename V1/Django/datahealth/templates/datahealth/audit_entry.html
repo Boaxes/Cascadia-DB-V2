@@ -1,0 +1,57 @@
+{% extends "datahealth/base.html" %}
+{% load survey_tags %}
+{% block admin_title %}Change {{ entry.id }}{% endblock %}
+
+{% block admin_body %}
+<main class="page">
+<div id="detail" data-fit>
+  <div class="detail-head"><h1>{{ row.action_label }} &middot; {{ row.table_label }} {{ entry.number }}</h1></div>
+  {% include "datahealth/_messages.html" %}
+
+  <section class="card">
+    <dl class="fix-facts">
+      <dt>When</dt><dd>{{ entry.at|date:"j F Y, H:i" }}</dd>
+      <dt>Who</dt><dd>{{ entry.actor }}</dd>
+      <dt>Record</dt><dd>{% if row.link %}<a href="{{ row.link }}"{% if row.table != "TrackT" %} data-modal-url="{{ row.link }}"{% endif %}>{{ row.table_label }} {{ entry.number }}</a>{% else %}{{ row.table_label }} {{ entry.number }}{% endif %}</dd>
+      {% if entry.comment %}<dt>Note</dt><dd>{{ entry.comment }}</dd>{% endif %}
+      <dt>DB167</dt>
+      <dd><span class="pill state-{{ entry.db167 }}">{{ row.db167_label }}</span>
+        <span class="small muted">{{ row.db167_note }}{% if entry.db167_checked_at %} State Last Changed {{ entry.db167_checked_at|date:"j F Y, H:i" }}.{% endif %}</span></dd>
+    </dl>
+  </section>
+
+  {% if changes %}
+    <section class="card card-tight changes-card">
+      <table class="data">
+        <thead><tr><th>Field</th><th>Before</th><th>After</th><th>DB167</th></tr></thead>
+        <tbody>
+          {% for label, old, new, standing, name in changes %}
+            <tr><td class="nowrap">{{ label }}</td>
+              {% if name == "geom" %}<td class="muted">{% if old %}Track Line{% else %}NULL{% endif %}</td><td class="muted">{% if new %}Track Line{% else %}NULL{% endif %}</td>
+              {% else %}<td>{{ old|default_if_none:""|dash }}</td><td><strong>{{ new|default_if_none:""|dash }}</strong></td>{% endif %}
+              <td>{% if standing %}<span class="pill state-{{ standing.0 }}">{{ standing.1 }}</span>{% endif %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  {% endif %}
+  {% if entry.snapshot_counts %}
+    <section class="card">
+      <h2>Removed With It</h2>
+      <ul class="small" style="margin:0">{% for name, n in entry.snapshot_counts %}<li>{{ n|thousands }} from {{ name }}</li>{% endfor %}</ul>
+    </section>
+  {% endif %}
+
+  <section class="card undo-card">
+    {% if blocked %}
+      <p class="muted small" style="margin:0">{{ blocked }}</p>
+    {% else %}
+      <form method="post">{% csrf_token %}
+        <button class="btn btn-danger" type="submit">Undo This Change</button>
+        <span class="small muted">Puts the data back exactly as it was and removes this entry from the log.</span>
+      </form>
+    {% endif %}
+  </section>
+</div>
+</main>
+{% endblock %}

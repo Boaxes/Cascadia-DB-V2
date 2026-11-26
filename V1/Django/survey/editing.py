@@ -36,38 +36,38 @@ SIGHTING_FIELDS = [
     Field("species_id", "Species", kind="species",
           note="The species this sighting is filed under. The original text is "
                "kept either way and shown as recorded."),
-    Field("Sighting", "Sighting number"),
+    Field("Sighting", "Sighting Number"),
     Field("Date", "Date", kind="date"),
     Field("Start Time", "Time", kind="time"),
     Field("Start Dec Lat", "Latitude", kind="number",
           note="Decimal degrees. Editing either coordinate redraws the point "
                "on the map."),
     Field("Start Dec Long", "Longitude", kind="number"),
-    Field("End Dec Lat", "End latitude", kind="number"),
-    Field("End Dec Long", "End longitude", kind="number"),
-    Field("Position Type", "Position type", choices=POSITION_TYPES),
-    Field("Sight Type", "Sighting type", choices=SIGHT_TYPES),
-    Field("Est Size Best", "Best size estimate", kind="integer"),
-    Field("Est Size Min", "Smallest estimate", kind="integer"),
-    Field("Est Size Max", "Largest estimate", kind="integer"),
+    Field("End Dec Lat", "End Latitude", kind="number"),
+    Field("End Dec Long", "End Longitude", kind="number"),
+    Field("Position Type", "Position Type", choices=POSITION_TYPES),
+    Field("Sight Type", "Sighting Type", choices=SIGHT_TYPES),
+    Field("Est Size Best", "Best Size Estimate", kind="integer"),
+    Field("Est Size Min", "Smallest Estimate", kind="integer"),
+    Field("Est Size Max", "Largest Estimate", kind="integer"),
     Field("num_calves", "Calves", kind="integer"),
-    Field("Group Beh", "Group behaviour"),
-    Field("Group Type", "Group type"),
+    Field("Group Beh", "Group Behaviour"),
+    Field("Group Type", "Group Type"),
     Field("depth_m", "Depth (m)", kind="number"),
     Field("Comments", "Comments", kind="textarea"),
 ]
 
 EFFORT_FIELDS = [
     Field("Date", "Date", kind="date"),
-    Field("Start Time", "Start time", kind="time"),
-    Field("End Time", "End time", kind="time"),
+    Field("Start Time", "Start Time", kind="time"),
+    Field("End Time", "End Time", kind="time"),
     Field("Launch", "Launch"),
     Field("Locality", "Locality"),
     Field("Return", "Return"),
     Field("Region", "Region"),
-    Field("Sub-area", "Sub-area"),
-    Field("Survey Type", "Survey type"),
-    Field("Project/Objective", "Project or objective"),
+    Field("Sub-area", "Sub-Area"),
+    Field("Survey Type", "Survey Type"),
+    Field("Project/Objective", "Project or Objective"),
     Field("Personnel", "Personnel"),
     Field("total_distance_nm", "Distance (nm)", kind="number"),
     Field("Survey Comments", "Comments", kind="textarea"),
@@ -170,7 +170,7 @@ def deletion_warning(table, key_column, pk):
     Counted rather than listed: the point is to say plainly that a delete
     reaches further than the record on screen, not to print two hundred rows.
     """
-    from admintools.audit import collect
+    from datahealth.audit import collect
 
     rows, _ = collect(table, key_column, pk)
     # Singular and plural given, because appending an s produces "log entrys".

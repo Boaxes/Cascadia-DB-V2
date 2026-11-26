@@ -5,10 +5,8 @@
 #     ops/pull-db.sh          # first: a fresh copy of live, into cascadia
 #     ops/make-reference.sh
 #
-# `reference` is the answer key for the move to dbt:
-# whatever the new pipeline builds is compared against it, and the tests run
-# against copies of it. Nothing ever writes to it. Run this again after every
-# pull, so the answer key is the copy you just took.
+# The tests run against copies of `reference`. Nothing ever writes to it. Run
+# this again after every pull, so the tests see the copy you just took.
 #
 # It closes any connection to the local cascadia database first -- a running
 # `docker compose up` holds some, and Postgres cannot copy a database that is

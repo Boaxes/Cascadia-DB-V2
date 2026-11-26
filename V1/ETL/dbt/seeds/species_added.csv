@@ -1,0 +1,15 @@
+species_id,code,common_name,scientific_name
+1001,UnCet,Unidentified Cetacean,
+1002,UnFurSeal,Unidentified Fur Seal,
+1003,Ship,Ship,
+1004,Boat,Boat,
+1005,Gm,Short-finned Pilot Whale,Globicephala macrorhynchus
+1006,UnPinn,Unidentified Pinniped,
+1007,UnBeak,Unidentified Beaked Whale,
+1008,Meso,Mesoplodont Beaked Whale,Mesoplodon sp.
+1009,Sb,Rough-toothed Dolphin,Steno bredanensis
+1010,Ziph,Beaked Whale (unidentified),Ziphiidae
+1011,Ejap,,
+1012,Pomarine Jaeger,Pomarine Jaeger,Stercorarius pomarinus
+1013,UW,Unidentified Whale,
+1014,ULW,Unidentified Large Whale,

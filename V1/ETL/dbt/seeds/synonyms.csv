@@ -1,0 +1,65 @@
+table_name,column_name,synonym_set,spelling
+DailyEffortT,Survey Type,1,Unk
+DailyEffortT,Survey Type,1,Unknown
+DailyEffortT,Survey Type,2,Non-Standardized Large Vessel
+DailyEffortT,Survey Type,2,Large Vessel Non-Standardized
+DailyEffortT,Survey Type,3,Whale Watch Vessel
+DailyEffortT,Survey Type,3,Whale Watching
+DailyEffortT,Survey Type,3,Whale Watch
+DailyEffortT,Survey Type,4,Line Transect
+DailyEffortT,Survey Type,4,Vessel Line Transect
+DailyEffortT,Survey Type,5,Land Observation
+DailyEffortT,Survey Type,5,Land based
+DailyEffortT,Survey Type,5,Land Based Ob
+DailyEffortT,Survey Type,5,Land Based Survey
+DailyEffortT,Survey Type,5,Shore
+DailyEffortT,Survey Type,5,from shore
+DailyEffortT,Survey Type,6,ENT
+DailyEffortT,Survey Type,6,Entanglement
+DailyEffortT,Survey Type,6,Entanglement Response
+DailyEffortT,Survey Type,7,Kayak
+DailyEffortT,Survey Type,7,Kayak Observation
+DailyEffortT,Launch,1,Drake Bay
+DailyEffortT,Launch,1,Drakes Bay
+DailyEffortT,Launch,2,off shore
+DailyEffortT,Launch,2,offshore
+DailyEffortT,Launch,3,La Push
+DailyEffortT,Launch,3,LaPush
+DailyEffortT,Launch,4,Anton Spit
+DailyEffortT,Launch,4,Anton's Spit
+DailyEffortT,Launch,4,Antons Spit
+DailyEffortT,Launch,5,Wrigleys
+DailyEffortT,Launch,5,Wrigley
+DailyEffortT,Launch,6,Two Harbors
+DailyEffortT,Launch,6,Two Harbor
+DailyEffortT,Launch,7,Hot Springs Cove
+DailyEffortT,Launch,7,Hot Spring Cove
+DailyEffortT,Launch,8,Unk
+DailyEffortT,Launch,8,Unknown
+DailyEffortT,Launch,9,none
+DailyEffortT,Launch,9,non
+DailyEffortT,Launch,10,Ukey SZ
+DailyEffortT,Launch,10,Ukey S.Z.
+DailyEffortT,Launch,10,UKSZ
+DailyEffortT,Return,1,Drake Bay
+DailyEffortT,Return,1,Drakes Bay
+DailyEffortT,Return,2,off shore
+DailyEffortT,Return,2,offshore
+DailyEffortT,Return,3,La Push
+DailyEffortT,Return,3,LaPush
+DailyEffortT,Return,4,Anton Spit
+DailyEffortT,Return,4,Anton's Spit
+DailyEffortT,Return,4,Antons Spit
+DailyEffortT,Return,5,Wrigleys
+DailyEffortT,Return,5,Wrigley
+DailyEffortT,Return,6,Two Harbors
+DailyEffortT,Return,6,Two Harbor
+DailyEffortT,Return,7,Hot Springs Cove
+DailyEffortT,Return,7,Hot Spring Cove
+DailyEffortT,Return,8,Unk
+DailyEffortT,Return,8,Unknown
+DailyEffortT,Return,9,none
+DailyEffortT,Return,9,non
+DailyEffortT,Return,10,Ukey SZ
+DailyEffortT,Return,10,Ukey S.Z.
+DailyEffortT,Return,10,UKSZ

@@ -6,30 +6,32 @@ The confirmation is the point -- it lists exactly which fields are changing and
 what they are changing from, so nobody submits a form they misread, and it
 takes an optional note that goes into the audit log beside the change.
 
-Every write goes through admintools.audit, which is the one place that touches
+Every write goes through datahealth.audit, which is the one place that touches
 the data, so nothing can be changed without being recorded.
 """
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.http import Http404
 from django.shortcuts import redirect, render
 
-from admintools import audit
+from datahealth import access, audit
 
 from .editing import (FIELDS, changed, current, deletion_warning, display,
                       parse)
 from .models import DailyEffort, Sighting, Species
 
+# Addresses use DB167's ID (lookup); everything written uses the record's
+# Primary Key in dbo, its hashed id (key), so the audit log finds the record
+# however DB167 renumbers it.
 RECORDS = {
     "sighting": {
-        "table": "SightingT", "key": "SightingID",
+        "table": "SightingT", "key": "id",
         "model": Sighting, "lookup": "legacy_sighting_id",
         "label": "sighting", "url": "/sightings/%s/",
     },
     "daily_effort": {
-        "table": "DailyEffortT", "key": "DailyEffortID",
+        "table": "DailyEffortT", "key": "id",
         "model": DailyEffort, "lookup": "legacy_daily_effort_id",
         "label": "effort", "url": "/efforts/%s/",
     },
@@ -51,11 +53,11 @@ def _submitted(fields, post):
     return {f.column: parse(f, post.get(f.name)) for f in fields}
 
 
-@login_required
+@access.require("edit_records")
 def edit(request, kind, pk):
     spec, obj = _record(kind, pk)
     fields = FIELDS[kind]
-    before = current(spec["table"], spec["key"], pk, fields)
+    before = current(spec["table"], spec["key"], obj.pk, fields)
     if before is None:
         raise Http404(f"No {spec['label']} {pk}")
 
@@ -72,7 +74,7 @@ def edit(request, kind, pk):
                 return redirect(spec["url"] % pk)
             # A coordinate edit redraws the point the map reads: dbo has a
             # trigger for that, so it happens wherever the write comes from.
-            audit.update(request.user, kind, pk, pending,
+            audit.update(request.user, kind, obj.pk, pending,
                          comment=(request.POST.get("comment") or "").strip() or None)
             messages.success(
                 request,
@@ -112,19 +114,19 @@ def edit(request, kind, pk):
     })
 
 
-@login_required
+@access.require("delete_records")
 def delete(request, kind, pk):
     spec, obj = _record(kind, pk)
     with connection.cursor() as cur:
         cur.execute(f'SELECT 1 FROM dbo."{spec["table"]}" WHERE "{spec["key"]}" = %s',
-                    [pk])
+                    [obj.pk])
         if cur.fetchone() is None:
             raise Http404(f"No {spec['label']} {pk}")
 
-    also = deletion_warning(spec["table"], spec["key"], pk)
+    also = deletion_warning(spec["table"], spec["key"], obj.pk)
 
     if request.method == "POST" and request.POST.get("confirmed") == "1":
-        audit.delete(request.user, kind, pk,
+        audit.delete(request.user, kind, obj.pk,
                      comment=(request.POST.get("comment") or "").strip() or None)
         messages.success(
             request,

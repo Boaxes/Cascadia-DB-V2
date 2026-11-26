@@ -46,6 +46,11 @@
   /* Tracks on every map: a lemon yellow that reads on satellite and street,
      and stays clear of the Cascadia profile's gold Fin Whale. */
   --track: #ffeb3b;
+  /* The track manager's overlays: the selected rows in red, rows not yet saved in blue.
+     Both carry a white edge, so they read on satellite and on the ocean basemap, and
+     both profiles use them as they are. */
+  --track-selected: #e8261c;
+  --track-unsaved: #1f6bff;
 }
 
 /* The Generic colour profile keeps its pale sea line. */
@@ -120,6 +125,15 @@ a:hover { text-decoration: underline; }
 .site-header nav a.active {
   color: #fff;
   border-bottom-color: var(--accent-soft);
+}
+/* A phone: the logo stands in for the name, the links scroll sideways if
+   they still do not fit, and the account menu always stays on screen. */
+@media (max-width: 760px) {
+  .site-header { gap: 12px; padding: 0 12px; }
+  .site-header .brand span, .site-header .profile-name { display: none; }
+  .site-header nav { flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .site-header nav a { padding: 0 10px; white-space: nowrap; }
+  .site-header .profile { flex: none; }
 }
 
 /* ------------------------------------------------------------------ page */
@@ -268,6 +282,19 @@ table.data th {
 table.data th a { color: var(--muted); }
 table.data th a:hover { color: var(--text); }
 table.data th.sorted a { color: var(--text); }
+/* The sort direction: a small chevron, down for descending and up for ascending. */
+.sort-ind {
+  display: inline-block; width: 5px; height: 5px; margin-left: 7px; vertical-align: middle;
+  border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+}
+.sort-ind.down { transform: translateY(-2px) rotate(45deg); }
+.sort-ind.up { transform: translateY(1px) rotate(-135deg); }
+/* A chevron pointing left, before "Back" and the links back to a list. */
+.back-link::before, #modal .modal-back::before {
+  content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 8px;
+  border-left: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: translateY(-1px) rotate(45deg);
+}
 table.data td {
   padding: 9px 12px;
   border-bottom: 1px solid var(--border-soft);
@@ -477,27 +504,32 @@ table.data .empty { text-align: center; padding: 36px; color: var(--muted); }
 /* Explore: the filter sidebar, the map and the results. */
 .panel-layout {
   display: grid;
-  grid-template-columns: 320px minmax(520px, 1fr) 430px;
+  --side-w: 260px;
+  grid-template-columns: var(--left-w, var(--side-w)) minmax(0, 1fr) var(--right-w, var(--side-w));
   height: calc(100vh - 58px);
   position: relative;
   background: #fff;
 }
 /* Sightings and Efforts: the same sidebar, then the table. */
-.panel-layout.list-layout { grid-template-columns: 320px minmax(0, 1fr); background: var(--page); }
+.panel-layout.list-layout { grid-template-columns: 260px minmax(0, 1fr); background: var(--page); }
 .list-main { overflow-y: auto; padding: 24px 28px; }
 /* The buttons follow the filters rather than sitting at the foot of the
    window. The panel scrolls only if every section is open on a short screen. */
 .filter-panel {
   background: #fff;
   border-right: 1px solid var(--border);
-  padding: 20px 22px;
+  padding: 16px 14px;
   overflow-y: auto;
 }
 .list-summary { font-size: 13px; color: var(--muted); margin: 0 0 14px; }
 .area-picker > summary { font-size: 13px; color: var(--accent); cursor: pointer; list-style: none; }
 .area-picker > summary::-webkit-details-marker { display: none; }
-.area-picker > summary::before { content: "\25B8  "; }
-.area-picker[open] > summary::before { content: "\25BE  "; }
+.area-picker > summary::before {
+  content: ""; display: inline-block; width: 5px; height: 5px; margin: 0 9px 1px 2px;
+  border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+}
+.area-picker[open] > summary::before { transform: rotate(45deg); }
 .area-picker[open] > summary { margin-bottom: 8px; }
 .filter-map { width: 100%; height: 200px; margin-bottom: 6px; }
 
@@ -530,19 +562,75 @@ table.data .empty { text-align: center; padding: 36px; color: var(--muted); }
 .fsec-count:empty { display: none; }
 .explore-results {
   background: #fff;
-  border-left: 1px solid var(--border-soft);
+  border-left: 1px solid var(--border);
   overflow-y: auto;
-  padding: 14px 16px;
+  padding: 16px 14px;
 }
 .explore-map { position: relative; }
+/* Drag handles on the map's two edges; resize.js sets --left-w and --right-w. */
+.side-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  z-index: 1100;
+  cursor: col-resize;
+  touch-action: none;
+}
+.side-handle-left { left: -4px; }
+.side-handle-right { right: -4px; }
+.side-handle:hover, .side-handle.dragging { background: rgba(31, 111, 139, .35); }
+body.resizing { cursor: col-resize; user-select: none; }
+body.resizing .explore-map { pointer-events: none; }
+body.resizing .side-handle { pointer-events: auto; }
+/* Fullscreen shows the map alone: the sidebars are not in the element. */
+.explore-map:fullscreen { background: #fff; }
+.explore-map:fullscreen .map-tall { height: 100vh; margin: 0; border: 0; border-radius: 0; }
+.explore-map:fullscreen .side-handle { display: none; }
+.leaflet-control-fullscreen a { font-size: 18px; line-height: 30px; text-align: center; cursor: pointer; }
+/* The camera that saves the map as an image (map-tools.js). */
+.leaflet-control-screenshot a {
+  display: flex !important; align-items: center; justify-content: center;
+  color: var(--text); cursor: pointer;
+}
+.leaflet-control-screenshot a.busy { color: var(--faint); cursor: progress; }
+.map-notice {
+  position: absolute; top: 12px; left: 56px; right: 56px; margin: 0 auto;
+  max-width: min(420px, calc(100% - 112px)); width: max-content;
+  background: rgba(255,255,255,.97); border: 1px solid var(--border);
+  border-radius: 4px; box-shadow: 0 6px 18px rgba(11, 44, 61, .14);
+  padding: 8px 12px; font-size: 13px; z-index: 1000; cursor: pointer;
+}
+/* A track's popup: what it is, then where to go from it. */
+.track-popup dl {
+  display: grid; grid-template-columns: auto 1fr; gap: 2px 10px;
+  margin: 6px 0 8px;
+}
+.track-popup dt { color: var(--muted); }
+.track-popup dd { margin: 0; overflow-wrap: anywhere; }
+.track-popup-links { display: flex; flex-wrap: wrap; gap: 4px 12px; }
 /* A grid, not a wrapping flex column: the column sized the year chips at
-   their narrowest, one year per row, and kept that height. */
-.filter-panel .filters { display: grid; }
+   their narrowest, one year per row, and kept that height. The one column
+   is capped at the panel's width so wide content cannot push it out. */
+.filter-panel .filters { display: grid; grid-template-columns: minmax(0, 1fr); }
 .filter-panel .field input, .filter-panel .field select { min-width: 0; width: 100%; }
+.filter-panel .chips-years { min-width: 0; }
+/* Two dates side by side in a narrow panel: less padding so the year and the
+   calendar button both fit. */
+.filter-panel .field-pair input[type=date] { padding-left: 6px; padding-right: 4px; }
 .filter-panel h2 {
   margin: 0 0 16px;
   font-size: 18px;
   color: var(--text);
+}
+/* Research Group sits above the sections, always open, because it has a
+   default the reader must see. The chip says what is applied. */
+.rg-filter { gap: 8px; }
+.rg-state { margin: 0; }
+.rg-chip {
+  display: inline-block; max-width: 100%; padding: 3px 10px; border-radius: 999px;
+  background: var(--accent-light); color: var(--accent-dark); font-size: 12px;
+  overflow-wrap: anywhere;
 }
 .panel-actions {
   display: grid;
@@ -634,6 +722,7 @@ table.data .empty { text-align: center; padding: 36px; color: var(--muted); }
   align-items: center;
   gap: 8px;
   font-weight: 600;
+  font-size: 13px;
 }
 .result-item .s { color: var(--muted); font-size: 12px; }
 .result-dot {
@@ -644,7 +733,10 @@ table.data .empty { text-align: center; padding: 36px; color: var(--muted); }
 }
 .result-count {
   margin-left: auto;
+  padding-left: 6px;
   font-weight: 600;
+  font-size: 12px;
+  white-space: nowrap;
   color: var(--text);
   font-variant-numeric: tabular-nums;
 }
@@ -754,19 +846,47 @@ table.data .empty { text-align: center; padding: 36px; color: var(--muted); }
 
 /* Export */
 
-.export-form h2 { font-size: 15px; margin: 22px 0 8px; }
-.export-form h2:first-child { margin-top: 0; }
-.export-sources { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-.export-source {
+.export-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+@media (max-width: 1000px) { .export-grid { grid-template-columns: minmax(0, 1fr); } }
+.export-grid .card-tight { overflow-x: auto; }
+.export-options { display: grid; gap: 12px; margin-bottom: 0; }
+.export-problem { color: var(--red-fg); }
+.export-query { min-width: 200px; }
+.export-query label.check { display: flex; gap: 6px; align-items: center; margin-top: 4px; font-size: 12px; color: var(--text); }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.card-head h2 { margin: 0; }
+.card-head.pad { padding: 14px 16px 10px; margin: 0; }
+.pad-x { padding: 0 16px; }
+.row-actions { display: flex; align-items: center; gap: 8px; margin-top: 16px; }
+.scroll { overflow-x: auto; }
+.scroll td, .scroll th { white-space: nowrap; }
+table.data td.cols { background: var(--page); }
+.colgroups { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px 24px; padding: 4px 4px 8px; }
+.colgroups h3 { margin-bottom: 6px; }
+.colgroups label { display: flex; gap: 8px; align-items: center; padding: 2px 0; font-size: 13px; cursor: pointer; }
+th.appended, td.appended { background: var(--sea-50); }
+table.data th.appended { color: var(--accent-dark); }
+/* Add To Export, on Explore, the lists and a record's page. */
+.add-export { margin: 0; display: flex; align-items: center; }
+.add-export .btn { white-space: nowrap; }
+.add-export[hidden] { display: none; }
+.list-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.list-head h1 { margin: 0; }
+.results-links { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; margin-top: 10px; }
+.results-links a { white-space: nowrap; }
+.add-export-note { margin-left: 8px; color: var(--red-fg); font-size: 12px; }
+
+/* Settings: one card per setting, its choices side by side. */
+.settings-page { max-width: 820px; }
+.setting-choices { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.setting-choice {
   display: block; border: 1px solid var(--border); border-radius: 8px;
   padding: 10px 12px; cursor: pointer;
 }
-.export-source:has(input:checked) { border-color: var(--accent); background: var(--accent-light); }
-.export-source.is-unvisited { opacity: .6; }
-.export-source .t { display: block; font-weight: 600; margin-top: 4px; }
-.export-source .s { display: block; font-size: 12px; color: var(--muted); }
-.export-formats { display: flex; gap: 20px; flex-wrap: wrap; }
-.export-actions { margin-top: 24px; }
+.setting-choice:has(input:checked) { border-color: var(--accent); background: var(--accent-light); }
+.setting-choice .t { font-weight: 600; margin-left: 4px; }
+.setting-choice .s { display: block; margin-top: 4px; font-size: 12px; color: var(--muted); }
+.setting-actions { margin-top: 16px; }
 
 /* Login */
 
@@ -826,7 +946,7 @@ body.signin { background: var(--page); }
   max-height: 340px; overflow-y: auto; padding: 4px 0; background: #fff;
   border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 8px 24px rgba(11, 44, 61, .14);
 }
-.tp-menu[hidden], .tp-group[hidden], .tp-opt[hidden] { display: none; }
+.tp-menu[hidden], .tp-group[hidden], .tp-opt[hidden], .field .tp-opt[hidden] { display: none; }
 .tp-group:not(.open) .tp-items { display: none; }
 .tp.searching .tp-items { display: block; }
 .tp-head, .field .tp-opt {
@@ -909,8 +1029,8 @@ label.stacked + textarea { width: 100%; max-width: 34rem; padding: 6px 8px;
   gap: 16px; margin-bottom: 18px; }
 .detail-head h1 { margin: 0; font-size: 20px; }
 
-/* A record's tools: edit, delete, history, export, as icons with a hint
-   underneath on hover. In the pop-over they sit left of the close button. */
+/* A record's tools: Add To Export, then edit, delete and history as icons
+   with a hint underneath on hover. In the pop-over they sit left of the close button. */
 .record-tools { display: flex; gap: 6px; flex-shrink: 0; }
 .tool {
   position: relative; width: 32px; height: 32px; display: grid; place-items: center;
@@ -972,130 +1092,232 @@ dialog.window::backdrop { background: rgba(11, 44, 61, .35); }
 
 /* Problems and changes wear a colour each, as pills. */
 .problem-no_track     { background: var(--red-bg);   color: var(--red-fg); }
-.problem-missing_file { background: var(--amber-bg); color: var(--amber-fg); }
 .problem-unlinked     { background: var(--sea-100);  color: var(--accent-dark); }
 .problem-lost         { background: var(--grey-bg);  color: var(--grey-fg); }
-.action-update     { background: var(--sea-100);  color: var(--accent-dark); }
+.action-update, .action-edit_file { background: var(--sea-100);  color: var(--accent-dark); }
 .action-associate  { background: var(--green-bg); color: var(--green-fg); }
 .action-dissociate { background: var(--amber-bg); color: var(--amber-fg); }
 .action-upload, .action-create { background: var(--green-bg); color: var(--green-fg); }
 .action-delete     { background: var(--red-bg);   color: var(--red-fg); }
 .action-restore    { background: var(--grey-bg);  color: var(--grey-fg); }
+/* Whether DB167 holds a change. */
+.state-pending        { background: var(--amber-bg); color: var(--amber-fg); }
+.state-applied        { background: var(--green-bg); color: var(--green-fg); }
+.state-conflict       { background: var(--red-bg);   color: var(--red-fg); }
+.state-not_applicable { background: var(--grey-bg);  color: var(--grey-fg); }
+.state-website        { background: var(--sea-100);  color: var(--accent-dark); }
 
-/* Track files: one tab per problem, each with its count. */
+/* Tabs, as on the Export page. */
 .problem-tabs {
   display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px;
   border-bottom: 1px solid var(--border);
 }
-.problem-tabs a {
+.problem-tabs a, .problem-tabs button {
   padding: 8px 12px; color: var(--muted); font-weight: 600; font-size: 13px;
   border-bottom: 2px solid transparent; margin-bottom: -1px;
 }
-.problem-tabs a:hover { color: var(--text); text-decoration: none; }
-.problem-tabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.problem-tabs button { background: none; border-width: 0 0 2px; font-family: inherit; cursor: pointer; }
+.problem-tabs a:hover, .problem-tabs button:hover { color: var(--text); text-decoration: none; }
+.problem-tabs a.active, .problem-tabs button.active { color: var(--accent); border-bottom-color: var(--accent); }
 .problem-tabs a span {
   margin-left: 4px; padding: 1px 7px; border-radius: 999px; font-size: 11px;
   background: var(--grey-bg); color: var(--muted); font-variant-numeric: tabular-nums;
 }
 .problem-tabs a.active span { background: var(--accent); color: #fff; }
-.problem-note { margin: 0 0 12px; }
 
-/* A track or change, opened. */
-.fix-status { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; font-size: 13px; color: var(--muted); }
-.fix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 16px; }
+/* A change in the Audit Log, opened. */
 .fix-facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0 0 10px; font-size: 13px; }
 .fix-facts dt { color: var(--muted); }
 .fix-facts dd { margin: 0; overflow-wrap: anywhere; }
-.fix-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 10px 0; border-top: 1px solid var(--border-soft);
-}
-.fix-row:first-of-type { border-top: 0; padding-top: 0; }
-.fix-row form { margin: 0; flex: none; }
-.fix-row .pill { margin-top: 4px; }
-.upload-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 6px 0 4px; }
-.upload-row input[type=file] { font-size: 12px; max-width: 100%; }
-.card h2 em { font-weight: 600; }
+.changes-card { overflow-x: auto; }
+.script-row { display: flex; align-items: center; gap: 8px 14px; flex-wrap: wrap; margin: 0 0 12px; }
+.script-row .small.muted { flex: 1 1 300px; }
 .undo-card form { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 0; }
 
 /* ---------------------------------------------------------- dashboard */
 
-/* One screen: the page is exactly the window under the header, the work band
-   takes what it needs, and the charts share whatever is left. */
-.admin-dash {
-  height: calc(100vh - 58px); display: flex; flex-direction: column; gap: 16px;
-  padding: 16px 24px; overflow: hidden;
+/* One card per tool, each a link to it. */
+.admin-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.admin-card {
+  display: block; padding: 16px; color: var(--text);
+  background: var(--card); border: 1px solid var(--border); border-radius: 6px;
 }
-.dash-band { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
-/* Two sections on the same white panel: the work to do, then statistics.
-   Each folds away by clicking its title, and a folded one is just its title. */
-.dash-band { border-radius: 8px; padding: 12px 14px 14px; background: #fff; border: 1px solid var(--border); }
-.dash-title {
-  display: flex; align-items: center; gap: 8px; margin: 0;
-  font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text);
-}
-.dash-title svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.dash-title span { font-size: 12px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted); margin-left: 4px; }
-.dash-facts { flex: 1; }
-.dash-toggle { cursor: pointer; user-select: none; }
-.dash-toggle::after {
-  content: ""; margin-left: auto; width: 7px; height: 7px;
-  border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
-  transform: rotate(45deg) translate(-2px, -2px); transition: transform .15s;
-}
-.dash-band.folded .dash-toggle::after { transform: rotate(-45deg); }
-.dash-band.folded > :not(.dash-title) { display: none; }
-.dash-band.folded { flex: 0 0 auto; }
-.ops-grid { display: grid; grid-template-columns: minmax(320px, 2fr) 3fr; gap: 12px; }
-.ops-grid .card { margin: 0; }
-.ops-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
-.ops-head h3 { margin: 0; text-transform: none; letter-spacing: 0; font-size: 14px; color: var(--text); }
-.ops-recent .ops-head { padding: 12px 14px 0; }
-.coverage { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; margin-bottom: 8px; }
-.coverage > strong { font-size: 26px; font-variant-numeric: tabular-nums; }
-.meter { height: 6px; border-radius: 3px; background: var(--sea-100); margin-bottom: 4px; overflow: hidden; }
-.meter span { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
-.problem-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
-.problem-stats a {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  padding: 5px 6px; border-radius: 4px; color: var(--text);
-}
-.problem-stats a:hover { background: var(--hover); text-decoration: none; }
-.problem-stats strong { font-size: 16px; font-variant-numeric: tabular-nums; }
-table.data.compact-rows td { padding: 6px 12px; }
-.recent-what { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-card:hover { border-color: var(--accent-soft); background: var(--hover); text-decoration: none; }
+.admin-card h2 { color: var(--accent); margin-bottom: 6px; }
+.admin-card p { margin: 0; color: var(--muted); }
 
-.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-.kpi { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; }
-.kpi-label { font-size: 12px; font-weight: 600; color: var(--muted); }
-.kpi-value { font-size: 22px; font-weight: 600; line-height: 1.25; font-variant-numeric: tabular-nums; }
-
-.chart-grid { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 12px; }
-.chart-row { flex: 1; min-height: 0; display: grid; gap: 12px; grid-template-columns: 1.4fr 1fr; }
-.chart-card { margin: 0; min-height: 0; display: flex; flex-direction: column; padding: 10px 14px; }
-.chart-card h3 { margin: 0 0 6px; text-transform: none; letter-spacing: 0; font-size: 13px; color: var(--text); }
-.chart-body { flex: 1; min-height: 0; }
-.chart-body svg { display: block; }
-.chart-axis { font-size: 10.5px; fill: var(--muted); font-variant-numeric: tabular-nums; }
-.chart-label { font-size: 11.5px; fill: var(--text); }
-.chart-value { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
-.chart-tip {
-  position: fixed; z-index: 3000; display: none; pointer-events: none;
-  background: var(--navy); color: #fff; border-radius: 4px; padding: 6px 9px; font-size: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
-}
-.chart-tip strong { display: block; font-variant-numeric: tabular-nums; }
-.chart-tip span { color: #c9dbe4; }
-.problem-stats .pill { justify-self: start; }
-/* A small window scrolls rather than squashing the charts to nothing. */
-@media (max-height: 700px), (max-width: 900px) {
-  .admin-dash { height: auto; overflow: visible; }
-  .chart-row { flex: 0 0 auto; height: 240px; }
-}
-@media (max-width: 900px) { .ops-grid, .chart-row { grid-template-columns: 1fr; } .chart-row { height: auto; } .chart-card { height: 220px; } }
 .admin-layout .list-main > .card-tight { overflow-x: auto; }
 .admin-layout table.data td.mono { white-space: nowrap; overflow-wrap: normal; }
+/* A phone: the filters above the list rather than beside it. */
+@media (max-width: 760px) {
+  .panel-layout.admin-layout { grid-template-columns: minmax(0, 1fr); height: auto; }
+  .admin-layout .filter-panel { border-right: 0; border-bottom: 1px solid var(--border); }
+  .admin-layout .list-main { padding: 16px 12px; }
+}
 /* One line per change, so a page of them is a known height; the full text
    is in the pop-over and on hover. */
-.audit-table { table-layout: fixed; width: 100%; }
+.audit-table { table-layout: fixed; width: 100%; min-width: 1080px; }
 .audit-table td { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------------------------------------------------------- data pipeline */
+
+/* A plain document: the site's own font, headings, paragraphs and tables. */
+.pipeline-doc { max-width: 1040px; font-size: 15px; line-height: 1.55; }
+.pipeline-doc h1 { margin-bottom: 12px; }
+.pipeline-doc h2 { margin: 36px 0 10px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 21px; }
+.pipeline-doc h3 { margin: 26px 0 8px; font-size: 17px; color: var(--text); text-transform: none; letter-spacing: 0; }
+.pipeline-doc h4 { margin: 18px 0 6px; font-size: 15px; }
+.pipeline-doc p { margin: 0 0 10px; max-width: 820px; }
+.pipeline-doc details { margin: 0 0 6px; }
+.pipeline-doc summary { cursor: pointer; padding: 6px 0; font-weight: 600; }
+.pipeline-doc .summary-notes { font-weight: 400; color: var(--muted); }
+.pipeline-doc .table-entry { border-bottom: 1px solid var(--border-soft); }
+.pipeline-doc .table-entry-body { padding: 0 0 16px 16px; }
+
+table.doc { border-collapse: collapse; width: 100%; margin: 6px 0 14px; font-size: 14px; background: var(--card); }
+table.doc th, table.doc td { border: 1px solid var(--border); padding: 5px 8px; text-align: left; vertical-align: top; }
+table.doc th { background: var(--page); font-weight: 600; }
+table.doc .num { text-align: right; white-space: nowrap; }
+table.doc.columns td:first-child, table.doc.columns td:nth-child(2) { white-space: nowrap; }
+table.doc .changes { max-height: 16em; overflow-y: auto; }
+
+.arrow-icon { width: 1em; height: 1em; vertical-align: -0.15em; fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; }
+
+@media (max-width: 600px) { table.doc { display: block; overflow-x: auto; } }
+table.doc td:first-child { white-space: nowrap; }
+
+/* ------------------------------------------------- track file manager */
+
+/* Used by the manager's pop-ups and an Effort's Tracks card. */
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.card-head h2 { margin: 0; }
+.row-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.row-actions[hidden] { display: none; }
+table.pick td { padding: 7px 10px; }
+table.pick tr.taken td { color: var(--faint); }
+
+/* The workspace: explorer, the open file's text, and the map with the Effort
+   under it. The bar between the text and the map, and the one under the map,
+   can be dragged to give the map more room (track-manager.js keeps the sizes). */
+.ws { display: grid; grid-template-columns: 320px minmax(0, 1fr) 6px var(--ws-side, 400px); height: calc(100vh - 58px); background: #fff; }
+.ws-split { cursor: col-resize; background: var(--border-soft); border-left: 1px solid var(--border); touch-action: none; }
+.ws-split-h { flex: none; height: 6px; cursor: row-resize; background: var(--border-soft); border-top: 1px solid var(--border); touch-action: none; }
+.ws-split:hover, .ws-split-h:hover, .ws-split.on, .ws-split-h.on { background: var(--accent); }
+/* While a bar is dragged, the map and the text must not take the pointer or start a selection. */
+.ws.dragging, .ws.dragging * { user-select: none; }
+.ws.dragging #map, .ws.dragging textarea { pointer-events: none; }
+.ws > * { min-height: 0; min-width: 0; }
+.ws-explorer { display: flex; flex-direction: column; border-right: 1px solid var(--border); background: #fff; }
+.ws-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; font-weight: 600; border-bottom: 1px solid var(--border-soft); }
+.ws-filter { padding: 10px 12px; display: grid; gap: 8px; border-bottom: 1px solid var(--border); }
+.ws-filter input, .ws-filter select { width: 100%; border: 1px solid var(--border); border-radius: 4px; padding: 5px 8px; background-color: #fff; font-size: 13px; }
+.ws-filter select { padding-right: 22px; background-position: right 7px center; }
+/* Wide enough for the longest choice in each: Not Matched, All Vessels, All Years. */
+.ws-selects { display: grid; grid-template-columns: minmax(104px, 1.3fr) minmax(94px, 1.2fr) minmax(81px, 1fr); gap: 6px; }
+.ws-health { grid-column: 1 / -1; display: grid; grid-template-columns: max-content minmax(0, 1fr); align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+.ws-list { flex: 1; overflow-y: auto; }
+.ws-item { display: flex; align-items: center; gap: 8px; padding: 4px 12px; cursor: pointer; border-left: 2px solid transparent; font-size: 12px; }
+.ws-item:hover { background: var(--hover); }
+.ws-item.on { background: var(--accent-light); border-left-color: var(--accent); }
+.ws-item .nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, Consolas, monospace; }
+.ws-more { padding: 10px 12px; font-size: 12px; color: var(--muted); }
+.ico { width: 14px; height: 14px; flex: none; fill: none; stroke: var(--muted); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.dot.green { background: var(--green-fg); } .dot.amber { background: var(--amber-fg); } .dot.grey { background: var(--faint); }
+.dot.red { background: var(--red-fg); }
+.dirty { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+.ws-main { display: flex; flex-direction: column; background: #fff; }
+.tabs { display: flex; min-height: 34px; background: var(--page); border-bottom: 1px solid var(--border); overflow-x: auto; flex: none; }
+.tab { display: flex; align-items: center; gap: 7px; padding: 0 6px 0 12px; font-size: 12px; color: var(--muted); border-right: 1px solid var(--border); cursor: pointer; white-space: nowrap; font-family: ui-monospace, Consolas, monospace; }
+.tab.on { background: #fff; color: var(--text); box-shadow: inset 0 2px 0 var(--accent); margin-bottom: -1px; }
+.tab .x { border: 0; background: none; color: var(--muted); font-size: 16px; line-height: 1; width: 20px; height: 20px; border-radius: 4px; cursor: pointer; }
+.tab .x:hover { background: var(--hover); color: var(--text); }
+.ws-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 6px 12px; border-bottom: 1px solid var(--border-soft); flex: none; }
+.grow { flex: 1; }
+.ws-msg { margin: 8px 12px 0; flex: none; }
+.ws-editor { flex: 1; min-height: 0; display: flex; background: #fff; }
+.gutter { margin: 0; min-width: 52px; padding: 8px 8px 8px 6px; text-align: right; overflow: hidden; font: 12px/18px ui-monospace, Consolas, monospace;
+  color: var(--faint); background: var(--page); border-right: 1px solid var(--border-soft); user-select: none; }
+.gutter { cursor: pointer; }
+.gutter .n { display: block; height: 18px; }
+.gutter .n.sel { margin: 0 -8px 0 -6px; padding: 0 8px 0 6px; background: #fde2df; color: var(--red-fg); }
+/* Under the map: the player (a round button, the time now, the slider, the time it ends),
+   then the map's options and key, then the Data Checks, the Effort and the History. */
+.ws-player { display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: var(--page); border-bottom: 1px solid var(--border-soft); flex: none; }
+.ws-play-btn { flex: none; display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 50%;
+  background: var(--accent); color: #fff; cursor: pointer; box-shadow: 0 1px 2px rgba(16, 33, 43, .25); }
+.ws-play-btn:hover { filter: brightness(1.1); }
+.ws-play-btn:disabled { background: var(--border); box-shadow: none; cursor: default; filter: none; }
+.ws-play-btn svg { width: 14px; height: 14px; fill: currentColor; }
+.ws-play-btn .i-pause, .ws-play-btn.on .i-play { display: none; }
+.ws-play-btn.on .i-pause { display: inline; }
+.ws-play-time { flex: none; font: 12px/1 ui-monospace, Consolas, monospace; color: var(--text); white-space: nowrap; }
+.ws-play-time.muted { color: var(--muted); }
+/* The slider: a thin bar filled up to the thumb (--p, set as it moves). */
+.ws-player input[type=range] { --p: 0%; flex: 1; min-width: 0; height: 18px; margin: 0; background: none; cursor: pointer; -webkit-appearance: none; appearance: none; }
+.ws-player input[type=range]:disabled { cursor: default; }
+.ws-player input[type=range]::-webkit-slider-runnable-track { height: 4px; border-radius: 2px;
+  background: linear-gradient(to right, var(--accent) var(--p), var(--border) var(--p)); }
+.ws-player input[type=range]::-moz-range-track { height: 4px; border-radius: 2px; background: var(--border); }
+.ws-player input[type=range]::-moz-range-progress { height: 4px; border-radius: 2px; background: var(--accent); }
+.ws-player input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; margin-top: -4px;
+  border-radius: 50%; background: #fff; border: 2px solid var(--accent); box-shadow: 0 1px 2px rgba(16, 33, 43, .3); transition: transform .1s; }
+.ws-player input[type=range]::-moz-range-thumb { width: 8px; height: 8px; border-radius: 50%; background: #fff;
+  border: 2px solid var(--accent); box-shadow: 0 1px 2px rgba(16, 33, 43, .3); }
+.ws-player input[type=range]:hover:not(:disabled)::-webkit-slider-thumb { transform: scale(1.2); }
+.ws-player input[type=range]:disabled::-webkit-slider-thumb { border-color: var(--border); box-shadow: none; }
+.ws-player input[type=range]:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 2px; }
+/* The boat that plays the track. Only the drawing turns, never the box Leaflet places. */
+.track-boat { background: none; border: 0; pointer-events: none; }
+.track-boat svg { display: block; overflow: visible; transform-origin: 50% 50%; filter: drop-shadow(0 1px 1.5px rgba(16, 33, 43, .45)); }
+.track-boat.quiet svg { opacity: .45; }
+/* Track Health: one list of figures; a problem is a figure like the rest, with the stretches it is on. */
+.ws-facts { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; margin: 0; font-size: 12.5px; }
+.ws-facts dt { color: var(--muted); }
+.ws-facts dd { margin: 0; }
+.ws-facts .rows { display: block; margin-top: 1px; color: var(--muted); }
+.ws-checked { margin: 8px 0 0; font-size: 11px; color: var(--muted); }
+/* A Timeline Event's pop-up on the map. */
+.tl-popup { font-size: 12.5px; line-height: 1.45; }
+.tl-popup .muted { font-size: 11.5px; }
+.gutter .bad { margin: 0 -8px 0 -6px; padding: 0 8px 0 6px; background: var(--red-bg); color: var(--red-fg); font-weight: 600; }
+.ws-editor textarea { flex: 1; min-width: 0; border: 0; resize: none; outline: none; padding: 8px 12px; font: 12px/18px ui-monospace, Consolas, monospace; white-space: pre; overflow: auto; }
+.ws-empty { flex: 1; display: grid; place-items: center; color: var(--muted); }
+.ws-selects[hidden], .ws-empty[hidden], .ws-editor[hidden], .ws-bar[hidden], .ws-status[hidden] { display: none; }
+.ws-status { display: flex; flex-wrap: wrap; gap: 2px 16px; padding: 4px 12px; font-size: 12px; color: var(--muted); background: var(--page); border-top: 1px solid var(--border); flex: none; }
+.bad-link { color: var(--red-fg); }
+.ws-side { display: flex; flex-direction: column; overflow-y: auto; background: #fff; }
+.ws-map { height: var(--ws-map, 300px); flex: none; }
+.ws-map #map { height: 100%; }
+.ws-map-opts { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 7px 14px; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--border-soft); flex: none; }
+.ws-map-opts label { display: flex; align-items: center; gap: 6px; color: var(--text); cursor: pointer; }
+.ws-side .fsec { flex: none; }
+/* An arrowhead on the track. The icon is only the drawing, with no box of its own. */
+.track-arrow { background: none; border: 0; pointer-events: none; }
+.track-arrow svg { display: block; overflow: visible; }
+.ws-side .fsec { padding: 0 14px; border-top: 0; }
+.ws-pad { padding: 0 0 14px; }
+.ws-pad .detail-grid { grid-template-columns: 1fr; }
+/* On a phone, each file in the Import Files pop-up is a block, not a table row. */
+@media (max-width: 600px) {
+  .import-table thead { display: none; }
+  .import-table, .import-table tbody, .import-table tr, .import-table td { display: block; }
+  .import-table tr { padding: 8px 0; border-bottom: 1px solid var(--border-soft); }
+  .import-table td { border: 0; padding: 3px 12px; }
+  .import-table td.num { text-align: left; }
+  .import-table td[data-label]::before { content: attr(data-label) ": "; color: var(--muted); }
+  .import-table select { width: 100%; }
+}
+/* A phone or a narrow window: the three panes stack, and the page scrolls. */
+@media (max-width: 1100px) {
+  .ws { grid-template-columns: minmax(0, 1fr); height: auto; }
+  .ws-explorer { border-right: 0; border-bottom: 1px solid var(--border); }
+  .ws-list { flex: none; max-height: 240px; }
+  .ws-main { height: 520px; }
+  .ws-side { border-left: 0; border-top: 1px solid var(--border); overflow-y: visible; }
+  .ws-split { display: none; }
+  .ws-map { height: var(--ws-map, 320px); }
+}
+
+.problem-blank { background: var(--grey-bg); color: var(--grey-fg); }

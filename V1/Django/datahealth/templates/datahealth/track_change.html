@@ -1,0 +1,89 @@
+{% extends "datahealth/base.html" %}
+{% block admin_title %}{% if old %}Change Track File{% else %}Choose Existing File{% endif %}{% endblock %}
+
+{% block admin_body %}
+<main class="page">
+<div id="detail" data-fit>
+<div class="detail-head"><h1>{% if old %}Change Track File{% else %}Choose Existing File{% endif %} &middot; Effort {{ effort.legacy_daily_effort_id }}</h1></div>
+{% include "datahealth/_messages.html" %}
+<div id="change-track">
+<div class="card">
+  {% if old %}
+    <p>Effort {{ effort.legacy_daily_effort_id }} has <span class="mono">{{ old.object_key }}</span>. Choose a track file that no Effort has.
+    It becomes this Effort's track file, and <span class="mono">{{ old.object_key }}</span> is no longer matched to any Effort. Its file is kept.</p>
+  {% else %}
+    <p>Effort {{ effort.legacy_daily_effort_id }} has no track file. Choose a track file that no Effort has, and it becomes this Effort's track file.</p>
+  {% endif %}
+  <div class="row-actions" style="margin-top:0">
+    <input type="search" id="ct-q" placeholder="Search File Names" aria-label="Search file names" style="max-width:260px">
+    <label class="check small"><input type="checkbox" id="ct-all"> Show All Dates</label>
+  </div>
+  <p class="small muted" id="ct-scope" style="margin:8px 0 0"></p>
+</div>
+<div class="card card-tight">
+  <div style="max-height:340px;overflow:auto">
+    <table class="data pick">
+      <thead><tr><th></th><th>File</th><th>Date</th><th>Vessel</th><th class="num">Points</th><th class="num">Length (nm)</th></tr></thead>
+      <tbody id="ct-rows"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+    </table>
+  </div>
+</div>
+<form method="post" action="{% url 'admin_track_change' %}" id="ct-form">
+  {% csrf_token %}
+  <input type="hidden" name="effort" value="{{ effort.legacy_daily_effort_id }}">
+  {% if old %}<input type="hidden" name="track" value="{{ old.legacy_track_id }}">{% endif %}
+  <input type="hidden" name="new" id="ct-new" value="">
+  <div class="row-actions">
+    <button class="btn btn-primary" type="submit" id="ct-go" disabled>{% if old %}Change Track File{% else %}Choose File{% endif %}</button>
+    <button class="btn" type="button" id="ct-cancel">Cancel</button>
+  </div>
+</form>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var BASE = "{% url 'admin_tracks_candidates' %}", EFFORT = "{{ effort.legacy_daily_effort_id }}";
+  var DATE = "{{ effort.effort_date|date:'j F Y' }}", GROUP = "{{ effort.research_group|default:''|escapejs }}";
+  var EFFORT_URL = "/efforts/" + EFFORT + "/";
+  var wanted = "", turn = 0, timer = null;
+  function esc(v) { return String(v === null || v === undefined ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function scope() {
+    var where = $("ct-all").checked ? "any date" : DATE;
+    $("ct-scope").textContent = "Track files no Effort has, from " + where + (GROUP ? ", Research Group " + GROUP : "") + ".";
+  }
+  function draw(data) {
+    var rows = data.files || [];
+    $("ct-rows").innerHTML = rows.length ? rows.map(function (f) {
+      return '<tr data-id="' + f.id + '"><td><input type="radio" name="ct-pick" value="' + f.id + '"' + (String(f.id) === wanted ? " checked" : "") + ' aria-label="Choose ' + esc(f.name) + '"></td>' +
+        '<td class="mono">' + esc(f.name) + "</td><td class=\"nowrap\">" + esc(f.date || "-") + "</td><td>" + esc(f.vessel || "-") +
+        (f.same_vessel ? ' <span class="pill pill-green">Same Vessel</span>' : "") + '</td><td class="num">' + f.points.toLocaleString("en-US") +
+        '</td><td class="num">' + (f.length_nm === null ? "-" : f.length_nm.toFixed(1)) + "</td></tr>";
+    }).join("") : '<tr><td colspan="6" class="empty">No track file matches. Try Show All Dates, or a different search.</td></tr>';
+    if (data.total > rows.length) $("ct-scope").textContent += " Showing the first " + rows.length.toLocaleString("en-US") + " of " + data.total.toLocaleString("en-US") + "; search to narrow the list.";
+    if (!rows.some(function (f) { return String(f.id) === wanted; })) wanted = "";
+    pick();
+  }
+  function pick() { $("ct-new").value = wanted; $("ct-go").disabled = !wanted; }
+  function load() {
+    var mine = ++turn;
+    scope();
+    fetch(BASE + "?effort=" + EFFORT + "&q=" + encodeURIComponent($("ct-q").value) + ($("ct-all").checked ? "&all_dates=1" : ""), { credentials: "same-origin" })
+      .then(function (r) { return r.json(); })
+      .then(function (data) { if (mine === turn && data.ok) draw(data); });
+  }
+  $("ct-rows").addEventListener("click", function (e) {
+    var row = e.target.closest("tr[data-id]"); if (!row) return;
+    var radio = row.querySelector("input"); radio.checked = true; wanted = radio.value; pick();
+  });
+  $("ct-q").addEventListener("input", function () { clearTimeout(timer); timer = setTimeout(load, 250); });
+  $("ct-all").addEventListener("change", load);
+  $("ct-cancel").addEventListener("click", function () {
+    var back = document.querySelector("#modal .modal-back"), close = document.querySelector("#modal .modal-close");
+    if (back && !back.hidden) back.click(); else if (close && document.querySelector("#modal.open")) close.click(); else window.location.href = EFFORT_URL;
+  });
+  load();
+})();
+</script>
+</div>
+</div>
+</main>
+{% endblock %}

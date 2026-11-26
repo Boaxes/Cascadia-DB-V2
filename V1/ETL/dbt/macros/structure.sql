@@ -86,25 +86,33 @@
 
 
 {#
-  The end of a build (on-run-end). If every model and test succeeded, add the
-  foreign keys -- now that every table exists -- and mark the build complete,
-  which is what `run-operation swap` looks for. If anything failed or was
-  skipped, or only part of the project was built, the build is left unmarked
-  and cannot be swapped in.
+  The end of a build (on-run-end). If every model was built and every test
+  ran and passed (a test set to warn may warn), add the foreign keys -- now
+  that every table exists -- and mark the build complete, which is what
+  `run-operation swap` looks for. If anything failed or was skipped, only part
+  of the project was built, or the tests did not run (`dbt run` rather than
+  `dbt build`), the build is left unmarked and cannot be swapped in.
 #}
 {% macro finish_build(results) %}
     {%- if not execute or flags.WHICH not in ('build', 'run') -%}{{ return('') }}{%- endif -%}
     {%- set schema = 'dbo' ~ var('schema_suffix', '_next') -%}
     {%- set failed = [] -%}
     {%- for r in results -%}{%- if r.status in ['error', 'fail', 'skipped', 'runtime error'] -%}{%- do failed.append(r.node.name) -%}{%- endif -%}{%- endfor -%}
-    {%- set built = results | map(attribute='node') | selectattr('resource_type', 'equalto', 'model') | list | length -%}
-    {%- set models = graph.nodes.values() | selectattr('resource_type', 'equalto', 'model') | rejectattr('config.materialized', 'equalto', 'ephemeral') | list | length -%}
+    {#- This project's own models only: Elementary's are built separately. -#}
+    {%- set built = results | map(attribute='node') | selectattr('resource_type', 'equalto', 'model') | selectattr('package_name', 'equalto', project_name) | list | length -%}
+    {%- set models = graph.nodes.values() | selectattr('resource_type', 'equalto', 'model') | selectattr('package_name', 'equalto', project_name) | rejectattr('config.materialized', 'equalto', 'ephemeral') | list | length -%}
     {%- if failed -%}
         {%- do log('Not marking the build complete, so it cannot be swapped in. Failed or skipped: ' ~ (failed | join(', ')), info=true) -%}
         {{ return('') }}
     {%- endif -%}
     {%- if built < models -%}
         {%- do log('Only ' ~ built ~ ' of ' ~ models ~ ' models were built; not marking the build complete.', info=true) -%}
+        {{ return('') }}
+    {%- endif -%}
+    {%- set tested = results | map(attribute='node') | selectattr('resource_type', 'equalto', 'test') | selectattr('package_name', 'equalto', project_name) | list | length -%}
+    {%- set tests = graph.nodes.values() | selectattr('resource_type', 'equalto', 'test') | selectattr('package_name', 'equalto', project_name) | list | length -%}
+    {%- if tested < tests -%}
+        {%- do log('Only ' ~ tested ~ ' of ' ~ tests ~ ' tests ran; not marking the build complete. Use dbt build, which runs them.', info=true) -%}
         {{ return('') }}
     {%- endif -%}
     {%- set sql = [] -%}
@@ -116,8 +124,14 @@
             {%- endif -%}
         {%- endfor -%}
     {%- endfor -%}
-    {%- do sql.append("comment on schema " ~ adapter.quote(schema) ~ " is '" ~ ('Built from app.audit_log up to entry ' ~ audit_watermark() ~ '. Complete.') ~ "'") -%}
+    {%- do sql.append("comment on schema " ~ adapter.quote(schema) ~ " is '" ~ ('Built from app.audit_log up to entry ' ~ audit_watermark() ~ '. ' ~ complete_mark()) ~ "'") -%}
     {%- do run_query(sql | join(';\n')) -%}
     {%- do log('Build complete: ' ~ (sql | length - 1) ~ ' foreign keys added. It can be swapped in.', info=true) -%}
     {{ return('') }}
 {% endmacro %}
+
+
+{# What finish_build writes on a build's dbo schema, and swap looks for. #}
+{% macro complete_mark() -%}
+    Complete: every model built, every test passed.
+{%- endmacro %}

@@ -1,7 +1,10 @@
 name: Deploy
 
-# Every push to main goes straight to the server. There is one environment, so
-# there is nothing to promote between and nothing to forget.
+# Every push to main goes to the server once the tests pass: the whole set in
+# tests.yml (the unit tests, then the seed database, the dbt build and its
+# tests, the site tests and the replay checks), which this workflow calls and
+# waits for. There is one environment, so there is nothing to promote between and
+# nothing to forget.
 on:
   push:
     branches: [main]
@@ -12,7 +15,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # The full tests (.github/workflows/tests.yml). The deploy waits for them.
+  tests:
+    uses: ./.github/workflows/tests.yml
+
   deploy:
+    needs: [tests]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,7 +38,7 @@ jobs:
         run: |
           tar czf app.tgz \
             --exclude='__pycache__' --exclude='*.pyc' --exclude='staticfiles' \
-            -C Django config survey admintools templates static manage.py requirements.txt
+            -C Django config survey datahealth feedback templates static manage.py requirements.txt gunicorn.conf.py
           tar czf ops.tgz ops
           scp -i ~/.ssh/deploy -o StrictHostKeyChecking=no \
             app.tgz ops.tgz "root@${HOST}:/root/"
@@ -52,21 +60,54 @@ jobs:
             /srv/sedb/venv/bin/pip install -q -r /srv/sedb/app/requirements.txt
 
             chown -R sedb:sedb /srv/sedb
+            # The Server page of the Django admin shows the web server's and the
+            # database's logs and the system journal, which these two groups may read.
+            usermod -aG adm,systemd-journal sedb || echo "Could not add sedb to the log groups; the Server page will show the site's own events only."
             chmod 755 /srv/sedb /srv/sedb/app
             chmod 600 /srv/sedb/app/.env
+            # The Django admin's own log table, then the roles and permissions.
+            sudo -u sedb /srv/sedb/venv/bin/python manage.py migrate --noinput
+            sudo -u sedb /srv/sedb/venv/bin/python manage.py setup_access
+            sudo -u sedb /srv/sedb/venv/bin/python manage.py load_land
             sudo -u sedb /srv/sedb/venv/bin/python manage.py collectstatic --noinput >/dev/null
             # nginx serves the static files as www-data and has to be able to read them.
             chmod -R a+rX /srv/sedb/app/staticfiles
 
+            # The nightly check of every GPS file (2am Pacific), and the folder it writes
+            # to, beside the application so a deploy leaves it alone. Started once now as
+            # well, in the background: it only reads the files changed since its last run.
+            install -d -o sedb -g sedb /srv/sedb/track-checks
+            install -m 644 /srv/sedb/ops/systemd/sedb-track-checks.service               /srv/sedb/ops/systemd/sedb-track-checks.timer /etc/systemd/system/
+            systemctl daemon-reload
+            systemctl enable --now sedb-track-checks.timer
+
             systemctl restart sedb
+            systemctl start --no-block sedb-track-checks.service
           REMOTE
+        env:
+          HOST: ${{ vars.DEPLOY_HOST || '143.198.155.64' }}
+
+      # Written to the server event log (the Server page of the Django admin), so the
+      # page shows who pushed what. The commit's subject goes as base64, because a
+      # commit message can hold anything and base64 holds nothing a shell reads.
+      # Not worth failing a deploy over: the site is already up.
+      - name: Record the deploy in the server event log
+        continue-on-error: true
+        run: |
+          SUBJECT=$(git log -1 --pretty=%s | head -c 200 | base64 -w0)
+          ssh -i ~/.ssh/deploy -o StrictHostKeyChecking=no "root@${HOST}" \
+            "cd /srv/sedb/app && sudo -u sedb /srv/sedb/venv/bin/python manage.py log_server_event deploy deployed \
+              --actor 'GitHub Actions' --message 'Deployed ${GITHUB_SHA::7} pushed by ${GITHUB_ACTOR}.' \
+              --detail commit=${GITHUB_SHA} --detail pushed_by=${GITHUB_ACTOR} --detail event=${GITHUB_EVENT_NAME} \
+              --detail-b64 subject=${SUBJECT} \
+              --detail run_url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
         env:
           HOST: ${{ vars.DEPLOY_HOST || '143.198.155.64' }}
 
       - name: Check it came back up
         run: |
           for i in $(seq 1 12); do
-            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "http://${HOST}/login/" || true)
+            code=$(curl -sL -o /dev/null -w '%{http_code}' --max-time 10 "http://${HOST}/login/" || true)
             if [ "$code" = "200" ]; then echo "Site responding: $code"; exit 0; fi
             echo "  waiting, got '$code'"; sleep 5
           done

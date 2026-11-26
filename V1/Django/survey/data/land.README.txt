@@ -1,0 +1,11 @@
+land.twkb.gz: the land outline for the Sightings on Land filter.
+
+Source:   Natural Earth, "Land" at 1:10m scale (ne_10m_land, version 5.1.1)
+          https://naciscdn.org/naturalearth/10m/physical/ne_10m_land.zip
+Licence:  public domain (naturalearthdata.com/about/terms-of-use)
+Fetched:  2026-11-20
+Format:   gzip of repeated records, each a 4-byte little-endian length and one
+          polygon as TWKB (7 decimal places, about 1 cm). Nothing is simplified.
+Built by: ops/build-land.sh
+Loaded by: manage.py load_land (the deploy runs it; it does nothing when the
+          file has not changed)

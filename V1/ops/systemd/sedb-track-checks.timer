@@ -1,0 +1,11 @@
+# Every night at 2am Pacific, whatever the server's own time zone. A night the
+# server was off is made up for when it comes back (Persistent).
+[Unit]
+Description=Check the GPS track files every night
+
+[Timer]
+OnCalendar=*-*-* 02:00:00 America/Los_Angeles
+Persistent=true
+
+[Install]
+WantedBy=timers.target

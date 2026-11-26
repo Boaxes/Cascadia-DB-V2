@@ -1,0 +1,12 @@
+# Checks every GPS file for data that is probably wrong (manage.py check_track_files).
+# Started by sedb-track-checks.timer; the deploy installs both.
+[Unit]
+Description=Check the GPS track files
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=sedb
+WorkingDirectory=/srv/sedb/app
+ExecStart=/srv/sedb/venv/bin/python manage.py check_track_files
+Nice=10

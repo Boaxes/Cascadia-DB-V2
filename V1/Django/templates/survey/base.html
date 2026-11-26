@@ -5,22 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Sightings and Effort Explorer{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'survey/app.css' %}">
+  <script src="{% static 'survey/map-tools.js' %}"></script>
   {% block head %}{% endblock %}
 </head>
 <body>
 
 <header class="site-header">
   {% comment %} The admin pages put their own name and links in this bar. {% endcomment %}
-  <a class="brand" href="{% block brand_url %}{% url 'explore' %}{% endblock %}">
+  <a class="brand" href="{% block brand_url %}{% url 'explore' %}{{ research_group_query }}{% endblock %}">
     <img src="{% static 'survey/cascadia-logo.png' %}" alt="Cascadia Research Collective">
     <span>{% block brand %}Sightings and Effort Explorer{% endblock %}</span>
   </a>
   <nav>
     {% block nav %}
-    <a href="{% url 'explore' %}"       class="{% if section == 'explore' %}active{% endif %}">Explore</a>
-    <a href="{% url 'effort_list' %}"   class="{% if section == 'efforts' %}active{% endif %}">Efforts</a>
-    <a href="{% url 'sighting_list' %}" class="{% if section == 'sightings' %}active{% endif %}">Sightings</a>
-    <a href="{% url 'export' %}"        class="{% if section == 'export' %}active{% endif %}">Export</a>
+    <a href="{% url 'explore' %}{{ research_group_query }}"       class="{% if section == 'explore' %}active{% endif %}">Explore</a>
+    <a href="{% url 'effort_list' %}{{ research_group_query }}"   class="{% if section == 'efforts' %}active{% endif %}">Efforts</a>
+    <a href="{% url 'sighting_list' %}{{ research_group_query }}" class="{% if section == 'sightings' %}active{% endif %}">Sightings</a>
+    {% if perms.datahealth.export_data %}<a href="{% url 'export' %}" id="nav-export" class="{% if section == 'export' %}active{% endif %}">Export{% if export_count %} ({{ export_count }}){% endif %}</a>{% endif %}
     {% endblock %}
   </nav>
   {% if user.is_authenticated %}
@@ -31,8 +32,13 @@
       </summary>
       <div class="profile-menu">
         <div class="profile-who"><strong>{{ user.get_full_name|default:user.username }}</strong></div>
-        {% if section == "admin" %}<a class="menu-back" href="{% url 'explore' %}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Back to the site</a>
-        {% elif user.is_staff %}<a class="menu-admin" href="/admin/">Admin</a>{% endif %}
+        {% if section == "cascadia-admin" %}<a class="menu-back" href="{% url 'explore' %}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Back To the Site</a>
+        {% else %}
+          {% if perms.datahealth.access_data_health %}<a class="menu-admin" href="{% url 'admin_home' %}">Cascadia Admin</a>{% endif %}
+          {% if perms.datahealth.access_django_admin %}<a class="menu-admin" href="{% url 'admin:index' %}">Django Admin</a>{% endif %}
+        {% endif %}
+        <a href="{% url 'feedback' %}">Feedback</a>
+        <a href="{% url 'settings' %}">Settings</a>
         {% comment %} Django logs out on a POST only, so this is a form. {% endcomment %}
         <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">Sign Out</button></form>
       </div>
@@ -64,7 +70,7 @@
       the bar sits above the scrolling content rather than inside it.
     {% endcomment %}
     <div class="modal-bar">
-      <button class="modal-back" type="button" hidden>&larr; Back</button>
+      <button class="modal-back" type="button" hidden>Back</button>
       <div class="modal-title"></div>
       <button class="modal-close" type="button" aria-label="Close">&times;</button>
     </div>
@@ -77,6 +83,7 @@
 <script src="{% static 'survey/cards.js' %}"></script>
 <script src="{% static 'survey/tagpicker.js' %}"></script>
 <script src="{% static 'survey/filters.js' %}"></script>
+{% if perms.datahealth.export_data %}<script src="{% static 'survey/export-add.js' %}"></script>{% endif %}
 {% block scripts %}{% endblock %}
 </body>
 </html>

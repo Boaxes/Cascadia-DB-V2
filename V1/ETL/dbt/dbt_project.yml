@@ -1,74 +1,90 @@
-# The transform: raw -> dbo -> app.
+# The data pipeline: raw -> dbo -> app. The Data Pipeline page in Cascadia
+# Admin (Django/datahealth/pipeline.py) explains each step.
 #
-#     docker compose run --rm etl dbt build                  # into dbo_next and app_next
-#     docker compose run --rm etl dbt run-operation swap     # move them into place
+#     dbt deps                           # once, for Elementary
+#     dbt build                          # into build_next, dbo_next and app_next
+#     dbt run-operation swap             # move them into place
 #
-# Three schemas, the three layers: raw (DB167 as imported, and the other
-# inputs), dbo (cleaned, with the website's edits applied) and app (the
-# website's views). raw and app.audit_log are sources: dbt reads them and never
-# drops them. Everything under models/ is rebuilt on every run.
+# raw is DB167 as imported (ETL/import_raw.py). app.audit_log, app.track_geometry
+# and app.vessel_number are written by the website or kept from build to build:
+# dbt reads them and never drops them. Everything under models/ is rebuilt on
+# every run, from those inputs and the files in seeds/.
 
 name: cascadia
-version: "1.0.0"
+version: "2.0.0"
 profile: cascadia
 
 model-paths: ["models"]
 macro-paths: ["macros"]
+seed-paths: ["seeds"]
 test-paths: ["tests"]
 target-path: "target"
 clean-targets: ["target", "dbt_packages"]
 
-# First the tables dbt reads but never drops (create-if-missing, a no-op once
-# they exist: macros/persistent_tables.sql), then empty schemas for the build
-# to write into (macros/build_schemas.sql).
 on-run-start:
-  - "{{ persistent_tables_sql() }}"
+  - "{{ persistent_tables() }}"
   - "{{ prepare_next_schemas() }}"
 
-# Once every table is built: the foreign keys, and the mark that lets the
-# build be swapped in (macros/structure.sql, finish_build).
 on-run-end:
   - "{{ finish_build(results) }}"
+  - "{{ refresh_db167_state() }}"
 
 flags:
-  # No usage reports to dbt Labs: each one cost a few seconds, and the thread
-  # sending them held the test run open long after its last test.
   send_anonymous_usage_stats: false
-  # A deprecation warning is an error. They flag exactly what dbt v2's stricter
-  # spec rejects, so a project that builds cleanly here moves to v2 as a
-  # version bump once v2 has a Postgres adapter.
-  warn_error_options:
-    error: [Deprecations]
+
+vars:
+  # Elementary keeps a few of the rows a failed test found, and its report is
+  # published on the web, so it keeps none.
+  test_sample_row_count: 0
+
+seeds:
+  cascadia:
+    +schema: build
+    +quote_columns: true
+    column_kinds:
+      +column_types: {table_name: text, column_name: text, kind: text, vocabulary: text}
+    typos:
+      +column_types: {table_name: text, column_name: text, wrong: text, correct: text}
+    synonyms:
+      +column_types: {table_name: text, column_name: text, synonym_set: integer, spelling: text}
+    sub_areas:
+      +column_types: {"ID": integer, "Sub-Area Database Entries": text, "Corrected Sub-Area": text, "Count": integer}
+    species_added:
+      +column_types: {species_id: integer, code: text, common_name: text, scientific_name: text}
+    species_matches:
+      +column_types: {spelling: text, code: text}
+    species_categories:
+      +column_types: {code: text, category: text}
+    event_code_names:
+      +column_types: {code: text, name: text}
+    multi_track_efforts:
+      +column_types: {effort: integer, tracks: integer}
+    record_fixes:
+      +column_types: {table_name: text, legacy_id: text, record_date: text, column_name: text, old_value: text, new_value: text, rule: text, reason: text}
+    removed_efforts:
+      +column_types: {removed_effort: integer, kept_effort: integer, reason: text}
 
 models:
   cascadia:
-    # Column descriptions become Postgres column comments, which is where the
-    # history window reads a cleaning step's explanation from.
-    +persist_docs:
-      relation: true
-      columns: true
-    # Postgres's just-in-time compiler switches itself on for queries it thinks
-    # are huge, and these CTE-heavy models look huge to it: compiling
-    # SightingT took 6 of its 9 seconds. Each model runs once per build, so the
-    # compiling never pays for itself.
+    # Postgres's just-in-time compiler costs more than it saves on these
+    # one-off queries.
     +pre-hook: "set local jit = off"
+    build:
+      +schema: build
+      +materialized: table
     dbo:
       +schema: dbo
       +materialized: table
-      # Keys, NOT NULL, defaults, indexes and triggers, from each model's YAML.
+      # Primary Keys, NOT NULL, indexes and triggers, from each model's YAML.
       +post-hook: "{{ apply_structure() }}"
       views:
         +materialized: view
         +post-hook: []
-      # The audit log, read once for the build: written into each dbo model,
-      # never built as a table of its own.
-      replay:
-        +materialized: ephemeral
-        +post-hook: []
-      # Lookups shared by several dbo models, written into each of them.
-      lookups:
-        +materialized: ephemeral
-        +post-hook: []
     app:
       +schema: app
       +materialized: updatable_view
+  # Elementary records every run's results and test outcomes for its report.
+  # Its own models are built once into the elementary schema:
+  #     dbt run --select elementary
+  elementary:
+    +schema: elementary

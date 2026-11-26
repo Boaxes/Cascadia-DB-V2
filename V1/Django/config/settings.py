@@ -37,6 +37,7 @@ CSRF_TRUSTED_ORIGINS = [
     origin for origin in env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=[]) if origin]
 
 INSTALLED_APPS = [
+    "datahealth.adminconfig.AccessAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -45,7 +46,8 @@ INSTALLED_APPS = [
     "django.contrib.gis",
     "django.contrib.humanize",
     "survey",
-    "admintools",
+    "datahealth",
+    "feedback",
 ]
 
 MIDDLEWARE = [
@@ -55,13 +57,15 @@ MIDDLEWARE = [
     # opens instantly and one that visibly waits. Nothing served in Phase 1
     # is secret or user specific; if Phase 2 puts a session token into a
     # compressed page, revisit this for BREACH.
-    "django.middleware.gzip.GZipMiddleware",
+    "survey.middleware.GZipExceptDownloads",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Writes refused and slow requests to the server event log (datahealth).
+    "datahealth.middleware.ServerEventMiddleware",
     # Locally, turns "relation auth_user does not exist" into instructions to
     # run ops/pull-db.sh. Does nothing when DEBUG is off.
     "survey.middleware.EmptyDatabaseMiddleware",
@@ -88,6 +92,8 @@ TEMPLATES = [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "survey.context_processors.colour_profile",
+                "survey.context_processors.research_group_query",
+                "survey.context_processors.export_count",
             ],
         },
     },
@@ -140,11 +146,10 @@ TEST_RUNNER = "config.test_runner.ReferenceCopyRunner"
 # The survey records carry no timezone, so Django must not assume one:
 # USE_TZ = False keeps dates and times exactly as recorded.
 #
-# TIME_ZONE = "UTC" matters for one reason. track.start_time_utc and
-# end_time_utc are the only "timestamp with time zone" columns in the
-# database and they are UTC. With USE_TZ off, Postgres renders those columns
-# in the connection's timezone, so anything other than UTC here would
-# silently shift every track time.
+# TIME_ZONE = "UTC" matters for one reason. The audit log's times are the
+# "timestamp with time zone" columns in the database and they are UTC. With
+# USE_TZ off, Postgres renders those columns in the connection's timezone, so
+# anything other than UTC here would silently shift them.
 # ---------------------------------------------------------------------------
 
 TIME_ZONE = "UTC"
@@ -202,13 +207,19 @@ if DEBUG:
 # A rebuild reads the exports and the GPS files the operator sends it, and the
 # rebuild tool reads folders, so an upload has to land here on the way through.
 # One directory per run, deleted when the run ends. Nothing here outlives a
-# rebuild: see admintools/uploads.py for why that matters.
+# rebuild: see datahealth/uploads.py for why that matters.
 #
 # It needs room for the raw GPS files and the cleaned copies at once, about
 # 1.2 GB today.
 # ---------------------------------------------------------------------------
 
 SEDB_RUN_ROOT = env("SEDB_RUN_ROOT", default=str(BASE_DIR / "run"))
+
+# What the checks of each GPS file found (survey/track_checks.py), one JSON file
+# per track file. Beside the application rather than in it, because a deploy
+# replaces the application's folder: on the server, /srv/sedb/track-checks.
+# Every file can be made again from the bucket, so nothing here needs a backup.
+TRACK_CHECKS_DIR = env("TRACK_CHECKS_DIR", default=str(BASE_DIR.parent / "track-checks"))
 
 # An upload arrives in batches of about 16 MB. Anything above this is written
 # to a temporary file rather than held in memory, which is what keeps a
@@ -221,9 +232,28 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 4 * 1024 * 1024
 DATA_UPLOAD_MAX_NUMBER_FILES = 2000
 
 
+# The log files the Server page of the Django admin shows, with the server event
+# log and the system journal, as one log (datahealth/console.py). On the server
+# these are the web server's and the database's. SERVER_LOG_FILES in the
+# environment names others: name=path pairs with commas between, where a path
+# may be a pattern such as /var/log/postgresql/*.log.
+SERVER_LOG_FILES = dict(pair.split("=", 1) for pair in env.list("SERVER_LOG_FILES", default=[]) if "=" in pair) or {
+    "nginx": "/var/log/nginx/access.log",
+    "nginx-error": "/var/log/nginx/error.log",
+    "postgres": "/var/log/postgresql/*.log",
+}
+
+
 # Two logins: one for the survey site, one that also opens the admin panel.
 # Both are created by `manage.py make_users`, which reads the passwords from
 # the environment so none is committed.
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/explore/"
 LOGOUT_REDIRECT_URL = "/login/"
+
+
+# Feedback from the site becomes an issue in this GitHub repository. The token
+# is a fine-grained one limited to it, with Issues set to Read and Write. With
+# no token the Feedback page says it is not set up and shows no form.
+GITHUB_FEEDBACK_TOKEN = env("GITHUB_FEEDBACK_TOKEN", default="")
+GITHUB_FEEDBACK_REPO = env("GITHUB_FEEDBACK_REPO", default="Boaxes/Cascadia-DB")

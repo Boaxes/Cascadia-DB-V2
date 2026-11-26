@@ -6,18 +6,13 @@ after it DB167 is retired, so there is deliberately no code that could modify
 it.
 
 Unlike V1's reader, this one does not turn every value into text and does not
-filter by research group. The types in DB167 are already correct, and V2 keeps
-every row.
+filter by research group. The types in DB167 are already correct, and every
+table and every row is kept.
 """
 
 import os
 
 import pyodbc
-
-# The two IanDB snapshots are leftovers from an abandoned migration. They use
-# different column names from everything else and nothing references them.
-SKIP_TABLES = {"DailyEffortT_IanDB_SnapshotT", "SightingT_IanDB_SnapShotT"}
-
 
 def connect():
     """A read-only connection, from DB167_ODBC in the environment."""
@@ -34,14 +29,13 @@ def connect():
 # ---------------------------------------------------------------------------
 # Catalog
 #
-# Read from the system views rather than from etl/Schema.sql, which is stale:
-# it lists 32 tables where the database has 35, and its types predate the
-# columns being given proper ones.
+# Read from the system views, so a table added to DB167 is picked up by the
+# next import without anything here changing.
 # ---------------------------------------------------------------------------
 
 
 def tables(conn):
-    """Base table names, in catalog order, minus the two snapshots."""
+    """Every base table name, in catalog order."""
     rows = conn.execute(
         """
         SELECT t.name
@@ -51,7 +45,7 @@ def tables(conn):
         ORDER  BY t.name
         """
     ).fetchall()
-    return [r[0] for r in rows if r[0] not in SKIP_TABLES]
+    return [r[0] for r in rows]
 
 
 def views(conn):
@@ -131,61 +125,6 @@ def primary_key(conn, table):
         f"dbo.{table}",
     ).fetchall()
     return [r[0] for r in rows]
-
-
-def unique_constraints(conn, table):
-    """Unique indexes that are not the primary key, as lists of columns."""
-    rows = conn.execute(
-        """
-        SELECT i.name, c.name
-        FROM   sys.indexes i
-        JOIN   sys.index_columns ic ON ic.object_id = i.object_id
-                                   AND ic.index_id  = i.index_id
-        JOIN   sys.columns c ON c.object_id = ic.object_id
-                            AND c.column_id = ic.column_id
-        WHERE  i.object_id = OBJECT_ID(?)
-          AND  i.is_unique = 1 AND i.is_primary_key = 0
-          AND  ic.is_included_column = 0
-        ORDER  BY i.name, ic.key_ordinal
-        """,
-        f"dbo.{table}",
-    ).fetchall()
-    out = {}
-    for index_name, column in rows:
-        out.setdefault(index_name, []).append(column)
-    return out
-
-
-def indexes(conn, table):
-    """
-    Non-unique, non-primary indexes: {name: {"columns": [...], "included": [...]}}.
-
-    Recreated on dbo in Phase 2. Each was a decision made against real Access
-    query patterns, so dropping them would slow the front ends after the relink.
-    """
-    rows = conn.execute(
-        """
-        SELECT i.name, c.name, ic.is_included_column, ic.is_descending_key
-        FROM   sys.indexes i
-        JOIN   sys.index_columns ic ON ic.object_id = i.object_id
-                                   AND ic.index_id  = i.index_id
-        JOIN   sys.columns c ON c.object_id = ic.object_id
-                            AND c.column_id = ic.column_id
-        WHERE  i.object_id = OBJECT_ID(?)
-          AND  i.is_primary_key = 0 AND i.is_unique = 0
-          AND  i.type_desc <> 'HEAP'
-        ORDER  BY i.name, ic.is_included_column, ic.key_ordinal
-        """,
-        f"dbo.{table}",
-    ).fetchall()
-    out = {}
-    for name, column, included, descending in rows:
-        entry = out.setdefault(name, {"columns": [], "included": []})
-        if included:
-            entry["included"].append(column)
-        else:
-            entry["columns"].append(column + (" DESC" if descending else ""))
-    return out
 
 
 def rows(conn, table, column_names, batch=5000):

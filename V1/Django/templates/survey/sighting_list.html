@@ -8,17 +8,20 @@
 <div class="panel-layout list-layout">
   {% include "survey/_filter_panel.html" with page="sightings" %}
   <main class="list-main">
-<h1>Sightings</h1>
+<div class="list-head">
+  <h1>Sightings</h1>
+  {% include "survey/_add_to_export.html" with kind="sightings" qs=export_qs %}
+</div>
 
 {% if error %}<div class="notice">{{ error }}</div>{% endif %}
 
 {% if applied %}
-  <p class="small muted">Showing sightings {{ applied|join:", " }}.</p>
+  <p class="small muted">Showing Sightings {{ applied|join:", " }}.</p>
 {% endif %}
 
 {% if excluded_no_position %}
   <p class="list-summary">
-    {{ excluded_no_position }} without a position {{ excluded_no_position|pluralize:"isn't,aren't" }} in the area search.
+    {{ excluded_no_position|thousands }} without a position {{ excluded_no_position|pluralize:"isn't,aren't" }} in the area search.
     {% tip "excluded_no_position" %}
   </p>
 {% endif %}
@@ -31,8 +34,8 @@
         {% sort_header "time" "Time" %}
         {% sort_header "id" "Sighting" %}
         {% sort_header "species" "Species" %}
-        {% sort_header "size" "Group size" %}
-        <th>Min&ndash;max</th>
+        {% sort_header "size" "Group Size" %}
+        <th>Min&ndash;Max</th>
         {% sort_header "vessel" "Vessel" %}
         {% sort_header "position_type" "Position" %}
         <th>Effort</th>
@@ -43,26 +46,26 @@
         <tr class="clickable" data-modal-url="{{ s.get_absolute_url }}">
           <td class="nowrap">{{ s.sighting_date|date:"Y-m-d"|dash }}</td>
           <td class="nowrap">{{ s.sighting_time|time:"H:i"|dash }}</td>
-          <td><a href="{{ s.get_absolute_url }}">{{ s.legacy_sighting_id }}</a></td>
+          <td><a href="{{ s.get_absolute_url }}{{ research_group_query }}">{{ s.legacy_sighting_id }}</a></td>
           <td>
             {% if s.species %}{{ s.species }}
             {% elif s.species_raw %}<span class="muted">{{ s.species_raw }}</span>
-              <span class="pill pill-grey">two species</span>
+              <span class="pill pill-grey">Two Species</span>
               {% tip "species_raw" %}
             {% else %}Not identified{% endif %}
             {% if s.species_uncertain %}
-              <span class="pill pill-amber" title="The observer was not certain">uncertain</span>
+              <span class="pill pill-amber" title="The observer was not certain">Uncertain</span>
             {% endif %}
             {% if s.species and not s.species.name_is_authoritative %}
-              <span class="pill pill-grey" title="This species name is unconfirmed in the source data">name unconfirmed</span>
+              <span class="pill pill-grey" title="This species name is unconfirmed in the source data">Name Unconfirmed</span>
             {% endif %}
           </td>
-          <td class="num">{{ s.est_size_best|dash }}</td>
+          <td class="num">{{ s.est_size_best|thousands|dash }}</td>
           <td class="num small">
             {% if s.est_size_min is not None or s.est_size_max is not None %}
-              {{ s.est_size_min|default:"?" }}&ndash;{{ s.est_size_max|default:"?" }}
+              {{ s.est_size_min|thousands|default:"?" }}&ndash;{{ s.est_size_max|thousands|default:"?" }}
               {% if s.group_estimate_is_consistent is False %}
-                <span class="pill pill-amber" title="The best estimate falls outside this range, as recorded">disagrees</span>
+                <span class="pill pill-amber" title="The best estimate falls outside this range, as recorded">Disagrees</span>
               {% endif %}
             {% else %}{{ ""|dash }}{% endif %}
           </td>
@@ -70,12 +73,12 @@
           <td>{{ s.position_type|dash }}</td>
           <td>
             {% if s.daily_effort %}
-              <a href="{{ s.daily_effort.get_absolute_url }}">{{ s.daily_effort.legacy_daily_effort_id }}</a>
+              <a href="{{ s.daily_effort.get_absolute_url }}{{ research_group_query }}">{{ s.daily_effort.legacy_daily_effort_id }}</a>
             {% else %}{{ ""|dash }}{% endif %}
           </td>
         </tr>
       {% empty %}
-        <tr><td colspan="9" class="empty">No sightings match these filters.</td></tr>
+        <tr><td colspan="9" class="empty">No Sightings match these filters.</td></tr>
       {% endfor %}
     </tbody>
   </table>

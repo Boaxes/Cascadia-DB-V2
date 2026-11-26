@@ -1,0 +1,123 @@
+{% extends "datahealth/base.html" %}
+{% load static %}
+{% block admin_title %}Import Track Files{% endblock %}
+
+{% block admin_body %}
+<main class="page">
+<div id="detail" data-fit>
+<div class="detail-head"><h1>Import Track Files</h1></div>
+{% csrf_token %}
+{% if not storage_ok %}
+  <ul class="messages"><li class="error">File storage has no key here, so files cannot be imported.</li></ul>
+{% endif %}
+<div class="card">
+  <p>Choose CSV files with <span class="mono">datetime_utc</span>, <span class="mono">latitude</span> and <span class="mono">longitude</span> columns.
+  Each is checked and matched to an Effort on its date.</p>
+  <input type="file" id="files" accept=".csv,text/csv" multiple {% if not storage_ok %}disabled{% endif %}>
+  <label class="check small" style="display:block;margin:10px 0 0"><input type="checkbox" id="all-groups"> Include Efforts From Other Research Groups</label>
+</div>
+<div class="card card-tight" id="review" hidden>
+  <table class="data import-table">
+    <thead><tr><th>File</th><th class="num">Points</th><th>Match To Effort</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+</div>
+<div class="row-actions" id="actions" hidden>
+  <button class="btn btn-primary" type="button" id="go">Import Files</button>
+  <span class="small muted" id="imp-summary"></span>
+</div>
+<ul class="messages" id="import-msg" hidden></ul>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var BASE = "{% url 'admin_tracks' %}api/import/", WANTED = "{{ effort.legacy_daily_effort_id|default:'' }}", WANTED_TEXT = "{% if effort %}Effort {{ effort.legacy_daily_effort_id }} - {{ effort.vessel.code|default:'no vessel'|escapejs }} - {{ effort.locality|default:'no locality'|escapejs }}{% endif %}";
+  var files = [], info = [];
+  function token() { return document.querySelector("#detail [name=csrfmiddlewaretoken], [name=csrfmiddlewaretoken]").value; }
+  function esc(v) { return String(v === null || v === undefined ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function post(path, form) {
+    return fetch(BASE + path, { method: "POST", body: form, credentials: "same-origin", headers: { "X-CSRFToken": token() } })
+      .then(function (r) { return r.json(); });
+  }
+  /* The choices for one file: Efforts on its date with no track file (CRC's
+     unless the box is ticked), and the one an Add Track File link named, for the first file. */
+  function options(i) {
+    var f = info[i], all = $("all-groups").checked;
+    var free = f.efforts.filter(function (e) { return !e.taken && (all || e.group === "CRC"); });
+    var out = '<option value="">Import Without Matching</option>';
+    if (WANTED && i === 0 && !free.some(function (e) { return String(e.id) === WANTED; })) {
+      out += '<option value="' + esc(WANTED) + '">' + esc(WANTED_TEXT) + "</option>";
+    }
+    out += free.map(function (e) {
+      return '<option value="' + e.id + '">Effort ' + e.id + " - " + esc(e.vessel || "no vessel") + " - " + esc(e.locality || "no locality") + (all && e.group ? " - " + esc(e.group) : "") + "</option>";
+    }).join("") + '<option value="skip">Skip This File</option>';
+    var selected = f.choice !== undefined ? f.choice : (i === 0 && WANTED ? WANTED : (f.best ? String(f.best) : ""));
+    return { html: out, selected: selected, free: free.length };
+  }
+  function draw() {
+    $("rows").innerHTML = info.map(function (f, i) {
+      var bad = f.error;
+      var o = bad ? null : options(i);
+      return '<tr><td class="mono">' + esc(f.name) + '<div class="small muted">' + (bad ? esc(bad) : (f.date || "No date in the file")) + "</div></td>" +
+        '<td class="num" data-label="Points">' + (bad ? "-" : f.points.toLocaleString("en-US")) + "</td><td>" +
+        (bad ? '<span class="small muted">This file will be skipped.</span>'
+             : '<select data-i="' + i + '" aria-label="Match ' + esc(f.name) + '">' + o.html + "</select>" +
+               (f.efforts.length && !o.free && !(i === 0 && WANTED) ?'<div class="small muted">Every Effort that day already has a track file</div>' : "") +
+               (f.dropped ? '<div class="small muted">' + f.dropped.toLocaleString("en-US") + (f.dropped === 1 ? " row" : " rows") + " with a bad date or position " + (f.dropped === 1 ? "is" : "are") + " dropped.</div>" : "")) +
+        "</td></tr>";
+    }).join("");
+    info.forEach(function (f, i) {
+      var s = $("rows").querySelector('select[data-i="' + i + '"]');
+      if (s) { var want = options(i).selected; if (Array.prototype.some.call(s.options, function (x) { return x.value === want; })) s.value = want; }
+    });
+    $("review").hidden = false; $("actions").hidden = false; count();
+  }
+  function choices() {
+    var out = {};
+    $("rows").querySelectorAll("select").forEach(function (s) { out[info[+s.dataset.i].name] = s.value; });
+    return out;
+  }
+  function count() {
+    var c = choices(), names = Object.keys(c), skip = 0, matched = 0, seen = {}, twice = false;
+    names.forEach(function (n) { if (c[n] === "skip") skip++; else if (c[n]) { matched++; if (seen[c[n]]) twice = true; seen[c[n]] = 1; } });
+    var usable = names.length - skip;
+    $("imp-summary").textContent = twice ? "Two files are matched to the same Effort. An Effort has one track file at most."
+      : usable + " to import, " + matched + " matched to an Effort" + (skip ? ", " + skip + " skipped" : "");
+    $("go").disabled = twice || !usable;
+  }
+  $("rows").addEventListener("change", function (e) { var s = e.target.closest("select"); if (s) { info[+s.dataset.i].choice = s.value; } count(); });
+  $("all-groups").addEventListener("change", function () { if (info.length) draw(); });
+  $("files").addEventListener("change", function () {
+    files = Array.prototype.slice.call(this.files);
+    if (!files.length) return;
+    var form = new FormData(); files.forEach(function (f) { form.append("files", f); });
+    $("imp-summary").textContent = "Checking files...";
+    $("actions").hidden = false; $("go").disabled = true;
+    post("preview/", form).then(function (data) {
+      if (!data.ok) {
+        var m = $("import-msg"); m.hidden = false; m.innerHTML = '<li class="error">' + esc(data.message) + "</li>";
+        $("review").hidden = true; $("imp-summary").textContent = "";
+        return;
+      }
+      $("import-msg").hidden = true;
+      info = (data.files || []).map(function (f) { f.efforts = f.efforts || []; return f; });
+      draw();
+    });
+  });
+  $("go").onclick = function () {
+    var c = choices(), form = new FormData(), picked = {};
+    files.forEach(function (f) { if (c[f.name] !== undefined && c[f.name] !== "skip") { form.append("files", f); picked[f.name] = c[f.name]; } });
+    form.append("choices", JSON.stringify(picked));
+    $("go").disabled = true; $("imp-summary").textContent = "Importing...";
+    post("", form).then(function (data) {
+      var m = $("import-msg"); m.hidden = false;
+      m.innerHTML = (data.done || []).map(function (d) { return '<li class="' + (d.ok ? "success" : "error") + '">' + (d.ok ? "" : esc(d.name) + ": ") + esc(d.message) + "</li>"; }).join("") ||
+        '<li class="error">' + esc(data.message || "Nothing was imported.") + "</li>";
+      $("imp-summary").textContent = "";
+      window.dispatchEvent(new CustomEvent("tracks-imported", { detail: { id: (data.done || []).filter(function (d) { return d.ok; }).map(function (d) { return d.id; })[0] } }));
+    });
+  };
+})();
+</script>
+</div>
+</main>
+{% endblock %}

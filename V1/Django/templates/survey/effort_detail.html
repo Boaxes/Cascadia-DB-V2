@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-  <p class="small"><a href="{% url 'effort_list' %}">&larr; All efforts</a></p>
+  <p class="small"><a class="back-link" href="{% url 'effort_list' %}{{ research_group_query }}">All Efforts</a></p>
   <div id="detail">
   {% comment %}
     The inner detail for one effort. Rendered on its own into the modal, and
@@ -36,8 +36,9 @@
             <div class="pair"><dt>Vessel</dt><dd>{{ effort.vessel.label|dash }}</dd></div>
             <div class="pair"><dt>Locality</dt><dd>{{ effort.locality|dash }}</dd></div>
             <div class="pair"><dt>Region</dt><dd>{{ effort.region|dash }}</dd></div>
-            <div class="pair"><dt>Survey type</dt><dd>{{ effort.survey_type|dash }}</dd></div>
-            <div class="pair"><dt>Time searching</dt><dd>{{ effort.total_survey_effort|duration }}</dd></div>
+            <div class="pair"><dt>Sub-Area</dt><dd>{{ effort.sub_area|dash }}</dd></div>
+            <div class="pair"><dt>Survey Type</dt><dd>{{ effort.survey_type|dash }}</dd></div>
+            <div class="pair"><dt>Time Searching</dt><dd>{{ effort.total_survey_effort|duration }}</dd></div>
             <div class="pair"><dt>Sightings</dt><dd>{{ sightings|length }}</dd></div>
           </div>
 
@@ -61,8 +62,8 @@
                 <span class="source">Source: <strong>{{ effort.end_source.0 }}</strong>{% if effort.end_source.1 %}<em>({{ effort.end_source.1 }})</em>{% endif %}</span>{% else %}Unknown{% endif %}</dd>
             </div>
             <div class="pair">
-              <dt>GPS track file</dt>
-              <dd>{% for track in tracks %}<span class="pill {{ track.status_class }}">{{ track.status_label }}</span> {% empty %}<span class="pill problem-no_track">No track file</span>{% endfor %}</dd>
+              <dt>GPS Track File</dt>
+              <dd>{% for track in tracks %}<span class="pill {{ track.status_class }}">{{ track.status_label }}</span> {% empty %}<span class="pill problem-no_track">No Track File</span>{% endfor %}</dd>
             </div>
           </div>
         </div>
@@ -72,8 +73,8 @@
         <div id="effort-map-{{ effort.legacy_daily_effort_id }}" class="map"></div>
         {% if track_is_suspect %}
           <div class="notice" style="margin:10px 0 0">
-            This effort's track has corrupted geometry, so the line on the map
-            is not where the vessel went. The map is framed on the sightings
+            A track on this Effort has corrupted geometry, so its line on the
+            map is not where the vessel went. The map is framed on the Sightings
             instead.
           </div>
         {% endif %}
@@ -93,35 +94,35 @@
               {% for row in species_seen %}
                 <div class="pair">
                   <dt>{{ row.name }}</dt>
-                  <dd>{{ row.count }} sighting{{ row.count|pluralize }}{% if row.animals %},
-                    {{ row.animals }} animal{{ row.animals|pluralize }}{% endif %}</dd>
+                  <dd>{{ row.count|thousands }} Sighting{{ row.count|pluralize }}{% if row.animals %},
+                    {{ row.animals|thousands }} Animal{{ row.animals|pluralize }}{% endif %}</dd>
                 </div>
               {% endfor %}
             </div>
           {% else %}
-            <p class="muted" style="margin:0">No sightings were recorded on this effort.</p>
+            <p class="muted" style="margin:0">No Sightings were recorded on this Effort.</p>
           {% endif %}
         </div>
 
         <div class="card collapsed">
-          <h2>Extra info</h2>
+          <h2>Extra Info</h2>
           <div class="detail-grid">
             <div class="pair" style="grid-column:1/-1"><dt>Crew</dt><dd>{{ effort.personnel|dash }}</dd></div>
-            <div class="pair"><dt>Sub area</dt><dd>{{ effort.sub_area|dash }}</dd></div>
+            <div class="pair"><dt>Sub-Area</dt><dd>{{ effort.sub_area|dash }}</dd></div>
             <div class="pair"><dt>Objective</dt><dd>{{ effort.project_objective|dash }}</dd></div>
             <div class="pair"><dt>Launch</dt><dd>{{ effort.launch|dash }}</dd></div>
             <div class="pair"><dt>Return</dt><dd>{{ effort.return_location|dash }}</dd></div>
-            <div class="pair"><dt>Off effort</dt><dd>{{ effort.time_off_effort|duration }}</dd></div>
-            <div class="pair"><dt>Research group</dt><dd>{{ effort.research_group|dash }}</dd></div>
+            <div class="pair"><dt>Off Effort</dt><dd>{{ effort.time_off_effort|duration }}</dd></div>
+            <div class="pair"><dt>Research Group</dt><dd>{{ effort.research_group|dash }}</dd></div>
           </div>
           {% if distance %}
             <div class="detail-grid" style="grid-template-columns:1fr">
               <div class="pair">
-                <dt>Recorded on the datasheet</dt>
+                <dt>Recorded On the Datasheet</dt>
                 <dd>{{ distance.recorded|nm }}{% if distance.recorded %} nm{% endif %}</dd>
               </div>
               <div class="pair">
-                <dt>Length of the GPS track</dt>
+                <dt>Length of the GPS Track</dt>
                 <dd>{{ distance.track|nm }}{% if distance.track %} nm{% endif %}</dd>
               </div>
               {% if distance.difference is not None %}
@@ -143,32 +144,59 @@
         </div>
     </div>
       <div class="card card-tight">
-        <h2 style="padding:16px 16px 10px;margin:0">
-          Tracks <span class="muted">({{ tracks|length }})</span>
-        </h2>
+        <div class="card-head" style="padding:16px 16px 10px;margin:0">
+          <h2>Tracks <span class="muted">({{ tracks|length }})</span></h2>
+          {% if perms.datahealth.access_data_health and not tracks %}
+            <span class="row-actions" style="margin:0">
+              <a class="btn btn-small" href="{% url 'admin_tracks' %}?import_effort={{ effort.legacy_daily_effort_id }}">Add Track File</a>
+              {% if positioned_count >= 2 %}<a class="btn btn-small" href="{% url 'admin_tracks' %}?positions_effort={{ effort.legacy_daily_effort_id }}">Create Track From Positions</a>{% endif %}
+              <a class="btn btn-small" href="{% url 'admin_track_change' %}?effort={{ effort.legacy_daily_effort_id }}" data-modal-url="{% url 'admin_track_change' %}?effort={{ effort.legacy_daily_effort_id }}">Choose Existing File</a>
+            </span>
+          {% endif %}
+        </div>
+        <div style="overflow-x:auto">
         <table class="data">
           <thead>
-            <tr><th>Track</th><th>Status</th><th>Source</th><th>Points</th><th class="right">Length (nm)</th></tr>
+            <tr><th>Track</th><th>File</th><th>Status</th><th>Source</th><th>Points</th><th class="right">Length (nm)</th></tr>
           </thead>
           <tbody>
             {% for track in tracks %}
               <tr>
                 <td>{{ track.legacy_track_id|dash }}</td>
+                <td class="nowrap">
+                  {% if track.file_name and perms.datahealth.access_data_health %}
+                    <a class="mono" href="{% url 'admin_tracks' %}?open={{ track.legacy_track_id }}" title="Open In Track File Manager">{{ track.file_name }}</a>
+                  {% else %}
+                    <span class="mono">{{ track.file_name|dash }}</span>
+                  {% endif %}
+                  {% if perms.datahealth.access_data_health %}
+                    <div class="row-actions" style="margin-top:6px">
+                      <a class="btn btn-small" href="{% url 'admin_tracks' %}?open={{ track.legacy_track_id }}">Edit</a>
+                      <a class="btn btn-small" href="{% url 'admin_track_change' %}?effort={{ effort.legacy_daily_effort_id }}&amp;track={{ track.legacy_track_id }}" data-modal-url="{% url 'admin_track_change' %}?effort={{ effort.legacy_daily_effort_id }}&amp;track={{ track.legacy_track_id }}">Change Track File</a>
+                      {% comment %} The confirmation is on the button, not the form: a form in the pop-over is submitted by modal.js whatever the form's own handler says. {% endcomment %}
+                      <form method="post" action="{% url 'admin_track_delete' track.legacy_track_id %}" style="display:inline">
+                        {% csrf_token %}<button class="btn btn-small" type="submit"
+                          onclick="return confirm('Delete this track file? The file is kept, and it can be restored from the Audit Log.')">Delete</button>
+                      </form>
+                    </div>
+                  {% endif %}
+                </td>
                 <td><span class="pill {{ track.status_class }}">{{ track.status_label }}</span></td>
                 <td>{{ track.track_source|dash }}</td>
-                <td class="num">{{ track.point_count|dash }}</td>
+                <td class="num">{{ track.point_count|thousands|dash }}</td>
                 <td class="num">
                   {{ track.length_nm|nm }}
                   {% if track.length_is_plausible is False %}
-                    <span class="pill pill-red" title="Implied speed {{ track.implied_speed_kn|floatformat:0 }} knots">suspect</span>
+                    <span class="pill pill-red" title="Implied speed {{ track.implied_speed_kn|floatformat:0 }} knots">Suspect</span>
                   {% endif %}
                 </td>
               </tr>
             {% empty %}
-              <tr><td colspan="5" class="empty">None.</td></tr>
+              <tr><td colspan="6" class="empty">None.</td></tr>
             {% endfor %}
           </tbody>
         </table>
+        </div>
       </div>
   </div>
 
@@ -199,7 +227,7 @@
             </td>
           </tr>
         {% empty %}
-          <tr><td colspan="4" class="empty">Nothing was recorded during this effort.</td></tr>
+          <tr><td colspan="4" class="empty">Nothing was recorded during this Effort.</td></tr>
         {% endfor %}
       </tbody>
     </table>
@@ -211,8 +239,10 @@
   <script>
     window.EFFORT_MAP = {
       container: "effort-map-{{ effort.legacy_daily_effort_id }}",
-      trackUrl: {% if track_geojson_url %}"{{ track_geojson_url }}"{% else %}null{% endif %},
-      trackIsSuspect: {{ track_is_suspect|yesno:"true,false" }},
+      id: {{ effort.legacy_daily_effort_id }},
+      tracks: {{ map_tracks|js }},
+      trackManagerUrl: {% if perms.datahealth.access_data_health %}"{% url 'admin_tracks' %}"{% else %}null{% endif %},
+      caption: "{{ effort.effort_date|date:'Y-m-d'|default:'Date not recorded' }}{% if effort.vessel %}, {{ effort.vessel.label|escapejs }}{% endif %}{% if effort.locality %}, {{ effort.locality|escapejs }}{% endif %}",
       start: {% if effort.start_point %}[{{ effort.start_lat }}, {{ effort.start_lon }}]{% else %}null{% endif %},
       startIsDeparture: {{ effort.position_is_departure_point|yesno:"true,false" }},
       end: {% if effort.end_point %}[{{ effort.end_lat }}, {{ effort.end_lon }}]{% else %}null{% endif %},

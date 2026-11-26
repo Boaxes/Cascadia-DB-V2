@@ -54,5 +54,11 @@
     fit();
   }
 
+  screenshotControl(map, {
+    title: "Sighting " + config.id,
+    caption: function () { return config.caption; },
+    filename: "sighting-" + config.id + "-map"
+  });
+
   setTimeout(function () { map.invalidateSize(); fit(); }, 60);
 })();

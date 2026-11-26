@@ -1,25 +1,23 @@
--- Every edit in the audit log is what dbo holds: for each record and field, the
--- newest value an edit set is the value in the table. The replay's own check.
--- Left out: the track geometry columns, which come from raw.track_geometry;
--- a track's status, worked out from its link and its file; and vessel_id,
--- which is read through the vessel lookup (models/dbo/lookups).
-{% set tables = ['SightingT', 'DailyEffortT', 'DailyConditionT', 'DailyEventT', 'SampleT', 'TrackT'] %}
-{% set keys = {'SightingT': 'SightingID', 'DailyEffortT': 'DailyEffortID', 'DailyConditionT': 'DailyConditionID',
-               'DailyEventT': 'DailyEventID', 'SampleT': 'SampleID', 'TrackT': 'TrackID'} %}
-{%- for t in tables %}
-{{ 'union all' if not loop.first }}
-select '{{ t }}' as table_name, c.target_pk, f.key as column_name, f.value #>> '{}' as edited, d.value #>> '{}' as stored
-from {{ ref('audit_changes') }} c
-cross join lateral jsonb_each(c.changes) f
-join {{ ref(t) }} x on x."{{ keys[t] }}"::text = c.target_pk
-cross join lateral (select to_jsonb(x) -> f.key as value) d
-where c.target_table = '{{ t }}'
-  and f.key not in ('geom', 'length_nm', 'point_count', 'track_status', 'vessel_id')
-  and (f.value #>> '{}') is distinct from (d.value #>> '{}')
-  -- The same value written two ways: a number as 1.5 or 1.50, a time with a
-  -- space (as the audit log stores it) or a T (as JSON writes it).
-  and not (jsonb_typeof(f.value) = 'number' and jsonb_typeof(d.value) = 'number'
-           and (f.value #>> '{}')::numeric = (d.value #>> '{}')::numeric)
-  and not ((f.value #>> '{}') ~ '^\d{4}-\d\d-\d\d \d\d:\d\d'
-           and replace(d.value #>> '{}', 'T', ' ') = (f.value #>> '{}'))
-{%- endfor %}
+-- Every field a website edit set holds the edit's value in dbo. Columns the
+-- build works out itself (a track's line, status and vessel) are left out:
+-- those are worked out again from the edited columns. So is a Foreign Key an
+-- edit set to a record that is not there: it is NULL, an orphan
+-- (macros/replay.sql, edited_reference).
+with records as (
+    {%- for table, key in primary_keys().items() %}
+    select '{{ table }}' as target_table, "{{ key }}"::text as target_pk, to_jsonb(t) as record
+    from {{ ref(table) }} t
+    {{ "union all" if not loop.last }}
+    {%- endfor %}
+)
+select e.target_table, e.target_pk, f.key as column_name, f.value as edit, r.record -> f.key as now
+from {{ ref('edits') }} e
+join records r on r.target_table = e.target_table and r.target_pk = e.target_pk
+cross join lateral jsonb_each(e.changes) f
+where r.record ? f.key
+  and f.key not in ('geom', 'length_nm', 'point_count', 'track_status', 'file_name', 'vessel_id')
+  and r.record -> f.key is distinct from f.value
+  and not (jsonb_typeof(f.value) = 'string' and r.record ->> f.key = replace(f.value #>> '{}', ' ', 'T'))
+  and not (f.key in ('daily_effort_id', 'sighting_id', 'sighting_event_id', 'species_id', 'IndividualID',
+                     'ResearchGroupID', 'TrackCompleteCodeID', 'SourceID')
+           and r.record -> f.key = 'null'::jsonb)

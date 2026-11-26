@@ -1,20 +1,7 @@
-{{ config(materialized='updatable_view', meta={'check_option': true}) }}
-SELECT c."DailyConditionID"  AS id,
-       c."DailyConditionID"  AS legacy_daily_condition_id,
-       c."Research Group"    AS research_group,
-       c."DailyEffortID"     AS daily_effort_id,
-       c.vessel_id,
-       c."ConditionDateTime" AS condition_datetime,
-       c."ConditionTime"     AS condition_time,
-       ST_Y(c.geom)          AS lat,
-       ST_X(c.geom)          AS lon,
-       c.geom,
-       c."Beaufort"          AS beaufort,
-       c."Swell"             AS swell_ft,
-       c."% Cloud Cover"     AS cloud_cover_pct,
-       c."Precipitation"     AS precipitation,
-       c."Quality"           AS quality,
-       c.visibility_nm,
-       c."Comments"          AS comments
-FROM   {{ ref('DailyConditionT') }} c
-WHERE  c."Research Group" = 'CRC'
+-- Weather readings on each effort's page. Every research group.
+select id, "DailyConditionID" as legacy_daily_condition_id, "Research Group" as research_group,
+       daily_effort_id, vessel_id, "ConditionDateTime" as condition_datetime, "ConditionTime" as condition_time,
+       st_y(geom) as lat, st_x(geom) as lon, geom, "Beaufort" as beaufort, "Swell" as swell_ft,
+       "% Cloud Cover" as cloud_cover_pct, "Precipitation" as precipitation, "Quality" as quality,
+       visibility_nm, "Comments" as comments
+from {{ ref('DailyConditionT') }} c

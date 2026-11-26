@@ -1,0 +1,15 @@
+table_name,legacy_id,record_date,column_name,old_value,new_value,rule,reason
+DailyEffortT,5763,2009-04-11,Region,US West Coast,Alaska,GEO-F01,Sub-area is Gulf of Alaska and Locality is Gulf of Alaska
+DailyEffortT,4535,2007-07-07,Region,US West Coast,Alaska,GEO-F01,Sub-area is Southeast Alaska and Locality is Sitka
+DailyEffortT,4539,2007-07-08,Region,US West Coast,Alaska,GEO-F01,Sub-area is Southeast Alaska and Locality is Sitka
+DailyEffortT,4546,2007-07-13,Region,US West Coast,Alaska,GEO-F01,Sub-area is Southeast Alaska and Locality is Sitka
+DailyEffortT,4548,2007-07-14,Region,US West Coast,Alaska,GEO-F01,Sub-area is Southeast Alaska and Locality is Sitka
+DailyEffortT,4549,2007-07-15,Region,US West Coast,Alaska,GEO-F01,Sub-area is Southeast Alaska and Locality is Shellikof Bay
+DailyEffortT,4552,2007-07-17,Region,US West Coast,Alaska,GEO-F01,Sub-area is Southeast Alaska and Locality is Sitka
+DailyEffortT,4554,2007-07-18,Region,US West Coast,Alaska,GEO-F01,Sub-area is Southeast Alaska and Locality is Shellikof Bay
+DailyEffortT,4557,2007-07-20,Region,US West Coast,Alaska,GEO-F01,Sub-area is Southeast Alaska and Locality is Shellikof Bay
+DailyEffortT,4559,2007-07-21,Region,US West Coast,Alaska,GEO-F01,Sub-area is Southeast Alaska and Locality is Gilmer Bay
+DailyEffortT,4561,2007-07-22,Region,US West Coast,Alaska,GEO-F01,Sub-area is Southeast Alaska and Locality is Southeast Alaska
+DailyEffortT,23015,2021-11-29,Sub-area,Northern Baja California,,GEO-F02,Locality is Monterey Bay so the Sub-area is wrong and the Region is right
+DailyEffortT,4015,2006-10-18,Region,US West Coast,Mexico,GEO-F03,A trip from San Diego into Mexico; the Sub-area is Northern Baja California
+SightingT,114646,2005-06-29,Start Dec Long,124.8272,-124.8272,CRD-F01,Latitude is 47.045 on the Washington coast but the longitude is in eastern China; the negative sign was dropped

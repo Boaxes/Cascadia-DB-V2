@@ -173,12 +173,14 @@ rebuild. **[ETL/dbt/README.md](ETL/dbt/README.md)** explains the files, how to
 open the lineage graph, how to run the pipeline, and how to make each kind of
 change (fix a spelling, add, rename or drop a column).
 
-The website's own tests check that every change made on the website survives
-a rebuild. With `docker compose up` running, and after running
-`ops/make-reference.sh` once:
+The report from the daily run is at **https://cascadia-pipeline.pages.dev**.
+
+The website has two sets of tests (see [TESTS/README.md](TESTS/README.md)).
+The quick ones need no database and run in CI before every deploy. The others
+run against a copy of your local database, made for you:
 
 ```
-docker compose exec web python manage.py test
+ops/test.sh unit        # or: reference, all    (PowerShell: ops\test.ps1 unit)
 ```
 
 ## Two things to know

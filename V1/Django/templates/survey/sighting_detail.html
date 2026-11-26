@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-  <p class="small"><a href="{% url 'sighting_list' %}">&larr; All sightings</a></p>
+  <p class="small"><a class="back-link" href="{% url 'sighting_list' %}{{ research_group_query }}">All Sightings</a></p>
   <div id="detail">
   {% comment %}
     The inner detail for one sighting. Rendered on its own into the modal, and
@@ -36,13 +36,13 @@
                   {% if sighting.species.scientific_name %}<em>{{ sighting.species.scientific_name }}</em> ({{ sighting.species }}){% else %}{{ sighting.species }}{% endif %}
                 {% elif sighting.species_raw %}{{ sighting.species_raw }} {% tip "species_raw" %}
                 {% else %}Not identified{% endif %}
-                {% if sighting.species_uncertain %}<span class="pill pill-amber" title="Recorded as &ldquo;{{ sighting.species_raw }}&rdquo;">uncertain</span>{% endif %}
-                {% if sighting.species and not sighting.species.name_is_authoritative %}<span class="pill pill-grey">name unconfirmed</span>{% endif %}
+                {% if sighting.species_uncertain %}<span class="pill pill-amber" title="Recorded as &ldquo;{{ sighting.species_raw }}&rdquo;">Uncertain</span>{% endif %}
+                {% if sighting.species and not sighting.species.name_is_authoritative %}<span class="pill pill-grey">Name Unconfirmed</span>{% endif %}
               </dd></div>
             <div class="pair"><dt>Date</dt><dd>{{ sighting.sighting_date|date:"Y-m-d"|dash }}</dd></div>
             <div class="pair"><dt>Time</dt><dd>{{ sighting.sighting_time|time:"H:i:s"|unknown }}</dd></div>
             <div class="pair"><dt>Vessel</dt><dd>{{ sighting.vessel.label|dash }}</dd></div>
-            <div class="pair"><dt>Group size</dt><dd>{{ sighting.est_size_best|unknown }}</dd></div>
+            <div class="pair"><dt>Group Size</dt><dd>{{ sighting.est_size_best|thousands|unknown }}</dd></div>
           </div>
 
           {% if sighting.comments %}
@@ -54,11 +54,11 @@
         <div class="card">
           <h2>GPS Data</h2>
           <div class="detail-grid" style="grid-template-columns:1fr">
-            <div class="pair"><dt>Latitude, longitude {% tip "position" %}</dt>
+            <div class="pair"><dt>Latitude, Longitude {% tip "position" %}</dt>
               <dd>{% if sighting.lat and sighting.lon %}{{ sighting.lat|floatformat:5 }}, {{ sighting.lon|floatformat:5 }}
                 {% if sighting.position_type %}<span class="muted">({{ sighting.position_type|lower }})</span>{% endif %}
                 {% else %}Unknown{% endif %}</dd></div>
-            <div class="pair"><dt>End position {% tip "end_position" %}</dt>
+            <div class="pair"><dt>End Position {% tip "end_position" %}</dt>
               <dd>{% if sighting.end_lat and sighting.end_lon %}{{ sighting.end_lat|floatformat:5 }}, {{ sighting.end_lon|floatformat:5 }}{% else %}Unknown{% endif %}</dd></div>
           </div>
         </div>
@@ -67,7 +67,7 @@
         <h2>Map</h2>
         <div id="sighting-map-{{ sighting.legacy_sighting_id }}" class="map"></div>
         <p class="small muted" style="margin:8px 0 0">
-          The line is the GPS track of the effort this sighting belongs to.
+          The line is the GPS track of the Effort this Sighting belongs to.
         </p>
       </div>
   </div>
@@ -84,31 +84,32 @@
               <div class="pair"><dt>Vessel</dt><dd>{{ effort.vessel.label|dash }}</dd></div>
               <div class="pair"><dt>Locality</dt><dd>{{ effort.locality|dash }}</dd></div>
               <div class="pair"><dt>Region</dt><dd>{{ effort.region|dash }}</dd></div>
-              <div class="pair"><dt>Survey type</dt><dd>{{ effort.survey_type|dash }}</dd></div>
+              <div class="pair"><dt>Sub-Area</dt><dd>{{ effort.sub_area|dash }}</dd></div>
+              <div class="pair"><dt>Survey Type</dt><dd>{{ effort.survey_type|dash }}</dd></div>
             </div>
           {% else %}
             <p class="muted" style="margin:0">
-              This sighting is not attached to any effort.
+              This Sighting is not attached to any Effort.
             </p>
           {% endif %}
         </div>
 
         <div class="card collapsed">
-          <h2>Extra info</h2>
+          <h2>Extra Info</h2>
           <div class="detail-grid">
-            <div class="pair"><dt>Group behaviour</dt><dd>{{ sighting.group_behavior|unknown }}</dd></div>
-            <div class="pair"><dt>Group type {% tip "group_type" %}</dt><dd>{{ sighting.group_type|unknown }}</dd></div>
-            <div class="pair"><dt>Sighting type
+            <div class="pair"><dt>Group Behaviour</dt><dd>{{ sighting.group_behavior|unknown }}</dd></div>
+            <div class="pair"><dt>Group Type {% tip "group_type" %}</dt><dd>{{ sighting.group_type|unknown }}</dd></div>
+            <div class="pair"><dt>Sighting Type
               {% value_tip "sight_type" sighting.sight_type %}</dt>
               <dd>{{ sighting.sight_type|unknown }}</dd></div>
-            <div class="pair"><dt>Photos taken</dt><dd>{{ sighting.photos_taken|yesno:"Yes,No" }}</dd></div>
-            <div class="pair"><dt>Individuals identified {% tip "identified" %}</dt><dd>{{ sighting.identified_individual_count }}</dd></div>
+            <div class="pair"><dt>Photos Taken</dt><dd>{{ sighting.photos_taken|yesno:"Yes,No" }}</dd></div>
+            <div class="pair"><dt>Individuals Identified {% tip "identified" %}</dt><dd>{{ sighting.identified_individual_count }}</dd></div>
             <div class="pair"><dt>Calves</dt><dd>{{ sighting.num_calves|unknown }}</dd></div>
-            <div class="pair"><dt>Minimum</dt><dd>{{ sighting.est_size_min|unknown }}</dd></div>
-            <div class="pair"><dt>Maximum</dt><dd>{{ sighting.est_size_max|unknown }}</dd></div>
+            <div class="pair"><dt>Minimum</dt><dd>{{ sighting.est_size_min|thousands|unknown }}</dd></div>
+            <div class="pair"><dt>Maximum</dt><dd>{{ sighting.est_size_max|thousands|unknown }}</dd></div>
             <div class="pair"><dt>Depth (m)</dt><dd>{{ sighting.depth_m|unknown }}</dd></div>
-            <div class="pair"><dt>Number on the day</dt><dd>{{ sighting.sighting_number|unknown }}</dd></div>
-            <div class="pair"><dt>Research group</dt><dd>{{ sighting.research_group|dash }}</dd></div>
+            <div class="pair"><dt>Number On the Day</dt><dd>{{ sighting.sighting_number|unknown }}</dd></div>
+            <div class="pair"><dt>Research Group</dt><dd>{{ sighting.research_group|dash }}</dd></div>
           </div>
         </div>
     </div>
@@ -118,7 +119,7 @@
         </h2>
         <table class="data">
           <thead>
-            <tr><th>Number</th><th>Type</th><th>Species</th><th>Preservation</th><th>Taken by</th></tr>
+            <tr><th>Number</th><th>Type</th><th>Species</th><th>Preservation</th><th>Taken By</th></tr>
           </thead>
           <tbody>
             {% for sample in samples %}
@@ -130,7 +131,7 @@
                 <td>{{ sample.sampled_by|dash }}</td>
               </tr>
             {% empty %}
-              <tr><td colspan="5" class="empty">No samples were taken at this sighting.</td></tr>
+              <tr><td colspan="5" class="empty">No samples were taken at this Sighting.</td></tr>
             {% endfor %}
           </tbody>
         </table>
@@ -139,10 +140,10 @@
 
   {% if attached %}
     <div class="card">
-      <h2>Attached records</h2>
+      <h2>Attached Records</h2>
       <p class="small muted" style="margin:-6px 0 14px">
         Events, other species, tag deployments and photo identifications
-        recorded during this sighting.
+        recorded during this Sighting.
       </p>
 
       {% for group in attached %}
@@ -172,7 +173,9 @@
       trackUrl: {% if track_geojson_url %}"{{ track_geojson_url }}"{% else %}null{% endif %},
       point: {% if sighting.lat and sighting.lon %}[{{ sighting.lat }}, {{ sighting.lon }}]{% else %}null{% endif %},
       label: "{{ sighting.species|default:'Not identified'|escapejs }}",
-      colour: "{{ sighting.species_id|species_colour:colour_profile }}"
+      colour: "{{ sighting.species_id|species_colour:colour_profile }}",
+      id: {{ sighting.legacy_sighting_id }},
+      caption: "{{ sighting.species|default:'Not identified'|escapejs }}, {{ sighting.sighting_date|date:'Y-m-d'|default:'Date not recorded' }}{% if sighting.sighting_time %} {{ sighting.sighting_time|time:'H:i' }}{% endif %}{% if sighting.vessel %}, {{ sighting.vessel.label|escapejs }}{% endif %}{% if effort %}, Effort {{ effort.legacy_daily_effort_id }}{% endif %}"
     };
   </script>
   <script src="{% static 'survey/basemap.js' %}"></script>

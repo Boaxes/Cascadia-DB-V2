@@ -12,10 +12,12 @@ Running it again resets the passwords rather than failing.
 
 import os
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from django.core.management.base import BaseCommand, CommandError
 
-# username, first name, last name, environment variable, admin panel access
+from datahealth import access
+
+# username, first name, last name, environment variable, Admin role
 PEOPLE = [
     ("brandon", "Brandon", "Connely", "BRANDON_PASSWORD", True),
     ("doug", "Doug", "Sandilands", "DOUG_PASSWORD", True),
@@ -34,14 +36,18 @@ class Command(BaseCommand):
                 "not set: " + ", ".join(missing) +
                 ". Put them in the environment, not in a file that gets committed.")
 
-        for username, first, last, variable, is_staff in PEOPLE:
+        access.ensure()
+        for username, first, last, variable, is_admin in PEOPLE:
             user, created = User.objects.get_or_create(username=username)
             user.first_name = first
             user.last_name = last
-            user.is_staff = is_staff
             user.is_active = True
             user.set_password(os.environ[variable])
             user.save()
+            # A new login starts as Admin or Viewer. An existing one keeps the
+            # role someone gave it in the Django admin.
+            if access.role_of(user) is None:
+                user.groups.add(Group.objects.get(name="Admin" if is_admin else "Viewer"))
             self.stdout.write(
                 f"{'created' if created else 'updated'} {username}"
-                f"{' (admin)' if is_staff else ''}")
+                f" ({access.role_of(user)})")

@@ -5,7 +5,7 @@
 
       {{ config(materialized='updatable_view', meta={'check_option': true}) }}
 
-  Every build writes into a fresh schema (macros/build_schemas.sql), so the
+  Every build writes into a fresh schema (macros/schemas.sql), so the
   view never exists beforehand and there is nothing to replace.
 #}
 {% materialization updatable_view, adapter='postgres' %}

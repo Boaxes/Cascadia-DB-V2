@@ -1,0 +1,88 @@
+# What each data test checks, in plain language. Elementary shows this on its Test Results page.
+
+version: 2
+data_tests:
+  - name: applied_entries_are_not_replayed
+    description: "Website edits that DB167 already holds are not replayed. Replaying them would write the website's copy over what DB167 holds, or over what DB167 has changed since."
+    config:
+      meta:
+        description: "Website edits that DB167 already holds are not replayed. Replaying them would write the website's copy over what DB167 holds, or over what DB167 has changed since."
+        group: "Audit Log"
+  - name: crc_positions_have_both_values
+    description: "A CRC sighting's start position has both a latitude and a longitude, or neither."
+    config:
+      meta:
+        description: "A CRC sighting's start position has both a latitude and a longitude, or neither."
+        group: "Data Quality"
+  - name: day_log_codes_resolve
+    description: "Every day-log entry that has a code points at a real Event Code (Foreign Key to EventCodeT)."
+    config:
+      meta:
+        description: "Every day-log entry that has a code points at a real Event Code (Foreign Key to EventCodeT)."
+        group: "Foreign Keys"
+  - name: edits_are_applied
+    description: "Every field a website edit set holds that edit's value after the build. Fields the build works out itself are left out."
+    config:
+      meta:
+        description: "Every field a website edit set holds that edit's value after the build. Fields the build works out itself are left out."
+        group: "Audit Log"
+  - name: one_track_per_effort
+    description: "An Effort has at most one track. The 31 Efforts in the exceptions list keep the number of tracks they had."
+    config:
+      meta:
+        description: "An Effort has at most one track. The 31 Efforts in the exceptions list keep the number of tracks they had."
+        group: "Tracks"
+  - name: record_fixes_are_applied
+    description: "Every fix in the record fixes list found its record, changed it, and was not redundant or repeated."
+    config:
+      meta:
+        description: "Every fix in the record fixes list found its record, changed it, and was not redundant or repeated."
+        group: "Fixes"
+  - name: removed_efforts_are_used
+    description: "Every removed Effort in the list has its kept Effort in the build and at least one track naming it."
+    config:
+      meta:
+        description: "Every removed Effort in the list has its kept Effort in the build and at least one track naming it."
+        group: "Fixes"
+  - name: spelling_map_is_final
+    description: "A spelling the rules change a value to is never changed again, so one pass gives the final spelling."
+    config:
+      meta:
+        description: "A spelling the rules change a value to is never changed again, so one pass gives the final spelling."
+        group: "Spelling"
+  - name: sub_areas_resolve
+    description: "Every Sub-Area an Effort records is one of Doug's corrected Sub-Areas. A spelling his table does not list yet gives a warning, not a failure."
+    config:
+      meta:
+        description: "Every Sub-Area an Effort records is one of Doug's corrected Sub-Areas. A spelling his table does not list yet gives a warning, not a failure."
+        group: "Spelling"
+  - name: text_columns_are_classified
+    description: "Every text column that reaches dbo is classified as a choice, free text or an identifier. A new DB167 column is treated as free text and gives a warning until it is classified."
+    config:
+      meta:
+        description: "Every text column that reaches dbo is classified as a choice, free text or an identifier. A new DB167 column is treated as free text and gives a warning until it is classified."
+        group: "Spelling"
+  - name: track_ids_do_not_clash
+    description: "No TrackID the website or the build gave a track is also used by a different track in DB167. The build stops until it is sorted out."
+    config:
+      meta:
+        description: "No TrackID the website or the build gave a track is also used by a different track in DB167. The build stops until it is sorted out."
+        group: "Tracks"
+  - name: tracks_name_a_vessel
+    description: "No track is left in dbo that names no vessel and has no typed vessel and no Effort."
+    config:
+      meta:
+        description: "No track is left in dbo that names no vessel and has no typed vessel and no Effort."
+        group: "Tracks"
+  - name: vessels_and_groups_resolve
+    description: "Every record that types a vessel or a research group points at a real one (Foreign Key to VesselListT and ResearchGroupT)."
+    config:
+      meta:
+        description: "Every record that types a vessel or a research group points at a real one (Foreign Key to VesselListT and ResearchGroupT)."
+        group: "Foreign Keys"
+  - name: tables_did_not_shrink
+    description: "No main table has more than 5% fewer rows in this build than in the live site's dbo. This stops a half-empty DB167 import from being published."
+    config:
+      meta:
+        description: "No main table has more than 5% fewer rows in this build than in the live site's dbo. This stops a half-empty DB167 import from being published."
+        group: "Row Counts"

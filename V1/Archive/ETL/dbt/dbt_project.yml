@@ -1,0 +1,74 @@
+# The transform: raw -> dbo -> app.
+#
+#     docker compose run --rm etl dbt build                  # into dbo_next and app_next
+#     docker compose run --rm etl dbt run-operation swap     # move them into place
+#
+# Three schemas, the three layers: raw (DB167 as imported, and the other
+# inputs), dbo (cleaned, with the website's edits applied) and app (the
+# website's views). raw and app.audit_log are sources: dbt reads them and never
+# drops them. Everything under models/ is rebuilt on every run.
+
+name: cascadia
+version: "1.0.0"
+profile: cascadia
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+# First the tables dbt reads but never drops (create-if-missing, a no-op once
+# they exist: macros/persistent_tables.sql), then empty schemas for the build
+# to write into (macros/build_schemas.sql).
+on-run-start:
+  - "{{ persistent_tables_sql() }}"
+  - "{{ prepare_next_schemas() }}"
+
+# Once every table is built: the foreign keys, and the mark that lets the
+# build be swapped in (macros/structure.sql, finish_build).
+on-run-end:
+  - "{{ finish_build(results) }}"
+
+flags:
+  # No usage reports to dbt Labs: each one cost a few seconds, and the thread
+  # sending them held the test run open long after its last test.
+  send_anonymous_usage_stats: false
+  # A deprecation warning is an error. They flag exactly what dbt v2's stricter
+  # spec rejects, so a project that builds cleanly here moves to v2 as a
+  # version bump once v2 has a Postgres adapter.
+  warn_error_options:
+    error: [Deprecations]
+
+models:
+  cascadia:
+    # Column descriptions become Postgres column comments, which is where the
+    # history window reads a cleaning step's explanation from.
+    +persist_docs:
+      relation: true
+      columns: true
+    # Postgres's just-in-time compiler switches itself on for queries it thinks
+    # are huge, and these CTE-heavy models look huge to it: compiling
+    # SightingT took 6 of its 9 seconds. Each model runs once per build, so the
+    # compiling never pays for itself.
+    +pre-hook: "set local jit = off"
+    dbo:
+      +schema: dbo
+      +materialized: table
+      # Keys, NOT NULL, defaults, indexes and triggers, from each model's YAML.
+      +post-hook: "{{ apply_structure() }}"
+      views:
+        +materialized: view
+        +post-hook: []
+      # The audit log, read once for the build: written into each dbo model,
+      # never built as a table of its own.
+      replay:
+        +materialized: ephemeral
+        +post-hook: []
+      # Lookups shared by several dbo models, written into each of them.
+      lookups:
+        +materialized: ephemeral
+        +post-hook: []
+    app:
+      +schema: app
+      +materialized: updatable_view

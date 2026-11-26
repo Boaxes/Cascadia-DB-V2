@@ -12,6 +12,7 @@ from html import escape
 from django.conf import settings
 from django.db import ProgrammingError
 from django.http import HttpResponse
+from django.middleware.gzip import GZipMiddleware
 
 PAGE = """<!doctype html>
 <title>Local database is empty</title>
@@ -42,3 +43,16 @@ class EmptyDatabaseMiddleware:
             error = escape(str(exception).strip().splitlines()[0])
             return HttpResponse(PAGE.format(error=error), status=503)
         return None
+
+
+class GZipExceptDownloads(GZipMiddleware):
+    """GZipMiddleware, leaving alone a response marked `no_gzip`.
+
+    The export's xlsx, zip and gpkg files are compressed already, so
+    compressing them again costs time and saves nothing.
+    """
+
+    def process_response(self, request, response):
+        if getattr(response, "no_gzip", False):
+            return response
+        return super().process_response(request, response)

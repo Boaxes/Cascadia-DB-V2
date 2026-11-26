@@ -10,5 +10,9 @@ django-environ>=0.11
 # The Excel export.
 openpyxl>=3.1
 
+# Pacific time with its daylight saving, for the export's time zone. Linux has
+# the zone data already; Windows does not.
+tzdata>=2024.1
+
 # The GPS track files in DigitalOcean Spaces, which is S3 compatible.
 boto3>=1.34

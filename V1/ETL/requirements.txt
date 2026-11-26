@@ -7,10 +7,11 @@ psycopg[binary]>=3.2
 # Reads the same .env the application does.
 python-dotenv>=1.0
 
-# The transform, raw -> clean -> dbo -> app, in ETL/dbt/.
-# dbt v2 has no Postgres adapter yet, so this stays on 1.x until it does.
+
+# The transform, raw -> dbo -> app, in ETL/dbt/. dbt v2 has no Postgres adapter
+# yet, so this stays on 1.x until it does.
 dbt-core>=1.12.5,<1.13
 dbt-postgres>=1.11,<1.12
 
-# Column-level lineage from dbt's own artifacts, until dbt v2 can do it here.
-dbt-colibri>=0.3.6,<0.4
+# Elementary's report of each run: tests, timings and results (ETL/dbt/README.md).
+elementary-data[postgres]>=0.26,<0.27

@@ -22,6 +22,8 @@
 
   <div class="explore-map">
     <div id="explore-map" class="map map-tall"></div>
+    <div class="side-handle side-handle-left" data-side="left" title="Drag to resize. Double-click to reset."></div>
+    <div class="side-handle side-handle-right" data-side="right" title="Drag to resize. Double-click to reset."></div>
     <div class="map-loading" id="map-loading">Loading the whole dataset&hellip;</div>
     <div class="map-legend">
       <label><input type="checkbox" id="toggle-tracks" checked>
@@ -30,7 +32,7 @@
       </label>
       <label><input type="checkbox" id="toggle-sightings" checked> Sightings</label>
       <label><input type="checkbox" id="toggle-clusters" checked>
-        Group into clusters
+        Group Into Clusters
         {% tip "clusters" %}
       </label>
       <div class="legend-rule"></div>
@@ -53,19 +55,21 @@
       <button type="button" data-tab="efforts">Efforts</button>
     </div>
     <div class="results-summary">
-      <div style="font-weight:600">{{ sighting_count }} sighting{{ sighting_count|pluralize }}</div>
-      <div class="muted small">across {{ effort_count }} effort{{ effort_count|pluralize }}</div>
+      <div style="font-weight:600">{{ sighting_count|thousands }} Sighting{{ sighting_count|pluralize }}</div>
+      <div class="muted small">across {{ effort_count|thousands }} Effort{{ effort_count|pluralize }}</div>
       {% if error %}<div class="notice small" style="margin-top:10px">{{ error }}</div>{% endif %}
       {% if excluded_no_position %}
         <div class="muted small">
-          {{ excluded_no_position }} without a position {{ excluded_no_position|pluralize:"isn't,aren't" }} on the map
+          {{ excluded_no_position|thousands }} without a position {{ excluded_no_position|pluralize:"isn't,aren't" }} on the map
           {% tip "excluded_no_position" %}
         </div>
       {% endif %}
-      <p class="small" style="margin:10px 0 0">
-        <a href="{% url 'export' %}">Export these results</a> &middot;
-        <a href="{% url 'sighting_list' %}{% with_params %}" data-list="sightings">Open as a list</a>
-      </p>
+      <div class="results-links">
+        <a class="small" href="{% url 'sighting_list' %}{% with_params %}" data-list="sightings">Open As a List</a>
+        {# One form per tab, so each remembers its own "Added" state; explore.js shows the active one. #}
+        {% include "survey/_add_to_export.html" with kind="sightings" qs=export_qs label="Add Sightings To Export" tab="sightings" %}
+        {% include "survey/_add_to_export.html" with kind="efforts" qs=export_qs label="Add Efforts To Export" tab="efforts" hidden=True %}
+      </div>
     </div>
     <div id="results"></div>
   </aside>
@@ -81,9 +85,14 @@
   <script>
     window.EXPLORE = {
       query: "{{ request.GET.urlencode|escapejs }}",
-      species: JSON.parse(document.getElementById("species-meta").textContent)
+      species: JSON.parse(document.getElementById("species-meta").textContent),
+      trackManagerUrl: {% if perms.datahealth.access_data_health %}"{% url 'admin_tracks' %}"{% else %}null{% endif %},
+      // What a saved picture of the map says it shows.
+      counts: "{{ sighting_count|thousands }} Sighting{{ sighting_count|pluralize }} across {{ effort_count|thousands }} Effort{{ effort_count|pluralize }}",
+      filters: {{ applied|js }}
     };
   </script>
   <script src="{% static 'survey/basemap.js' %}"></script>
+  <script src="{% static 'survey/resize.js' %}"></script>
   <script src="{% static 'survey/explore.js' %}"></script>
 {% endblock %}

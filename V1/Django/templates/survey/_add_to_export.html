@@ -1,0 +1,19 @@
+{% comment %}
+  Add To Export: puts a query, or one record, on the Export page's stack.
+  export-add.js sends it without leaving the page; with no script it posts
+  and comes straight back.
+
+  Takes: kind (efforts, sightings, effort or sighting), and either qs, the
+  filters the page is showing, or record, the record's number. Optional: label,
+  the button's words (default "Add To Export"), and tab, which marks the form
+  as one tab's button so explore.js can show only the active tab's.
+{% endcomment %}
+{% if perms.datahealth.export_data %}
+<form method="post" action="{% url 'export_add' %}" class="add-export" data-add-export{% if tab %} data-export-tab="{{ tab }}"{% endif %}{% if hidden %} hidden{% endif %}>
+  {% csrf_token %}
+  <input type="hidden" name="kind" value="{{ kind }}">
+  {% if record %}<input type="hidden" name="id" value="{{ record }}">{% else %}<input type="hidden" name="qs" value="{{ qs }}">{% endif %}
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+  <button class="btn btn-small" type="submit">{{ label|default:"Add To Export" }}</button>
+</form>
+{% endif %}

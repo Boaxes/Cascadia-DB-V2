@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% comment %}
+  The Django admin in the site's own clothes: the site's header bar, account
+  menu, font and colours. app.css brings the colours, and admin.css hands them
+  to the admin's own variables. The site has no dark mode, so neither does
+  this, and the admin's theme switch is left out.
+{% endcomment %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} &middot; {% endif %}{{ title }} &middot; {{ site_title }}{% endblock %}
+
+{% block dark-mode-vars %}{% endblock %}
+
+{% comment %}
+  After the admin's own stylesheets, including the ones a page adds in
+  extrastyle and responsive.css, so the site's rules are the ones that hold.
+{% endcomment %}
+{% block responsive %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'survey/app.css' %}">
+  <link rel="stylesheet" href="{% static 'datahealth/admin.css' %}">
+{% endblock %}
+
+{% block header %}
+<header class="site-header">
+  <a class="brand" href="{% url 'admin:index' %}">
+    <img src="{% static 'survey/cascadia-logo.png' %}" alt="Cascadia Research Collective">
+    <span>{{ site_header }}</span>
+  </a>
+  <nav>
+    {% if perms.auth.view_user %}<a href="{% url 'admin:auth_user_changelist' %}" class="{% if '/admin/auth/user/' in request.path %}active{% endif %}">Users</a>{% endif %}
+    {% if perms.datahealth.access_django_admin %}<a href="{% url 'admin:server' %}" class="{% if '/admin/server/' in request.path %}active{% endif %}">Server</a>{% endif %}
+    {% if perms.auth.view_group %}<a href="{% url 'admin:auth_group_changelist' %}" class="{% if '/admin/auth/group/' in request.path %}active{% endif %}">Groups</a>{% endif %}
+  </nav>
+  {% if user.is_authenticated %}
+    <details class="profile">
+      <summary aria-label="Account">
+        <span class="avatar">{% if user.first_name %}{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}{% else %}{{ user.username|first|upper }}{% endif %}</span>
+        <span class="profile-name">{{ user.first_name|default:user.username }}</span>
+      </summary>
+      <div class="profile-menu">
+        <div class="profile-who"><strong>{{ user.get_full_name|default:user.username }}</strong></div>
+        <a class="menu-back" href="{% url 'explore' %}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Back To the Site</a>
+        {% if user.has_usable_password %}<a href="{% url 'admin:password_change' %}">Change Password</a>{% endif %}
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">Sign Out</button></form>
+      </div>
+    </details>
+  {% endif %}
+</header>
+{% endblock %}

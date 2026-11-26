@@ -9,7 +9,10 @@
 <div class="panel-layout list-layout">
   {% include "survey/_filter_panel.html" with page="efforts" %}
   <main class="list-main">
-<h1>Efforts</h1>
+<div class="list-head">
+  <h1>Efforts</h1>
+  {% include "survey/_add_to_export.html" with kind="efforts" qs=export_qs %}
+</div>
 
 {% if error %}
   <div class="notice">{{ error }}</div>
@@ -17,13 +20,13 @@
 
 {% if applied %}
   <p class="small muted">
-    Showing efforts {{ applied|join:", " }}.
+    Showing Efforts {{ applied|join:", " }}.
   </p>
 {% endif %}
 
 {% if excluded_no_position %}
   <p class="list-summary">
-    {{ excluded_no_position }} without a position {{ excluded_no_position|pluralize:"isn't,aren't" }} in the area search.
+    {{ excluded_no_position|thousands }} without a position {{ excluded_no_position|pluralize:"isn't,aren't" }} in the area search.
     {% tip "excluded_no_position" %}
   </p>
 {% endif %}
@@ -36,7 +39,7 @@
         {% sort_header "id" "Effort" %}
         {% sort_header "vessel" "Vessel" %}
         {% sort_header "locality" "Locality" %}
-        {% sort_header "survey_type" "Survey type" %}
+        {% sort_header "survey_type" "Survey Type" %}
         <th>Track</th>
         {% sort_header "distance" "Distance (nm)" %}
         {% sort_header "sightings" "Sightings" %}
@@ -46,16 +49,16 @@
       {% for effort in page %}
         <tr class="clickable" data-modal-url="{{ effort.get_absolute_url }}">
           <td class="nowrap">{{ effort.effort_date|date:"Y-m-d"|dash }}</td>
-          <td><a href="{{ effort.get_absolute_url }}">{{ effort.legacy_daily_effort_id }}</a></td>
+          <td><a href="{{ effort.get_absolute_url }}{{ research_group_query }}">{{ effort.legacy_daily_effort_id }}</a></td>
           <td>{{ effort.vessel.label|dash }}</td>
           <td>{{ effort.locality|dash }}</td>
           <td>{{ effort.survey_type|dash }}</td>
           <td><span class="pill {{ effort.track_state.0 }}">{{ effort.track_state.1 }}</span></td>
           <td class="num">{{ effort.distance_recorded_nm|nm }}{% if effort.distance_recorded_nm is not None %}<span class="muted"> nm</span>{% endif %}</td>
-          <td class="num">{{ effort.sighting_count }}</td>
+          <td class="num">{{ effort.sighting_count|thousands }}</td>
         </tr>
       {% empty %}
-        <tr><td colspan="8" class="empty">No efforts match these filters.</td></tr>
+        <tr><td colspan="8" class="empty">No Efforts match these filters.</td></tr>
       {% endfor %}
     </tbody>
   </table>

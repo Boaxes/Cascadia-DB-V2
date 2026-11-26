@@ -1,52 +1,52 @@
 {#
-  Apply app.audit_log to a table's cleaned rows. This is the one place
-  record-level changes happen. In a dbo model:
+  Apply app.audit_log to a table's rows. This is the one place record-level
+  changes happen. In a dbo model:
 
-      with cleaned as ( ...raw, with this table's cleaning... ),
-      r as ( {{ replay_rows('cleaned', 'SightingT', 'SightingID') }} )
-      select {{ replayed_columns('SightingT', 'r') }}, ...
-      from r
+      r as ( {{ replay_rows('rows', 'SightingT', 'id') }} ),
+      s as ( select {{ replayed_columns('SightingT', 'r') }}, ... from r )
 
   replay_rows() gives every row that exists once the log is applied: the
-  cleaned rows, less those a delete removed, plus those the website created.
-  Each row carries `__edits`, the newest value of every field an edit set
-  (models/dbo/replay/audit_changes.sql).
+  rows, less those a delete removed, plus those the website created. Each row
+  carries `__edits`, the newest value of every field an edit set
+  (models/build/edits.sql), found by the record's Primary Key: the hashed id in
+  the 8 tables that have one, DB167's ID in the rest.
 
-  replayed_columns() then gives each of the table's own columns with its edit
-  applied, in DB167's order and type. edited() does the same for one column
-  the dbo model works out itself, such as a derived one: the newest edit wins
-  over the derived value, which is what live stores.
-
-  A table's cleaned rows have exactly its DB167 table's columns, so the column
-  list is read from raw.
+  replayed_columns() then gives each of the table's DB167 columns with its
+  edit applied, in DB167's order and type. edited() does the same for one
+  column the dbo model works out itself: the newest edit wins over the worked
+  out value.
 #}
 
-{% macro raw_columns(table_name) %}
-    {%- if execute -%}
-        {{ return(adapter.get_columns_in_relation(source('raw', table_name))) }}
-    {%- else -%}
-        {{ return([]) }}
-    {%- endif -%}
+{# Each dbo table's Primary Key column. #}
+{% macro primary_keys() %}
+    {%- set keys = {} -%}
+    {%- for t in hashed_tables() -%}{%- do keys.update({t: 'id'}) -%}{%- endfor -%}
+    {%- do keys.update({'EventCodeT': 'EventCodeID', 'IndividualT': 'IndividualID', 'ResearchGroupT': 'ResearchGroupID',
+                        'SourceT': 'SourceID', 'SpeciesT': 'SpeciesID', 'TagSummaryT': 'TagSummaryID',
+                        'TrackCompleteCodeT': 'TrackCompleteCodeID', 'TrackT': 'TrackID', 'VesselListT': 'vessel_id'}) -%}
+    {{ return(keys) }}
 {% endmacro %}
 
 
+{#
+  Every row of `base` that exists once the log is applied, with `__key`, the
+  Primary Key the log names it by (as text), and `__edits`. A row the website
+  created has no row in `base`, so every column of `base` is NULL on it and
+  its values come from `__edits`.
+#}
 {% macro replay_rows(base, table_name, key) %}
     {%- set k = adapter.quote(key) -%}
-    {#- Columns named one by one rather than b.*, so that column-level lineage
-        can follow each of them through. -#}
-    select {{ column_list(table_name, 'b') }}, coalesce(c.changes, '{}'::jsonb) as __edits
+    select b.*, alive.__key, coalesce(c.changes, '{}'::jsonb) as __edits
     from (
         select {{ k }}::text as __key from {{ base }}
         union
-        select target_pk from {{ ref('audit_rows') }}
+        select target_pk from {{ ref('edit_rows') }}
         where target_table = '{{ table_name }}' and state = 'created'
-        except
-        select target_pk from {{ ref('audit_rows') }}
-        where target_table = '{{ table_name }}' and state = 'deleted'
     ) alive
     left join {{ base }} b on b.{{ k }}::text = alive.__key
-    left join {{ ref('audit_changes') }} c
-           on c.target_table = '{{ table_name }}' and c.target_pk = alive.__key
+    left join {{ ref('edits') }} c on c.target_table = '{{ table_name }}' and c.target_pk = alive.__key
+    where not exists (select 1 from {{ ref('edit_rows') }} d
+                      where d.target_table = '{{ table_name }}' and d.state = 'deleted' and d.target_pk = alive.__key)
 {% endmacro %}
 
 
@@ -58,39 +58,70 @@
 {%- endmacro %}
 
 
-{% macro replayed_columns(table_name, relation_alias) %}
-    {%- set columns = raw_columns(table_name) -%}
-    {%- if columns -%}
-        {%- for c in columns %}
-        {{ edited(c.name, relation_alias ~ '.' ~ adapter.quote(c.name), c.data_type, relation_alias ~ '.__edits') }} as {{ adapter.quote(c.name) }}{{ "," if not loop.last }}
-        {%- endfor -%}
-    {%- else -%}
-        null as __columns_are_known_only_when_the_model_runs
-    {%- endif -%}
-{% endmacro %}
-
-
 {#
-  A table's own columns, as a plain list: alias."col", ... in DB167's order.
-  For a dbo model that selects the replayed columns and then adds its own.
+  A Foreign Key a website edit can set: as edited(), except that an edit
+  naming a record that is not there (the website deleted it, or it is not in
+  this copy of DB167) cannot be applied, so the Foreign Key is NULL, an
+  orphan, rather than pointing at nothing. An edit that cleared it stays NULL.
+
+      {{ edited_reference('daily_effort_id', 'effort.id', 'DailyEffortT') }} as daily_effort_id
 #}
-{% macro column_list(table_name, relation_alias) %}
-    {%- set columns = raw_columns(table_name) -%}
-    {%- if columns -%}
-        {%- for c in columns %}
-        {{ relation_alias }}.{{ adapter.quote(c.name) }}{{ "," if not loop.last }}
-        {%- endfor -%}
+{% macro edited_reference(column, expression, parent, edits='s.__edits') %}
+    {%- set data_type = 'bigint' if parent in hashed_tables() else 'integer' -%}
+    case when {{ edits }} ? '{{ column }}'
+         then (select v.id from (select ({{ edits }} ->> '{{ column }}')::{{ data_type }} as id) v
+               where {{ reference_exists(parent, 'v.id') }})
+         else ({{ expression }})::{{ data_type }}
+    end
+{%- endmacro %}
+
+
+{#
+  A Foreign Key copied from DB167 (or set on the website) as it is, kept only
+  where the record it names exists: otherwise NULL, an orphan.
+#}
+{% macro checked_reference(expression, parent) -%}
+    (select v.id from (select {{ expression }} as id) v where {{ reference_exists(parent, 'v.id') }})
+{%- endmacro %}
+
+
+{# Whether `id` names a record of `parent` in this build. #}
+{% macro reference_exists(parent, id) -%}
+    {%- if parent in hashed_tables() -%}
+        {{ exists_after_replay(parent, id) }}
     {%- else -%}
-        null as __columns_are_known_only_when_the_model_runs
+        exists (select 1 from {{ ref(parent) }} p where p.{{ adapter.quote(primary_keys()[parent]) }} = {{ id }})
     {%- endif -%}
+{%- endmacro %}
+
+
+{% macro replayed_columns(table_name, relation_alias) %}
+    {%- for c in raw_columns(table_name) %}
+        {{ edited(c.name, relation_alias ~ '.' ~ adapter.quote(c.name), c.data_type, relation_alias ~ '.__edits') }} as {{ adapter.quote(c.name) }}{{ "," if not loop.last }}
+    {%- endfor -%}
 {% endmacro %}
 
 
 {#
-  The newest audit log entry this build replays, as a number. The build writes
-  it on its own schema when it starts (macros/build_schemas.sql); every model
-  replays the log only up to it, so the whole build sees one consistent log,
-  and the swap refuses if the log has moved on since.
+  A table's own DB167 columns, as a plain list: alias."col", ... in DB167's
+  order. overrides gives an expression for some of them, {column: expression}.
+#}
+{% macro column_list(table_name, relation_alias, overrides={}) %}
+    {%- for c in raw_columns(table_name) %}
+        {%- if c.name in overrides %}
+        {{ overrides[c.name] }} as {{ adapter.quote(c.name) }}{{ "," if not loop.last }}
+        {%- else %}
+        {{ relation_alias }}.{{ adapter.quote(c.name) }}{{ "," if not loop.last }}
+        {%- endif %}
+    {%- endfor -%}
+{% endmacro %}
+
+
+{#
+  The newest audit log entry this build replays. The build writes it on its
+  own schema when it starts (macros/schemas.sql); every model replays the log
+  only up to it, so the whole build sees one log, and the swap refuses if the
+  log has moved on since.
 #}
 {% macro audit_watermark() %}
     {%- if execute -%}

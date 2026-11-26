@@ -1,0 +1,93 @@
+{% extends "datahealth/base.html" %}
+{% load static %}
+{% block admin_title %}Track File Manager{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+
+{% block admin_body %}
+{% csrf_token %}
+<div class="ws" id="ws" data-open="{{ open }}" data-import-effort="{{ import_effort }}" data-positions-effort="{{ positions_effort }}"
+     data-files-url="{% url 'admin_tracks_files' %}" data-api="{% url 'admin_tracks' %}api/"
+     data-import-url="{% url 'admin_track_import' %}" data-storage="{{ storage_ok|yesno:'1,0' }}"
+     data-audit-url="{% url 'admin_audit' %}">
+  <aside class="ws-explorer">
+    <div class="ws-head"><span>Track Files</span>
+      <a class="btn btn-small" id="import" href="{% url 'admin_track_import' %}" data-modal-url="{% url 'admin_track_import' %}">Import Files</a></div>
+    <div class="ws-filter">
+      <select id="source" aria-label="List">
+        <option value="">Track Files</option><option value="positions">From Positions</option>
+      </select>
+      <input type="search" id="q" placeholder="Search file names" aria-label="Search file names">
+      <div class="ws-selects" id="file-filters">
+        <select id="status" aria-label="Status">
+          <option value="">All Status</option><option value="matched">Matched</option>
+          <option value="unmatched">Not Matched</option><option value="blank">Blank</option>
+          <option value="deleted">Deleted</option>
+        </select>
+        <select id="vessel" aria-label="Vessel">
+          <option value="">All Vessels</option>{% for v in vessels %}<option>{{ v }}</option>{% endfor %}
+        </select>
+        <select id="year" aria-label="Year">
+          <option value="">All Years</option>{% for y in years %}<option>{{ y }}</option>{% endfor %}
+        </select>
+        <label class="ws-health"><span>Track Health</span>
+          <select id="health">
+            <option value="">All</option><option value="good">Good</option>
+            {% for code, label in problems.items %}<option value="{{ code }}">{{ label }}</option>{% endfor %}
+          </select>
+        </label>
+      </div>
+      <div class="small muted" id="count"></div>
+    </div>
+    <div class="ws-list" id="list"></div>
+  </aside>
+
+  <section class="ws-main">
+    <div class="tabs" id="tabs"></div>
+    <div class="ws-bar" id="bar" hidden>
+      <span id="state"></span>
+      <span class="grow"></span>
+      <button class="btn btn-primary btn-small" type="button" id="restore" hidden>Restore</button>
+      <button class="btn btn-small" type="button" id="fill">Fill From File</button>
+      <button class="btn btn-small" type="button" id="delete">Delete</button>
+      <button class="btn btn-small" type="button" id="revert" disabled>Revert</button>
+      <button class="btn btn-primary btn-small" type="button" id="save" disabled>Save</button>
+      <button class="btn btn-primary btn-small" type="button" id="save-new" hidden>Save As Track File</button>
+    </div>
+    <ul class="messages ws-msg" id="msg" hidden></ul>
+    <div class="ws-editor" id="editor" hidden><pre class="gutter" id="gutter" title="Click a line number to choose its row. Shift and a click, or a drag down the numbers, chooses several; Ctrl and a click adds or removes rows."></pre><textarea id="text" spellcheck="false" wrap="off"></textarea></div>
+    <div class="ws-empty" id="empty">Choose a track file on the left.</div>
+    <div class="ws-status" id="status-bar" hidden><span id="stats"></span><span class="grow"></span><span id="errs"></span></div>
+  </section>
+
+  <div class="ws-split" id="split-side" role="separator" aria-orientation="vertical" title="Drag to resize the map. Double-click to reset."></div>
+  <aside class="ws-side">
+    <div class="ws-map"><div id="map"></div></div>
+    <div class="ws-split-h" id="split-map" role="separator" aria-orientation="horizontal" title="Drag to resize the map. Double-click to reset."></div>
+    <div class="ws-player" id="player">
+      <button class="ws-play-btn" type="button" id="play" disabled aria-label="Play" title="Play">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-play" d="M5 3.2v9.6L12.6 8z"/><path class="i-pause" d="M4.5 3h2.6v10H4.5zM8.9 3h2.6v10H8.9z"/></svg>
+      </button>
+      <span class="ws-play-time" id="play-time">--:--:--</span>
+      <input type="range" id="scrub" min="0" max="10000" step="1" value="0" disabled aria-label="Time In the Track">
+      <span class="ws-play-time muted" id="play-end">--:--:-- UTC</span>
+    </div>
+    <div class="ws-map-opts">
+      <label><input type="checkbox" id="gaps"> Show Gaps As Dashed Lines</label>
+      <label><input type="checkbox" id="points"> Show Points</label>
+      <label><input type="checkbox" id="events"> Show Timeline Events</label>
+    </div>
+    <details class="fsec"><summary>Track Health</summary><div class="ws-pad" id="checks"><p class="muted small">No file open.</p></div></details>
+    <details class="fsec"><summary>Matched Effort</summary><div class="ws-pad" id="effort"><p class="muted small">No file open.</p></div></details>
+    <details class="fsec"><summary>History</summary><div class="ws-pad" id="history"><p class="muted small">No file open.</p></div></details>
+  </aside>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="{% static 'survey/basemap.js' %}"></script>
+  <script src="{% static 'survey/track-lines.js' %}"></script>
+  <script src="{% static 'survey/track-manager.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,369 @@
+table_name,column_name,wrong,correct
+DailyEffortT,PhotoDataBy,AWVV,AWV
+DailyEffortT,Project/Objective,Opportunstic,Opportunistic
+DailyEffortT,Project/Objective,Bm Fliming,Bm Filming
+DailyEffortT,Project/Objective,dcrap,dcrab
+DailyEffortT,Project/Objective,Dcrab PhotoID,Dcrab Photo ID
+DailyEffortT,Project/Objective,Stanfrod IOS,Stanford-IOS
+DailyEffortT,Project/Objective,TagRecovery,Tag Recovery
+DailyEffortT,Project/Objective,General Photo-ID Biopsy,General Photo-ID/Biopsy
+DailyEffortT,Project/Objective,Er Survey - Sect 6,"Er Survey, Sect 6"
+DailyEffortT,Project/Objective,tagging and prey mappig,Tagging and Prey Mapping
+DailyEffortT,Project/Objective,SOCAL12-Leg 1,SOCAL12-Leg I
+DailyEffortT,Project/Objective,WA-OR Sect 6,WA-OR Section 6
+DailyEffortT,Project/Objective,Stanford Drone Ops,Stanford Drone Operations
+DailyEffortT,Project/Objective,Marine Vib,Marine Vibraseis
+DailyEffortT,Project/Objective,CRC-DFO tagging,CRC/DFO Tagging Project
+DailyEffortT,Project/Objective,WW,Whale Watch
+DailyEffortT,Project/Objective,not entered,Unk
+DailyEffortT,Project/Objective,Entanglement,Entanglement Response
+IdentificationT,Beh Role,GI,G1
+IdentificationT,Category,5..3S,5.3S
+IdentificationT,Category,44B,4B
+IdentificationT,Tag Type,OSU- IMPL,OSU IMPL
+IdentificationT,TagType,AcouSounde,Acousonde
+IdentificationT,TagType,Acousonde Dart,Acousonde-DART
+IdentificationT,TagType,CATS-HR,CATS HR
+IdentificationT,TagType,OSU- IMPL,OSU IMPL
+IdentificationT,TagType,Sitrack GPS,Sirtrack GPS
+IdentificationT,TagType,Platipus,platypus
+IdentificationT,TagType,Frontback,Front back
+IdentificationT,TagType,TDR-10-dart,TDR10-DART
+IdentificationT,TagType,Mk10F DART,Mk10F-Dart
+IdentificationT,TagType,CatsCam,CATS CAM
+IndividualT,Species,bm.,Bm
+IndividualT,Species,Dc.,Dc
+IndividualT,Species,Un Cet,UnCet
+SightingT,Group Type,singe,single
+SightingT,Group Type,singel,single
+SightingT,Group Type,sollo,solo
+SightingT,Group Type,ubk,unk
+SightingT,Group Type,agg.,agg
+SightingT,Group Type,loose agg.,loose agg
+SightingT,Group Type,tight grp,tight group
+SightingT,Group Type,single/pair,single-pair
+SightingT,Group Type,ld tr,ldtr
+SightingT,Other Beh 1,Fulke,fluke
+SightingT,Other Beh 1,Sueface feeding,Surface Feeding
+SightingT,Other Beh 1,SuRFACE ACTIV2rface Active,Surface Active
+SightingT,Other Beh 1,Traveling,Travelling
+SightingT,Other Beh 1,Bowriding,bow-riding
+SightingT,Other Beh 1,Bow riding,bow-riding
+SightingT,Other Beh 1,fast_travel,Fast Travel
+SightingT,Other Beh 1,Travel Fast,Travel-Fast
+SightingT,Other Beh 1,Travel Slow,Travel-Slow
+SightingT,Other Beh 1,pec-slap,Pec Slap
+SightingT,Other Beh 1,tail-lob,Tail Lob
+SightingT,Other Beh 1,Spy hop,Spyhop
+SightingT,Photographer 1,A.Vanderzee,A. Vanderzee
+SightingT,Photographer 1,Alex andra Vanderzee,Alexandra Vanderzee
+SightingT,Photographer 1,Alisa Schulman- Janiger,Alisa Schulman-Janiger
+SightingT,Photographer 1,Annie B Douglas,Annie B. Douglas
+SightingT,Photographer 1,Brenda K Rone,Brenda K. Rone
+SightingT,Photographer 1,Bridget H Watts,Bridget H. Watts
+SightingT,Photographer 1,Camera1,Camera 1
+SightingT,Photographer 1,Camera2,Camera 2
+SightingT,Photographer 1,Capt dan Sail Channel Islands.,capt dan Sail Channel Islands
+SightingT,Photographer 1,"Carolyn mc clesky,Marilyn Dannehower","Carolyn mc clesky, Marilyn Dannehower"
+SightingT,Photographer 1,D.Gillies,D. Gillies
+SightingT,Photographer 1,Daniel B ianchetta,Daniel Bianchetta
+SightingT,Photographer 1,Dino Dalbon,Dino Dal Bon
+SightingT,Photographer 1,e Avery,E. Avery
+SightingT,Photographer 1,Erin Foster/Brian Gisborne,"Erin Foster, Brian Gisborne"
+SightingT,Photographer 1,J.C.George,J. C. George
+SightingT,Photographer 1,Jeff Harris /JHC,Jeff Harris/JHC
+SightingT,Photographer 1,Jennifer C Gatzke,Jennifer C. Gatzke
+SightingT,Photographer 1,Joelle deWeerdt,Joelle de Weerdt
+SightingT,Photographer 1,"JS,SP","JS, SP"
+SightingT,Photographer 1,"Karen Backe, Nicki Barbour",Karen Backe; Nicki Barbour
+SightingT,Photographer 1,Katy A. Laveck,Katy A Laveck
+SightingT,Photographer 1,"Korrina Guerrero,ShelbyFlowers, Lauren Seuch","Korrina Guerrero,Shelby Flowers,Lauren Seuch"
+SightingT,Photographer 1,"Korrina Guerrero,Shelby Flowers,Laruen Seuch","Korrina Guerrero,Shelby Flowers,Lauren Seuch"
+SightingT,Photographer 1,"Lydia, Wooten, Sarah Minamyer, Owen Forest","Lydia Wooten, Sarah Minamyer, Owen Forest"
+SightingT,Photographer 1,M Dannehower,M. Dannehower
+SightingT,Photographer 1,Mark Obrien,Mark O'Brien
+SightingT,Photographer 1,SanFran Whalewatch,San Fran Whalewatch
+SightingT,Photographer 1,Sara Hysong Shimazu,Sara Hysong-Shimazu
+SightingT,Photographer 1,"Sarah Minamyer,Owen Forest","Sarah Minamyer, Owen Forest"
+SightingT,Photographer 1,Shelby Flowers. Lauren Seuch,"Shelby Flowers, Lauren Seuch"
+SightingT,Photographer 1,Veronica vonAllworden,Veronica von Allworden
+SightingT,Photographer 1,Veronica vonAlloworden,Veronica von Allworden
+SightingT,Photographer 1,Ashley Hoyland-Mark Sawyer,"Ashley Hoyland, Mark Sawyer"
+SightingT,Photographer 1,"Allison Lui, Dawn Goley",Allison Lui/Dawn Goley
+SightingT,Photographer 1,Adrainne Akmajian,Adrianne Akmajian
+SightingT,Photographer 1,Ahsley Mueller,Ashley Mueller
+SightingT,Photographer 1,Alan Pricard,Alan Prichard
+SightingT,Photographer 1,Alexie Calambokidis,Alexei Calambokidis
+SightingT,Photographer 1,Alexis Cotez,Alexis Cortez
+SightingT,Photographer 1,Alis Schulman-Janiger,Alisa Schulman-Janiger
+SightingT,Photographer 1,Alisa Schulman-Janige,Alisa Schulman-Janiger
+SightingT,Photographer 1,Alisa Shulman-Janiger,Alisa Schulman-Janiger
+SightingT,Photographer 1,Alissa Schulman-Janiger,Alisa Schulman-Janiger
+SightingT,Photographer 1,Allee Jiemenz,Allee Jimenez
+SightingT,Photographer 1,Anaa Robbins,Anna Robbins
+SightingT,Photographer 1,Andrew Redding,Andrew Reding
+SightingT,Photographer 1,Annabell Wall,Annabelle Wall
+SightingT,Photographer 1,April Silba,April Silbar
+SightingT,Photographer 1,Arie Friedlaender,Ari Friedlaender
+SightingT,Photographer 1,ARIE FRIEDLANDER,Ari Friedlaender
+SightingT,Photographer 1,Ashely Blawas,Ashley Blawas
+SightingT,Photographer 1,Ashley Schader,Ashley Schrader
+SightingT,Photographer 1,Barbara LaCourte,Barbara LaCorte
+SightingT,Photographer 1,Bernado Alps,Bernardo Alps
+SightingT,Photographer 1,Bert Bocskai,Bert Bacskai
+SightingT,Photographer 1,Beth Bathews,Beth Mathews
+SightingT,Photographer 1,Bethany Dehl,Bethany Diehl
+SightingT,Photographer 1,Bob VanDrachek,Bob VonDrachek
+SightingT,Photographer 1,Brain Gisborne,Brian Gisborne
+SightingT,Photographer 1,Brian Giborne,Brian Gisborne
+SightingT,Photographer 1,Brian Gisborme,Brian Gisborne
+SightingT,Photographer 1,Brian Gisorne,Brian Gisborne
+SightingT,Photographer 1,Brandon Southal,Brandon Southall
+SightingT,Photographer 1,Brenda Rhone,Brenda Rone
+SightingT,Photographer 1,Brenden F. Wakefield,Brendan F Wakefield
+SightingT,Photographer 1,Brian Cogdon,Brian Congdon
+SightingT,Photographer 1,Brian Cogndon,Brian Congdon
+SightingT,Photographer 1,Britrtany Munson,Brittany Munson
+SightingT,Photographer 1,Brookk McKinley,Brooke McKinley
+SightingT,Photographer 1,Cal Mueser,Cal Meuser
+SightingT,Photographer 1,Carla crossman / Oscar ehernandez / Joe Nazar,Carla crossman / Oscar Hernandez / Joe Nazar
+SightingT,Photographer 1,Carline Casey,Caroline Casey
+SightingT,Photographer 1,Carlolyn McClesky,Carolyn McCleskey
+SightingT,Photographer 1,Carolyn McClerkey,Carolyn McCleskey
+SightingT,Photographer 1,Carolyn McClesky,Carolyn McCleskey
+SightingT,Photographer 1,Carol Celice,Carol Celic
+SightingT,Photographer 1,Carriel Newell,Carrie Newell
+SightingT,Photographer 1,Casey Clarke,Casey Clark
+SightingT,Photographer 1,Charles Boremen,Charles Boreman
+SightingT,Photographer 1,Chelsea Berggcen,Chelsea Berggren
+SightingT,Photographer 1,Chelsea Berggen,Chelsea Berggren
+SightingT,Photographer 1,Chelsea Berggens,Chelsea Berggren
+SightingT,Photographer 1,Chelsea Berrgcen,Chelsea Berggren
+SightingT,Photographer 1,Chelsea Berrgen,Chelsea Berggren
+SightingT,Photographer 1,Chelse Berggren,Chelsea Berggren
+SightingT,Photographer 1,Cheksea Berggren,Chelsea Berggren
+SightingT,Photographer 1,Chris Pasztpr,Chris Pasztor
+SightingT,Photographer 1,Craig Haylsip,Craig Hayslip
+SightingT,Photographer 1,Danay Evans,Danya Evans
+SightingT,Photographer 1,Danieal Bianchetta,Daniel Bianchetta
+SightingT,Photographer 1,Daniel Bianchett2,Daniel Bianchetta
+SightingT,Photographer 1,Daniel Bianchette,Daniel Bianchetta
+SightingT,Photographer 1,Daniel Bianchotta,Daniel Bianchetta
+SightingT,Photographer 1,Debrah Schult,Deborah Schult
+SightingT,Photographer 1,Don Gilliles,Don Gillies
+SightingT,Photographer 1,Don Gilllies,Don Gillies
+SightingT,Photographer 1,Don Guilies,Don Gillies
+SightingT,Photographer 1,Don Shuber,Don Shubert
+SightingT,Photographer 1,Donna Peak,Donna Peake
+SightingT,Photographer 1,Elliot Breslar,Elliott Breslar
+SightingT,Photographer 1,Else Rotshuizen,Elske Rotshuizen
+SightingT,Photographer 1,Elske Rotshiuzen,Elske Rotshuizen
+SightingT,Photographer 1,Emily LeBanc,Emily LeBlanc
+SightingT,Photographer 1,Emily LeBlane,Emily LeBlanc
+SightingT,Photographer 1,"evin Bailey, iPad, T Bailey,SCuzzo","Kevin Bailey, iPad, T Bailey,SCuzzo"
+SightingT,Photographer 1,Gary Delaneoye,Gary Delanoeye
+SightingT,Photographer 1,Gary Delaneye,Gary Delanoeye
+SightingT,Photographer 1,Gary Delanoye,Gary Delanoeye
+SightingT,Photographer 1,Georgie Whittomer,Georgie Whittome
+SightingT,Photographer 1,Georgina Whitome,Georgina Whittome
+SightingT,Photographer 1,GonewhaleWatch,GoneWhaleWatching
+SightingT,Photographer 1,Greg Krutizowsky,Greg Krutzikowsky
+SightingT,Photographer 1,Holly Fernbach,Holly Fearnbach
+SightingT,Photographer 1,Izzy Sczcepaniak,Izzy Szczepaniak
+SightingT,Photographer 1,IAN FLYNN-THOMAAS,Ian Flynn-Thomas
+SightingT,Photographer 1,Jaemi Salatar,Jaemi Salazar
+SightingT,Photographer 1,James Fahlsbuch,James Fahlbusch
+SightingT,Photographer 1,James Fahlsbusch,James Fahlbusch
+SightingT,Photographer 1,James Falbusch,James Fahlbusch
+SightingT,Photographer 1,James Greshem,James Gresham
+SightingT,Photographer 1,James Marno,James Marino
+SightingT,Photographer 1,Jamie Cooksey and Jordan Buxton,"Jamie Cooksey, Jordan Buxton"
+SightingT,Photographer 1,Jannie Harles,Janine Harles
+SightingT,Photographer 1,Jeff Jacobson,Jeff Jacobsen
+SightingT,Photographer 1,Jenn Tackleberry,Jenn Tackaberry
+SightingT,Photographer 1,Jenn Tacleberry,Jenn Tackaberry
+SightingT,Photographer 1,Jessica Achettino,Jessica Aschettino
+SightingT,Photographer 1,Joanthen E. Davis,Jonathen E. Davis
+SightingT,Photographer 1,Jodie Frediani,Jodi Frediani
+SightingT,Photographer 1,JoHhn Calambokidis,John Calambokidis
+SightingT,Photographer 1,"John Dubran, Holly Fearnbach","John Durban, Holly Fearnbach"
+SightingT,Photographer 1,John Kuzienga,John Kuizenga
+SightingT,Photographer 1,John Kuzinga,John Kuizenga
+SightingT,Photographer 1,Jordan Buxon,Jordan Buxton
+SightingT,Photographer 1,Josa Kaye-Carr,Josh Kaye-Carr
+SightingT,Photographer 1,Josh Kay-Carr,Josh Kaye-Carr
+SightingT,Photographer 1,Josh Kaye-Carre,Josh Kaye-Carr
+SightingT,Photographer 1,julia luthirnger,Julia Luthringer
+SightingT,Photographer 1,Kailtyn Landfield,Kaitlyn Landfield
+SightingT,Photographer 1,Katie Rusell,Katie Russell
+SightingT,Photographer 1,Katies Russell,Katie Russell
+SightingT,Photographer 1,Katy Ried,Katy Reid
+SightingT,Photographer 1,Keri Selemme,Keri Salemme
+SightingT,Photographer 1,Kevil Phillips,Kevin Phillips
+SightingT,Photographer 1,Krvein Johnston,Kevin Johnston
+SightingT,Photographer 1,Korinna Guerrero,Korrina Guerrero
+SightingT,Photographer 1,Korrina Guerero,Korrina Guerrero
+SightingT,Photographer 1,Krisitn Sargoy,Kristin Sargoy
+SightingT,Photographer 1,Kristin Sargpy,Kristin Sargoy
+SightingT,Photographer 1,LaVaugh Engblom,LaVaughn Engblom
+SightingT,Photographer 1,Lilhac Median,Lilhac Medina
+SightingT,Photographer 1,Lilhac Mediina,Lilhac Medina
+SightingT,Photographer 1,lLilhac Medina,Lilhac Medina
+SightingT,Photographer 1,Lindsay McVay,Lindsey McVay
+SightingT,Photographer 1,Lindseey McVay,Lindsey McVay
+SightingT,Photographer 1,Lindsey McVey,Lindsey McVay
+SightingT,Photographer 1,lLindsey McVay,Lindsey McVay
+SightingT,Photographer 1,Lisa Hilderbrand,Lisa Hildebrand
+SightingT,Photographer 1,Marilyn Armnbruster,Marilyn Armbruster
+SightingT,Photographer 1,Marilyn Danehower,Marilyn Dannehower
+SightingT,Photographer 1,Marilyn Dannhower,Marilyn Dannehower
+SightingT,Photographer 1,Marilynn Dannehower,Marilyn Dannehower
+SightingT,Photographer 1,Mark Partor,Mark Prator
+SightingT,Photographer 1,Mary Jo Adadms,Mary Jo Adams
+SightingT,Photographer 1,Mattew Gosho,Matthew Gosho
+SightingT,Photographer 1,Mattew Gosno,Matthew Gosho
+SightingT,Photographer 1,Moran Coffey,Morgan Coffey
+SightingT,Photographer 1,Morgan Coffrey,Morgan Coffey
+SightingT,Photographer 1,Melissa Gilieti,Melissa Galieti
+SightingT,Photographer 1,Michael Fisbach,Michael Fishbach
+SightingT,Photographer 1,Michael Fishabach,Michael Fishbach
+SightingT,Photographer 1,Michale Fishbach,Michael Fishbach
+SightingT,Photographer 1,Micheal Fishbach,Michael Fishbach
+SightingT,Photographer 1,Mihcael Fishbach,Michael Fishbach
+SightingT,Photographer 1,Michlyn Fourneir,Michlyn Fournier
+SightingT,Photographer 1,Mike Greenfelde,Mike Greenfelder
+SightingT,Photographer 1,Mollie Seagall,Mollie Segall
+SightingT,Photographer 1,Monika Weiland Shields,Monika Wieland Shields
+SightingT,Photographer 1,NaNncy Black,Nancy Black
+SightingT,Photographer 1,Oreogn Whale Center,Oregon Whale Center
+SightingT,Photographer 1,"Owen Forest, Srah Minamyer","Owen Forest, Sarah Minamyer"
+SightingT,Photographer 1,Patty Lauelle,Patty Lavelle
+SightingT,Photographer 1,Racgel Rozin,Rachel Rozin
+SightingT,Photographer 1,Rachell Rodell,Rachel Rodell
+SightingT,Photographer 1,Renee LaGarenen,Renee LaGarenne
+SightingT,Photographer 1,Ryan Hanes,Ryan Haynes
+SightingT,Photographer 1,San Deigo Whale Watch,San Diego Whale Watch
+SightingT,Photographer 1,San Doego Whale Watch,San Diego Whale Watch
+SightingT,Photographer 1,Scott Roberston,Scott Robertson
+SightingT,Photographer 1,Ski Laniewizc,Ski Laniewicz
+SightingT,Photographer 1,Skil Laniewicz,Ski Laniewicz
+SightingT,Photographer 1,Sooke Costal Explorations,Sooke Coastal Explorations
+SightingT,Photographer 1,Stacey DeRuiter,Stacy DeRuiter
+SightingT,Photographer 1,Stephania Gorgopa,Stefania Gorgopa
+SightingT,Photographer 1,Tammt Schofield,Tammy Schofield
+SightingT,Photographer 1,Thasi Arata,Thais Arata
+SightingT,Photographer 1,Thomas Keickhefer,Thomas Kieckhefer
+SightingT,Photographer 1,Tom Keickefer,Tom Kieckhefer
+SightingT,Photographer 1,Tom Kieckefer,Tom Kieckhefer
+SightingT,Photographer 1,Unkown,Unknown
+SightingT,Photographer 1,Victoira Wade,Victoria Wade
+SightingT,Photographer 1,Wenday Szaniszlo,Wendy Szaniszlo
+SightingT,Photographer 1,Wendy Saniszlo,Wendy Szaniszlo
+SightingT,Photographer 1,Wendy Szanislo,Wendy Szaniszlo
+SightingT,Photographer 1,Wendy Szansizlo,Wendy Szaniszlo
+SightingT,Photographer 1,Winnie Mule,Winnie Mulé
+SightingT,Photographer 1,Cherie StOurs,Cherie St.Ours
+SightingT,Photographer 2,Annie B Douglas,Annie B. Douglas
+SightingT,Photographer 2,Brenda K Rone,Brenda K. Rone
+SightingT,Photographer 2,Camera2,Camera 2
+SightingT,Photographer 2,Jennifer C Gatzke,Jennifer C. Gatzke
+SightingT,Photographer 2,ARIE FRIEDLANDER,Ari Friedlaender
+SightingT,Photographer 2,Brian Giborne,Brian Gisborne
+SightingT,Photographer 2,Brenden F. Wakefield,Brendan F Wakefield
+SightingT,Photographer 2,Casey Clarke,Casey Clark
+SightingT,Photographer 2,James Fahlsbusch,James Fahlbusch
+SightingT,Photographer 2,James Falbusch,James Fahlbusch
+SightingT,Photographer 2,Stacey DeRuiter,Stacy DeRuiter
+SightingT,Photographer 2,Alexei Calmbokidis,Alexei Calambokidis
+SightingT,Photographer 2,AndreaDFO,Andrea-DFO
+SightingT,Photographer 2,Antoine de Cazott,Antoine de Cazotte
+SightingT,Photographer 2,AREI FRIEDLANDER,Ari Friedlaender
+SightingT,Photographer 2,Ari Freidlander,Ari Friedlaender
+SightingT,Photographer 2,ARI FRIEDLANDER,Ari Friedlaender
+SightingT,Photographer 2,Brian Gisbsborne,Brian Gisborne
+SightingT,Photographer 2,Cherie StOurs,Cherie St.Ours
+SightingT,Photographer 2,Chris Kyberg,Chris Kyburg
+SightingT,Photographer 2,HANNAL NOLTE,Hannah Nolte
+SightingT,Photographer 2,Jessica Ashchettino,Jessica Aschettino
+SightingT,Photographer 2,julIa ohern,Julia O'Hern
+SightingT,Photographer 2,Jullia Ohern,Julia O'Hern
+SightingT,Photographer 2,julia ohearn,Julia O'Hern
+SightingT,Photographer 2,Korrina Guerreo,Korrina Guerrero
+SightingT,Photographer 2,MML-Cam2,MML_Cam2
+SightingT,Photographer 2,StaceyDRuiter,Stacy DeRuiter
+SightingT,Photographer 2,Stephanie Marc,Stephanie Marcos
+SightingT,Photographer 3,Stacey DeRuiter,Stacy DeRuiter
+SightingT,Photographer 3,Ari Freidlaender,Ari Friedlaender
+TagSummaryT,Video,"yes, gun cam","yes, guncam"
+DailyEffortT,Survey Type,Uknown,Unknown
+DailyEffortT,Survey Type,Unknowwn,Unknown
+DailyEffortT,Survey Type,Unkown,Unknown
+DailyEffortT,Survey Type,Opportunisitc,Opportunistic
+DailyEffortT,Survey Type,oppportunisitic,Opportunistic
+DailyEffortT,Survey Type,Large Vessel Line-Transect,Large Vessel Line Transect
+DailyEffortT,Survey Type,Small Vessel Photo-IDSmall Vessel Photo-ID,Small Vessel Photo-ID
+DailyEffortT,Launch,Monnterey Bay,Monterey Bay
+DailyEffortT,Launch,Moterey Bay,Monterey Bay
+DailyEffortT,Launch,Porr Angeles,Port Angeles
+DailyEffortT,Launch,Seiku,Sekiu
+DailyEffortT,Launch,Port Towsend,Port Townsend
+DailyEffortT,Launch,Pt. Townsend,Port Townsend
+DailyEffortT,Launch,Loereto,Loreto
+DailyEffortT,Launch,Loeto,Loreto
+DailyEffortT,Launch,Puerto Escondito,Puerto Escondido
+DailyEffortT,Launch,Fair Hoarbor Dock,Fair Harbor Dock
+DailyEffortT,Launch,Fairt Harbor Dock,Fair Harbor Dock
+DailyEffortT,Launch,Nootka Cannary,Nootka Cannery
+DailyEffortT,Launch,Grapplet Lt,Grappler Lt
+DailyEffortT,Launch,Uclulet,Ucluelet
+DailyEffortT,Launch,Zittles,Zittels
+DailyEffortT,Launch,Zittlels,Zittels
+DailyEffortT,Launch,ZITTEL'S,Zittels
+DailyEffortT,Launch,Santa Barabra,Santa Barbara
+DailyEffortT,Launch,Wrigly Catalina Island,Wrigleys Catalina Island
+DailyEffortT,Launch,PRDC,PRCD
+DailyEffortT,Launch,Offhsore,offshore
+DailyEffortT,Launch,Estevan Pt,Estevan Point
+DailyEffortT,Launch,Possession Pt,Possession Point
+DailyEffortT,Launch,Sharp Pt,Sharp Point
+DailyEffortT,Launch,Pt Conception,Point Conception
+DailyEffortT,Launch,Santa Cruz Basin- Sproul,Santa Cruz Basin-Sproul
+DailyEffortT,Launch,SCORE- Sproul,SCORE-Sproul
+DailyEffortT,Launch,Palos Verdes- Sproul,Palos Verdes-Sproul
+DailyEffortT,Launch,Long Beach- Sproul,Long Beach-Sproul
+DailyEffortT,Return,Monnterey Bay,Monterey Bay
+DailyEffortT,Return,Moterey Bay,Monterey Bay
+DailyEffortT,Return,Porr Angeles,Port Angeles
+DailyEffortT,Return,Seiku,Sekiu
+DailyEffortT,Return,Port Towsend,Port Townsend
+DailyEffortT,Return,Pt. Townsend,Port Townsend
+DailyEffortT,Return,Loereto,Loreto
+DailyEffortT,Return,Loeto,Loreto
+DailyEffortT,Return,Puerto Escondito,Puerto Escondido
+DailyEffortT,Return,Fair Hoarbor Dock,Fair Harbor Dock
+DailyEffortT,Return,Fairt Harbor Dock,Fair Harbor Dock
+DailyEffortT,Return,Nootka Cannary,Nootka Cannery
+DailyEffortT,Return,Grapplet Lt,Grappler Lt
+DailyEffortT,Return,Uclulet,Ucluelet
+DailyEffortT,Return,Zittles,Zittels
+DailyEffortT,Return,Zittlels,Zittels
+DailyEffortT,Return,ZITTEL'S,Zittels
+DailyEffortT,Return,Santa Barabra,Santa Barbara
+DailyEffortT,Return,Wrigly Catalina Island,Wrigleys Catalina Island
+DailyEffortT,Return,PRDC,PRCD
+DailyEffortT,Return,Offhsore,offshore
+DailyEffortT,Return,Estevan Pt,Estevan Point
+DailyEffortT,Return,Possession Pt,Possession Point
+DailyEffortT,Return,Sharp Pt,Sharp Point
+DailyEffortT,Return,Pt Conception,Point Conception
+DailyEffortT,Return,Santa Cruz Basin- Sproul,Santa Cruz Basin-Sproul
+DailyEffortT,Return,SCORE- Sproul,SCORE-Sproul
+DailyEffortT,Return,Palos Verdes- Sproul,Palos Verdes-Sproul
+DailyEffortT,Return,Long Beach- Sproul,Long Beach-Sproul
+DailyEffortT,Locality,"Everett, N Puget Sound",Everett/N. Puget Sound
+DailyEffortT,Locality,N Cordell Bank,N. Cordell Bank
+DailyEffortT,Locality,Pt. St.George,Pt St George
+DailyEffortT,Locality,Pt. St. George,Pt St George
+SampleT,Sample Type,Sample-Other,Other
+SampleT,Sample Type,Skin,Skin Only Biopsy
+SampleT,Sample Type,Skin Only,Skin Only Biopsy

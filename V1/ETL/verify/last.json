@@ -1,0 +1,7406 @@
+{
+ "explained": [
+  {
+   "table": "AdditionalCameraT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "AdditionalCameraT"
+   ]
+  },
+  {
+   "table": "CRC_Vessels_ByYear_T",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "CRC_Vessels_ByYear_T"
+   ]
+  },
+  {
+   "table": "CollaboratorT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "CollaboratorT"
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "(record)",
+   "reason": "Rule 6: exact copy of another record, removed",
+   "count": 3451,
+   "examples": [
+    36814,
+    36815,
+    36943
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "Comments",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 428,
+   "examples": [
+    {
+     "id": 14484,
+     "raw": "                                                                                                                                                                 ",
+     "live": "                                                                                                                                                                 ",
+     "new": null
+    },
+    {
+     "id": 14485,
+     "raw": "                                                                                                                                                                 ",
+     "live": "                                                                                                                                                                 ",
+     "new": null
+    },
+    {
+     "id": 14486,
+     "raw": "                                                                                                                                                                 ",
+     "live": "                                                                                                                                                                 ",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "Comments",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 21,
+   "examples": [
+    {
+     "id": 1436,
+     "raw": " low light",
+     "live": " low light",
+     "new": "low light"
+    },
+    {
+     "id": 1759,
+     "raw": "Possible Small/Medium cetacean cetacean sighting; ship holding off while acoustics switches equipment.  ",
+     "live": "Possible Small/Medium cetacean cetacean sighting; ship holding off while acoustics switches equipment.  ",
+     "new": "Possible Small/Medium cetacean cetacean sighting; ship holding off while acoustics switches equipment."
+    },
+    {
+     "id": 1837,
+     "raw": "LUNCH ROTATION ",
+     "live": "LUNCH ROTATION ",
+     "new": "LUNCH ROTATION"
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "Precipitation",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 5520,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "Precipitation",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 19,
+   "examples": [
+    {
+     "id": 576,
+     "raw": "0v",
+     "live": "0v",
+     "new": "0V"
+    },
+    {
+     "id": 1214,
+     "raw": "mist",
+     "live": "mist",
+     "new": "Mist"
+    },
+    {
+     "id": 1218,
+     "raw": "mist",
+     "live": "mist",
+     "new": "Mist"
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "Precipitation",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (capitals)",
+   "count": 6,
+   "examples": [
+    {
+     "id": 52039,
+     "raw": "lt fog",
+     "live": "Lt fog",
+     "new": "Lt Fog"
+    },
+    {
+     "id": 52040,
+     "raw": "lt fog",
+     "live": "Lt fog",
+     "new": "Lt Fog"
+    },
+    {
+     "id": 52041,
+     "raw": "lt fog",
+     "live": "Lt fog",
+     "new": "Lt Fog"
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "Precipitation",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 5,
+   "examples": [
+    {
+     "id": 11337,
+     "raw": "PO",
+     "live": "po",
+     "new": "PO"
+    },
+    {
+     "id": 42505,
+     "raw": "Mist",
+     "live": "mist",
+     "new": "Mist"
+    },
+    {
+     "id": 52026,
+     "raw": "Lt Fog",
+     "live": "Lt fog",
+     "new": "Lt Fog"
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "Research Group",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 20,
+   "examples": [
+    {
+     "id": 17459,
+     "raw": "WSz",
+     "live": "WSz",
+     "new": "Wsz"
+    },
+    {
+     "id": 17460,
+     "raw": "WSz",
+     "live": "WSz",
+     "new": "Wsz"
+    },
+    {
+     "id": 17461,
+     "raw": "WSz",
+     "live": "WSz",
+     "new": "Wsz"
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 132,
+   "examples": [
+    {
+     "id": 8474,
+     "raw": "Val",
+     "live": "Val",
+     "new": "VAL"
+    },
+    {
+     "id": 8475,
+     "raw": "Val",
+     "live": "Val",
+     "new": "VAL"
+    },
+    {
+     "id": 9498,
+     "raw": "paragon",
+     "live": "paragon",
+     "new": "PARAGON"
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 56,
+   "examples": [
+    {
+     "id": 23732,
+     "raw": "Current Sea ",
+     "live": "Current Sea ",
+     "new": "Current Sea"
+    },
+    {
+     "id": 23735,
+     "raw": "Current Sea ",
+     "live": "Current Sea ",
+     "new": "Current Sea"
+    },
+    {
+     "id": 23736,
+     "raw": "Current Sea ",
+     "live": "Current Sea ",
+     "new": "Current Sea"
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "Visibility",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 3,
+   "examples": [
+    {
+     "id": 24889,
+     "raw": "cl",
+     "live": "CL",
+     "new": "cl"
+    },
+    {
+     "id": 24890,
+     "raw": "cl",
+     "live": "CL",
+     "new": "cl"
+    },
+    {
+     "id": 24891,
+     "raw": "cl",
+     "live": "CL",
+     "new": "cl"
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "vessel_id",
+   "reason": "Rule 4: one VesselListT row per vessel; today's id was one spelling of the same vessel",
+   "count": 23617,
+   "examples": [
+    {
+     "id": 223,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 224,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 225,
+     "live": 1354,
+     "new": 1353
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "(record)",
+   "reason": "Rule 6: exact copy of another record, removed",
+   "count": 1,
+   "examples": [
+    10016
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Distance Units",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 306,
+   "examples": [
+    {
+     "id": 23656,
+     "raw": "KM",
+     "live": "KM",
+     "new": "km"
+    },
+    {
+     "id": 23657,
+     "raw": "KM",
+     "live": "KM",
+     "new": "km"
+    },
+    {
+     "id": 23658,
+     "raw": "KM",
+     "live": "KM",
+     "new": "km"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Launch",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 87,
+   "examples": [
+    {
+     "id": 9492,
+     "raw": "at sea",
+     "live": "at sea",
+     "new": "At Sea"
+    },
+    {
+     "id": 9493,
+     "raw": "at sea",
+     "live": "at sea",
+     "new": "At Sea"
+    },
+    {
+     "id": 9494,
+     "raw": "at sea",
+     "live": "at sea",
+     "new": "At Sea"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Launch",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 3,
+   "examples": [
+    {
+     "id": 19938,
+     "raw": "Monterey\u00a0",
+     "live": "Monterey\u00a0",
+     "new": "Monterey"
+    },
+    {
+     "id": 19946,
+     "raw": "Monterey\u00a0",
+     "live": "Monterey\u00a0",
+     "new": "Monterey"
+    },
+    {
+     "id": 21249,
+     "raw": "Anton  Spit",
+     "live": "Anton  Spit",
+     "new": "Anton Spit"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Launch",
+   "reason": "Rule 5: spelling merged (synonym); today left it as DB167 has it",
+   "count": 67,
+   "examples": [
+    {
+     "id": 6059,
+     "raw": "Drake Bay",
+     "live": "Drake Bay",
+     "new": "Drakes Bay"
+    },
+    {
+     "id": 6060,
+     "raw": "Drake Bay",
+     "live": "Drake Bay",
+     "new": "Drakes Bay"
+    },
+    {
+     "id": 6061,
+     "raw": "Drake Bay",
+     "live": "Drake Bay",
+     "new": "Drakes Bay"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Launch",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 35,
+   "examples": [
+    {
+     "id": 6109,
+     "raw": "Estevan Pt",
+     "live": "Estevan Pt",
+     "new": "Estevan Point"
+    },
+    {
+     "id": 6110,
+     "raw": "Estevan Pt",
+     "live": "Estevan Pt",
+     "new": "Estevan Point"
+    },
+    {
+     "id": 6111,
+     "raw": "Estevan Pt",
+     "live": "Estevan Pt",
+     "new": "Estevan Point"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Launch",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (capitals)",
+   "count": 10,
+   "examples": [
+    {
+     "id": 6067,
+     "raw": "At sea",
+     "live": "at sea",
+     "new": "At Sea"
+    },
+    {
+     "id": 8274,
+     "raw": "At sea",
+     "live": "at sea",
+     "new": "At Sea"
+    },
+    {
+     "id": 9448,
+     "raw": "AT SEA",
+     "live": "at sea",
+     "new": "At Sea"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Launch",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (synonym)",
+   "count": 16,
+   "examples": [
+    {
+     "id": 21275,
+     "raw": "Off shore",
+     "live": "off shore",
+     "new": "Offshore"
+    },
+    {
+     "id": 21276,
+     "raw": "Off shore",
+     "live": "off shore",
+     "new": "Offshore"
+    },
+    {
+     "id": 21284,
+     "raw": "Off shore",
+     "live": "off shore",
+     "new": "Offshore"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Launch",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (typo)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 17788,
+     "raw": "pt conception",
+     "live": "Pt Conception",
+     "new": "Point Conception"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Launch",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 18,
+   "examples": [
+    {
+     "id": 6071,
+     "raw": "At Sea",
+     "live": "at sea",
+     "new": "At Sea"
+    },
+    {
+     "id": 8275,
+     "raw": "At Sea",
+     "live": "at sea",
+     "new": "At Sea"
+    },
+    {
+     "id": 9449,
+     "raw": "At Sea",
+     "live": "at sea",
+     "new": "At Sea"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Locality",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 1,
+   "examples": [
+    {
+     "id": 18464,
+     "raw": "San Juan del Sur",
+     "live": "San Juan del Sur ",
+     "new": "San Juan del Sur"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Locality",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 52,
+   "examples": [
+    {
+     "id": 3446,
+     "raw": "offshore No Cal",
+     "live": "offshore No Cal",
+     "new": "Offshore No Cal"
+    },
+    {
+     "id": 5131,
+     "raw": "STRAITS",
+     "live": "STRAITS",
+     "new": "Straits"
+    },
+    {
+     "id": 5139,
+     "raw": "STRAITS",
+     "live": "STRAITS",
+     "new": "Straits"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Locality",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 20,
+   "examples": [
+    {
+     "id": 9901,
+     "raw": " Near San Mateo",
+     "live": " Near San Mateo",
+     "new": "Near San Mateo"
+    },
+    {
+     "id": 14099,
+     "raw": "Vancouver  Bay",
+     "live": "Vancouver  Bay",
+     "new": "Vancouver Bay"
+    },
+    {
+     "id": 14274,
+     "raw": "Newport  Area",
+     "live": "Newport  Area",
+     "new": "Newport Area"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Locality",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (capitals)",
+   "count": 3,
+   "examples": [
+    {
+     "id": 5137,
+     "raw": "straits",
+     "live": "STRAITS",
+     "new": "Straits"
+    },
+    {
+     "id": 5138,
+     "raw": "straits",
+     "live": "STRAITS",
+     "new": "Straits"
+    },
+    {
+     "id": 11414,
+     "raw": "Off shore",
+     "live": "off shore",
+     "new": "Off Shore"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Locality",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 18,
+   "examples": [
+    {
+     "id": 3445,
+     "raw": "Offshore No Cal",
+     "live": "offshore No Cal",
+     "new": "Offshore No Cal"
+    },
+    {
+     "id": 5010,
+     "raw": "Offshore",
+     "live": "offshore",
+     "new": "Offshore"
+    },
+    {
+     "id": 5844,
+     "raw": "Straits",
+     "live": "STRAITS",
+     "new": "Straits"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Personnel",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 4,
+   "examples": [
+    {
+     "id": 17612,
+     "raw": "      ",
+     "live": "      ",
+     "new": null
+    },
+    {
+     "id": 23720,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 26300,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Personnel",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 622,
+   "examples": [
+    {
+     "id": 5230,
+     "raw": "Homer Holm, Peggy Stap, Ashley Ganer, Chuck Davis ",
+     "live": "Homer Holm, Peggy Stap, Ashley Ganer, Chuck Davis ",
+     "new": "Homer Holm, Peggy Stap, Ashley Ganer, Chuck Davis"
+    },
+    {
+     "id": 5231,
+     "raw": "Homer Holm, Peggy Stap, Ashley Ganer, Chuck Davis ",
+     "live": "Homer Holm, Peggy Stap, Ashley Ganer, Chuck Davis ",
+     "new": "Homer Holm, Peggy Stap, Ashley Ganer, Chuck Davis"
+    },
+    {
+     "id": 5235,
+     "raw": "Willow Jones, Peggy Stap/Terri Dratt, Peggy Stap/Terri Dratt, ",
+     "live": "Willow Jones, Peggy Stap/Terri Dratt, Peggy Stap/Terri Dratt, ",
+     "new": "Willow Jones, Peggy Stap/Terri Dratt, Peggy Stap/Terri Dratt,"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "PhotoDataBy",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 6,
+   "examples": [
+    {
+     "id": 7909,
+     "raw": "jma",
+     "live": "jma",
+     "new": "JMA"
+    },
+    {
+     "id": 11491,
+     "raw": "elk",
+     "live": "elk",
+     "new": "ELK"
+    },
+    {
+     "id": 15969,
+     "raw": "Jet",
+     "live": "Jet",
+     "new": "JET"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "PhotoDataBy",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 19871,
+     "raw": "AWVV",
+     "live": "AWVV",
+     "new": "AWV"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Project/Objective",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 8,
+   "examples": [
+    {
+     "id": 25412,
+     "raw": "tag recovery",
+     "live": "tag recovery",
+     "new": "Tag Recovery"
+    },
+    {
+     "id": 25421,
+     "raw": "Dcrab photo ID",
+     "live": "Dcrab photo ID",
+     "new": "Dcrab Photo ID"
+    },
+    {
+     "id": 26254,
+     "raw": "tag recovery",
+     "live": "tag recovery",
+     "new": "Tag Recovery"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Project/Objective",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (capitals)",
+   "count": 3,
+   "examples": [
+    {
+     "id": 24076,
+     "raw": "Tag recovery",
+     "live": "tag recovery",
+     "new": "Tag Recovery"
+    },
+    {
+     "id": 25402,
+     "raw": "Tag recovery",
+     "live": "tag recovery",
+     "new": "Tag Recovery"
+    },
+    {
+     "id": 25403,
+     "raw": "Tag recovery",
+     "live": "tag recovery",
+     "new": "Tag Recovery"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Project/Objective",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 5,
+   "examples": [
+    {
+     "id": 17768,
+     "raw": "Tag Recovery",
+     "live": "tag recovery",
+     "new": "Tag Recovery"
+    },
+    {
+     "id": 25423,
+     "raw": "Dcrab Photo ID",
+     "live": "Dcrab photo ID",
+     "new": "Dcrab Photo ID"
+    },
+    {
+     "id": 25435,
+     "raw": "Tag Recovery",
+     "live": "tag recovery",
+     "new": "Tag Recovery"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Research Group",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 461,
+   "examples": [
+    {
+     "id": 5146,
+     "raw": "Makah",
+     "live": "Makah",
+     "new": "MAKAH"
+    },
+    {
+     "id": 5155,
+     "raw": "Makah",
+     "live": "Makah",
+     "new": "MAKAH"
+    },
+    {
+     "id": 5165,
+     "raw": "Makah",
+     "live": "Makah",
+     "new": "MAKAH"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Return",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 23720,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Return",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 87,
+   "examples": [
+    {
+     "id": 9492,
+     "raw": "at sea",
+     "live": "at sea",
+     "new": "At Sea"
+    },
+    {
+     "id": 9493,
+     "raw": "at sea",
+     "live": "at sea",
+     "new": "At Sea"
+    },
+    {
+     "id": 9494,
+     "raw": "at sea",
+     "live": "at sea",
+     "new": "At Sea"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Return",
+   "reason": "Rule 5: spelling merged (synonym); today left it as DB167 has it",
+   "count": 64,
+   "examples": [
+    {
+     "id": 5378,
+     "raw": "UKSZ",
+     "live": "UKSZ",
+     "new": "Ukey SZ"
+    },
+    {
+     "id": 6059,
+     "raw": "Drake Bay",
+     "live": "Drake Bay",
+     "new": "Drakes Bay"
+    },
+    {
+     "id": 6060,
+     "raw": "Drake Bay",
+     "live": "Drake Bay",
+     "new": "Drakes Bay"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Return",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 33,
+   "examples": [
+    {
+     "id": 5517,
+     "raw": "Grapplet Lt",
+     "live": "Grapplet Lt",
+     "new": "Grappler Lt"
+    },
+    {
+     "id": 7075,
+     "raw": "Pt. Townsend",
+     "live": "Pt. Townsend",
+     "new": "Port Townsend"
+    },
+    {
+     "id": 8215,
+     "raw": "MoNnterey Bay",
+     "live": "MoNnterey Bay",
+     "new": "Monterey Bay"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Return",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (capitals)",
+   "count": 11,
+   "examples": [
+    {
+     "id": 6066,
+     "raw": "At sea",
+     "live": "at sea",
+     "new": "At Sea"
+    },
+    {
+     "id": 8274,
+     "raw": "At sea",
+     "live": "at sea",
+     "new": "At Sea"
+    },
+    {
+     "id": 9448,
+     "raw": "AT SEA",
+     "live": "at sea",
+     "new": "At Sea"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Return",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (synonym)",
+   "count": 15,
+   "examples": [
+    {
+     "id": 19673,
+     "raw": "Off shore",
+     "live": "off shore",
+     "new": "Offshore"
+    },
+    {
+     "id": 21268,
+     "raw": "Off shore",
+     "live": "off shore",
+     "new": "Offshore"
+    },
+    {
+     "id": 21275,
+     "raw": "Off shore",
+     "live": "off shore",
+     "new": "Offshore"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Return",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 17,
+   "examples": [
+    {
+     "id": 6068,
+     "raw": "At Sea",
+     "live": "at sea",
+     "new": "At Sea"
+    },
+    {
+     "id": 8275,
+     "raw": "At Sea",
+     "live": "at sea",
+     "new": "At Sea"
+    },
+    {
+     "id": 9450,
+     "raw": "At Sea",
+     "live": "at sea",
+     "new": "At Sea"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Sub-area",
+   "reason": "Rule 5: spelling merged (corrected); today left it as DB167 has it",
+   "count": 721,
+   "examples": [
+    {
+     "id": 3006,
+     "raw": "PWS",
+     "live": "PWS",
+     "new": "Prince William Sound"
+    },
+    {
+     "id": 3008,
+     "raw": "W. Aleutians",
+     "live": "W. Aleutians",
+     "new": "Western Aleutian Ridge"
+    },
+    {
+     "id": 3200,
+     "raw": "Southern-Central California",
+     "live": "Southern-Central California",
+     "new": "Southern Central California"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Survey Comments",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 73,
+   "examples": [
+    {
+     "id": 11538,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 11550,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 11555,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Survey Comments",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 546,
+   "examples": [
+    {
+     "id": 5921,
+     "raw": " 47\u00b054'9.82\"N\r\n122\u00b023'20.82\"W",
+     "live": " 47\u00b054'9.82\"N\r\n122\u00b023'20.82\"W",
+     "new": "47\u00b054'9.82\"N\r\n122\u00b023'20.82\"W"
+    },
+    {
+     "id": 5924,
+     "raw": " 48\u00b015'32.40\"N\r\n122\u00b038'32.58\"W",
+     "live": " 48\u00b015'32.40\"N\r\n122\u00b038'32.58\"W",
+     "new": "48\u00b015'32.40\"N\r\n122\u00b038'32.58\"W"
+    },
+    {
+     "id": 5925,
+     "raw": " 37\u00b045'4.54\"N\r\n122\u00b059'33.15\"W\r\nGeneral area Lat/Long",
+     "live": " 37\u00b045'4.54\"N\r\n122\u00b059'33.15\"W\r\nGeneral area Lat/Long",
+     "new": "37\u00b045'4.54\"N\r\n122\u00b059'33.15\"W\r\nGeneral area Lat/Long"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Survey Type",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 26213,
+     "raw": "tagging effort",
+     "live": "tagging effort",
+     "new": "Tagging Effort"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Survey Type",
+   "reason": "Rule 5: spelling merged (synonym); today left it as DB167 has it",
+   "count": 285,
+   "examples": [
+    {
+     "id": 2997,
+     "raw": "Whale Watch Vessel",
+     "live": "Whale Watch Vessel",
+     "new": "Whale Watch"
+    },
+    {
+     "id": 2998,
+     "raw": "Whale Watch Vessel",
+     "live": "Whale Watch Vessel",
+     "new": "Whale Watch"
+    },
+    {
+     "id": 2999,
+     "raw": "Whale Watch Vessel",
+     "live": "Whale Watch Vessel",
+     "new": "Whale Watch"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Survey Type",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 13,
+   "examples": [
+    {
+     "id": 3906,
+     "raw": "Unknowwn",
+     "live": "Unknowwn",
+     "new": "Unknown"
+    },
+    {
+     "id": 4831,
+     "raw": "Unkown",
+     "live": "Unkown",
+     "new": "Unknown"
+    },
+    {
+     "id": 7041,
+     "raw": "oppportunisitic",
+     "live": "oppportunisitic",
+     "new": "Opportunistic"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Survey Type",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (synonym)",
+   "count": 5,
+   "examples": [
+    {
+     "id": 5972,
+     "raw": "shore",
+     "live": "Shore",
+     "new": "Land Observation"
+    },
+    {
+     "id": 8220,
+     "raw": "land based",
+     "live": "Land based",
+     "new": "Land Observation"
+    },
+    {
+     "id": 8235,
+     "raw": "land based",
+     "live": "Land based",
+     "new": "Land Observation"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Survey Type",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 1,
+   "examples": [
+    {
+     "id": 28145,
+     "raw": "Tagging Effort",
+     "live": "tagging effort",
+     "new": "Tagging Effort"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Survey Type",
+   "reason": "Rule 5: today's own mapping for Survey Type; replaced by the spelling rule",
+   "count": 25,
+   "examples": [
+    {
+     "id": 6965,
+     "raw": "Land Observation",
+     "live": "Land",
+     "new": "Land Observation"
+    },
+    {
+     "id": 7049,
+     "raw": "Land Observation",
+     "live": "Land",
+     "new": "Land Observation"
+    },
+    {
+     "id": 7078,
+     "raw": "Land Observation",
+     "live": "Land",
+     "new": "Land Observation"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 844,
+   "examples": [
+    {
+     "id": 3342,
+     "raw": "Unk",
+     "live": "Unk",
+     "new": "UNK"
+    },
+    {
+     "id": 3811,
+     "raw": "Zip",
+     "live": "Zip",
+     "new": "ZIP"
+    },
+    {
+     "id": 3820,
+     "raw": "Zip",
+     "live": "Zip",
+     "new": "ZIP"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 29,
+   "examples": [
+    {
+     "id": 10590,
+     "raw": "Orcadreamer89 ",
+     "live": "Orcadreamer89 ",
+     "new": "Orcadreamer89"
+    },
+    {
+     "id": 12411,
+     "raw": " OceanStarr",
+     "live": " OceanStarr",
+     "new": "OceanStarr"
+    },
+    {
+     "id": 17647,
+     "raw": "Current Sea ",
+     "live": "Current Sea ",
+     "new": "Current Sea"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "end_coord_source",
+   "reason": "follows the day-log entries and tracks now linked by their Foreign Keys (rule 3)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 22987,
+     "live": null,
+     "new": "gps_track"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "end_point",
+   "reason": "follows the day-log entries and tracks now linked by their Foreign Keys (rule 3)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 22987,
+     "live": null,
+     "new": "0101000020E6100000F1660DDE57095FC0F5F6E7A221254840"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "start_coord_source",
+   "reason": "follows the day-log entries and tracks now linked by their Foreign Keys (rule 3)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 22987,
+     "live": null,
+     "new": "gps_track"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "start_point",
+   "reason": "follows the day-log entries and tracks now linked by their Foreign Keys (rule 3)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 22987,
+     "live": null,
+     "new": "0101000020E6100000A58636001B275FC0F35A09DD252F4840"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "vessel_id",
+   "reason": "Rule 4: one VesselListT row per vessel; today's id was one spelling of the same vessel",
+   "count": 10073,
+   "examples": [
+    {
+     "id": 2998,
+     "live": 1013,
+     "new": 1011
+    },
+    {
+     "id": 2999,
+     "live": 1013,
+     "new": 1011
+    },
+    {
+     "id": 3000,
+     "live": 1013,
+     "new": 1011
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "(record)",
+   "reason": "Rule 6: exact copy of another record, removed",
+   "count": 193,
+   "examples": [
+    75971,
+    75972,
+    75973
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "Code",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 1726,
+     "raw": "p/u",
+     "live": "p/u",
+     "new": "P/U"
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "Code",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 1,
+   "examples": [
+    {
+     "id": 67649,
+     "raw": "P/U",
+     "live": "p/u",
+     "new": "P/U"
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "Comments",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 3617,
+   "examples": [
+    {
+     "id": 58886,
+     "raw": "                                                                                                                                                                 ",
+     "live": "                                                                                                                                                                 ",
+     "new": null
+    },
+    {
+     "id": 58887,
+     "raw": "                                                                                                                                                                 ",
+     "live": "                                                                                                                                                                 ",
+     "new": null
+    },
+    {
+     "id": 58888,
+     "raw": "                                                                                                                                                                 ",
+     "live": "                                                                                                                                                                 ",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "Comments",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 385,
+   "examples": [
+    {
+     "id": 865,
+     "raw": "\nsignal",
+     "live": "\nsignal",
+     "new": "signal"
+    },
+    {
+     "id": 1749,
+     "raw": "Possible Small/Medium cetacean cetacean sighting; ship holding off while acoustics switches equipment.  ",
+     "live": "Possible Small/Medium cetacean cetacean sighting; ship holding off while acoustics switches equipment.  ",
+     "new": "Possible Small/Medium cetacean cetacean sighting; ship holding off while acoustics switches equipment."
+    },
+    {
+     "id": 1790,
+     "raw": "end of opp searching. end listening. End of day. ",
+     "live": "end of opp searching. end listening. End of day. ",
+     "new": "end of opp searching. end listening. End of day."
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "Line",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 7916,
+     "raw": " COME ON",
+     "live": " COME ON",
+     "new": "COME ON"
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "ObsL",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 331,
+   "examples": [
+    {
+     "id": 1810,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1842,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1843,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "ObsR",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 331,
+   "examples": [
+    {
+     "id": 1810,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1842,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1843,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "Rec",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 331,
+   "examples": [
+    {
+     "id": 1810,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1842,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1843,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "Research Group",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 49,
+   "examples": [
+    {
+     "id": 21909,
+     "raw": "WSz",
+     "live": "WSz",
+     "new": "Wsz"
+    },
+    {
+     "id": 21910,
+     "raw": "WSz",
+     "live": "WSz",
+     "new": "Wsz"
+    },
+    {
+     "id": 21911,
+     "raw": "WSz",
+     "live": "WSz",
+     "new": "Wsz"
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 346,
+   "examples": [
+    {
+     "id": 10513,
+     "raw": "Val",
+     "live": "Val",
+     "new": "VAL"
+    },
+    {
+     "id": 10514,
+     "raw": "Val",
+     "live": "Val",
+     "new": "VAL"
+    },
+    {
+     "id": 10515,
+     "raw": "Val",
+     "live": "Val",
+     "new": "VAL"
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "event_code_id",
+   "reason": "Rule 9: its code is added to EventCodeT",
+   "count": 2039,
+   "examples": [
+    {
+     "id": 22,
+     "code": "e"
+    },
+    {
+     "id": 28,
+     "code": "w"
+    },
+    {
+     "id": 32,
+     "code": "w"
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "vessel_id",
+   "reason": "Rule 4: one VesselListT row per vessel; today's id was one spelling of the same vessel",
+   "count": 40634,
+   "examples": [
+    {
+     "id": 513,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 514,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 515,
+     "live": 1354,
+     "new": 1353
+    }
+   ]
+  },
+  {
+   "table": "DataStatusT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "DataStatusT"
+   ]
+  },
+  {
+   "table": "DataStatusTypeT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "DataStatusTypeT"
+   ]
+  },
+  {
+   "table": "DroneDeploymentT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "DroneDeploymentT"
+   ]
+  },
+  {
+   "table": "DroneTargetAnimalT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "DroneTargetAnimalT"
+   ]
+  },
+  {
+   "table": "EffortCrewT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "EffortCrewT"
+   ]
+  },
+  {
+   "table": "EffortProblemT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "EffortProblemT"
+   ]
+  },
+  {
+   "table": "EventCodeT",
+   "column": "(record)",
+   "reason": "Rules 4 and 9: added to the category table",
+   "count": 51,
+   "examples": [
+    26,
+    27,
+    28
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "(record)",
+   "reason": "Rule 6: exact copy of another record, removed",
+   "count": 2889,
+   "examples": [
+    83672,
+    84446,
+    84490
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Beh Role",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 37,
+   "examples": [
+    {
+     "id": 2379,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2380,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2381,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Beh Role",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 2,
+   "examples": [
+    {
+     "id": 87252,
+     "raw": "un",
+     "live": "un",
+     "new": "UN"
+    },
+    {
+     "id": 87653,
+     "raw": "solo",
+     "live": "solo",
+     "new": "Solo"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Beh Role",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 88414,
+     "raw": " G40",
+     "live": " G40",
+     "new": "G40"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Beh Role",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 87806,
+     "raw": "GI",
+     "live": "GI",
+     "new": "G1"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Best Fluke",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 379,
+   "examples": [
+    {
+     "id": 2379,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2380,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2381,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Best Fluke",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 3,
+   "examples": [
+    {
+     "id": 28237,
+     "raw": " #2258_2020-05-04 16-50-04.jpg",
+     "live": " #2258_2020-05-04 16-50-04.jpg",
+     "new": "#2258_2020-05-04 16-50-04.jpg"
+    },
+    {
+     "id": 81439,
+     "raw": " 07wm01_0250",
+     "live": " 07wm01_0250",
+     "new": "07wm01_0250"
+    },
+    {
+     "id": 81442,
+     "raw": " 07wm01_0423",
+     "live": " 07wm01_0423",
+     "new": "07wm01_0423"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Best Left",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 152,
+   "examples": [
+    {
+     "id": 2392,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2393,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2394,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Best Left",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 4,
+   "examples": [
+    {
+     "id": 81442,
+     "raw": " 07wm01_0416",
+     "live": " 07wm01_0416",
+     "new": "07wm01_0416"
+    },
+    {
+     "id": 81443,
+     "raw": " 07wm01_0419",
+     "live": " 07wm01_0419",
+     "new": "07wm01_0419"
+    },
+    {
+     "id": 85756,
+     "raw": " COT-N2-CANON-JAC-20060809-0073 edit.jpg",
+     "live": " COT-N2-CANON-JAC-20060809-0073 edit.jpg",
+     "new": "COT-N2-CANON-JAC-20060809-0073 edit.jpg"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Best Right",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 190,
+   "examples": [
+    {
+     "id": 2383,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2384,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2385,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Best Right",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 4,
+   "examples": [
+    {
+     "id": 81439,
+     "raw": " 07wm01_0251",
+     "live": " 07wm01_0251",
+     "new": "07wm01_0251"
+    },
+    {
+     "id": 81440,
+     "raw": " 07wm01_0309",
+     "live": " 07wm01_0309",
+     "new": "07wm01_0309"
+    },
+    {
+     "id": 81442,
+     "raw": " 07wm01_0413",
+     "live": " 07wm01_0413",
+     "new": "07wm01_0413"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Best Tail Stock",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 40,
+   "examples": [
+    {
+     "id": 2379,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2380,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2381,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Biopsy Photo",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 43,
+   "examples": [
+    {
+     "id": 2379,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2380,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2381,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Category",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 48287,
+     "raw": " ",
+     "live": " ",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Category",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 131,
+   "examples": [
+    {
+     "id": 2928,
+     "raw": "5.4c",
+     "live": "5.4c",
+     "new": "5.4C"
+    },
+    {
+     "id": 2955,
+     "raw": "5.3s",
+     "live": "5.3s",
+     "new": "5.3S"
+    },
+    {
+     "id": 2962,
+     "raw": "5.3s",
+     "live": "5.3s",
+     "new": "5.3S"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Category",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 2,
+   "examples": [
+    {
+     "id": 3539,
+     "raw": "5..3S",
+     "live": "5..3S",
+     "new": "5.3S"
+    },
+    {
+     "id": 23896,
+     "raw": "44B",
+     "live": "44B",
+     "new": "4B"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Comments",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 129,
+   "examples": [
+    {
+     "id": 90210,
+     "raw": " ",
+     "live": " ",
+     "new": null
+    },
+    {
+     "id": 90211,
+     "raw": " ",
+     "live": " ",
+     "new": null
+    },
+    {
+     "id": 90212,
+     "raw": " ",
+     "live": " ",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Comments",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 234,
+   "examples": [
+    {
+     "id": 1039,
+     "raw": "\nTag on left side of animal",
+     "live": "\nTag on left side of animal",
+     "new": "Tag on left side of animal"
+    },
+    {
+     "id": 7422,
+     "raw": " additional F CPH-PDG-20240814-6693",
+     "live": " additional F CPH-PDG-20240814-6693",
+     "new": "additional F CPH-PDG-20240814-6693"
+    },
+    {
+     "id": 8636,
+     "raw": " PACMAN",
+     "live": " PACMAN",
+     "new": "PACMAN"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Field ID",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 62,
+   "examples": [
+    {
+     "id": 2527,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 3569,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 4734,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Field ID",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 417,
+   "examples": [
+    {
+     "id": 11118,
+     "raw": "\r\nMn17",
+     "live": "\r\nMn17",
+     "new": "Mn17"
+    },
+    {
+     "id": 18840,
+     "raw": "\r\nMn4",
+     "live": "\r\nMn4",
+     "new": "Mn4"
+    },
+    {
+     "id": 48018,
+     "raw": " MN3",
+     "live": " MN3",
+     "new": "MN3"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "ForeLeft",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 11,
+   "examples": [
+    {
+     "id": 67420,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 68139,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 68160,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "ForeRight",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 10,
+   "examples": [
+    {
+     "id": 67493,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 68139,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 68160,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "MatchNotes",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 3,
+   "examples": [
+    {
+     "id": 28876,
+     "raw": "UT, #5, 0.18898, ridging worn down. And IM: HW-MN0522284. ",
+     "live": "UT, #5, 0.18898, ridging worn down. And IM: HW-MN0522284. ",
+     "new": "UT, #5, 0.18898, ridging worn down. And IM: HW-MN0522284."
+    },
+    {
+     "id": 38605,
+     "raw": "OM, 15297 (was attached to the wrong ID 10833 in HW) ",
+     "live": "OM, 15297 (was attached to the wrong ID 10833 in HW) ",
+     "new": "OM, 15297 (was attached to the wrong ID 10833 in HW)"
+    },
+    {
+     "id": 40460,
+     "raw": "IM:15480=15200 first and second ",
+     "live": "IM:15480=15200 first and second ",
+     "new": "IM:15480=15200 first and second"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "MeasureImage",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 2,
+   "examples": [
+    {
+     "id": 25445,
+     "raw": " HSU-PDG-20201029-2583.jpg",
+     "live": " HSU-PDG-20201029-2583.jpg",
+     "new": "HSU-PDG-20201029-2583.jpg"
+    },
+    {
+     "id": 52136,
+     "raw": " C1648-13Aug-S485-SMA-0035.jpg",
+     "live": " C1648-13Aug-S485-SMA-0035.jpg",
+     "new": "C1648-13Aug-S485-SMA-0035.jpg"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Other ID",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 1671,
+   "examples": [
+    {
+     "id": 82978,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 82979,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 82980,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Record Type",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 1662,
+     "raw": "Link",
+     "live": "Link",
+     "new": "LINK"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Research Group",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 1199,
+   "examples": [
+    {
+     "id": 8459,
+     "raw": "Opp-RusselLR",
+     "live": "Opp-RusselLR",
+     "new": "Opp-RussellR"
+    },
+    {
+     "id": 11923,
+     "raw": "Opp-Martin",
+     "live": "Opp-Martin",
+     "new": "OPP-Martin"
+    },
+    {
+     "id": 11946,
+     "raw": "Opp-OBrien",
+     "live": "Opp-OBrien",
+     "new": "Opp-Obrien"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Scarring&Injury",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 43,
+   "examples": [
+    {
+     "id": 2379,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2380,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2381,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Scarring&Injury",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 1,
+   "examples": [
+    {
+     "id": 40457,
+     "raw": " AOP-20170620-4570.jpg",
+     "live": " AOP-20170620-4570.jpg",
+     "new": "AOP-20170620-4570.jpg"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Sighting",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 419,
+   "examples": [
+    {
+     "id": 37995,
+     "raw": "E5 ",
+     "live": "E5 ",
+     "new": "E5"
+    },
+    {
+     "id": 37996,
+     "raw": "S1 ",
+     "live": "S1 ",
+     "new": "S1"
+    },
+    {
+     "id": 37997,
+     "raw": "S1 ",
+     "live": "S1 ",
+     "new": "S1"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Species",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 47072,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Species",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 2195,
+   "examples": [
+    {
+     "id": 2377,
+     "raw": "BP",
+     "live": "BP",
+     "new": "Bp"
+    },
+    {
+     "id": 24352,
+     "raw": "MN",
+     "live": "MN",
+     "new": "Mn"
+    },
+    {
+     "id": 24353,
+     "raw": "MN",
+     "live": "MN",
+     "new": "Mn"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Species",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 13,
+   "examples": [
+    {
+     "id": 31105,
+     "raw": "Mn ",
+     "live": "Mn ",
+     "new": "Mn"
+    },
+    {
+     "id": 31106,
+     "raw": "Mn ",
+     "live": "Mn ",
+     "new": "Mn"
+    },
+    {
+     "id": 31107,
+     "raw": "Mn ",
+     "live": "Mn ",
+     "new": "Mn"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Tag Photo",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 43,
+   "examples": [
+    {
+     "id": 2379,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2380,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2381,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "TagType",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 75,
+   "examples": [
+    {
+     "id": 1372,
+     "raw": "dtag3",
+     "live": "dtag3",
+     "new": "Dtag3"
+    },
+    {
+     "id": 1587,
+     "raw": "Mk10F-dart",
+     "live": "Mk10F-dart",
+     "new": "Mk10F-Dart"
+    },
+    {
+     "id": 1668,
+     "raw": "Acousonde-dart",
+     "live": "Acousonde-dart",
+     "new": "Acousonde-DART"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "TagType",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 2,
+   "examples": [
+    {
+     "id": 19078,
+     "raw": " CATS",
+     "live": " CATS",
+     "new": "CATS"
+    },
+    {
+     "id": 49887,
+     "raw": " minion",
+     "live": " minion",
+     "new": "minion"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "TagType",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 14,
+   "examples": [
+    {
+     "id": 1313,
+     "raw": "Sitrack GPS",
+     "live": "Sitrack GPS",
+     "new": "Sirtrack GPS"
+    },
+    {
+     "id": 1679,
+     "raw": "Acousonde Dart",
+     "live": "Acousonde Dart",
+     "new": "Acousonde-DART"
+    },
+    {
+     "id": 1699,
+     "raw": "Mk10F DART",
+     "live": "Mk10F DART",
+     "new": "Mk10F-Dart"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "TempID",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 261,
+   "examples": [
+    {
+     "id": 39073,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 39104,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 39110,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 2210,
+   "examples": [
+    {
+     "id": 3970,
+     "raw": "KAYAK",
+     "live": "KAYAK",
+     "new": "Kayak"
+    },
+    {
+     "id": 4011,
+     "raw": "Land",
+     "live": "Land",
+     "new": "LAND"
+    },
+    {
+     "id": 4013,
+     "raw": "Land",
+     "live": "Land",
+     "new": "LAND"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 12,
+   "examples": [
+    {
+     "id": 30241,
+     "raw": "Blackfin ",
+     "live": "Blackfin ",
+     "new": "Blackfin"
+    },
+    {
+     "id": 30835,
+     "raw": "Seawolf2 ",
+     "live": "Seawolf2 ",
+     "new": "Seawolf2"
+    },
+    {
+     "id": 30836,
+     "raw": "Seawolf2 ",
+     "live": "Seawolf2 ",
+     "new": "Seawolf2"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "sighting_id",
+   "reason": "Rule 3: found by Research Group, Vessel, Date and Sighting",
+   "count": 229,
+   "examples": [
+    90231,
+    90358,
+    90266
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "sighting_id",
+   "reason": "Rule 3: orphan, no sighting with its Research Group, Vessel, Date and Sighting",
+   "count": 12,
+   "examples": [
+    19572,
+    19568,
+    19571
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "vessel_id",
+   "reason": "Rule 4: every typed vessel is in VesselListT",
+   "count": 24,
+   "examples": [
+    39100,
+    39101,
+    39103
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "vessel_id",
+   "reason": "Rule 4: one VesselListT row per vessel; today's id was one spelling of the same vessel",
+   "count": 32298,
+   "examples": [
+    {
+     "id": 32,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 33,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 34,
+     "live": 1354,
+     "new": 1353
+    }
+   ]
+  },
+  {
+   "table": "IndividualT",
+   "column": "Species",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 2,
+   "examples": [
+    {
+     "id": 1,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 8859,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "IndividualT",
+   "column": "Species",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 238,
+   "examples": [
+    {
+     "id": 3,
+     "raw": "BA",
+     "live": "BA",
+     "new": "Ba"
+    },
+    {
+     "id": 776,
+     "raw": "ER",
+     "live": "ER",
+     "new": "Er"
+    },
+    {
+     "id": 806,
+     "raw": "ER",
+     "live": "ER",
+     "new": "Er"
+    }
+   ]
+  },
+  {
+   "table": "IndividualT",
+   "column": "Species",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 3112,
+     "raw": "Bm ",
+     "live": "Bm ",
+     "new": "Bm"
+    }
+   ]
+  },
+  {
+   "table": "IndividualT",
+   "column": "Species",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 3,
+   "examples": [
+    {
+     "id": 6513,
+     "raw": "bm.",
+     "live": "bm.",
+     "new": "Bm"
+    },
+    {
+     "id": 9596,
+     "raw": "Dc.",
+     "live": "Dc.",
+     "new": "Dc"
+    },
+    {
+     "id": 11761,
+     "raw": "Un Cet",
+     "live": "Un Cet",
+     "new": "UnCet"
+    }
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "(record)",
+   "reason": "Rule 6: exact copy of another record, removed",
+   "count": 263,
+   "examples": [
+    4345,
+    4346,
+    4347
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "Comments",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 4,
+   "examples": [
+    {
+     "id": 1764,
+     "raw": " trying to feed off leftovers",
+     "live": " trying to feed off leftovers",
+     "new": "trying to feed off leftovers"
+    },
+    {
+     "id": 1883,
+     "raw": " Bec",
+     "live": " Bec",
+     "new": "Bec"
+    },
+    {
+     "id": 2950,
+     "raw": "\r\nagitated with alot of rolling andtails and pecs hb's were trumpeting and swam directly towards us",
+     "live": "\r\nagitated with alot of rolling andtails and pecs hb's were trumpeting and swam directly towards us",
+     "new": "agitated with alot of rolling andtails and pecs hb's were trumpeting and swam directly towards us"
+    }
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "Species",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 8,
+   "examples": [
+    {
+     "id": 189,
+     "raw": "TT",
+     "live": "TT",
+     "new": "Tt"
+    },
+    {
+     "id": 190,
+     "raw": "GG",
+     "live": "GG",
+     "new": "Gg"
+    },
+    {
+     "id": 1641,
+     "raw": "mn",
+     "live": "mn",
+     "new": "Mn"
+    }
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 6,
+   "examples": [
+    {
+     "id": 1009,
+     "raw": "Land",
+     "live": "Land",
+     "new": "LAND"
+    },
+    {
+     "id": 1010,
+     "raw": "Land",
+     "live": "Land",
+     "new": "LAND"
+    },
+    {
+     "id": 3391,
+     "raw": "BioRHIB",
+     "live": "BioRHIB",
+     "new": "BioRhib"
+    }
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "sighting_id",
+   "reason": "Rule 3: found by Research Group, Vessel, Date and Sighting",
+   "count": 5584,
+   "examples": [
+    3195,
+    4870,
+    4871
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "sighting_id",
+   "reason": "Rule 3: more than one sighting with its combination, and nothing tells them apart; left NULL, as today",
+   "count": 1,
+   "examples": [
+    126
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "sighting_id",
+   "reason": "Rule 3: orphan, no sighting with its Research Group, Vessel, Date and Sighting",
+   "count": 406,
+   "examples": [
+    5442,
+    5441,
+    5440
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "sighting_id (today's)",
+   "reason": "Rule 3: found by Research Group, Vessel, Date and Sighting; today matched by DailyEffortID and Sighting",
+   "count": 205,
+   "examples": [
+    3195,
+    3771,
+    4464
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "vessel_id",
+   "reason": "Rule 4: every typed vessel is in VesselListT",
+   "count": 2,
+   "examples": [
+    1164,
+    2314
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "vessel_id",
+   "reason": "Rule 4: one VesselListT row per vessel; today's id was one spelling of the same vessel",
+   "count": 2075,
+   "examples": [
+    {
+     "id": 25,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 26,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 27,
+     "live": 1354,
+     "new": 1353
+    }
+   ]
+  },
+  {
+   "table": "PermitTakeT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "PermitTakeT"
+   ]
+  },
+  {
+   "table": "ResearchGroupT",
+   "column": "(record)",
+   "reason": "Rules 4 and 9: added to the category table",
+   "count": 375,
+   "examples": [
+    719,
+    720,
+    721
+   ]
+  },
+  {
+   "table": "SampleIdentificationT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "SampleIdentificationT"
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "(record)",
+   "reason": "Rule 6: exact copy of another record, removed",
+   "count": 16,
+   "examples": [
+    2946,
+    2821,
+    2697
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Comments",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 13,
+   "examples": [
+    {
+     "id": 5,
+     "raw": " 2 samples of this animal, same label on both.",
+     "live": " 2 samples of this animal, same label on both.",
+     "new": "2 samples of this animal, same label on both."
+    },
+    {
+     "id": 295,
+     "raw": " transferred to liquid nitrogen; same as sample PHY-001",
+     "live": " transferred to liquid nitrogen; same as sample PHY-001",
+     "new": "transferred to liquid nitrogen; same as sample PHY-001"
+    },
+    {
+     "id": 607,
+     "raw": " FROM TAG HOLDER",
+     "live": " FROM TAG HOLDER",
+     "new": "FROM TAG HOLDER"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Field ID",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 46,
+   "examples": [
+    {
+     "id": 2313,
+     "raw": "Flat top ",
+     "live": "Flat top ",
+     "new": "Flat top"
+    },
+    {
+     "id": 2314,
+     "raw": "Normal ",
+     "live": "Normal ",
+     "new": "Normal"
+    },
+    {
+     "id": 2319,
+     "raw": "Bent DF ",
+     "live": "Bent DF ",
+     "new": "Bent DF"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Preservation",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 5,
+   "examples": [
+    {
+     "id": 34,
+     "raw": "freezer",
+     "live": "freezer",
+     "new": "Freezer"
+    },
+    {
+     "id": 1130,
+     "raw": "freezer",
+     "live": "freezer",
+     "new": "Freezer"
+    },
+    {
+     "id": 1131,
+     "raw": "freezer",
+     "live": "freezer",
+     "new": "Freezer"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Preservation",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 724,
+     "raw": " cool then freezer",
+     "live": " cool then freezer",
+     "new": "cool then freezer"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Preservation",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (capitals)",
+   "count": 2,
+   "examples": [
+    {
+     "id": 721,
+     "raw": "FREEZER",
+     "live": "freezer",
+     "new": "Freezer"
+    },
+    {
+     "id": 2258,
+     "raw": "FREEZER",
+     "live": "freezer",
+     "new": "Freezer"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Preservation",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 1,
+   "examples": [
+    {
+     "id": 1129,
+     "raw": "Freezer",
+     "live": "freezer",
+     "new": "Freezer"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Reaction",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 31,
+   "examples": [
+    {
+     "id": 158,
+     "raw": "startle, 3x",
+     "live": "startle, 3x",
+     "new": "Startle, 3x"
+    },
+    {
+     "id": 162,
+     "raw": "hard dive",
+     "live": "hard dive",
+     "new": "Hard Dive"
+    },
+    {
+     "id": 165,
+     "raw": "hard dive",
+     "live": "hard dive",
+     "new": "Hard Dive"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Reaction",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 2072,
+     "raw": " flexed and turned slightly",
+     "live": " flexed and turned slightly",
+     "new": "flexed and turned slightly"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Reaction",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (capitals)",
+   "count": 4,
+   "examples": [
+    {
+     "id": 1793,
+     "raw": "Hard dive",
+     "live": "hard dive",
+     "new": "Hard Dive"
+    },
+    {
+     "id": 2070,
+     "raw": "Hard tail flick",
+     "live": "hard tail flick",
+     "new": "Hard Tail Flick"
+    },
+    {
+     "id": 2810,
+     "raw": "Hard dive",
+     "live": "hard dive",
+     "new": "Hard Dive"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Reaction",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 16,
+   "examples": [
+    {
+     "id": 256,
+     "raw": "Startle, 3x",
+     "live": "startle, 3x",
+     "new": "Startle, 3x"
+    },
+    {
+     "id": 1803,
+     "raw": "Hard Dive",
+     "live": "hard dive",
+     "new": "Hard Dive"
+    },
+    {
+     "id": 1806,
+     "raw": "Hard Dive",
+     "live": "hard dive",
+     "new": "Hard Dive"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Sample #",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 1,
+   "examples": [
+    {
+     "id": 1112,
+     "raw": " HW-20210902-EK-02",
+     "live": " HW-20210902-EK-02",
+     "new": "HW-20210902-EK-02"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Sample Type",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 16,
+   "examples": [
+    {
+     "id": 586,
+     "raw": "Tissue from tag",
+     "live": "Tissue from tag",
+     "new": "Tissue from Tag"
+    },
+    {
+     "id": 608,
+     "raw": "Tissue from tag",
+     "live": "Tissue from tag",
+     "new": "Tissue from Tag"
+    },
+    {
+     "id": 609,
+     "raw": "Tissue from tag",
+     "live": "Tissue from tag",
+     "new": "Tissue from Tag"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Sample Type",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 7,
+   "examples": [
+    {
+     "id": 88,
+     "raw": "Blubber only",
+     "live": "blubber only",
+     "new": "Blubber only"
+    },
+    {
+     "id": 877,
+     "raw": "Tissue from Tag",
+     "live": "Tissue from tag",
+     "new": "Tissue from Tag"
+    },
+    {
+     "id": 1072,
+     "raw": "Tissue from Tag",
+     "live": "Tissue from tag",
+     "new": "Tissue from Tag"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Sampled by",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 2,
+   "examples": [
+    {
+     "id": 2201,
+     "raw": "Jeff  Jacobsen",
+     "live": "Jeff  Jacobsen",
+     "new": "Jeff Jacobsen"
+    },
+    {
+     "id": 2766,
+     "raw": "\r\nJAC",
+     "live": "\r\nJAC",
+     "new": "JAC"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 67,
+   "examples": [
+    {
+     "id": 1172,
+     "raw": "Ruby",
+     "live": "Ruby",
+     "new": "RUBY"
+    },
+    {
+     "id": 2193,
+     "raw": "mus",
+     "live": "mus",
+     "new": "MUS"
+    },
+    {
+     "id": 2312,
+     "raw": "Unk",
+     "live": "Unk",
+     "new": "UNK"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "sighting_id",
+   "reason": "Rule 3: found by Research Group, Vessel, Date and Sighting",
+   "count": 7,
+   "examples": [
+    3107,
+    3110,
+    3105
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "sighting_id",
+   "reason": "Rule 3: orphan, no sighting with its Research Group, Vessel, Date and Sighting",
+   "count": 22,
+   "examples": [
+    2581,
+    2590,
+    2570
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "species_id",
+   "reason": "Rule 9: a code today's list lacked is in SpeciesT",
+   "count": 9,
+   "examples": [
+    {
+     "id": 89,
+     "new": "Bm/p"
+    },
+    {
+     "id": 197,
+     "new": "Zica"
+    },
+    {
+     "id": 206,
+     "new": "Zica"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "vessel_id",
+   "reason": "Rule 4: one VesselListT row per vessel; today's id was one spelling of the same vessel",
+   "count": 1657,
+   "examples": [
+    {
+     "id": 3,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 4,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 5,
+     "live": 1354,
+     "new": 1353
+    }
+   ]
+  },
+  {
+   "table": "ServerSystemT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "ServerSystemT"
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "(record)",
+   "reason": "Rule 6: exact copy of another record, removed",
+   "count": 160,
+   "examples": [
+    489,
+    493,
+    499
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "Field ID",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 15,
+   "examples": [
+    {
+     "id": 1813,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1814,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1815,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "Field ID",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 56,
+   "examples": [
+    {
+     "id": 7369,
+     "raw": "Hook ",
+     "live": "Hook ",
+     "new": "Hook"
+    },
+    {
+     "id": 7370,
+     "raw": "Flat top ",
+     "live": "Flat top ",
+     "new": "Flat top"
+    },
+    {
+     "id": 7372,
+     "raw": "Normal ",
+     "live": "Normal ",
+     "new": "Normal"
+    }
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "Reaction",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 19,
+   "examples": [
+    {
+     "id": 112,
+     "raw": "Slight accel",
+     "live": "Slight accel",
+     "new": "Slight Accel"
+    },
+    {
+     "id": 184,
+     "raw": "accelerate",
+     "live": "accelerate",
+     "new": "Accelerate"
+    },
+    {
+     "id": 185,
+     "raw": "accelerate",
+     "live": "accelerate",
+     "new": "Accelerate"
+    }
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "Reaction",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 4,
+   "examples": [
+    {
+     "id": 707,
+     "raw": "Accelerate,  terminate SS",
+     "live": "Accelerate,  terminate SS",
+     "new": "Accelerate, terminate SS"
+    },
+    {
+     "id": 757,
+     "raw": "slight roll but continued with  lunge",
+     "live": "slight roll but continued with  lunge",
+     "new": "slight roll but continued with lunge"
+    },
+    {
+     "id": 945,
+     "raw": "Terminate SS  accel",
+     "live": "Terminate SS  accel",
+     "new": "Terminate SS accel"
+    }
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "Research Group",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 2,
+   "examples": [
+    {
+     "id": 7571,
+     "raw": "Opp-Smith",
+     "live": "Opp-Smith",
+     "new": "OPP-Smith"
+    },
+    {
+     "id": 7572,
+     "raw": "Opp-Smith",
+     "live": "Opp-Smith",
+     "new": "OPP-Smith"
+    }
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "SightEvent",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 37,
+   "examples": [
+    {
+     "id": 1499,
+     "raw": "drone",
+     "live": "drone",
+     "new": "Drone"
+    },
+    {
+     "id": 1669,
+     "raw": "Sample-other",
+     "live": "Sample-other",
+     "new": "Sample-Other"
+    },
+    {
+     "id": 2207,
+     "raw": "c",
+     "live": "c",
+     "new": "C"
+    }
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "SightEventComments",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 24,
+   "examples": [
+    {
+     "id": 7,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 8,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 84,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "SightEventComments",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 11,
+   "examples": [
+    {
+     "id": 253,
+     "raw": " Vocs cease. Head toward posit.",
+     "live": " Vocs cease. Head toward posit.",
+     "new": "Vocs cease. Head toward posit."
+    },
+    {
+     "id": 1900,
+     "raw": " not a good stick tag came off, hit whale/water edge",
+     "live": " not a good stick tag came off, hit whale/water edge",
+     "new": "not a good stick tag came off, hit whale/water edge"
+    },
+    {
+     "id": 2883,
+     "raw": " EDNA 10 SAMPLE CLOSE BY ANIMALS MILL",
+     "live": " EDNA 10 SAMPLE CLOSE BY ANIMALS MILL",
+     "new": "EDNA 10 SAMPLE CLOSE BY ANIMALS MILL"
+    }
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 99,
+   "examples": [
+    {
+     "id": 7367,
+     "raw": "Unk",
+     "live": "Unk",
+     "new": "UNK"
+    },
+    {
+     "id": 7368,
+     "raw": "Unk",
+     "live": "Unk",
+     "new": "UNK"
+    },
+    {
+     "id": 7369,
+     "raw": "Unk",
+     "live": "Unk",
+     "new": "UNK"
+    }
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "sighting_id",
+   "reason": "Rule 3: found by Research Group, Vessel, Date and Sighting",
+   "count": 8007,
+   "examples": [
+    3187,
+    2282,
+    2977
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "sighting_id",
+   "reason": "Rule 3: more than one sighting with its combination, and nothing tells them apart; left NULL, as today",
+   "count": 21,
+   "examples": [
+    2662,
+    2728,
+    2656
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "sighting_id",
+   "reason": "Rule 3: orphan, no sighting with its Research Group, Vessel, Date and Sighting",
+   "count": 9,
+   "examples": [
+    8184,
+    8181,
+    8179
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "sighting_id (today's)",
+   "reason": "Rule 3: found by Research Group, Vessel, Date and Sighting; today matched by DailyEffortID and Sighting",
+   "count": 291,
+   "examples": [
+    8007,
+    8002,
+    8019
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "vessel_id",
+   "reason": "Rule 4: one VesselListT row per vessel; today's id was one spelling of the same vessel",
+   "count": 4825,
+   "examples": [
+    {
+     "id": 276,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 277,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 278,
+     "live": 1354,
+     "new": 1353
+    }
+   ]
+  },
+  {
+   "table": "SightingFollowT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "SightingFollowT"
+   ]
+  },
+  {
+   "table": "SightingIdentificationT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "SightingIdentificationT"
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "(record)",
+   "reason": "Rule 6: exact copy of another record, removed",
+   "count": 3508,
+   "examples": [
+    104659,
+    104660,
+    104661
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Acoustics",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 66,
+   "examples": [
+    {
+     "id": 218,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 220,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 235,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Acoustics",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 5,
+   "examples": [
+    {
+     "id": 1108,
+     "raw": "Playback control ",
+     "live": "Playback control ",
+     "new": "Playback control"
+    },
+    {
+     "id": 1174,
+     "raw": "Playback candidate ",
+     "live": "Playback candidate ",
+     "new": "Playback candidate"
+    },
+    {
+     "id": 3343,
+     "raw": " leave whale after Several distant approaches, still singing, heading S",
+     "live": " leave whale after Several distant approaches, still singing, heading S",
+     "new": "leave whale after Several distant approaches, still singing, heading S"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Acoustics",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 4,
+   "examples": [
+    {
+     "id": 4255,
+     "raw": "playback conducted",
+     "live": "Playback conducted",
+     "new": "playback conducted"
+    },
+    {
+     "id": 14213,
+     "raw": "YES",
+     "live": "Yes",
+     "new": "YES"
+    },
+    {
+     "id": 41951,
+     "raw": "LAT LONG ON LAND",
+     "live": "lat long on land",
+     "new": "LAT LONG ON LAND"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "AltSighting",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 560,
+   "examples": [
+    {
+     "id": 2238,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2239,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2240,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "AltVessel",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 556,
+   "examples": [
+    {
+     "id": 2238,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2239,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 2240,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "AltVessel",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 4,
+   "examples": [
+    {
+     "id": 46517,
+     "raw": "Kelp",
+     "live": "Kelp",
+     "new": "KELP"
+    },
+    {
+     "id": 46518,
+     "raw": "Kelp",
+     "live": "Kelp",
+     "new": "KELP"
+    },
+    {
+     "id": 46844,
+     "raw": "kelp",
+     "live": "kelp",
+     "new": "KELP"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Comments",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 1579,
+   "examples": [
+    {
+     "id": 17,
+     "raw": " ",
+     "live": " ",
+     "new": null
+    },
+    {
+     "id": 18,
+     "raw": " ",
+     "live": " ",
+     "new": null
+    },
+    {
+     "id": 19,
+     "raw": " ",
+     "live": " ",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Comments",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 2635,
+   "examples": [
+    {
+     "id": 16,
+     "raw": "208-210 TRAIL ",
+     "live": "208-210 TRAIL ",
+     "new": "208-210 TRAIL"
+    },
+    {
+     "id": 24,
+     "raw": "VERY UNUSUAL LOOKING ",
+     "live": "VERY UNUSUAL LOOKING ",
+     "new": "VERY UNUSUAL LOOKING"
+    },
+    {
+     "id": 26,
+     "raw": " TIGHT",
+     "live": " TIGHT",
+     "new": "TIGHT"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "D units",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 1383,
+   "examples": [
+    {
+     "id": 58753,
+     "raw": "M",
+     "live": "M",
+     "new": "m"
+    },
+    {
+     "id": 58754,
+     "raw": "M",
+     "live": "M",
+     "new": "m"
+    },
+    {
+     "id": 58755,
+     "raw": "M",
+     "live": "M",
+     "new": "m"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "DOT",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 127,
+   "examples": [
+    {
+     "id": 4660,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 4661,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 6208,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "DOT",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 62,
+   "examples": [
+    {
+     "id": 45314,
+     "raw": "SouthWest",
+     "live": "SouthWest",
+     "new": "Southwest"
+    },
+    {
+     "id": 45809,
+     "raw": "SouthWest",
+     "live": "SouthWest",
+     "new": "Southwest"
+    },
+    {
+     "id": 58815,
+     "raw": "SOUTH",
+     "live": "SOUTH",
+     "new": "South"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "DOT",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 39,
+   "examples": [
+    {
+     "id": 37081,
+     "raw": "South",
+     "live": "SOUTH",
+     "new": "South"
+    },
+    {
+     "id": 37083,
+     "raw": "South",
+     "live": "SOUTH",
+     "new": "South"
+    },
+    {
+     "id": 37114,
+     "raw": "North",
+     "live": "NORTH",
+     "new": "North"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "End Dec Long",
+   "reason": "Rule 8: the edit-form trial (entry 109) is deleted from the log",
+   "count": 1,
+   "examples": [
+    {
+     "id": 114893,
+     "live": -119.1966,
+     "new": -129.1966
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Frames 1",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 439,
+   "examples": [
+    {
+     "id": 219,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1077,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1397,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Frames 1",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 73,
+   "examples": [
+    {
+     "id": 11473,
+     "raw": " N7200B-5876-5909",
+     "live": " N7200B-5876-5909",
+     "new": "N7200B-5876-5909"
+    },
+    {
+     "id": 23732,
+     "raw": " 3421-3436, 3450-3507",
+     "live": " 3421-3436, 3450-3507",
+     "new": "3421-3436, 3450-3507"
+    },
+    {
+     "id": 28265,
+     "raw": " 32 / 41-43",
+     "live": " 32 / 41-43",
+     "new": "32 / 41-43"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Frames 2",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 541,
+   "examples": [
+    {
+     "id": 219,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1077,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1268,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Frames 2",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 8,
+   "examples": [
+    {
+     "id": 3288,
+     "raw": " 8328-8369",
+     "live": " 8328-8369",
+     "new": "8328-8369"
+    },
+    {
+     "id": 4256,
+     "raw": " 1229-1277",
+     "live": " 1229-1277",
+     "new": "1229-1277"
+    },
+    {
+     "id": 5686,
+     "raw": "  -98",
+     "live": "  -98",
+     "new": "-98"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Frames 3",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 162,
+   "examples": [
+    {
+     "id": 6208,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 6209,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 6210,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Beh",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 987,
+   "examples": [
+    {
+     "id": 1322,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 3043,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 3044,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Beh",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 630,
+   "examples": [
+    {
+     "id": 40,
+     "raw": "Moderate travel",
+     "live": "Moderate travel",
+     "new": "Moderate Travel"
+    },
+    {
+     "id": 197,
+     "raw": "Moderate travel",
+     "live": "Moderate travel",
+     "new": "Moderate Travel"
+    },
+    {
+     "id": 315,
+     "raw": "Moderate travel",
+     "live": "Moderate travel",
+     "new": "Moderate Travel"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Beh",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 3,
+   "examples": [
+    {
+     "id": 11706,
+     "raw": "feeding along kelp edge ",
+     "live": "feeding along kelp edge ",
+     "new": "feeding along kelp edge"
+    },
+    {
+     "id": 11707,
+     "raw": "feeding just outside kelp ",
+     "live": "feeding just outside kelp ",
+     "new": "feeding just outside kelp"
+    },
+    {
+     "id": 12352,
+     "raw": "feeding against rock ",
+     "live": "feeding against rock ",
+     "new": "feeding against rock"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Beh",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (capitals)",
+   "count": 7,
+   "examples": [
+    {
+     "id": 14161,
+     "raw": "moderate travel",
+     "live": "Moderate travel",
+     "new": "Moderate Travel"
+    },
+    {
+     "id": 23281,
+     "raw": "moderate travel",
+     "live": "Moderate travel",
+     "new": "Moderate Travel"
+    },
+    {
+     "id": 39262,
+     "raw": "SOCIAL",
+     "live": "social",
+     "new": "Social"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Beh",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 39,
+   "examples": [
+    {
+     "id": 3054,
+     "raw": "Bow Riding",
+     "live": "Bow riding",
+     "new": "Bow Riding"
+    },
+    {
+     "id": 3370,
+     "raw": "Bow Riding",
+     "live": "Bow riding",
+     "new": "Bow Riding"
+    },
+    {
+     "id": 3558,
+     "raw": "Bow Riding",
+     "live": "Bow riding",
+     "new": "Bow Riding"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Type",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 849,
+   "examples": [
+    {
+     "id": 222,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 248,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 259,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Type",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 244,
+   "examples": [
+    {
+     "id": 709,
+     "raw": "scattered aggregation",
+     "live": "scattered aggregation",
+     "new": "Scattered aggregation"
+    },
+    {
+     "id": 724,
+     "raw": "McE",
+     "live": "McE",
+     "new": "MCE"
+    },
+    {
+     "id": 1370,
+     "raw": "100x200",
+     "live": "100x200",
+     "new": "100X200"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Type",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 171,
+   "examples": [
+    {
+     "id": 718,
+     "raw": "4+ 2",
+     "live": "4+ 2",
+     "new": "4+2"
+    },
+    {
+     "id": 721,
+     "raw": "Pair+ 1",
+     "live": "Pair+ 1",
+     "new": "Pair + 1"
+    },
+    {
+     "id": 1389,
+     "raw": "2 + 1",
+     "live": "2 + 1",
+     "new": "2+1"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Type",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 14,
+   "examples": [
+    {
+     "id": 5822,
+     "raw": "LD TR",
+     "live": "LD TR",
+     "new": "LdTr"
+    },
+    {
+     "id": 5866,
+     "raw": "tight grp",
+     "live": "tight grp",
+     "new": "Tight group"
+    },
+    {
+     "id": 6649,
+     "raw": "sollo",
+     "live": "sollo",
+     "new": "solo"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Type",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (capitals)",
+   "count": 4,
+   "examples": [
+    {
+     "id": 10051,
+     "raw": "mce",
+     "live": "McE",
+     "new": "MCE"
+    },
+    {
+     "id": 100614,
+     "raw": "mcE",
+     "live": "McE",
+     "new": "MCE"
+    },
+    {
+     "id": 101586,
+     "raw": "mcE",
+     "live": "McE",
+     "new": "MCE"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Type",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (spaces)",
+   "count": 2,
+   "examples": [
+    {
+     "id": 15389,
+     "raw": "MC + 1",
+     "live": "Mc + 1",
+     "new": "Mc+1"
+    },
+    {
+     "id": 22206,
+     "raw": "MC + 1",
+     "live": "Mc + 1",
+     "new": "Mc+1"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Type",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (typo)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 110116,
+     "raw": "loose agg.",
+     "live": "Loose agg.",
+     "new": "Loose Agg"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Type",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 72,
+   "examples": [
+    {
+     "id": 710,
+     "raw": "Scattered aggregation",
+     "live": "scattered aggregation",
+     "new": "Scattered aggregation"
+    },
+    {
+     "id": 725,
+     "raw": "MCE",
+     "live": "McE",
+     "new": "MCE"
+    },
+    {
+     "id": 1564,
+     "raw": "100X200",
+     "live": "100x200",
+     "new": "100X200"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "LocDesc",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 140,
+   "examples": [
+    {
+     "id": 11709,
+     "raw": "Darling  ",
+     "live": "Darling  ",
+     "new": "Darling"
+    },
+    {
+     "id": 12269,
+     "raw": "Seabird Rocks ",
+     "live": "Seabird Rocks ",
+     "new": "Seabird Rocks"
+    },
+    {
+     "id": 12274,
+     "raw": "Pachena Light ",
+     "live": "Pachena Light ",
+     "new": "Pachena Light"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Num Calves",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 236,
+   "examples": [
+    {
+     "id": 235,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 237,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 238,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Num Calves",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 902,
+   "examples": [
+    {
+     "id": 52,
+     "raw": "un",
+     "live": "un",
+     "new": "UN"
+    },
+    {
+     "id": 58,
+     "raw": "un",
+     "live": "un",
+     "new": "UN"
+    },
+    {
+     "id": 59,
+     "raw": "un",
+     "live": "un",
+     "new": "UN"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Num Calves",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 2,
+   "examples": [
+    {
+     "id": 9727,
+     "raw": " 0",
+     "live": " 0",
+     "new": "0"
+    },
+    {
+     "id": 46476,
+     "raw": " >5",
+     "live": " >5",
+     "new": ">5"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Obs",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 33,
+   "examples": [
+    {
+     "id": 3042,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 3048,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 3252,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Other Beh 1",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 965,
+   "examples": [
+    {
+     "id": 221,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 222,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 233,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Other Beh 1",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 265,
+   "examples": [
+    {
+     "id": 5315,
+     "raw": "side swim",
+     "live": "side swim",
+     "new": "Side Swim"
+    },
+    {
+     "id": 5897,
+     "raw": "foraging?",
+     "live": "foraging?",
+     "new": "Foraging?"
+    },
+    {
+     "id": 6885,
+     "raw": "side swim",
+     "live": "side swim",
+     "new": "Side Swim"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Other Beh 1",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 162,
+   "examples": [
+    {
+     "id": 78,
+     "raw": "Bowriding",
+     "live": "Bowriding",
+     "new": "bow-riding"
+    },
+    {
+     "id": 290,
+     "raw": "Bowriding",
+     "live": "Bowriding",
+     "new": "bow-riding"
+    },
+    {
+     "id": 622,
+     "raw": "Bowriding",
+     "live": "Bowriding",
+     "new": "bow-riding"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Other Beh 1",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (capitals)",
+   "count": 2,
+   "examples": [
+    {
+     "id": 59784,
+     "raw": "FLUKING",
+     "live": "fluking",
+     "new": "Fluking"
+    },
+    {
+     "id": 114533,
+     "raw": "Side swim",
+     "live": "side swim",
+     "new": "Side Swim"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Other Beh 1",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule (typo)",
+   "count": 3,
+   "examples": [
+    {
+     "id": 3320,
+     "raw": "Bow Riding",
+     "live": "Bow riding",
+     "new": "bow-riding"
+    },
+    {
+     "id": 116200,
+     "raw": "bow riding",
+     "live": "Bow riding",
+     "new": "bow-riding"
+    },
+    {
+     "id": 117284,
+     "raw": "Tail-Lob",
+     "live": "tail-lob",
+     "new": "Tail Lob"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Other Beh 1",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 48,
+   "examples": [
+    {
+     "id": 14256,
+     "raw": "Foraging?",
+     "live": "foraging?",
+     "new": "Foraging?"
+    },
+    {
+     "id": 15403,
+     "raw": "Logging",
+     "live": "logging",
+     "new": "Logging"
+    },
+    {
+     "id": 16118,
+     "raw": "Fluking",
+     "live": "fluking",
+     "new": "Fluking"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Other Beh 2",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 684,
+   "examples": [
+    {
+     "id": 218,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 220,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 221,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Other Beh 2",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 4,
+   "examples": [
+    {
+     "id": 6122,
+     "raw": "side swim",
+     "live": "side swim",
+     "new": "Side Swim"
+    },
+    {
+     "id": 6585,
+     "raw": "side swim",
+     "live": "side swim",
+     "new": "Side Swim"
+    },
+    {
+     "id": 99131,
+     "raw": "fluking",
+     "live": "fluking",
+     "new": "Fluking"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Other Beh 2",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 25476,
+     "raw": " Travelling",
+     "live": " Travelling",
+     "new": "Travelling"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Other Beh 2",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 3,
+   "examples": [
+    {
+     "id": 16120,
+     "raw": "Fluking",
+     "live": "fluking",
+     "new": "Fluking"
+    },
+    {
+     "id": 117112,
+     "raw": "Side Swim",
+     "live": "side swim",
+     "new": "Side Swim"
+    },
+    {
+     "id": 117114,
+     "raw": "Side Swim",
+     "live": "side swim",
+     "new": "Side Swim"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Other Beh 3",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 316,
+   "examples": [
+    {
+     "id": 218,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 219,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 220,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Permit",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 154,
+   "examples": [
+    {
+     "id": 6089,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 6090,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 6091,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 1",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 435,
+   "examples": [
+    {
+     "id": 4892,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 4893,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 4894,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 1",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 862,
+   "examples": [
+    {
+     "id": 4456,
+     "raw": "Fleur visser",
+     "live": "Fleur visser",
+     "new": "Fleur Visser"
+    },
+    {
+     "id": 4457,
+     "raw": "fleur visser",
+     "live": "fleur visser",
+     "new": "Fleur Visser"
+    },
+    {
+     "id": 8245,
+     "raw": "Michael fishbach",
+     "live": "Michael fishbach",
+     "new": "Michael Fishbach"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 1",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 230,
+   "examples": [
+    {
+     "id": 8474,
+     "raw": "Tami Fifield\r\nTami Fifield",
+     "live": "Tami Fifield\r\nTami Fifield",
+     "new": "Tami Fifield Tami Fifield"
+    },
+    {
+     "id": 24254,
+     "raw": "Island Adventures\r\nIsland Adventures",
+     "live": "Island Adventures\r\nIsland Adventures",
+     "new": "Island Adventures Island Adventures"
+    },
+    {
+     "id": 30636,
+     "raw": " Taylor Rice",
+     "live": " Taylor Rice",
+     "new": "Taylor Rice"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 1",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 554,
+   "examples": [
+    {
+     "id": 22,
+     "raw": "ARIE FRIEDLANDER",
+     "live": "ARIE FRIEDLANDER",
+     "new": "Ari Friedlaender"
+    },
+    {
+     "id": 2685,
+     "raw": "Stacey DeRuiter",
+     "live": "Stacey DeRuiter",
+     "new": "Stacy DeRuiter"
+    },
+    {
+     "id": 3101,
+     "raw": "Jessica Achettino",
+     "live": "Jessica Achettino",
+     "new": "Jessica Aschettino"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 2",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 497,
+   "examples": [
+    {
+     "id": 4892,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 4893,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 4894,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 2",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 145,
+   "examples": [
+    {
+     "id": 157,
+     "raw": "BARB TAYLOR",
+     "live": "BARB TAYLOR",
+     "new": "Barb Taylor"
+    },
+    {
+     "id": 159,
+     "raw": "BARB TAYLOR",
+     "live": "BARB TAYLOR",
+     "new": "Barb Taylor"
+    },
+    {
+     "id": 163,
+     "raw": "BARB TAYLOR",
+     "live": "BARB TAYLOR",
+     "new": "Barb Taylor"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 2",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 28,
+   "examples": [
+    {
+     "id": 4540,
+     "raw": "Erin  Stehr",
+     "live": "Erin  Stehr",
+     "new": "Erin Stehr"
+    },
+    {
+     "id": 39265,
+     "raw": " Anderson deReuiter",
+     "live": " Anderson deReuiter",
+     "new": "Anderson deReuiter"
+    },
+    {
+     "id": 52447,
+     "raw": "Daniel  Bianchetta",
+     "live": "Daniel  Bianchetta",
+     "new": "Daniel Bianchetta"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 2",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 78,
+   "examples": [
+    {
+     "id": 16,
+     "raw": "AREI FRIEDLANDER",
+     "live": "AREI FRIEDLANDER",
+     "new": "Ari Friedlaender"
+    },
+    {
+     "id": 17,
+     "raw": "ARIE FRIEDLANDER",
+     "live": "ARIE FRIEDLANDER",
+     "new": "Ari Friedlaender"
+    },
+    {
+     "id": 21,
+     "raw": "ARI FRIEDLANDER",
+     "live": "ARI FRIEDLANDER",
+     "new": "Ari Friedlaender"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 3",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 74,
+   "examples": [
+    {
+     "id": 6208,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 6209,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 6210,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 3",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 22,
+   "examples": [
+    {
+     "id": 8339,
+     "raw": "Mavic3pro",
+     "live": "Mavic3pro",
+     "new": "Mavic3Pro"
+    },
+    {
+     "id": 8341,
+     "raw": "Mavic3pro",
+     "live": "Mavic3pro",
+     "new": "Mavic3Pro"
+    },
+    {
+     "id": 8352,
+     "raw": "Mavic3pro",
+     "live": "Mavic3pro",
+     "new": "Mavic3Pro"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 3",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 2,
+   "examples": [
+    {
+     "id": 2142,
+     "raw": "Stacey DeRuiter",
+     "live": "Stacey DeRuiter",
+     "new": "Stacy DeRuiter"
+    },
+    {
+     "id": 4740,
+     "raw": "Ari Freidlaender",
+     "live": "Ari Freidlaender",
+     "new": "Ari Friedlaender"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "PreyType",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 47,
+   "examples": [
+    {
+     "id": 218,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 248,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 249,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Research Group",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 1033,
+   "examples": [
+    {
+     "id": 12102,
+     "raw": "Opp-RusselLR",
+     "live": "Opp-RusselLR",
+     "new": "Opp-RussellR"
+    },
+    {
+     "id": 16751,
+     "raw": "Opp-Cardenas",
+     "live": "Opp-Cardenas",
+     "new": "OPP-Cardenas"
+    },
+    {
+     "id": 16752,
+     "raw": "Opp-Cardenas",
+     "live": "Opp-Cardenas",
+     "new": "OPP-Cardenas"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Roll/File Number 1",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 157,
+   "examples": [
+    {
+     "id": 99787,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 99789,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 99790,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Roll/File Number 2",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 177,
+   "examples": [
+    {
+     "id": 99787,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 99788,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 99789,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Roll/File Number 2",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 1,
+   "examples": [
+    {
+     "id": 110992,
+     "raw": " MichuruOgino-20071003-SBC wSk",
+     "live": " MichuruOgino-20071003-SBC wSk",
+     "new": "MichuruOgino-20071003-SBC wSk"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Scattering",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 66,
+   "examples": [
+    {
+     "id": 235,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 248,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 261,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Scattering",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 16,
+   "examples": [
+    {
+     "id": 121,
+     "raw": " Krill at 100-150, 260-300",
+     "live": " Krill at 100-150, 260-300",
+     "new": "Krill at 100-150, 260-300"
+    },
+    {
+     "id": 219,
+     "raw": "Sonar logged ",
+     "live": "Sonar logged ",
+     "new": "Sonar logged"
+    },
+    {
+     "id": 260,
+     "raw": "Very faint band from 190-250m at start of sighting, occasional intermittent bands shallower, see sonar log ",
+     "live": "Very faint band from 190-250m at start of sighting, occasional intermittent bands shallower, see sonar log ",
+     "new": "Very faint band from 190-250m at start of sighting, occasional intermittent bands shallower, see sonar log"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Series Number 1",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 448,
+   "examples": [
+    {
+     "id": 219,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1168,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1169,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Series Number 1",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 107,
+   "examples": [
+    {
+     "id": 1095,
+     "raw": "20100927-30D ",
+     "live": "20100927-30D ",
+     "new": "20100927-30D"
+    },
+    {
+     "id": 2905,
+     "raw": "\n20121013-D25",
+     "live": "\n20121013-D25",
+     "new": "20121013-D25"
+    },
+    {
+     "id": 3097,
+     "raw": " 20120805-D14",
+     "live": " 20120805-D14",
+     "new": "20120805-D14"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Series Number 2",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 361,
+   "examples": [
+    {
+     "id": 1168,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1169,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 1325,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Series Number 2",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 5,
+   "examples": [
+    {
+     "id": 2905,
+     "raw": "\n20121013-D16",
+     "live": "\n20121013-D16",
+     "new": "20121013-D16"
+    },
+    {
+     "id": 4256,
+     "raw": " 20130919-BFW",
+     "live": " 20130919-BFW",
+     "new": "20130919-BFW"
+    },
+    {
+     "id": 53859,
+     "raw": " CRC\\PA Whale Watch\\20160715\\D16",
+     "live": " CRC\\PA Whale Watch\\20160715\\D16",
+     "new": "CRC\\PA Whale Watch\\20160715\\D16"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Series Number 3",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 163,
+   "examples": [
+    {
+     "id": 6208,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 6209,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 6210,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Sighting",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 3,
+   "examples": [
+    {
+     "id": 30502,
+     "raw": " 4",
+     "live": " 4",
+     "new": "4"
+    },
+    {
+     "id": 44758,
+     "raw": "E2 ",
+     "live": "E2 ",
+     "new": "E2"
+    },
+    {
+     "id": 72866,
+     "raw": " 5",
+     "live": " 5",
+     "new": "5"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Species",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 7,
+   "examples": [
+    {
+     "id": 23810,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 53458,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 53484,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Species",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 8,
+   "examples": [
+    {
+     "id": 24787,
+     "raw": "Unk",
+     "live": "Unk",
+     "new": "UNK"
+    },
+    {
+     "id": 24906,
+     "raw": "Unk",
+     "live": "Unk",
+     "new": "UNK"
+    },
+    {
+     "id": 24973,
+     "raw": "Unk",
+     "live": "Unk",
+     "new": "UNK"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Species",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 114984,
+     "raw": "Un Cet",
+     "live": "Un Cet",
+     "new": "UnCet"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Species",
+   "reason": "Rule 5: today folded capitals by each research group's commonest spelling; new rule keeps one spelling for all",
+   "count": 3,
+   "examples": [
+    {
+     "id": 38703,
+     "raw": "Unknown",
+     "live": "unknown",
+     "new": "Unknown"
+    },
+    {
+     "id": 97722,
+     "raw": "BM/BP",
+     "live": "Bm/Bp",
+     "new": "BM/BP"
+    },
+    {
+     "id": 117242,
+     "raw": "BP/BM",
+     "live": "Bp/Bm",
+     "new": "BP/BM"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Species",
+   "reason": "Rule 5: today's own mapping for Species; replaced by the spelling rule",
+   "count": 447,
+   "examples": [
+    {
+     "id": 52,
+     "raw": "UD",
+     "live": "UnDelph",
+     "new": "UD"
+    },
+    {
+     "id": 57,
+     "raw": "UD",
+     "live": "UnDelph",
+     "new": "UD"
+    },
+    {
+     "id": 59,
+     "raw": "UD",
+     "live": "UnDelph",
+     "new": "UD"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Temp",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 7187,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 2073,
+   "examples": [
+    {
+     "id": 8233,
+     "raw": "KAYAK",
+     "live": "KAYAK",
+     "new": "Kayak"
+    },
+    {
+     "id": 8420,
+     "raw": "Land",
+     "live": "Land",
+     "new": "LAND"
+    },
+    {
+     "id": 8422,
+     "raw": "Land",
+     "live": "Land",
+     "new": "LAND"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 227,
+   "examples": [
+    {
+     "id": 14682,
+     "raw": "IPCO Explorer ",
+     "live": "IPCO Explorer ",
+     "new": "IPCO Explorer"
+    },
+    {
+     "id": 14683,
+     "raw": "IPCO Explorer ",
+     "live": "IPCO Explorer ",
+     "new": "IPCO Explorer"
+    },
+    {
+     "id": 14684,
+     "raw": "IPCO Explorer ",
+     "live": "IPCO Explorer ",
+     "new": "IPCO Explorer"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "end_geom",
+   "reason": "follows End Dec Long",
+   "count": 1,
+   "examples": [
+    {
+     "id": 114893,
+     "live": "0101000020E610000031992A1895CC5DC043AD69DE715A4940",
+     "new": "0101000020E6100000984C158C4A2660C043AD69DE715A4940"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "identified_individual_count",
+   "reason": "IdentificationT note: counted from IdentificationT, not from SightingIdentificationT",
+   "count": 82361,
+   "examples": [
+    {
+     "id": 1,
+     "live": 1.0,
+     "new": 0.0
+    },
+    {
+     "id": 2,
+     "live": 1.0,
+     "new": 0.0
+    },
+    {
+     "id": 3,
+     "live": 1.0,
+     "new": 0.0
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "species_id",
+   "reason": "Rule 4: the same code, as DB167's SpeciesT spells it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 114984,
+     "live": "Un Cet",
+     "new": "UnCet"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "species_id",
+   "reason": "Rule 4: the same species, coded as DB167's SpeciesT codes it",
+   "count": 186,
+   "examples": [
+    {
+     "id": 434,
+     "live": "Zc",
+     "new": "Zica"
+    },
+    {
+     "id": 437,
+     "live": "Zc",
+     "new": "Zica"
+    },
+    {
+     "id": 439,
+     "live": "Zc",
+     "new": "Zica"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "species_id",
+   "reason": "Rule 9: a code today's list lacked is in SpeciesT",
+   "count": 39,
+   "examples": [
+    {
+     "id": 446,
+     "new": "Bbo/Be"
+    },
+    {
+     "id": 4787,
+     "new": "Bm/p"
+    },
+    {
+     "id": 5199,
+     "new": "Bm/p"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "species_id",
+   "reason": "SightingT note: a species text that matches no code in SpeciesT keeps its text, with the FK NULL",
+   "count": 382,
+   "examples": [
+    {
+     "id": 52,
+     "text": "UD",
+     "live": "UnDelph"
+    },
+    {
+     "id": 57,
+     "text": "UD",
+     "live": "UnDelph"
+    },
+    {
+     "id": 59,
+     "text": "UD",
+     "live": "UnDelph"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "species_id",
+   "reason": "SightingT note: ddc is matched to Dc",
+   "count": 146,
+   "examples": [
+    {
+     "id": 113561,
+     "live": "Ddc",
+     "new": "Dc"
+    },
+    {
+     "id": 113563,
+     "live": "Ddc",
+     "new": "Dc"
+    },
+    {
+     "id": 114041,
+     "live": "Ddc",
+     "new": "Dc"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "species_id",
+   "reason": "SightingT note: ddd is matched to Dd",
+   "count": 38,
+   "examples": [
+    {
+     "id": 114269,
+     "live": "Ddd",
+     "new": "Dd"
+    },
+    {
+     "id": 114272,
+     "live": "Ddd",
+     "new": "Dd"
+    },
+    {
+     "id": 114273,
+     "live": "Ddd",
+     "new": "Dd"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "species_id",
+   "reason": "SightingT note: zc is matched to Zaca",
+   "count": 46,
+   "examples": [
+    {
+     "id": 45546,
+     "live": "Zc",
+     "new": "Zaca"
+    },
+    {
+     "id": 60517,
+     "live": "Zc",
+     "new": "Zaca"
+    },
+    {
+     "id": 60743,
+     "live": "Zc",
+     "new": "Zaca"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "vessel_id",
+   "reason": "Rule 4: one VesselListT row per vessel; today's id was one spelling of the same vessel",
+   "count": 40687,
+   "examples": [
+    {
+     "id": 16,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 17,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 18,
+     "live": 1354,
+     "new": 1353
+    }
+   ]
+  },
+  {
+   "table": "SpeciesT",
+   "column": "(record)",
+   "reason": "In DB167's SpeciesT, not in today's hand-kept list",
+   "count": 68,
+   "examples": [
+    "PET-FT",
+    "SHW-ST",
+    "LOON-CO"
+   ]
+  },
+  {
+   "table": "SpeciesT",
+   "column": "(record)",
+   "reason": "Today's hand-kept list had it; DB167's SpeciesT does not (the new SpeciesT is DB167's, plus rule 9)",
+   "count": 30,
+   "examples": [
+    "Zcav",
+    "NA",
+    "Unid. Balaenopterid"
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "Attachment",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 41,
+   "examples": [
+    {
+     "id": 631,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 632,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 634,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "CallTypes",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 41,
+   "examples": [
+    {
+     "id": 631,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 632,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 634,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "DeployBodyLoc",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 6,
+   "examples": [
+    {
+     "id": 635,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 677,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 680,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "DeployBodyLoc",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 98,
+   "examples": [
+    {
+     "id": 16,
+     "raw": "FORWARD LEFT",
+     "live": "FORWARD LEFT",
+     "new": "forward left"
+    },
+    {
+     "id": 39,
+     "raw": "HIGH L FORWARD",
+     "live": "HIGH L FORWARD",
+     "new": "High L forward"
+    },
+    {
+     "id": 48,
+     "raw": "High L side",
+     "live": "High L side",
+     "new": "HIGH L SIDE"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "DeployBodyLoc",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 22,
+   "examples": [
+    {
+     "id": 139,
+     "raw": "top of back  4 m ahead of df",
+     "live": "top of back  4 m ahead of df",
+     "new": "top of back 4 m ahead of df"
+    },
+    {
+     "id": 149,
+     "raw": "slightly t half eay df  bh",
+     "live": "slightly t half eay df  bh",
+     "new": "slightly t half eay df bh"
+    },
+    {
+     "id": 151,
+     "raw": "High l side  near df",
+     "live": "High l side  near df",
+     "new": "High l side near df"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "DeployRxn",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 15,
+   "examples": [
+    {
+     "id": 103,
+     "raw": "slight Accelerate",
+     "live": "slight Accelerate",
+     "new": "Slight accelerate"
+    },
+    {
+     "id": 281,
+     "raw": "roll",
+     "live": "roll",
+     "new": "ROLL"
+    },
+    {
+     "id": 538,
+     "raw": "roll",
+     "live": "roll",
+     "new": "ROLL"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "DeployRxn",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 6,
+   "examples": [
+    {
+     "id": 643,
+     "raw": "Accel, SSS ",
+     "live": "Accel, SSS ",
+     "new": "Accel, SSS"
+    },
+    {
+     "id": 644,
+     "raw": "Accel, SSS ",
+     "live": "Accel, SSS ",
+     "new": "Accel, SSS"
+    },
+    {
+     "id": 661,
+     "raw": "Pause, roll, and dive under  boat",
+     "live": "Pause, roll, and dive under  boat",
+     "new": "Pause, roll, and dive under boat"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "Descriptions",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 41,
+   "examples": [
+    {
+     "id": 631,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 632,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 634,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "DiveTypes",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 14,
+   "examples": [
+    {
+     "id": 632,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 635,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 636,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "PreyData",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 41,
+   "examples": [
+    {
+     "id": 631,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 632,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 634,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "Tag#",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 9,
+   "examples": [
+    {
+     "id": 498,
+     "raw": " 6105650",
+     "live": " 6105650",
+     "new": "6105650"
+    },
+    {
+     "id": 501,
+     "raw": " 6105641",
+     "live": " 6105641",
+     "new": "6105641"
+    },
+    {
+     "id": 504,
+     "raw": " 6123031",
+     "live": " 6123031",
+     "new": "6123031"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "TagComments",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 682,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "TagComments",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 16,
+   "examples": [
+    {
+     "id": 51,
+     "raw": " ONE CUP attachment on drop recovered by ZIP, photo 20230414-KRF-0204.jpg",
+     "live": " ONE CUP attachment on drop recovered by ZIP, photo 20230414-KRF-0204.jpg",
+     "new": "ONE CUP attachment on drop recovered by ZIP, photo 20230414-KRF-0204.jpg"
+    },
+    {
+     "id": 94,
+     "raw": " NOT GOOD ATTACHMENT since partially underwater, just 2-3 cups attach, whale logging. Tag recovered intact.",
+     "live": " NOT GOOD ATTACHMENT since partially underwater, just 2-3 cups attach, whale logging. Tag recovered intact.",
+     "new": "NOT GOOD ATTACHMENT since partially underwater, just 2-3 cups attach, whale logging. Tag recovered intact."
+    },
+    {
+     "id": 95,
+     "raw": "focal follow by zip   Rissos tagged by Physalus off Catalina. Animals very active and rubbed tag off 9 min into Silent Control sequence. ",
+     "live": "focal follow by zip   Rissos tagged by Physalus off Catalina. Animals very active and rubbed tag off 9 min into Silent Control sequence. ",
+     "new": "focal follow by zip   Rissos tagged by Physalus off Catalina. Animals very active and rubbed tag off 9 min into Silent Control sequence."
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "TagDataFilename",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 1,
+   "examples": [
+    {
+     "id": 660,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "TagDataFilename",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 1,
+   "examples": [
+    {
+     "id": 155,
+     "raw": "bw15_234a ",
+     "live": "bw15_234a ",
+     "new": "bw15_234a"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "TagType",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 71,
+   "examples": [
+    {
+     "id": 85,
+     "raw": "TDR10-Dart",
+     "live": "TDR10-Dart",
+     "new": "TDR10-DART"
+    },
+    {
+     "id": 89,
+     "raw": "TDR10-dart",
+     "live": "TDR10-dart",
+     "new": "TDR10-DART"
+    },
+    {
+     "id": 128,
+     "raw": "plat",
+     "live": "plat",
+     "new": "PLAT"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "TagType",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 2,
+   "examples": [
+    {
+     "id": 247,
+     "raw": " CATS",
+     "live": " CATS",
+     "new": "CATS"
+    },
+    {
+     "id": 537,
+     "raw": " minion",
+     "live": " minion",
+     "new": "minion"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "Vessel",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 2,
+   "examples": [
+    {
+     "id": 854,
+     "raw": "unk",
+     "live": "unk",
+     "new": "UNK"
+    },
+    {
+     "id": 873,
+     "raw": "unk",
+     "live": "unk",
+     "new": "UNK"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "Video",
+   "reason": "Rule 5: spelling merged (capitals); today left it as DB167 has it",
+   "count": 64,
+   "examples": [
+    {
+     "id": 2,
+     "raw": "y",
+     "live": "y",
+     "new": "Y"
+    },
+    {
+     "id": 89,
+     "raw": "no",
+     "live": "no",
+     "new": "No"
+    },
+    {
+     "id": 96,
+     "raw": "no",
+     "live": "no",
+     "new": "No"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "Video",
+   "reason": "Rule 5: spelling merged (spaces); today left it as DB167 has it",
+   "count": 2,
+   "examples": [
+    {
+     "id": 197,
+     "raw": "NOT SUREVIF  BATT DIED",
+     "live": "NOT SUREVIF  BATT DIED",
+     "new": "NOT SUREVIF BATT DIED"
+    },
+    {
+     "id": 716,
+     "raw": "ari  and main",
+     "live": "ari  and main",
+     "new": "ari and main"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "Video",
+   "reason": "Rule 5: spelling merged (typo); today left it as DB167 has it",
+   "count": 1,
+   "examples": [
+    {
+     "id": 614,
+     "raw": "yes, gun cam",
+     "live": "yes, gun cam",
+     "new": "yes, guncam"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "daily_effort_id",
+   "reason": "Rule 3: found by Research Group, Vessel and Date; DB167's DailyEffortID is empty",
+   "count": 996,
+   "examples": [
+    {
+     "id": 1,
+     "new": 26689
+    },
+    {
+     "id": 2,
+     "new": 26700
+    },
+    {
+     "id": 3,
+     "new": 26704
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "sighting_id",
+   "reason": "Rule 3: found by Research Group, Vessel, Date and Sighting",
+   "count": 1014,
+   "examples": [
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "sighting_id",
+   "reason": "Rule 3: orphan, no sighting with its Research Group, Vessel, Date and Sighting",
+   "count": 6,
+   "examples": [
+    148,
+    229,
+    230
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "vessel_id",
+   "reason": "Rule 4: one VesselListT row per vessel; today's id was one spelling of the same vessel",
+   "count": 720,
+   "examples": [
+    {
+     "id": 1,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 2,
+     "live": 1354,
+     "new": 1353
+    },
+    {
+     "id": 3,
+     "live": 1354,
+     "new": 1353
+    }
+   ]
+  },
+  {
+   "table": "TrackFileList",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "TrackFileList"
+   ]
+  },
+  {
+   "table": "TrackFolderT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "TrackFolderT"
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "Comments",
+   "reason": "Rule 5: empty text -> NULL (today kept it)",
+   "count": 891,
+   "examples": [
+    {
+     "id": 35,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 36,
+     "raw": "",
+     "live": "",
+     "new": null
+    },
+    {
+     "id": 38,
+     "raw": "",
+     "live": "",
+     "new": null
+    }
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "Comments",
+   "reason": "Rule 5: spaces at the start or end removed; today kept them",
+   "count": 584,
+   "examples": [
+    {
+     "id": 564,
+     "raw": "Total Lines = 281<br>\r\nDuration = 9.35 hrs<br>\r\nAverage GPS points per hour = 30.1<br>\r\nSample Rate = 0.0083 Hz<br>\r\n\r\n",
+     "live": "Total Lines = 281 \r\nDuration = 9.35 hrs \r\nAverage GPS points per hour = 30.1 \r\nSample Rate = 0.0083 Hz \r\n\r\n",
+     "new": "Total Lines = 281 \r\nDuration = 9.35 hrs \r\nAverage GPS points per hour = 30.1 \r\nSample Rate = 0.0083 Hz"
+    },
+    {
+     "id": 971,
+     "raw": "Total Lines = 10266<br>\r\nDuration = 7.63 hrs<br>\r\nAverage GPS points per hour = 1345.5<br>\r\nAverage GPS points per minute = 22.4<br>\r\n\r\n",
+     "live": "Total Lines = 10266 \r\nDuration = 7.63 hrs \r\nAverage GPS points per hour = 1345.5 \r\nAverage GPS points per minute = 22.4 \r\n\r\n",
+     "new": "Total Lines = 10266 \r\nDuration = 7.63 hrs \r\nAverage GPS points per hour = 1345.5 \r\nAverage GPS points per minute = 22.4"
+    },
+    {
+     "id": 972,
+     "raw": "Total Lines = 23231<br>\r\nDuration = 6.45 hrs<br>\r\nAverage GPS points per hour = 3600.5<br>\r\nAverage GPS points per minute = 60<br>\r\n\r\n",
+     "live": "Total Lines = 23231 \r\nDuration = 6.45 hrs \r\nAverage GPS points per hour = 3600.5 \r\nAverage GPS points per minute = 60 \r\n\r\n",
+     "new": "Total Lines = 23231 \r\nDuration = 6.45 hrs \r\nAverage GPS points per hour = 3600.5 \r\nAverage GPS points per minute = 60"
+    }
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "EffortID",
+   "reason": "TrackT note: track 1266 matched to effort 10016, which DB167 kept when it removed 10015 as a copy",
+   "count": 1,
+   "examples": [
+    {
+     "id": 1266,
+     "live": 10015.0,
+     "new": 10016.0
+    }
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "daily_effort_id",
+   "reason": "matched on the website (audit log)",
+   "count": 1,
+   "examples": [
+    1266
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "track_status",
+   "reason": "today's status was written before the link was restored (audit entries 88 to 98) and never worked out again; the new process works it out from the link and the file",
+   "count": 11,
+   "examples": [
+    {
+     "id": 625,
+     "live": "unassociated",
+     "new": "available"
+    },
+    {
+     "id": 627,
+     "live": "unassociated",
+     "new": "available"
+    },
+    {
+     "id": 630,
+     "live": "unassociated",
+     "new": "available"
+    }
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "vessel_id",
+   "reason": "Rule 4: every typed vessel is in VesselListT",
+   "count": 60,
+   "examples": [
+    302,
+    339,
+    343
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "vessel_id",
+   "reason": "Rule 4: one VesselListT row per vessel; today's id was one spelling of the same vessel",
+   "count": 833,
+   "examples": [
+    {
+     "id": 29,
+     "live": 866,
+     "new": 865
+    },
+    {
+     "id": 30,
+     "live": 866,
+     "new": 865
+    },
+    {
+     "id": 32,
+     "live": 866,
+     "new": 865
+    }
+   ]
+  },
+  {
+   "table": "TrackingT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "TrackingT"
+   ]
+  },
+  {
+   "table": "UserT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "UserT"
+   ]
+  },
+  {
+   "table": "VesselListT",
+   "column": "(record)",
+   "reason": "Rule 4: today one row per spelling; now that spelling finds its vessel's one row",
+   "count": 1356,
+   "examples": [
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "table": "VesselT",
+   "column": "(table)",
+   "reason": "Rule 1: the website never uses it; it stays in raw",
+   "count": 1,
+   "examples": [
+    "VesselT"
+   ]
+  },
+  {
+   "table": "app.daily_condition",
+   "column": "(record)",
+   "reason": "Step 3: every research group, not only CRC",
+   "count": 37600,
+   "examples": []
+  },
+  {
+   "table": "app.daily_condition",
+   "column": "(record)",
+   "reason": "follows dbo: an exact copy removed (rule 6)",
+   "count": 919,
+   "examples": [
+    10102,
+    10103,
+    10104
+   ]
+  },
+  {
+   "table": "app.daily_condition",
+   "column": "comments",
+   "reason": "follows an explained difference in dbo",
+   "count": 448,
+   "examples": [
+    1436,
+    45919,
+    45920
+   ]
+  },
+  {
+   "table": "app.daily_condition",
+   "column": "precipitation",
+   "reason": "follows an explained difference in dbo",
+   "count": 12,
+   "examples": [
+    576,
+    1214,
+    1218
+   ]
+  },
+  {
+   "table": "app.daily_condition",
+   "column": "vessel_id",
+   "reason": "follows an explained difference in dbo",
+   "count": 5803,
+   "examples": [
+    34127,
+    223,
+    224
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "(record)",
+   "reason": "Step 3: every research group, not only CRC",
+   "count": 21602,
+   "examples": []
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "(record)",
+   "reason": "follows dbo: an exact copy removed (rule 6)",
+   "count": 1,
+   "examples": [
+    10016
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "end_coord_source",
+   "reason": "follows an explained difference in dbo",
+   "count": 1,
+   "examples": [
+    22987
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "end_lat",
+   "reason": "follows an explained difference in dbo",
+   "count": 1,
+   "examples": [
+    22987
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "end_lon",
+   "reason": "follows an explained difference in dbo",
+   "count": 1,
+   "examples": [
+    22987
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "end_point",
+   "reason": "follows an explained difference in dbo",
+   "count": 1,
+   "examples": [
+    22987
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "launch",
+   "reason": "follows an explained difference in dbo",
+   "count": 56,
+   "examples": [
+    27776,
+    9448,
+    9449
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "locality",
+   "reason": "follows an explained difference in dbo",
+   "count": 7,
+   "examples": [
+    9494,
+    11506,
+    11765
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "personnel",
+   "reason": "follows an explained difference in dbo",
+   "count": 59,
+   "examples": [
+    28135,
+    28136,
+    28139
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "project_objective",
+   "reason": "follows an explained difference in dbo",
+   "count": 16,
+   "examples": [
+    25402,
+    25403,
+    25421
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "return_location",
+   "reason": "follows an explained difference in dbo",
+   "count": 69,
+   "examples": [
+    27776,
+    9448,
+    9449
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "start_coord_source",
+   "reason": "follows an explained difference in dbo",
+   "count": 1,
+   "examples": [
+    22987
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "start_lat",
+   "reason": "follows an explained difference in dbo",
+   "count": 1,
+   "examples": [
+    22987
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "start_lon",
+   "reason": "follows an explained difference in dbo",
+   "count": 1,
+   "examples": [
+    22987
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "start_point",
+   "reason": "follows an explained difference in dbo",
+   "count": 1,
+   "examples": [
+    22987
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "sub_area",
+   "reason": "follows an explained difference in dbo",
+   "count": 47,
+   "examples": [
+    25355,
+    25404,
+    25449
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "survey_comments",
+   "reason": "follows an explained difference in dbo",
+   "count": 53,
+   "examples": [
+    25354,
+    25372,
+    25382
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "survey_type",
+   "reason": "follows an explained difference in dbo",
+   "count": 55,
+   "examples": [
+    27802,
+    27804,
+    27807
+   ]
+  },
+  {
+   "table": "app.daily_effort",
+   "column": "vessel_id",
+   "reason": "follows an explained difference in dbo",
+   "count": 1584,
+   "examples": [
+    26377,
+    26380,
+    26383
+   ]
+  },
+  {
+   "table": "app.daily_event",
+   "column": "(record)",
+   "reason": "Step 3: every research group, not only CRC",
+   "count": 49831,
+   "examples": []
+  },
+  {
+   "table": "app.daily_event",
+   "column": "(record)",
+   "reason": "follows dbo: an exact copy removed (rule 6)",
+   "count": 170,
+   "examples": [
+    75971,
+    75972,
+    75973
+   ]
+  },
+  {
+   "table": "app.daily_event",
+   "column": "code",
+   "reason": "follows an explained difference in dbo",
+   "count": 2,
+   "examples": [
+    1726,
+    67649
+   ]
+  },
+  {
+   "table": "app.daily_event",
+   "column": "comments",
+   "reason": "follows an explained difference in dbo",
+   "count": 3998,
+   "examples": [
+    865,
+    1749,
+    1790
+   ]
+  },
+  {
+   "table": "app.daily_event",
+   "column": "event_code_id",
+   "reason": "follows an explained difference in dbo",
+   "count": 465,
+   "examples": [
+    22,
+    28,
+    32
+   ]
+  },
+  {
+   "table": "app.daily_event",
+   "column": "observer_left",
+   "reason": "follows an explained difference in dbo",
+   "count": 331,
+   "examples": [
+    1810,
+    1842,
+    1843
+   ]
+  },
+  {
+   "table": "app.daily_event",
+   "column": "observer_right",
+   "reason": "follows an explained difference in dbo",
+   "count": 331,
+   "examples": [
+    1810,
+    1842,
+    1843
+   ]
+  },
+  {
+   "table": "app.daily_event",
+   "column": "recorder",
+   "reason": "follows an explained difference in dbo",
+   "count": 331,
+   "examples": [
+    1810,
+    1842,
+    1843
+   ]
+  },
+  {
+   "table": "app.daily_event",
+   "column": "vessel_id",
+   "reason": "follows an explained difference in dbo",
+   "count": 14231,
+   "examples": [
+    513,
+    514,
+    515
+   ]
+  },
+  {
+   "table": "app.effort_timeline",
+   "column": "(record)",
+   "reason": "Step 3: every research group, not only CRC",
+   "count": 171396,
+   "examples": []
+  },
+  {
+   "table": "app.effort_timeline",
+   "column": "(record)",
+   "reason": "follows dbo: an exact copy removed (rule 6)",
+   "count": 2285,
+   "examples": [
+    "condition:39819",
+    "sighting:106879",
+    "condition:39809"
+   ]
+  },
+  {
+   "table": "app.effort_timeline",
+   "column": "label",
+   "reason": "follows an explained difference in dbo",
+   "count": 5469,
+   "examples": [
+    "sighting:39266",
+    "sighting:88497",
+    "sighting:3497"
+   ]
+  },
+  {
+   "table": "app.effort_timeline",
+   "column": "label",
+   "reason": "the name now comes from DB167's SpeciesT and the EventCodeT names (rules 4 and 9)",
+   "count": 1,
+   "examples": [
+    "sighting:118471"
+   ]
+  },
+  {
+   "table": "app.event_code",
+   "column": "(record)",
+   "reason": "follows dbo: a row added (rules 4, 9)",
+   "count": 51,
+   "examples": [
+    26,
+    27,
+    28
+   ]
+  },
+  {
+   "table": "app.sample",
+   "column": "(record)",
+   "reason": "Step 3: every research group, not only CRC",
+   "count": 427,
+   "examples": []
+  },
+  {
+   "table": "app.sample",
+   "column": "(record)",
+   "reason": "follows dbo: an exact copy removed (rule 6)",
+   "count": 7,
+   "examples": [
+    2821,
+    2697,
+    2730
+   ]
+  },
+  {
+   "table": "app.sample",
+   "column": "comments",
+   "reason": "follows an explained difference in dbo",
+   "count": 4,
+   "examples": [
+    5,
+    295,
+    607
+   ]
+  },
+  {
+   "table": "app.sample",
+   "column": "preservation",
+   "reason": "follows an explained difference in dbo",
+   "count": 9,
+   "examples": [
+    34,
+    721,
+    724
+   ]
+  },
+  {
+   "table": "app.sample",
+   "column": "reaction",
+   "reason": "follows an explained difference in dbo",
+   "count": 41,
+   "examples": [
+    158,
+    162,
+    165
+   ]
+  },
+  {
+   "table": "app.sample",
+   "column": "sample_type",
+   "reason": "follows an explained difference in dbo",
+   "count": 22,
+   "examples": [
+    88,
+    586,
+    608
+   ]
+  },
+  {
+   "table": "app.sample",
+   "column": "sampled_by",
+   "reason": "follows an explained difference in dbo",
+   "count": 1,
+   "examples": [
+    2766
+   ]
+  },
+  {
+   "table": "app.sample",
+   "column": "sighting_id",
+   "reason": "follows an explained difference in dbo",
+   "count": 7,
+   "examples": [
+    3104,
+    3105,
+    3106
+   ]
+  },
+  {
+   "table": "app.sample",
+   "column": "species_id",
+   "reason": "follows an explained difference in dbo",
+   "count": 9,
+   "examples": [
+    89,
+    197,
+    206
+   ]
+  },
+  {
+   "table": "app.sample",
+   "column": "vessel_id",
+   "reason": "follows an explained difference in dbo",
+   "count": 1542,
+   "examples": [
+    3,
+    4,
+    5
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "(record)",
+   "reason": "Step 3: every research group, not only CRC",
+   "count": 83965,
+   "examples": []
+  },
+  {
+   "table": "app.sighting",
+   "column": "(record)",
+   "reason": "follows dbo: an exact copy removed (rule 6)",
+   "count": 1196,
+   "examples": [
+    106496,
+    106497,
+    106498
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "comments",
+   "reason": "follows an explained difference in dbo",
+   "count": 1770,
+   "examples": [
+    16,
+    17,
+    18
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "end_geom",
+   "reason": "follows an explained difference in dbo",
+   "count": 1,
+   "examples": [
+    114893
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "end_lon",
+   "reason": "follows an explained difference in dbo",
+   "count": 1,
+   "examples": [
+    114893
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "group_behavior",
+   "reason": "follows an explained difference in dbo",
+   "count": 1361,
+   "examples": [
+    40,
+    197,
+    315
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "group_type",
+   "reason": "follows an explained difference in dbo",
+   "count": 1116,
+   "examples": [
+    222,
+    248,
+    259
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "identified_individual_count",
+   "reason": "follows an explained difference in dbo",
+   "count": 22912,
+   "examples": [
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "photo_frames_1",
+   "reason": "follows an explained difference in dbo",
+   "count": 466,
+   "examples": [
+    219,
+    1077,
+    1397
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "photo_series_1",
+   "reason": "follows an explained difference in dbo",
+   "count": 424,
+   "examples": [
+    219,
+    1095,
+    1168
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "photographer_1",
+   "reason": "follows an explained difference in dbo",
+   "count": 608,
+   "examples": [
+    22,
+    2685,
+    3101
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "species_id",
+   "reason": "follows an explained difference in dbo",
+   "count": 367,
+   "examples": [
+    52,
+    57,
+    59
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "species_raw",
+   "reason": "follows an explained difference in dbo",
+   "count": 298,
+   "examples": [
+    52,
+    57,
+    59
+   ]
+  },
+  {
+   "table": "app.sighting",
+   "column": "vessel_id",
+   "reason": "follows an explained difference in dbo",
+   "count": 12725,
+   "examples": [
+    16,
+    17,
+    18
+   ]
+  },
+  {
+   "table": "app.species",
+   "column": "(record)",
+   "reason": "a code of today's hand-kept list that DB167's SpeciesT spells differently or lacks (rule 4)",
+   "count": 7,
+   "examples": [
+    "ddc",
+    "r",
+    "zc"
+   ]
+  },
+  {
+   "table": "app.species",
+   "column": "(record)",
+   "reason": "used by a sighting of any research group (step 3)",
+   "count": 4,
+   "examples": [
+    "bbo/be",
+    "ejap",
+    "bm/p"
+   ]
+  },
+  {
+   "table": "app.track",
+   "column": "comments",
+   "reason": "follows an explained difference in dbo",
+   "count": 1475,
+   "examples": [
+    35,
+    36,
+    38
+   ]
+  },
+  {
+   "table": "app.track",
+   "column": "track_status",
+   "reason": "follows an explained difference in dbo",
+   "count": 11,
+   "examples": [
+    625,
+    627,
+    630
+   ]
+  },
+  {
+   "table": "app.track",
+   "column": "vessel_id",
+   "reason": "follows an explained difference in dbo",
+   "count": 893,
+   "examples": [
+    29,
+    30,
+    32
+   ]
+  },
+  {
+   "table": "app.vessel",
+   "column": "(record)",
+   "reason": "one row per vessel: this spelling is part of another row (rule 4)",
+   "count": 19,
+   "examples": [
+    321,
+    355,
+    368
+   ]
+  },
+  {
+   "table": "dbo.DailyEffortV",
+   "column": "(rows)",
+   "reason": "follows its tables, now joined by Foreign Keys: 3,496 today, 3,495 new",
+   "count": 1,
+   "examples": []
+  },
+  {
+   "table": "dbo.IdentificationsBySightingV",
+   "column": "(rows)",
+   "reason": "follows its tables, now joined by Foreign Keys: 38,447 today, 37,264 new",
+   "count": 1183,
+   "examples": []
+  },
+  {
+   "table": "dbo.SightingEffortTrackV",
+   "column": "(rows)",
+   "reason": "follows its tables, now joined by Foreign Keys: 26,612 today, 26,155 new",
+   "count": 457,
+   "examples": []
+  },
+  {
+   "table": "dbo.SightingV",
+   "column": "(rows)",
+   "reason": "follows its tables, now joined by Foreign Keys: 138,293 today, 133,656 new",
+   "count": 4637,
+   "examples": []
+  },
+  {
+   "table": "dbo.SpeciesSummaryByEffortV",
+   "column": "(rows)",
+   "reason": "follows its tables, now joined by Foreign Keys: 46,543 today, 46,483 new",
+   "count": 60,
+   "examples": []
+  },
+  {
+   "table": "dbo.TagSummaryV",
+   "column": "(rows)",
+   "reason": "follows its tables, now joined by Foreign Keys: 1,024 today, 1,020 new",
+   "count": 4,
+   "examples": []
+  }
+ ],
+ "unexplained": []
+}

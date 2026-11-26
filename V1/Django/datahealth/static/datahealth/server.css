@@ -1,0 +1,48 @@
+/* The Server page of the Django admin: a console and a graph. */
+
+.server-page { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(320px, 1fr); gap: 16px; align-items: start; }
+
+/* The console: every log the server keeps, as one, on the site's own card. */
+.card.console-card { margin: 0; }
+.console-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 10px 6px 14px;
+  border-bottom: 1px solid var(--border); background: var(--hover); font-size: 13px; font-weight: 600; }
+.console-head .muted { font-weight: 400; margin-left: 6px; }
+.console { height: calc(100vh - 195px); min-height: 360px; overflow: auto; padding: 10px 14px;
+  background: var(--card); color: var(--text); font: 400 12px/1.6 ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace; }
+.console:focus { outline: none; }
+.console .ln { white-space: pre-wrap; overflow-wrap: anywhere; }
+.console .ln .t { color: var(--muted); }
+.console .ln.warning { color: var(--amber-fg); }
+.console .ln.error { color: var(--red-fg); }
+/* Plain wording unless Advanced is on, then the full line. */
+.console .ln .plain { display: none; }
+.console.simple .ln .plain { display: inline; }
+.console.simple .ln .full, .console.simple .ln.adv { display: none; }
+.console.simple { font-family: inherit; font-size: 13px; line-height: 1.75; }
+.console.simple .ln .t { font-variant-numeric: tabular-nums; }
+
+/* The graph, with what it cannot show listed under it. */
+.card.server-graph { margin: 0; padding: 14px 16px; }
+.graph-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
+.graph-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
+.graph-legend b { color: var(--text); font-variant-numeric: tabular-nums; }
+.graph-plot { position: relative; height: 220px; }
+.graph-plot svg { display: block; width: 100%; height: 100%; }
+.graph-plot .grid { stroke: var(--border-soft); stroke-width: 1; }
+.graph-plot .axis { fill: var(--muted); font-size: 11px; }
+.graph-plot .cross { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+.graph-tip { position: absolute; top: 8px; padding: 6px 9px; background: var(--card); border: 1px solid var(--border);
+  border-radius: 4px; font-size: 12px; line-height: 1.5; pointer-events: none; white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .08); }
+.graph-tip strong { display: block; }
+
+dl.server-facts { margin: 14px 0 0; padding-top: 4px; border-top: 1px solid var(--border-soft); font-size: 13px; }
+dl.server-facts > div { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--border-soft); }
+dl.server-facts > div:last-child { border-bottom: 0; padding-bottom: 0; }
+dl.server-facts dt { color: var(--muted); font-weight: 400; }
+dl.server-facts dd { margin: 0; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 1000px) {
+  .server-page { grid-template-columns: minmax(0, 1fr); }
+  .console { height: 60vh; }
+}

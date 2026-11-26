@@ -157,14 +157,26 @@ def _raw_values(table, pk, fields):
         if not fields:
             return {}
         columns = ", ".join('"' + f.replace('"', '""') + '"::text' for f in fields)
-        cur.execute(f"""
-            SELECT a.attname FROM pg_index i
-            JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
-            WHERE i.indrelid = ('raw.' || quote_ident(%s))::regclass AND i.indisprimary
-        """, [table])
-        key = cur.fetchone()[0]
-        cur.execute(f'SELECT {columns} FROM raw."{table}" WHERE "{key}"::text = %s',
-                    [str(pk)])
+        keys = {}
+        for schema in ("raw", "dbo"):
+            cur.execute("""
+                SELECT a.attname FROM pg_index i
+                JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
+                WHERE i.indrelid = (%s || '.' || quote_ident(%s))::regclass AND i.indisprimary
+            """, [schema, table])
+            keys[schema] = cur.fetchone()[0]
+        # pk is the record's Primary Key in dbo. Where that is the hashed id,
+        # DB167's row is found by the Legacy ID the dbo record carries.
+        legacy = str(pk)
+        if keys["raw"] != keys["dbo"]:
+            cur.execute(f'SELECT "{keys["raw"]}"::text FROM dbo."{table}" WHERE "{keys["dbo"]}"::text = %s',
+                        [str(pk)])
+            row = cur.fetchone()
+            if row is None:
+                return {}
+            legacy = row[0]
+        cur.execute(f'SELECT {columns} FROM raw."{table}" WHERE "{keys["raw"]}"::text = %s',
+                    [legacy])
         row = cur.fetchone()
     return dict(zip(fields, row)) if row else {}
 
@@ -236,5 +248,8 @@ def record_history(view_name, pk):
 
     # Deletions and other whole-record actions have no field, so they are shown
     # apart from the per-field chains.
-    record_actions = [e for e in audit if not e["changes"]]
+    # Named as the Audit Log names them, in Title Case.
+    from datahealth.views import ACTION_LABELS
+    record_actions = [dict(e, action_label=ACTION_LABELS.get(e["action"], e["action"].replace("_", " ").title()))
+                      for e in audit if not e["changes"]]
     return histories, record_actions

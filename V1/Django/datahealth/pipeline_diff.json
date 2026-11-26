@@ -1,0 +1,428 @@
+{
+ "tables": [
+  {
+   "table": "daily_condition",
+   "today": "Weather readings (what the website shows today)",
+   "today_rows": 16996,
+   "today_dbo_rows": 57128,
+   "new_rows": 53704,
+   "causes": [
+    {
+     "cause": "Records from research groups other than CRC. Today the website shows CRC's records only; the new data has every group's, and the website shows CRC's by default as a filter that can be changed.",
+     "rows": 40132,
+     "ids": ""
+    },
+    {
+     "cause": "Deleted from DB167 since the live website last copied it, and not replaced. All 38 belonged to efforts that were deleted too (10015, 11132, 11259, 11381, 13592); 17 were CRC's.",
+     "rows": -38,
+     "ids": "5975, 12076-12081, 29812-29818, 33345-33350, 34346-34349, 36871, 37155-37158, 39705-39708, 39910, 40168-40171"
+    },
+    {
+     "cause": "Renumbered in DB167: 46 readings came back under new ID numbers, mostly from CRC's 2026 efforts. No change in the count, but the old numbers no longer exist; the new hashed Primary Keys stay the same.",
+     "rows": 0,
+     "ids": "8359, 57372-57380, 57391-57416, 57418-57424, 57426-57428, now 58544, 58560-58568, 58577-58578, 58588-58602, 58604-58607, 58609-58614, 58624, 58626, 58630-58634, 58636-58637"
+    },
+    {
+     "cause": "Added to DB167 since the live website last copied it. All 46 are CRC's.",
+     "rows": 46,
+     "ids": "58548-58559, 58569-58576, 58579-58587, 58603, 58608, 58615-58623, 58625, 58627-58629, 58635, 58638"
+    },
+    {
+     "cause": "Exact copies removed: records identical to another in everything except their ID and a note of which import they came from.",
+     "rows": -3432,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "daily_effort",
+   "today": "Efforts (what the website shows today)",
+   "today_rows": 3464,
+   "today_dbo_rows": 25066,
+   "new_rows": 25018,
+   "causes": [
+    {
+     "cause": "Records from research groups other than CRC. Today the website shows CRC's records only; the new data has every group's, and the website shows CRC's by default as a filter that can be changed.",
+     "rows": 21602,
+     "ids": ""
+    },
+    {
+     "cause": "Deleted from DB167 since the live website last copied it, because each was a duplicate of another effort with the same Research Group, Vessel and Date, which is still there. The live website still has them; 20 were CRC's.",
+     "rows": -84,
+     "ids": "4651-4655, 5916, 6166, 6168, 6182, 6190, 7666, 7670, 8186, 8397, 8399-8401, 8403, 8405-8406, 8416, 8451, 8453, 8456, 8473, 9912, 10015, 11090, 11132, 11180, 11259, 11381, 12501, 12633-12636, 12638, 12640, 12643, 12670, 12672, 12680, 13592, 13752, 14107, 14399, 15780, 15785, 16986 ... (84 ids)"
+    },
+    {
+     "cause": "Deleted from DB167 since the live website last copied it, and not replaced. Effort 27051 (CRC).",
+     "rows": -1,
+     "ids": "27051"
+    },
+    {
+     "cause": "Renumbered in DB167: efforts 28143 and 28148 are now 29178 and 29152. Same records, new numbers.",
+     "rows": 0,
+     "ids": "28143, 28148, now 29152, 29178"
+    },
+    {
+     "cause": "Added to DB167 since the live website last copied it. All 37 are CRC's.",
+     "rows": 37,
+     "ids": "29151, 29173, 29176, 29181-29214"
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "daily_event",
+   "today": "Day-log entries (what the website shows today)",
+   "today_rows": 28568,
+   "today_dbo_rows": 78422,
+   "new_rows": 78347,
+   "causes": [
+    {
+     "cause": "Records from research groups other than CRC. Today the website shows CRC's records only; the new data has every group's, and the website shows CRC's by default as a filter that can be changed.",
+     "rows": 49854,
+     "ids": ""
+    },
+    {
+     "cause": "Deleted from DB167 since the live website last copied it, and not replaced. All 39 belonged to efforts that were deleted too (10015, 11132, 11259, 11381, 13592); 9 were CRC's.",
+     "rows": -39,
+     "ids": "4344-4345, 37074-37082, 43883-43893, 45546-45554, 52815-52821, 54062"
+    },
+    {
+     "cause": "Renumbered in DB167: 77 entries came back under new ID numbers, mostly from CRC's 2026 efforts. Same records, new numbers.",
+     "rows": 0,
+     "ids": "10039-10041, 78625-78657, 78678-78718, now 79910-79912, 79943-79946, 79982-79999, 80016-80024, 80028-80029, 80042-80049, 80088-80089, 80093-80104, 80112-80116, 80121-80134"
+    },
+    {
+     "cause": "Added to DB167 since the live website last copied it. All 148 are CRC's.",
+     "rows": 148,
+     "ids": "79917-79942, 79947-79981, 80000-80015, 80025-80027, 80030-80041, 80050-80087, 80090-80092, 80105-80111, 80117-80120, 80135-80138"
+    },
+    {
+     "cause": "Exact copies removed: records identical to another in everything except their ID and a note of which import they came from.",
+     "rows": -184,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "event_code",
+   "today": "The list of log codes",
+   "today_rows": 25,
+   "new_rows": 76,
+   "causes": [
+    {
+     "cause": "Codes the day log uses that the list does not have, added so every entry keeps its code: 51 codes on 2,039 entries. The most common are S (1,529), RE (105), OE (72), SE (57), E (54), ST (44), W (35), SB (28). They include the mistakes described above: 0, two codes run together such as P/O, times typed as codes, and Tag-Rec and PB-Ends, which look like TagRec and PB-End mistyped.",
+     "rows": 51,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "identification",
+   "today": "All identifications in DB167's IdentificationT (the website does not read these today)",
+   "today_rows": 89472,
+   "new_rows": 86580,
+   "causes": [
+    {
+     "cause": "Deleted from DB167 since the live website last copied it, and not replaced.",
+     "rows": -263,
+     "ids": "1577, 9214, 9216-9226, 16313, 21123-21135, 31381-31385, 37642-37645, 47371, 47383-47390, 48654, 52260-52263, 53057-53058, 53521-53522, 57726-57727, 58415-58418, 58732, 58734, 58736, 66579, 71643-71653, 71782-71785, 72028-72031, 72354-72355, 72487, 72541-72546, 72553-72554, 72674-72676, 72679, 72682-72683, 76850-76853 ... (13 more ranges)"
+    },
+    {
+     "cause": "Renumbered in DB167: 224 identifications vanished from their old numbers and came back under 223 new ones (two old records were the same identification).",
+     "rows": -1,
+     "ids": "9215, 90212-90268, 90270-90313, 90315-90360, 90369-90375, 90377-90386, 90388, 90392-90449; new 92095, 92168-92225, 92268-92271, 92273, 92278-92295, 92304, 92338-92373, 92436-92443, 92446-92502, 92504-92542"
+    },
+    {
+     "cause": "Added to DB167 since the live website last copied it.",
+     "rows": 232,
+     "ids": "92094, 92096-92106, 92112-92167, 92226-92267, 92272, 92274-92277, 92296-92303, 92305-92337, 92374-92435, 92444-92445, 92503, 92543-92553"
+    },
+    {
+     "cause": "Exact copies removed: records identical to another in everything except their ID and a note of which import they came from.",
+     "rows": -2860,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "identification",
+   "today": "Identified animals as the sighting pages list them today (from the old copy, SightingIdentificationT)",
+   "today_rows": 95098,
+   "new_rows": 86580,
+   "causes": [
+    {
+     "cause": "Not counted on either side: the old copy also has 73,232 empty placeholder rows, which sighting pages show today as blank lines. The new list has none.",
+     "rows": 0,
+     "ids": ""
+    },
+    {
+     "cause": "The old copy lists the same identification under two sightings when the sighting was imported twice (5,865 identifications, mostly the second import of the 2009 data). The new list shows each identification once.",
+     "rows": -5868,
+     "ids": "4291, 4293, 4297, 4299, 4301, 4303, 4305, 4307, 4309, 4311, 4313, 4315, 4317, 4319, 4321, 4323, 4325, 4327, 4329, 4331, 4333, 4335, 4337, 4339, 4341, 4343, 4345, 4347, 4349, 4351 ... (5835 more ranges)"
+    },
+    {
+     "cause": "Identifications that are in IdentificationT but missing from the old copy, because the copy stopped being updated.",
+     "rows": 242,
+     "ids": "7987, 8534, 13420, 19567-19574, 90210-90313, 90315-90361, 90369-90375, 90377-90449"
+    },
+    {
+     "cause": "Deleted from DB167 since the live website last copied it, and not replaced.",
+     "rows": -263,
+     "ids": "1577, 9214, 9216-9226, 16313, 21123-21135, 31381-31385, 37642-37645, 47371, 47383-47390, 48654, 52260-52263, 53057-53058, 53521-53522, 57726-57727, 58415-58418, 58732, 58734, 58736, 66579, 71643-71653, 71782-71785, 72028-72031, 72354-72355, 72487, 72541-72546, 72553-72554, 72674-72676, 72679, 72682-72683, 76850-76853 ... (13 more ranges)"
+    },
+    {
+     "cause": "Renumbered in DB167: 224 identifications came back under 223 new numbers (two old records were the same identification).",
+     "rows": -1,
+     "ids": "9215, 90212-90268, 90270-90313, 90315-90360, 90369-90375, 90377-90386, 90388, 90392-90449; new 92095, 92168-92225, 92268-92271, 92273, 92278-92295, 92304, 92338-92373, 92436-92443, 92446-92502, 92504-92542"
+    },
+    {
+     "cause": "Added to DB167 since the live website last copied it.",
+     "rows": 232,
+     "ids": "92094, 92096-92106, 92112-92167, 92226-92267, 92272, 92274-92277, 92296-92303, 92305-92337, 92374-92435, 92444-92445, 92503, 92543-92553"
+    },
+    {
+     "cause": "Exact copies removed: records identical to another in everything except their ID and a note of which import they came from.",
+     "rows": -2860,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "individual",
+   "today": "Known individual animals (the website does not read these today)",
+   "today_rows": 11802,
+   "new_rows": 11802,
+   "causes": [
+    {
+     "cause": "No change: DB167's list of individual animals is identical to the live website's copy.",
+     "rows": 0,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "other_species",
+   "today": "Other species shown on sighting pages",
+   "today_rows": 6254,
+   "new_rows": 6028,
+   "causes": [
+    {
+     "cause": "Deleted from DB167 since the live website last copied it, and not replaced. Both belonged to a CRC sighting on 20 March 2015 that was deleted.",
+     "rows": -2,
+     "ids": "126-127"
+    },
+    {
+     "cause": "Renumbered in DB167: 23 records came back under new numbers (876 to 878 and 6336 to 6355 became 6364 to 6428), most with Species and Class swapped, which the new process swaps back. Same records, new numbers.",
+     "rows": 0,
+     "ids": "876-878, 6336-6355; new 6364-6366, 6378-6383, 6400-6402, 6407-6408, 6420-6428"
+    },
+    {
+     "cause": "Added to DB167 since the live website last copied it.",
+     "rows": 39,
+     "ids": "6371-6377, 6384-6399, 6403-6406, 6409-6419, 6429"
+    },
+    {
+     "cause": "Exact copies removed: records identical to another in everything except their ID and a note of which import they came from.",
+     "rows": -263,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "research_group",
+   "today": "The list of research groups (the website shows research groups as typed text today)",
+   "today_rows": 718,
+   "new_rows": 1093,
+   "causes": [
+    {
+     "cause": "Research groups that appear in the data but were never added to the list, because it stopped being kept up in 2021: 375 groups, found by their code ignoring capitals and spaces at either end.",
+     "rows": 375,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "sample",
+   "today": "Samples (what the website shows today)",
+   "today_rows": 2666,
+   "new_rows": 3102,
+   "causes": [
+    {
+     "cause": "Records from research groups other than CRC. Today the website shows CRC's records only; the new data has every group's, and the website shows CRC's by default as a filter that can be changed.",
+     "rows": 436,
+     "ids": ""
+    },
+    {
+     "cause": "Deleted from DB167 since the live website last copied it, and not replaced. 7 were CRC's: samples 1756 to 1763 (OSU 2007) and 3104 to 3110 (CRC 2026, replaced by the 31 added below).",
+     "rows": -15,
+     "ids": "1756-1763, 3104-3110"
+    },
+    {
+     "cause": "Added to DB167 since the live website last copied it. All 31 are CRC's.",
+     "rows": 31,
+     "ids": "4136-4166"
+    },
+    {
+     "cause": "Exact copies removed: records identical to another in everything except their ID and a note of which import they came from.",
+     "rows": -16,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "sighting_event",
+   "today": "Sighting events shown on sighting pages",
+   "today_rows": 8197,
+   "new_rows": 8098,
+   "causes": [
+    {
+     "cause": "Deleted from DB167 since the live website last copied it, and not replaced. 1582 to 1588 belonged to a sighting that was deleted; 8203 to 8214 were 2026 records replaced by the 80 added below.",
+     "rows": -19,
+     "ids": "1582-1588, 8203-8214"
+    },
+    {
+     "cause": "Added to DB167 since the live website last copied it. These are CRC's 2026 sighting events.",
+     "rows": 80,
+     "ids": "9315-9394"
+    },
+    {
+     "cause": "Exact copies removed: records identical to another in everything except their ID and a note of which import they came from.",
+     "rows": -160,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "sighting",
+   "today": "Sightings (what the website shows today)",
+   "today_rows": 31682,
+   "new_rows": 114876,
+   "causes": [
+    {
+     "cause": "Records from research groups other than CRC. Today the website shows CRC's records only; the new data has every group's, and the website shows CRC's by default as a filter that can be changed.",
+     "rows": 86277,
+     "ids": ""
+    },
+    {
+     "cause": "Deleted from DB167 since the live website last copied it, and not replaced. By group: OSU 23, AOP 19, WSz 18, Opp-HortonE 12, SWFSC 8, CRC 7 and others. By year: 2011 (23), 2009 (21), 2015 (20), 2007 (16) and others.",
+     "rows": -109,
+     "ids": "4981-4982, 20549, 24167-24172, 37531-37535, 44301, 62621, 62628-62630, 63747, 63774-63778, 67795, 70575, 71409, 72499-72506, 73427-73431, 77456, 78343-78345, 78490-78494, 78497-78499, 78503-78506, 82310-82313, 89074, 96899-96904, 97017-97020, 97373-97374, 97379, 97407-97417, 97437-97438, 97441, 97493, 97544-97546 ... (11 more ranges)"
+    },
+    {
+     "cause": "Renumbered in DB167: 277 CRC sightings vanished from their old numbers and came back under new ones. The count does not change, but the old numbers the live website's addresses use for them no longer exist in DB167; the new hashed Primary Key is the same for both.",
+     "rows": 0,
+     "ids": "13067-13070, 13358-13373, 118342-118404, 118420-118613; new 121240-121259, 121396-121493, 121591-121610, 121612-121614, 121657-121681, 121683-121689, 121701-121741, 121919-121930, 121950-121957, 121968-122010"
+    },
+    {
+     "cause": "Added to DB167 since the live website last copied it. All 530 are CRC's, from 2026.",
+     "rows": 530,
+     "ids": "121273-121395, 121494-121590, 121611, 121615-121656, 121682, 121690-121700, 121742-121918, 121931-121949, 121958-121967, 122011-122059"
+    },
+    {
+     "cause": "Website edits: one sighting (114893) was deleted on the website and then restored, so edits add or remove nothing.",
+     "rows": 0,
+     "ids": "114893"
+    },
+    {
+     "cause": "Exact copies removed: records identical to another in everything except their ID and a note of which import they came from.",
+     "rows": -3504,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "species",
+   "today": "The species list: today's, kept by hand (94 codes, of which the filters show the 68 CRC has seen)",
+   "today_rows": 94,
+   "new_rows": 130,
+   "causes": [
+    {
+     "cause": "Codes today's process made into species of their own, from a separate list kept by hand or from text typed in sightings, which the new list does not have (UW and ULW, also on today's list, are added to the new one). Their sightings either get an FK to the right species through another name (Zc to sea lion, Zcav to Zica, Tu to TURT-UN, 'Dc or Dd' to Dsp) or keep their text with the species FK left NULL.",
+     "rows": -30,
+     "ids": ""
+    },
+    {
+     "cause": "Codes written in different capitals that become one: EJ and Ej, MN and Mn.",
+     "rows": -2,
+     "ids": ""
+    },
+    {
+     "cause": "Species on DB167's list that today's list does not have: 60 birds, and Kb, Ks, TURT-GR, TURT-HB, Zica, Bbo/Be and Bm/p.",
+     "rows": 67,
+     "ids": ""
+    },
+    {
+     "cause": "Of the 14 species codes the new process adds, the one today's list does not already have: Pomarine Jaeger.",
+     "rows": 1,
+     "ids": ""
+    },
+    {
+     "cause": "Not a change to the list: the filters show every species a sighting of any research group uses, 65 of the 130. Today they show 68, CRC's only; three fewer because sightings of codes today's list made species of their own (Zc, Zcav, Tu and others) now point at the species DB167's list has for them.",
+     "rows": 0,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "tag_deployment",
+   "today": "Tag deployments shown on sighting pages",
+   "today_rows": 1020,
+   "new_rows": 1048,
+   "causes": [
+    {
+     "cause": "Added to DB167 since the live website last copied it.",
+     "rows": 28,
+     "ids": "1030-1034, 1036-1058"
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "track",
+   "today": "GPS tracks",
+   "today_rows": 1531,
+   "new_rows": 1531,
+   "new_rows_with_uploads_replayed": 1516,
+   "causes": [
+    {
+     "cause": "No change. Today's 1,531 tracks are DB167's 1,505, plus 17 uploaded on the website, plus 15 created for files in the bucket that had no track, minus 6 that name a vessel VesselT no longer has and have no typed Vessel. The new process re-applies the same uploads, leaves out the same 6 by a rule (see rule 12 above), and creates the same 15, so the count is the same.",
+     "rows": 0,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  },
+  {
+   "table": "vessel",
+   "today": "Vessels shown in the website's filters (today, only vessels CRC used, one entry per spelling)",
+   "today_rows": 181,
+   "today_dbo_rows": 1356,
+   "new_rows": 1310,
+   "causes": [
+    {
+     "cause": "Vessels used only by other research groups. Today's filter lists only vessels CRC used; the new one lists every vessel.",
+     "rows": 1146,
+     "ids": ""
+    },
+    {
+     "cause": "Today a vessel can appear more than once, once per spelling (ZIP and Zip, Paraiso III and Paraiso-III, Wind Song and WindSong, and 12 more). The new list has one entry per vessel.",
+     "rows": -17,
+     "ids": ""
+    }
+   ],
+   "reconciles": true
+  }
+ ]
+}

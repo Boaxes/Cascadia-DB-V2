@@ -1,0 +1,21 @@
+{% extends "datahealth/base.html" %}
+{% block admin_title %}Dashboard{% endblock %}
+
+{% block content %}
+  <h1>Cascadia Admin</h1>
+  {% comment %} One card per tool, each a link to it. {% endcomment %}
+  <div class="admin-cards">
+    <a class="admin-card" href="{% url 'admin_pipeline' %}">
+      <h2>Data Pipeline</h2>
+      <p>How the database is built from DB167, and every change the build makes to the data on the way.</p>
+    </a>
+    <a class="admin-card" href="{% url 'admin_audit' %}">
+      <h2>Audit Log</h2>
+      <p>Every change anyone has made to the data, with who made it and when, and a way to undo it.</p>
+    </a>
+    <a class="admin-card" href="{% url 'admin_tracks' %}">
+      <h2>Track File Manager</h2>
+      <p>Open, edit, import and delete GPS track files, and match each one to its Effort.</p>
+    </a>
+  </div>
+{% endblock %}

@@ -1,58 +1,22 @@
--- TagSummaryT: DB167's rows, with the website's changes applied, plus their vessel.
---
--- 1. cleaned: nothing in DB167's copy of this table is cleaned.
--- 2. r, s: the website's edits applied on top (macros/replay.sql).
--- 3. the final select: DB167's columns, plus the ones this table adds.
-
-with cleaned as (
-    select
-        "TagSummaryID",
-        "DailyEffortID",
-        "Research Group",
-        "Vessel",
-        "Date",
-        "Sighting",
-        "Attachment",
-        "CallTypes",
-        "CEE",
-        "DataCollected",
-        "DeployBodyLoc",
-        "DeployDateTime",
-        "DeployRxn",
-        "DeployTime",
-        "DeployType",
-        "Descriptions",
-        "DiveTypes",
-        "Field ID",
-        "GPSTrackSource",
-        "HoursData",
-        "HoursTotal",
-        "PlaybackEnd",
-        "PlaybackStart",
-        "PlaybackType",
-        "PreyData",
-        "RecoverDateTime",
-        "Segments",
-        "SonarLogFilename",
-        "Tag#",
-        "TagDataFilename",
-        "TagOffDateTime",
-        "TagType",
-        "VHFChannel",
-        "Video",
-        "TagComments",
-        "SourceDB",
-        "Playback"
-    from {{ source('raw', 'TagSummaryT') }}
-),
+-- TagSummaryT: tags attached to animals, with the website's edits and Foreign
+-- Keys to the effort, the sighting, research group and vessel. Its Primary Key
+-- is DB167's TagSummaryID, which has never changed.
+with {{ cleaned_ctes('TagSummaryT') }},
 r as (
-    {{ replay_rows('cleaned', 'TagSummaryT', 'TagSummaryID') }}
+    {{ replay_rows('c', 'TagSummaryT', 'TagSummaryID') }}
 ),
 s as (
-    select {{ replayed_columns('TagSummaryT', 'r') }}, r.__edits from r
+    select {{ replayed_columns('TagSummaryT', 'r') }}, r.__edits,
+           {{ key_hash('TagSummaryT', ['Research Group', 'Vessel', 'Date'], 'r') }} as __effort,
+           {{ key_hash('TagSummaryT', ['Research Group', 'Vessel', 'Date', 'Sighting'], 'r') }} as __sighting
+    from r
 )
-select
-    {{ column_list('TagSummaryT', 's') }},
-    {{ vessel_id('s') }} as vessel_id
+select {{ column_list('TagSummaryT', 's') }},
+       {{ edited_reference('daily_effort_id', 'effort.id', 'DailyEffortT') }} as daily_effort_id,
+       {{ edited_reference('sighting_id', 'sighting.id', 'SightingT') }} as sighting_id,
+       rg.id::integer as research_group_id,
+       vk.vessel_id::integer as vessel_id
 from s
-{{ vessel_joins('s') }}
+left join lateral {{ parent_id(ref('keyed_DailyEffortT'), 'DailyEffortID', 's.__effort', 's."DailyEffortID"') }} effort on true
+left join lateral {{ parent_id(ref('keyed_SightingT'), 'SightingID', 's.__sighting') }} sighting on true
+{{ group_and_vessel_joins('s') }}

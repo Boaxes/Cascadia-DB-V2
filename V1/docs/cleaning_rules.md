@@ -10,9 +10,11 @@ number out of a text column. They are what makes the working data different
 from the original. There are eight, plus five that clean the GPS files.
 
 **Corrections** are fixes to a handful of records. They are not rules: someone
-made a judgement about specific rows. Each is applied once and recorded in the
-audit log under `legacy-cleanup`, carrying its reasoning, so it reads as what it
-is. The threshold is 20 records.
+made a judgement about specific rows. The data pipeline applies each one on
+every build from `ETL/dbt/seeds/record_fixes.csv`, which names the record, the
+old value, the new value and the reason, and the build stops if a fix finds
+nothing. None of them is written to the audit log, which holds only changes
+people made on the website. The threshold is 20 records.
 
 **Derived columns** compute values DB167 never had — a map point, a species
 link, an effort's position, a track's length. There is no original to compare
@@ -33,8 +35,8 @@ every edit since.
 | # | Table | What it does | Records |
 |---|---|---|---|
 | R1 | five tables | Trim surrounding whitespace and fold case-only spellings into the form used most often in that column | ~14,000 |
-| R2 | `SightingT` | Species synonyms: `Zica`→`Zc`, `UD`→`UnDelph`, `Turtle`→`TURT-UN` | 465 |
-| R3 | `DailyEffortT` | Survey-type wording: `Non-Standardized Large Vessel`→`Large Vessel Non-Standardized`, `Uknown`→`Unknown` | 77 |
+| R2 | `SightingT` | Species synonyms: `Zica` to `Zc`, `UD` to `UnDelph`, `Turtle` to `TURT-UN` | 465 |
+| R3 | `DailyEffortT` | Survey-type wording: `Non-Standardized Large Vessel` to `Large Vessel Non-Standardized`, `Uknown` to `Unknown` | 77 |
 | R4 | `DailyEffortT` | Distance converted to nautical miles from the unit recorded beside it | 2,467 |
 | R5 | `SightingT` | Depth converted to metres (feet × 0.3048, fathoms × 1.8288) | 16,091 |
 | R6 | `SightingT` | Calf count parsed out of free text. `1?` is an observer who *thinks* they saw one, so it is left empty rather than counted as confirmed | 52,422 |
@@ -72,13 +74,13 @@ Each of these is in the audit log with its reasoning, and can be undone there.
 
 | From | What | Records |
 |---|---|---|
-| GEO-001 | Sub-area spellings merged — `SE Alaska`→`Southeast Alaska` | 15 |
+| GEO-001 | Sub-area spellings merged — `SE Alaska` to `Southeast Alaska` | 15 |
 | CND-003 | Quality codes outside E/G/VG/F/P cleared | 14 |
-| SAM-001 | Sample types merged — `Skin`→`Skin Only Biopsy` | 12 |
+| SAM-001 | Sample types merged — `Skin` to `Skin Only Biopsy` | 12 |
 | GEO-F01 | Efforts recorded as US West Coast with an Alaskan sub-area and Alaskan localities | 11 |
 | CND-001 | Beaufort values outside 0–12 cleared | 7 |
 | LOC-001 | Locality spellings differing by more than case | 5 |
-| LOC-002 | `Seiku`→`Sekiu`, the same town with two vowels swapped | 6 |
+| LOC-002 | `Seiku` to `Sekiu`, the same town with two vowels swapped | 6 |
 | TrackT orphans | Tracks naming a vessel that no longer exists, with no vessel text either | 6 |
 | CRD-002 | Longitudes outside ±180, unrecoverable, cleared | 2 |
 | CRD-003 | A latitude with no longitude, or the reverse | 2 |
@@ -110,7 +112,7 @@ Rules the previous version applied that are **not** carried over:
 | Rule | Why not |
 |---|---|
 | **Swell readings outside 0–20 feet cleared** | That range was invented. It is not a defined scale, and 23- and 30-foot swells happen offshore. |
-| **Survey types grouped by inference** — `adrift`→`Opportunistic`, `Tag Recovery`→`Tagging` | Reads intent rather than fixing a spelling. A judgement about what somebody meant is not data cleaning. |
+| **Survey types grouped by inference** — `adrift` to `Opportunistic`, `Tag Recovery` to `Tagging` | Reads intent rather than fixing a spelling. A judgement about what somebody meant is not data cleaning. |
 | **Vessel matching and stub vessels** | The vessel list is built from the records themselves now, so there is nothing left to match or invent. |
 | **Multi-species records** — `Bm/p` | "Leave it unlinked" is what happens when nothing matches, not an action. The original text is shown. |
 | **Excluding child records that could not be matched** | 626 records were discarded. They are kept now, with their effort link intact and their sighting link empty where it cannot be resolved. |

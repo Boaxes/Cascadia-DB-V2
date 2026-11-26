@@ -1,0 +1,181 @@
+{% extends "datahealth/base.html" %}
+{% load humanize static pipeline_tags %}
+{% block admin_title %}Data Pipeline{% endblock %}
+{% block page_class %}pipeline-doc{% endblock %}
+
+{% block content %}
+<h1>Data Pipeline</h1>
+
+<h2>The Three Steps</h2>
+<table class="doc">
+  <thead><tr><th>Step</th><th>Area</th><th>What Happens</th><th>Result</th></tr></thead>
+  <tbody>
+    {% for num, area, title, text in overview %}
+      <tr><td><a href="#step-{{ num }}">Step {{ num }}</a></td><td>{{ area }}</td><td>{{ title }}</td><td>{{ text }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{# ------------------------------------------------------------------ Step 1 #}
+<h2 id="step-1">Step 1: An Untouched Copy of DB167 (raw)</h2>
+{% for para in step1 %}<p>{{ para|arrows }}</p>{% endfor %}
+<p>{{ tables|length }} tables, {{ total_rows|intcomma }} rows, copied by ETL/import_raw.py. {{ dbo_count }} of them go on to dbo; the rest stay in raw.</p>
+<table class="doc">
+  <thead><tr><th>Table</th><th class="num">Rows</th><th>Goes On To dbo</th><th>What It Holds</th></tr></thead>
+  <tbody>
+    {% for name, rows, to_dbo, about in tables %}
+      <tr><td>{% if to_dbo %}<a href="#entry-{{ name }}">{{ name }}</a>{% else %}{{ name }}{% endif %}</td><td class="num">{{ rows|intcomma }}</td>
+          <td>{% if to_dbo %}Yes{% else %}No, Stays In raw{% endif %}</td><td>{{ about }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Views</h3>
+{% for para in views_help %}<p>{{ para|arrows }}</p>{% endfor %}
+<table class="doc">
+  <thead><tr><th>View</th><th>What It Shows</th><th class="num">Rows In DB167</th><th>Rebuilt In dbo</th></tr></thead>
+  <tbody>
+    {% for view, shows, rows, in_dbo, why in db167_views %}
+      <tr><td>{{ view }}</td><td>{{ shows }}</td><td class="num">{{ rows|intcomma }}</td>
+          <td>{% if in_dbo %}Yes, As Today{% else %}No{% endif %}{% if why %}. {{ why }}{% endif %}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{# ------------------------------------------------------------------ Step 2 #}
+<h2 id="step-2">Step 2: The Tidied Copy (dbo)</h2>
+{% for para in step2 %}<p>{{ para|arrows }}</p>{% endfor %}
+
+<h3>What the New Process Does Differently</h3>
+{% for rule in rules %}
+  <h4>{{ forloop.counter }}. {{ rule.title|titlecase }}</h4>
+  {% for para in rule.text %}<p>{{ para|arrows }}</p>{% endfor %}
+  {% if rule.example %}<p><em>Example:</em> {{ rule.example|arrows }}</p>{% endif %}
+{% endfor %}
+
+
+<h3>Table By Table</h3>
+<p>Every table that goes on to dbo and changes, in the order DBeaver lists them. Open one to see each of its columns and what happens to it.</p>
+{% for e in entries %}
+  <details class="table-entry" id="entry-{{ e.table }}">
+    <summary>{{ e.table }}: {{ e.label|titlecase }}<span class="summary-notes">{% if e.rows is None %}, New Table{% endif %}{% if e.new_id %}, Hashed Primary Key{% endif %}{% if e.changed_columns %}, {{ e.changed_columns }} Column{{ e.changed_columns|pluralize }} Changed{% endif %}{% if e.unlinked_count %}, {{ e.unlinked_count|intcomma }} Orphan{{ e.unlinked_count|pluralize }}{% endif %}</span></summary>
+    <div class="table-entry-body">
+      <p>{{ e.about|arrows }}{% if e.rows is not None %} {{ e.rows|intcomma }} rows in DB167.{% endif %}</p>
+
+      <h4>Primary Key</h4>
+      <p>{{ e.pk|arrows }}{% if e.pk_note %} {{ e.pk_note|arrows }}{% endif %}</p>
+
+      <h4>Columns</h4>
+      <table class="doc columns">
+        <thead><tr><th>Column</th><th>Type</th><th>Change</th></tr></thead>
+        <tbody>
+          {% for column, label, type, changes in e.columns %}
+            <tr>
+              <td>{{ column }}{{ label }}</td>
+              <td>{{ type }}</td>
+              <td>{% if changes %}<div class="changes">{% for c in changes %}<div>{{ c|arrows }}</div>{% endfor %}</div>{% endif %}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% if e.duplicates %}
+        <h4>Exact Copies Removed</h4>
+        <p>{{ e.duplicates|arrows }}</p>
+      {% endif %}
+
+      {% if e.unlinked_rows %}
+        <h4>Orphans: Kept, With the FK NULL ({{ e.unlinked_count|intcomma }})</h4>
+        <table class="doc">
+          <thead><tr><th>Reason</th><th>Research Group</th><th>Year</th><th class="num">Records</th><th>IDs</th></tr></thead>
+          <tbody>{% for u in e.unlinked_rows %}<tr><td>{{ u.reason }}</td><td>{{ u.group }}</td><td>{{ u.year|default:"-" }}</td><td class="num">{{ u.records|intcomma }}</td><td>{{ u.ids }}</td></tr>{% endfor %}</tbody>
+        </table>
+      {% endif %}
+
+      {% if e.extra %}
+        <h4>Also</h4>
+        {% for para in e.extra %}<p>{{ para|arrows }}</p>{% endfor %}
+      {% endif %}
+
+      {% if e.table == "TrackT" %}
+        <h4>Matching GPS Tracks To Efforts</h4>
+        {% for para in track_help %}<p>{{ para|arrows }}</p>{% endfor %}
+        <table class="doc">
+          <thead><tr><th>Status</th><th>Meaning</th><th class="num">Tracks Today</th></tr></thead>
+          <tbody>{% for state, meaning, count in track_states %}<tr><td>{{ state|titlecase }}</td><td>{{ meaning }}</td><td class="num">{{ count }}</td></tr>{% endfor %}</tbody>
+        </table>
+      {% endif %}
+
+    </div>
+  </details>
+{% endfor %}
+
+<h3>Tables With No Change</h3>
+<p>These go on to dbo exactly as they are in raw, with DB167's own ID as the Primary Key.</p>
+{% for e in unchanged %}
+  <details class="table-entry" id="entry-{{ e.table }}">
+    <summary>{{ e.table }}: {{ e.label|titlecase }}</summary>
+    <div class="table-entry-body">
+      <p>{{ e.about|arrows }} {{ e.rows|intcomma }} rows in DB167.</p>
+      <table class="doc columns">
+        <thead><tr><th>Column</th><th>Type</th></tr></thead>
+        <tbody>{% for column, label, type, changes in e.columns %}<tr><td>{{ column }}{{ label }}</td><td>{{ type }}</td></tr>{% endfor %}</tbody>
+      </table>
+    </div>
+  </details>
+{% endfor %}
+
+{# ------------------------------------------------------------------ Step 3 #}
+<h2 id="step-3">Step 3: What the Website Reads (app)</h2>
+{% for para in step3 %}<p>{{ para|arrows }}</p>{% endfor %}
+<table class="doc">
+  <thead><tr><th>View</th><th>What the Website Uses It For</th><th>Built From</th><th>What Changes</th></tr></thead>
+  <tbody>
+    {% for view, used_for, source, change in app_views %}
+      <tr><td>{{ view }}</td><td>{{ used_for }}</td><td>{{ source }}</td><td>{{ change|arrows }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h3>Read Directly By Each Sighting's Page</h3>
+<table class="doc">
+  <thead><tr><th>List On the Page</th><th>Where It Comes From</th></tr></thead>
+  <tbody>{% for what, how in direct_reads %}<tr><td>{{ what|titlecase }}</td><td>{{ how|arrows }}</td></tr>{% endfor %}</tbody>
+</table>
+
+{# ------------------------------------------------------------------ Diff #}
+<h2 id="diff">What Will Be Different From Today</h2>
+{% for para in diff_help %}<p>{{ para|arrows }}</p>{% endfor %}
+
+<h3>How the Data Is Organised</h3>
+{% for area, rows in schema_diff %}
+  <table class="doc">
+    <thead><tr><th>{{ area|titlecase }}</th><th>Today</th><th>New</th></tr></thead>
+    <tbody>{% for what, today, new in rows %}<tr><td>{{ what|titlecase }}</td><td>{{ today|default:"-" }}</td><td>{{ new|arrows }}</td></tr>{% endfor %}</tbody>
+  </table>
+{% endfor %}
+
+<h3>How Many Records</h3>
+<p>For each table, the number of records the website sees today and the number it will see. Open a table to see every reason for the difference; the reasons add up exactly to the change.</p>
+<table class="doc">
+  <thead><tr><th>Table</th><th>What Is Counted</th><th class="num">Today</th><th class="num">New</th><th class="num">Change</th></tr></thead>
+  <tbody>
+    {% for t in diff %}
+      <tr><td><a href="#diff-{{ forloop.counter }}">{{ t.table }}</a></td><td>{{ t.today|titlecase }}</td>
+          <td class="num">{{ t.today_rows|intcomma }}</td><td class="num">{{ t.new_rows|intcomma }}</td><td class="num">{{ t.change_text }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% for t in diff %}
+  <details class="table-entry" id="diff-{{ forloop.counter }}">
+    <summary>{{ t.table }}: {{ t.today|titlecase }}, {{ t.today_rows|intcomma }} Today, {{ t.new_rows|intcomma }} New</summary>
+    <div class="table-entry-body">
+      <table class="doc">
+        <thead><tr><th class="num">Records</th><th>Reason</th></tr></thead>
+        <tbody>{% for c in t.causes %}<tr><td class="num">{{ c.rows_text }}</td><td>{{ c.cause|arrows }}{% if c.ids %} IDs: {{ c.ids }}{% endif %}</td></tr>{% endfor %}</tbody>
+      </table>
+    </div>
+  </details>
+{% endfor %}
+
+{% endblock %}

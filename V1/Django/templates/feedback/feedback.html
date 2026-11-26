@@ -1,0 +1,46 @@
+{% extends "survey/base.html" %}
+{% block title %}Feedback &middot; Sightings and Effort Explorer{% endblock %}
+{% block page_class %}settings-page{% endblock %}
+
+{% block content %}
+<h1>Feedback</h1>
+{% if not ready %}
+  <p class="muted">Feedback is not set up yet.</p>
+{% else %}
+<p class="muted">Tell us about a bug, an idea or a problem with the data. It goes straight to the team.</p>
+
+<form method="post" enctype="multipart/form-data" class="card">
+  {% csrf_token %}
+  <div class="field" style="margin-bottom:14px">
+    <label for="fb-title">Title</label>
+    <input id="fb-title" name="title" type="text" required maxlength="{{ max_title }}" value="{{ values.title }}">
+  </div>
+  <div class="field" style="margin-bottom:14px">
+    <label for="fb-details">Details <span class="muted">(Optional)</span></label>
+    <textarea id="fb-details" name="details" rows="6" style="width:100%;max-width:34rem;border:1px solid var(--border);border-radius:4px;padding:7px 9px;font:inherit">{{ values.details }}</textarea>
+  </div>
+  <div class="field" style="margin-bottom:14px">
+    <label for="fb-kind">Type <span class="muted">(Optional)</span></label>
+    <select id="fb-kind" name="kind">
+      <option value=""></option>
+      {% for t in types %}<option value="{{ t }}" {% if values.kind == t %}selected{% endif %}>{{ t }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field" style="margin-bottom:14px">
+    <label for="fb-area">Area <span class="muted">(Optional)</span></label>
+    <select id="fb-area" name="area">
+      <option value=""></option>
+      {% for a in areas %}<option value="{{ a }}" {% if values.area == a %}selected{% endif %}>{{ a }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field" style="margin-bottom:14px">
+    <label for="fb-pictures">Pictures <span class="muted">(Optional)</span></label>
+    <input id="fb-pictures" name="pictures" type="file" multiple accept="image/*">
+    <p class="small muted">Up to 3 pictures (PNG, JPEG, GIF or WebP), 5 MB each.</p>
+  </div>
+  <div class="setting-actions">
+    <button class="btn btn-primary" type="submit">Send Feedback</button>
+  </div>
+</form>
+{% endif %}
+{% endblock %}

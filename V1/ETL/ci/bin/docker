@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+#
+# A stand-in for the `docker` command, for CI only (ETL/ci/steps.sh puts this
+# folder first on the PATH while it runs ETL/verify/applied_entries_replay.sh).
+#
+# That script was written for the Mac, where the database is the container
+# cascadia-db-1 and the build runs in a container made from the cascadia-etl
+# image. On GitHub (and in ops/ci-local.sh) there is no such container: the
+# database is reached over the network and dbt is installed on the machine. So
+# the two commands the script uses are turned into what they mean here:
+#
+#   docker exec -i cascadia-db-1 psql ...             psql ...
+#   docker run ... -e PGDATABASE=x ... cascadia-etl   (in ETL/dbt, with PGDATABASE=x) the command
+#
+# Anything else is refused, so a change to the script that needs more shows up
+# as a failure here rather than doing something unexpected.
+set -euo pipefail
+
+case "${1:-}" in
+  exec)
+    shift
+    while [ "${1:-}" = "-i" ] || [ "${1:-}" = "-t" ] || [ "${1:-}" = "-it" ]; do shift; done
+    [ "${1:-}" = "cascadia-db-1" ] || { echo "docker stand-in: exec on '${1:-}' is not supported" >&2; exit 2; }
+    shift
+    exec "$@"
+    ;;
+  run)
+    shift
+    workdir=""
+    while [ $# -gt 0 ]; do
+      case "$1" in
+        --rm|-i|-t|-it) shift ;;
+        --network|-v) shift 2 ;;
+        -w) workdir="$2"; shift 2 ;;
+        -e)
+          # The host and port the script names are the Mac's container network;
+          # here they come from the environment the step already has.
+          case "$2" in PGHOST=*|PGPORT=*) ;; *) export "$2" ;; esac
+          shift 2 ;;
+        cascadia-etl) shift; break ;;
+        *) echo "docker stand-in: run option '$1' is not supported" >&2; exit 2 ;;
+      esac
+    done
+    # /app is the ETL folder; the script gives -w /app/dbt.
+    root="$(cd "$(dirname "$0")/../../.." && pwd)"
+    cd "$root/ETL/${workdir#/app/}"
+    exec "$@"
+    ;;
+  *)
+    echo "docker stand-in: '$*' is not supported" >&2
+    exit 2
+    ;;
+esac

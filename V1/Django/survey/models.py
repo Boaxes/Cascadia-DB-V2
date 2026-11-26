@@ -135,15 +135,15 @@ class DailyEffort(models.Model):
         "gps_track": ("GPS Track", "End"),
     }
 
-    # An effort with no track at all and one whose file has gone missing are
+    # An effort with no track at all and one whose file is blank are
     # different problems, so they never share a colour.
     @property
     def track_state(self):
         if self.track_count == 0:
-            return ("problem-no_track", "No track file")
+            return ("problem-no_track", "No Track File")
         if self.available_tracks:
             return ("pill-green", "Available")
-        return ("problem-missing_file", "File missing")
+        return ("problem-blank", "Blank")
 
     @property
     def position_is_departure_point(self):
@@ -173,7 +173,7 @@ class Track(models.Model):
         related_name="tracks",
     )
     object_key = models.TextField(null=True)
-    # available | missing_file | unassociated | unresolved
+    # available | blank | unassociated | unresolved
     track_status = models.TextField()
     vessel = models.ForeignKey(
         Vessel, models.DO_NOTHING, db_column="vessel_id", null=True,
@@ -185,6 +185,8 @@ class Track(models.Model):
     useable = models.BooleanField()
     geom = models.MultiLineStringField(srid=4326, null=True)
     point_count = models.IntegerField(null=True)
+    # UTC, like the track files. DB167 keeps them in Pacific local time; the build
+    # converts them (macros/track_times.sql).
     start_time_utc = models.DateTimeField(null=True)
     end_time_utc = models.DateTimeField(null=True)
     length_nm = models.DecimalField(max_digits=10, decimal_places=3, null=True)
@@ -198,23 +200,29 @@ class Track(models.Model):
     def __str__(self):
         return f"Track {self.legacy_track_id}"
 
-    # The same names and colours as the admin Track files page. The stored
+    @property
+    def file_name(self):
+        """The track file's name, without the folder it is stored under."""
+        return self.object_key.rsplit("/", 1)[-1] if self.object_key else None
+
+    # The same names and colours as the Track File Manager. The stored
     # status is what the file was when last checked; what a record is shown
-    # as is worked out from its link and its file, so a record linked by an
+    # as is worked out from its match and its file, so a record matched by an
     # older tool without its status being updated still reads correctly.
+    # A file with no points yet is Blank.
     HAS_FILE = ("available", "unassociated")
     STATUS_LABELS = {
         "available": "Available",
-        "missing_file": "File missing",
-        "unlinked": "Unlinked file",
-        "lost": "Lost file",
+        "blank": "Blank",
+        "unlinked": "Unmatched File",
+        "lost": "Lost File",
     }
 
     @property
     def state(self):
         has_file = self.track_status in self.HAS_FILE
         if self.daily_effort_id is not None:
-            return "available" if has_file else "missing_file"
+            return "available" if has_file else "blank"
         return "unlinked" if has_file else "lost"
 
     @property
@@ -295,7 +303,6 @@ class Sighting(models.Model):
     photos_taken = models.BooleanField()
     comments = models.TextField(null=True)
     identified_individual_count = models.IntegerField()
-    # Offered as optional columns on an export.
     bearing = models.IntegerField(null=True)
     range_m = models.IntegerField(null=True)
     reticle = models.FloatField(null=True)

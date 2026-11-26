@@ -174,29 +174,39 @@ TERMS = {
     "group_type": "Freehand notation: Single, Pair and Trio are counts, Agg is "
                   "a loose aggregation, and 1+1 is one adult with one calf.",
     "identified": "Animals matched to Cascadia's photo-identification catalogue.",
-    "position": "Where the vessel was, not the animal; the two are usually "
+    "position": "Where the vessel was, not the Animal; the two are usually "
                 "within a few metres.",
     "end_position": "Where the vessel was when it left the group.",
     "species_uncertain": "The observer marked the species with a question mark.",
+    "match_sightings": "When a sighting filter is set (Species, Position Type, "
+                       "Uncertain Species, Sightings on Land), list only Efforts with at least one "
+                       "matching Sighting. Untick to list every Effort that "
+                       "matches the Effort filters.",
+    "sightings_on_land": "Finds sightings whose position falls on land, almost always "
+                         "a data error. Exclude drops them; Only lists just them. A "
+                         "sighting counts as on land only when it is inside the land "
+                         "outline and more than 1,000 metres from the coast, because "
+                         "the outline is coarse. A sighting with no position is never "
+                         "on land.",
     "species_raw": "Two species were written in one field, so the text is shown "
                    "as recorded.",
 
     # Explore
-    "clusters": "Nearby sightings are drawn as one numbered circle; turn this "
-                "off to see every sighting as its own dot.",
+    "clusters": "Nearby Sightings are drawn as one numbered circle; turn this "
+                "off to see every Sighting as its own dot.",
     "track_gap": "Dashed where the GPS recorded nothing for over 30 minutes.",
     "excluded_no_position": "They match the filters but have no coordinates; "
                             "they are still in the list and in an export.",
 
-    # Export
-    "export_areas": "Each page keeps its own filters, so filtering Sightings "
-                    "does not change an export from Explore.",
-    "export_csv": "One row per record; opens directly in Excel or R.",
-    "export_excel": "An .xlsx workbook with the header row frozen.",
-    "export_geojson": "For QGIS and other mapping software; records without a "
-                      "position are left out.",
-    "export_tracks": "Adds the full-resolution GPS points for every effort in "
-                     "the export, not the simplified lines the map draws.",
+    # Filters
+    "research_group": "Every research group's data is in the database. The "
+                      "website shows CRC's by default; choose groups here, or "
+                      "All Research Groups, to see others.",
+    "tags": "A Sighting has Tags when a tag record names it. An Effort has "
+            "them when a tag record names the Effort or one of its Sightings.",
+    "samples": "A Sighting has Samples when a sample record names it. An "
+               "Effort has them when a sample record names the Effort or one "
+               "of its Sightings.",
 }
 
 

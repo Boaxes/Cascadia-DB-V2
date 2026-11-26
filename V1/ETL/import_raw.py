@@ -15,6 +15,11 @@ collapsed into one name and forced us to invent a rule for.
     python import_raw.py              create the schema, then copy the data
     python import_raw.py --verify     compare Postgres against DB167
 
+It writes to the new pipeline's own database, `pipeline`, beside the site's
+`cascadia` in the same Postgres. ops/pull-db.sh replaces `cascadia` with a copy
+of live and never touches `pipeline`, so a pull cannot undo this. Set
+PIPELINE_DATABASE_URL to point it elsewhere.
+
 DB167 is read only. Nothing here writes to it.
 """
 
@@ -25,6 +30,8 @@ import pathlib
 import sys
 import time
 
+from urllib.parse import urlsplit, urlunsplit
+
 import psycopg
 from dotenv import load_dotenv
 
@@ -32,11 +39,11 @@ import source
 
 SCHEMA_FILE = pathlib.Path(__file__).parent / "schema" / "raw.sql"
 
-# raw also holds the build's other inputs, which are not DB167's and which an
-# import must leave alone: the lists people curate and each GPS file's line
-# (ETL/dbt/macros/persistent_tables.sql). An import replaces DB167's tables one
-# by one rather than dropping the schema, so these survive it.
-BUILD_INPUTS = {"species", "event_code_name", "vessel_list", "track_geometry"}
+# raw may also hold tables that are not DB167's, left by the archived pipeline
+# (Archive/ETL/dbt/macros/persistent_tables.sql): the lists people curated and
+# each GPS file's line. An import replaces DB167's tables one by one rather than
+# dropping the schema, so these survive it, and the verify ignores them.
+OTHER_TABLES = {"species", "event_code_name", "vessel_list", "track_geometry"}
 
 # DB167's types are already correct. V1 saw text everywhere only because it read
 # CSV exports rather than the database. Anything outside this list stops the
@@ -51,6 +58,9 @@ TYPES = {
     "time": "time",
     "nvarchar": "text",
     "ntext": "text",
+    # nvarchar(128), SQL Server's type for object names. DatabaseTableT and
+    # DatabaseFieldT use it.
+    "sysname": "text",
     "binary": "bytea",
 }
 
@@ -70,6 +80,19 @@ BIN_COLLATE = "COLLATE Latin1_General_BIN2"
 SENTINEL = "N'|'"
 
 
+def pg_value(value):
+    """
+    The value as Postgres can hold it, which is the value itself except for NUL.
+
+    Postgres text cannot contain the NUL character, so it is dropped. DB167 has
+    one: DailyEffortT_IanDB_SnapshotT."Survey Comments" holds '\\x00\\x02' on a
+    single row, and raw has '\\x02'. The verify applies the same rule.
+    """
+    if isinstance(value, str) and "\x00" in value:
+        return value.replace("\x00", "")
+    return value
+
+
 def pg_type(column):
     try:
         return TYPES[column["type"]]
@@ -83,10 +106,10 @@ def primary_key(conn, table, columns):
     """
     The declared primary key, or the one the data supports.
 
-    Two tables declare none. CRC_Vessels_ByYear_T has an identity column that is
-    already unique and not null across all 323 rows; TrackFileList is a single
-    filename column, 1,479 distinct over 1,479 rows. Both were checked against
-    the live data.
+    Three tables declare none. CRC_Vessels_ByYear_T and AnnualDBT each have an
+    identity column, which is unique and not null; TrackFileList is a single
+    filename column, 1,479 distinct over 1,479 rows. If the data ever stops
+    supporting one of these, the copy fails on it rather than loading it.
     """
     declared = source.primary_key(conn, table)
     if declared:
@@ -112,9 +135,8 @@ def build_schema(conn):
         "-- Those are inferred, seeded and enforced in `dbo`, where they can be",
         "-- corrected and the correction recorded. `raw` takes the data as it is.",
         "",
-        "-- Only DB167's tables are replaced. raw also holds the build's other",
-        "-- inputs (the curated lists and the GPS lines), which an import leaves",
-        "-- alone.",
+        "-- Only DB167's tables are replaced. Any other table in raw, such as",
+        "-- those the archived pipeline kept there, is left alone.",
         "CREATE SCHEMA IF NOT EXISTS raw;",
         "",
     ]
@@ -132,7 +154,10 @@ def build_schema(conn):
             lines.append(f'    "{column["name"]}" {pg_type(column)}{null},{note}')
         pk = ", ".join(f'"{c}"' for c in primary_key(conn, table, columns))
         lines.append(f"    PRIMARY KEY ({pk})")
-        out.append(f'DROP TABLE IF EXISTS raw."{table}" CASCADE;')
+        # No CASCADE: nothing the build makes reads raw through a view, so a
+        # table can go on its own. If something did, the import stops here
+        # rather than quietly dropping it with the table.
+        out.append(f'DROP TABLE IF EXISTS raw."{table}";')
         out.append(f'CREATE TABLE raw."{table}" (')
         out.append("\n".join(lines))
         out.append(");")
@@ -163,11 +188,13 @@ def build_schema(conn):
 
 
 def load(conn, dst):
-    ddl, freeze = SCHEMA_FILE.read_text().split("-- Freeze.", 1)
+    # The schema of the database being read, not the saved raw.sql, so a copy
+    # of DB167 from another date (ETL/mirror_sqlserver.py) imports as it is.
+    ddl, freeze = build_schema(conn).split("-- Freeze.", 1)
     with dst.cursor() as cur:
         cur.execute(ddl)
     dst.commit()
-    print(f"created raw from {SCHEMA_FILE.name}")
+    print("created raw from the source's own tables")
 
     total = 0
     for table in source.tables(conn):
@@ -178,7 +205,7 @@ def load(conn, dst):
             with cur.copy(f'COPY raw."{table}" ({target}) FROM STDIN') as copy:
                 for batch in source.rows(conn, table, names):
                     for row in batch:
-                        copy.write_row(tuple(row))
+                        copy.write_row(tuple(pg_value(v) for v in row))
                         count += 1
         dst.commit()
         total += count
@@ -258,7 +285,7 @@ def verify(conn, dst):
 
     with dst.cursor() as cur:
         cur.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='raw'")
-        present = {r[0] for r in cur.fetchall()} - BUILD_INPUTS
+        present = {r[0] for r in cur.fetchall()} - OTHER_TABLES
     if present != set(tables):
         failures.append(
             f"tables: missing {sorted(set(tables) - present)}, "
@@ -290,7 +317,8 @@ def verify(conn, dst):
 
         def stream():
             for batch in source.rows(conn, table, names):
-                yield from batch
+                for row in batch:
+                    yield tuple(pg_value(v) for v in row)
 
         want_digest = _digest(stream(), len(names))
         with dst.cursor(name="digest") as cur:
@@ -314,7 +342,7 @@ def verify(conn, dst):
               AND c.relname <> ALL (%s)
               AND NOT EXISTS (SELECT 1 FROM pg_constraint k
                               WHERE k.conrelid = c.oid AND k.contype = 'p')
-        """, (list(BUILD_INPUTS),))
+        """, (list(OTHER_TABLES),))
         without_pk = [r[0] for r in cur.fetchall()]
     if without_pk:
         failures.append(f"no primary key on: {without_pk}")
@@ -338,6 +366,30 @@ def verify(conn, dst):
     return 0
 
 
+def pipeline_url():
+    """PIPELINE_DATABASE_URL, or DATABASE_URL's server with the database `pipeline`."""
+    url = os.environ.get("PIPELINE_DATABASE_URL", "").strip()
+    if url:
+        return url
+    return urlunsplit(urlsplit(os.environ["DATABASE_URL"])._replace(path="/pipeline"))
+
+
+def ensure_database(url):
+    """Create the target database if this is the first import into it."""
+    try:
+        psycopg.connect(url, connect_timeout=30).close()
+        return
+    except psycopg.OperationalError as error:
+        if "does not exist" not in str(error):
+            raise
+    name = urlsplit(url).path.lstrip("/")
+    admin = urlunsplit(urlsplit(url)._replace(path="/postgres"))
+    with psycopg.connect(admin, autocommit=True) as conn:
+        if not conn.execute("SELECT 1 FROM pg_database WHERE datname = %s", [name]).fetchone():
+            conn.execute(f'CREATE DATABASE "{name}"')
+            print(f"created database {name}")
+
+
 def main():
     load_dotenv()
     parser = argparse.ArgumentParser(description=__doc__)
@@ -353,7 +405,9 @@ def main():
         print(f"wrote {SCHEMA_FILE} ({len(source.tables(conn))} tables)")
         return 0
 
-    with psycopg.connect(os.environ["DATABASE_URL"]) as dst:
+    url = pipeline_url()
+    ensure_database(url)
+    with psycopg.connect(url) as dst:
         if not args.verify:
             load(conn, dst)
         return verify(conn, dst)

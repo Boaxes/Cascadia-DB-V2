@@ -2,7 +2,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import path
 from django.views.generic import RedirectView
 
-from . import edit_views, views
+from . import edit_views, export_views, views
 
 urlpatterns = [
     path("login/", auth_views.LoginView.as_view(), name="login"),
@@ -28,8 +28,14 @@ urlpatterns = [
     path("sightings/<int:pk>/delete/", edit_views.delete, {"kind": "sighting"},
          name="sighting_delete"),
 
-    path("export/", views.export_page, name="export"),
-    path("export/download/", views.export_download, name="export_download"),
+    path("export/", export_views.export_page, name="export"),
+    path("export/download/", export_views.export_download, name="export_download"),
+    path("export/preview/", export_views.export_preview, name="export_preview"),
+    path("export/add/", export_views.export_add, name="export_add"),
+    path("export/remove/", export_views.export_remove, name="export_remove"),
+    path("export/related/", export_views.export_related, name="export_related"),
+
+    path("settings/", views.settings_page, name="settings"),
 
     path("api/sightings/", views.sightings_json, name="api_sightings"),
     path("api/efforts/", views.efforts_json, name="api_efforts"),

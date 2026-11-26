@@ -21,8 +21,8 @@
   var underneath = window.location.href;   // the page the pop-over sits over
   var stack = [];                          // records opened, oldest first
 
-  /* A record, its edit or delete step, or an admin page about one record. */
-  var RECORD = /^\/((sightings|efforts)\/\d+\/(edit\/|delete\/)?|admin\/(tracks\/(effort|file)|audit)\/\d+\/)$/;
+  /* A record, its edit or delete step, or a change in the Audit Log. */
+  var RECORD = /^\/((sightings|efforts)\/\d+\/(edit\/|delete\/)?|cascadia-admin\/audit\/\d+\/)$/;
   var changed = false;   /* something was saved: the page underneath is stale */
 
   function render(html, url) {

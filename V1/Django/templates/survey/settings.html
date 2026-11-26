@@ -1,0 +1,29 @@
+{% extends "survey/base.html" %}
+{% block title %}Settings &middot; Sightings and Effort Explorer{% endblock %}
+{% block page_class %}settings-page{% endblock %}
+
+{% block content %}
+<h1>Settings</h1>
+<p class="muted">Settings are kept in this browser, so each computer or phone you use keeps its own.</p>
+
+<form method="post" class="card">
+  {% csrf_token %}
+  <h2>Color Profile</h2>
+  <p class="small muted">The colors species are drawn in on the maps, in the legends and on species tags.</p>
+  <div class="setting-choices">
+    <label class="setting-choice">
+      <input type="radio" name="colour_profile" value="cascadia" {% if colour_profile == "cascadia" %}checked{% endif %}>
+      <span class="t">Cascadia</span>
+      <span class="s">Each species has its own color from Cascadia's palette, and tracks are drawn in yellow.</span>
+    </label>
+    <label class="setting-choice">
+      <input type="radio" name="colour_profile" value="generic" {% if colour_profile == "generic" %}checked{% endif %}>
+      <span class="t">Generic</span>
+      <span class="s">Species are shaded by group, so whales are blues and dolphins are teals, and tracks are drawn in pale blue.</span>
+    </label>
+  </div>
+  <div class="setting-actions">
+    <button class="btn btn-primary" type="submit">Save</button>
+  </div>
+</form>
+{% endblock %}

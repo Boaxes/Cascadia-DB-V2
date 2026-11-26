@@ -1,0 +1,1145 @@
+{
+ "DailyConditionT": [
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "CINMS",
+   "year": 2019,
+   "records": 164,
+   "ids": "13755, 13762 to 13764, 13889 to 13893, 13895 to 13897, 13923 to 13928, 14180 to 14181, 14189 to 14191, 14205 to 14206, 14275, 14344 to 14350, 14357 to 14360, 14394 to 14396, 14400 to 14401, 14409, 14438 to 14440, 14450, 14457, 14461, 14469 to 14470, 14478, 14582 to 14584, 14590 to 14592, 14596, 14601, 14615 to 14616, 14619, 14624 to 14625, 14627 to 14629, 14634, 14636, 14640 to 14643, 14650, 14652 to 14653, 14668 to 14670, 14676 to 14678, 14680 to 14681, 14689 to 14690, 14694, 14703 to 14704, 14720, 14724 to 14728, 14742, 14750 to 14754, 14771 to 14780, 14784 to 14786, 14788 to 14789, 14796, 14801 to 14804, 14809, 14813 to 14817, 14819 to 14844, 14848 to 14855, 14860 to 14861"
+  },
+  {
+   "reason": "Its effort (27051) was deleted from DB167",
+   "group": "CRC",
+   "year": 2008,
+   "records": 17,
+   "ids": "640 to 656"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "PS",
+   "year": 2019,
+   "records": 14,
+   "ids": "14870 to 14883"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "CRC",
+   "year": 2013,
+   "records": 7,
+   "ids": "34416 to 34422"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "CRC",
+   "year": 2021,
+   "records": 1,
+   "ids": "10087"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "CRC",
+   "year": 2025,
+   "records": 1,
+   "ids": "6556"
+  }
+ ],
+ "DailyEventT": [
+  {
+   "reason": "Its effort (27051) was deleted from DB167",
+   "group": "CRC",
+   "year": 2008,
+   "records": 23,
+   "ids": "1586 to 1608"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "CRC",
+   "year": 2021,
+   "records": 12,
+   "ids": "13546 to 13557"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "CRC",
+   "year": 2025,
+   "records": 4,
+   "ids": "7217 to 7220"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "MBWW",
+   "year": 2004,
+   "records": 4,
+   "ids": "19785 to 19788"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "MBWW",
+   "year": 2003,
+   "records": 2,
+   "ids": "19783 to 19784"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "MBWW",
+   "year": 2008,
+   "records": 2,
+   "ids": "19789 to 19790"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "MBWW",
+   "year": 2019,
+   "records": 2,
+   "ids": "20037 to 20038"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "PS",
+   "year": 2019,
+   "records": 2,
+   "ids": "21737 to 21738"
+  }
+ ],
+ "SightingT": [
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "CINMS",
+   "year": 2019,
+   "records": 253,
+   "ids": "31387 to 31396, 31458 to 31466, 31471 to 31473, 31687 to 31697, 31705, 31731 to 31732, 32037 to 32047, 32052 to 32054, 32061 to 32064, 32066 to 32083, 32093 to 32094, 32238 to 32252, 32431 to 32432, 32437 to 32443, 32466 to 32471, 32500, 32513, 32519, 32524 to 32535, 32548 to 32549, 32556 to 32560, 32578 to 32579, 32583 to 32586, 32592 to 32593, 32610, 32619, 32634, 32701 to 32706, 32716 to 32721, 32741, 32795 to 32800, 32817, 32838, 32870 to 32871, 32877, 32914, 32926 to 32933, 32940, 32946 to 32953, 32961 to 32962, 32966, 32974 to 32978, 33081 to 33087, 33094, 33106 to 33110, 33125, 33139 to 33144, 33151, 33156 to 33159, 33164, 33173, 33181, 33187 to 33208, 33214 to 33224, 33229 to 33233"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "NMML",
+   "year": 2025,
+   "records": 128,
+   "ids": "8263 to 8274, 8302 to 8417"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-RulonB",
+   "year": 2025,
+   "records": 119,
+   "ids": "8275 to 8301, 8573 to 8664"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "BG",
+   "year": 2025,
+   "records": 86,
+   "ids": "8139 to 8224"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "CRC",
+   "year": 2013,
+   "records": 39,
+   "ids": "84119 to 84121, 84561 to 84596"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "MF",
+   "year": 2025,
+   "records": 37,
+   "ids": "7960 to 7967, 8234 to 8262"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-StorbeckJ",
+   "year": 2025,
+   "records": 21,
+   "ids": "8750 to 8770"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-GillA",
+   "year": 2025,
+   "records": 12,
+   "ids": "8482 to 8493"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-JohnS",
+   "year": 2025,
+   "records": 12,
+   "ids": "8512 to 8523"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "MBWW",
+   "year": 2019,
+   "records": 11,
+   "ids": "33417 to 33426, 37257"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-BivensK",
+   "year": 2025,
+   "records": 10,
+   "ids": "8785 to 8794"
+  },
+  {
+   "reason": "Its effort (27051) was deleted from DB167",
+   "group": "CRC",
+   "year": 2008,
+   "records": 9,
+   "ids": "5317 to 5320, 6167 to 6171"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "CS-JKJ",
+   "year": 2025,
+   "records": 9,
+   "ids": "8225 to 8233"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-HaightR",
+   "year": 2025,
+   "records": 8,
+   "ids": "8497 to 8504"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-PhillipsK",
+   "year": 2025,
+   "records": 8,
+   "ids": "8555 to 8562"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "PS",
+   "year": 2019,
+   "records": 7,
+   "ids": "37073 to 37079"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-NOAA",
+   "year": 2019,
+   "records": 6,
+   "ids": "37843 to 37848"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-JohnS",
+   "year": 2025,
+   "records": 6,
+   "ids": "8803 to 8808"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-BivensK",
+   "year": 2025,
+   "records": 5,
+   "ids": "8423 to 8425, 8458 to 8459"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-GeistS",
+   "year": 2025,
+   "records": 5,
+   "ids": "8476 to 8480"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-McKaneT",
+   "year": 2025,
+   "records": 5,
+   "ids": "8536 to 8540"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-JohnsonC",
+   "year": 2025,
+   "records": 4,
+   "ids": "8524 to 8527"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-ReedT",
+   "year": 2025,
+   "records": 4,
+   "ids": "8569 to 8572"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-ShieldsJ",
+   "year": 2025,
+   "records": 4,
+   "ids": "8745 to 8748"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-TierraS",
+   "year": 2025,
+   "records": 4,
+   "ids": "8771 to 8774"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-LoriS",
+   "year": 2025,
+   "records": 3,
+   "ids": "8528 to 8530"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-McKaneT",
+   "year": 2025,
+   "records": 3,
+   "ids": "8810 to 8812"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-ShieldsJ",
+   "year": 2025,
+   "records": 3,
+   "ids": "8819 to 8821"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-BoothL",
+   "year": 2025,
+   "records": 2,
+   "ids": "8463 to 8464"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-GlessE",
+   "year": 2025,
+   "records": 2,
+   "ids": "8494 to 8495"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-HarlesJ",
+   "year": 2025,
+   "records": 2,
+   "ids": "8505 to 8506"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-HoffmanR",
+   "year": 2025,
+   "records": 2,
+   "ids": "8508 to 8509"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-MartinK",
+   "year": 2025,
+   "records": 2,
+   "ids": "8531 to 8532"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-OBrienM",
+   "year": 2025,
+   "records": 2,
+   "ids": "8548 to 8549"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-Obrien",
+   "year": 2025,
+   "records": 2,
+   "ids": "8546 to 8547"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-ParryK",
+   "year": 2025,
+   "records": 2,
+   "ids": "8550 to 8551"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-PaulinoK",
+   "year": 2025,
+   "records": 2,
+   "ids": "8552 to 8553"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-ReadK",
+   "year": 2025,
+   "records": 2,
+   "ids": "8566 to 8567"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-SawyerM",
+   "year": 2025,
+   "records": 2,
+   "ids": "8666 to 8667"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-WallaceS",
+   "year": 2025,
+   "records": 2,
+   "ids": "8776 to 8777"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-GillA",
+   "year": 2025,
+   "records": 2,
+   "ids": "8799 to 8800"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-ParhamG",
+   "year": 2025,
+   "records": 2,
+   "ids": "8814 to 8815"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-AlexanderS",
+   "year": 2025,
+   "records": 1,
+   "ids": "8418"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-AndersonT",
+   "year": 2025,
+   "records": 1,
+   "ids": "8419"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-ArmbrusterM",
+   "year": 2025,
+   "records": 1,
+   "ids": "8420"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-BairdR",
+   "year": 2025,
+   "records": 1,
+   "ids": "8421"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-BashamA",
+   "year": 2025,
+   "records": 1,
+   "ids": "8422"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-BoczekK",
+   "year": 2025,
+   "records": 1,
+   "ids": "8460"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-BoldenI",
+   "year": 2025,
+   "records": 1,
+   "ids": "8461"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-BonnG",
+   "year": 2025,
+   "records": 1,
+   "ids": "8462"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-CasanovaB",
+   "year": 2025,
+   "records": 1,
+   "ids": "8465"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-ChenX",
+   "year": 2025,
+   "records": 1,
+   "ids": "8466"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-CheungK",
+   "year": 2025,
+   "records": 1,
+   "ids": "8467"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-CookJ",
+   "year": 2025,
+   "records": 1,
+   "ids": "8468"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-DavisP",
+   "year": 2025,
+   "records": 1,
+   "ids": "8469"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-DeanB",
+   "year": 2025,
+   "records": 1,
+   "ids": "8470"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-DrummondT",
+   "year": 2025,
+   "records": 1,
+   "ids": "8471"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-Ehannahoe",
+   "year": 2019,
+   "records": 1,
+   "ids": "37432"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-ElliserC",
+   "year": 2025,
+   "records": 1,
+   "ids": "8472"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-FarrellC",
+   "year": 2025,
+   "records": 1,
+   "ids": "8473"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-FifieldT",
+   "year": 2025,
+   "records": 1,
+   "ids": "8474"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-FlipT",
+   "year": 2025,
+   "records": 1,
+   "ids": "8475"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-GibsonI",
+   "year": 2025,
+   "records": 1,
+   "ids": "8481"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-GranerF",
+   "year": 2025,
+   "records": 1,
+   "ids": "8496"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-HayerC",
+   "year": 2025,
+   "records": 1,
+   "ids": "8507"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-HowittD",
+   "year": 2025,
+   "records": 1,
+   "ids": "8510"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-HysongS",
+   "year": 2025,
+   "records": 1,
+   "ids": "8511"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-LaMarcheJ",
+   "year": 2019,
+   "records": 1,
+   "ids": "37693"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-McBroomJ",
+   "year": 2025,
+   "records": 1,
+   "ids": "8533"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-McCannK",
+   "year": 2025,
+   "records": 1,
+   "ids": "8534"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-McCoyB",
+   "year": 2025,
+   "records": 1,
+   "ids": "8535"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-McKinleyB",
+   "year": 2025,
+   "records": 1,
+   "ids": "8541"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-MontgomeryA",
+   "year": 2025,
+   "records": 1,
+   "ids": "8542"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-MooreG",
+   "year": 2025,
+   "records": 1,
+   "ids": "8543"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-MurohyS",
+   "year": 2025,
+   "records": 1,
+   "ids": "8544"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-NaughtonM",
+   "year": 2025,
+   "records": 1,
+   "ids": "8545"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-PearsonS",
+   "year": 2025,
+   "records": 1,
+   "ids": "8554"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-RauschC",
+   "year": 2025,
+   "records": 1,
+   "ids": "8563"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-ReC",
+   "year": 2025,
+   "records": 1,
+   "ids": "8568"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-ReadK",
+   "year": 2022,
+   "records": 1,
+   "ids": "8564"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-ReadK",
+   "year": 2024,
+   "records": 1,
+   "ids": "8565"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-RulonB",
+   "year": 2018,
+   "records": 1,
+   "ids": "37872"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-RulonB",
+   "year": 2019,
+   "records": 1,
+   "ids": "37944"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-SawyerH",
+   "year": 2025,
+   "records": 1,
+   "ids": "8665"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-SchaeferR",
+   "year": 2019,
+   "records": 1,
+   "ids": "38036"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-SchuldJ",
+   "year": 2025,
+   "records": 1,
+   "ids": "8668"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-SeabreezeAdventures",
+   "year": 2025,
+   "records": 1,
+   "ids": "8669"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-SeahK",
+   "year": 2025,
+   "records": 1,
+   "ids": "8743"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-ShepardK",
+   "year": 2025,
+   "records": 1,
+   "ids": "8744"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-SmithL",
+   "year": 2025,
+   "records": 1,
+   "ids": "8749"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-VonDrachekB",
+   "year": 2025,
+   "records": 1,
+   "ids": "8775"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-WandresE",
+   "year": 2025,
+   "records": 1,
+   "ids": "8778"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-WhippleC",
+   "year": 2025,
+   "records": 1,
+   "ids": "8779"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-WilliamsJ",
+   "year": 2025,
+   "records": 1,
+   "ids": "8780"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-WoodsZ",
+   "year": 2025,
+   "records": 1,
+   "ids": "8781"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-WrightA",
+   "year": 2025,
+   "records": 1,
+   "ids": "8782"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-YoshiokaB",
+   "year": 2025,
+   "records": 1,
+   "ids": "8783"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "Opp-ZwambornE",
+   "year": 2025,
+   "records": 1,
+   "ids": "8784"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-BuckmasterJ",
+   "year": 2019,
+   "records": 1,
+   "ids": "38080"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-Chris",
+   "year": 2025,
+   "records": 1,
+   "ids": "8795"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-CronheimD",
+   "year": 2025,
+   "records": 1,
+   "ids": "8796"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-DouglasM",
+   "year": 2025,
+   "records": 1,
+   "ids": "8797"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-GeorgeD",
+   "year": 2025,
+   "records": 1,
+   "ids": "8798"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-HaightR",
+   "year": 2025,
+   "records": 1,
+   "ids": "8801"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-HedstromD",
+   "year": 2025,
+   "records": 1,
+   "ids": "8802"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-Island Adventures",
+   "year": 2019,
+   "records": 1,
+   "ids": "37556"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-IslandAdventures",
+   "year": 2019,
+   "records": 1,
+   "ids": "37557"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-LemireAB",
+   "year": 2019,
+   "records": 1,
+   "ids": "38115"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-MartinK",
+   "year": 2025,
+   "records": 1,
+   "ids": "8809"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-NasbyM",
+   "year": 2025,
+   "records": 1,
+   "ids": "8813"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-ParryK",
+   "year": 2025,
+   "records": 1,
+   "ids": "8816"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-PopeL",
+   "year": 2025,
+   "records": 1,
+   "ids": "8817"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-Pudwe;;P",
+   "year": 2019,
+   "records": 1,
+   "ids": "38126"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-RappM",
+   "year": 2025,
+   "records": 1,
+   "ids": "8818"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-SidlesA",
+   "year": 2025,
+   "records": 1,
+   "ids": "8822"
+  },
+  {
+   "reason": "No effort with its Research Group, Vessel and Date",
+   "group": "OrcaNet-StrobelM",
+   "year": 2025,
+   "records": 1,
+   "ids": "8823"
+  }
+ ],
+ "SightingEventT": [
+  {
+   "reason": "More than one sighting with its Research Group, Vessel, Date and Sighting, and nothing tells them apart",
+   "group": "CRC",
+   "year": 2022,
+   "records": 12,
+   "ids": "2655 to 2658, 2660, 2662, 2664 to 2665, 2719 to 2720, 2728 to 2729"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2008,
+   "records": 9,
+   "ids": "8177 to 8185"
+  },
+  {
+   "reason": "More than one sighting with its Research Group, Vessel, Date and Sighting, and nothing tells them apart",
+   "group": "CRC",
+   "year": 2006,
+   "records": 4,
+   "ids": "27 to 30"
+  }
+ ],
+ "OtherSpeciesT": [
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "BG",
+   "year": 2008,
+   "records": 175,
+   "ids": "1872 to 1920, 1928 to 1933, 1938 to 1950, 1952 to 1961, 1968 to 2043, 3805 to 3825"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2008,
+   "records": 164,
+   "ids": "1814 to 1849, 1851 to 1871, 3826 to 3932"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CINMS",
+   "year": 2008,
+   "records": 18,
+   "ids": "1850, 1921 to 1927, 1934 to 1937, 1951, 1963 to 1967"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2004,
+   "records": 8,
+   "ids": "5438 to 5442, 5456, 5465, 5573"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "PS",
+   "year": 2005,
+   "records": 7,
+   "ids": "4493, 4646, 4653, 4667, 4670, 4729, 4737"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "MBWW",
+   "year": 2019,
+   "records": 6,
+   "ids": "1737, 1747, 1753 to 1754, 1761 to 1762"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "NB",
+   "year": 2017,
+   "records": 4,
+   "ids": "2752 to 2755"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2005,
+   "records": 3,
+   "ids": "4558 to 4560"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2006,
+   "records": 2,
+   "ids": "4453 to 4454"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2022,
+   "records": 2,
+   "ids": "1148, 1164"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "STAP",
+   "year": 2004,
+   "records": 2,
+   "ids": "5675 to 5676"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2018,
+   "records": 1,
+   "ids": "2314"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2021,
+   "records": 1,
+   "ids": "1510"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2026,
+   "records": 1,
+   "ids": "6428"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "Opp-SetzlerT",
+   "year": 2020,
+   "records": 1,
+   "ids": "1670"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "OrcaNet-RendonA",
+   "year": 2022,
+   "records": 1,
+   "ids": "1165"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "OrcaNet-ShumwayI",
+   "year": 2022,
+   "records": 1,
+   "ids": "1337"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "TK",
+   "year": 2008,
+   "records": 1,
+   "ids": "1962"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "Wendy Szaniszlo",
+   "year": 2006,
+   "records": 1,
+   "ids": "4457"
+  }
+ ],
+ "SampleT": [
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2008,
+   "records": 22,
+   "ids": "2569 to 2590"
+  }
+ ],
+ "IdentificationT": [
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2021,
+   "records": 8,
+   "ids": "19567 to 19574"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2026,
+   "records": 1,
+   "ids": "92548"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "OSU-MMI-GEMM",
+   "year": 2023,
+   "records": 1,
+   "ids": "13420"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "Opp-ArmbrusterM",
+   "year": 2024,
+   "records": 1,
+   "ids": "7987"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "Opp-TierraS",
+   "year": 2024,
+   "records": 1,
+   "ids": "8534"
+  }
+ ],
+ "TagSummaryT": [
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "OSU",
+   "year": 2007,
+   "records": 11,
+   "ids": "953 to 963"
+  },
+  {
+   "reason": "More than one sighting with its Research Group, Vessel, Date and Sighting, and nothing tells them apart",
+   "group": "CRC",
+   "year": 2022,
+   "records": 2,
+   "ids": "229 to 230"
+  },
+  {
+   "reason": "No sighting with its Research Group, Vessel, Date and Sighting",
+   "group": "CRC",
+   "year": 2015,
+   "records": 1,
+   "ids": "148"
+  }
+ ]
+}

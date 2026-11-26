@@ -1,61 +1,17 @@
--- IdentificationT: DB167's rows, with the website's changes applied, plus their vessel.
---
--- 1. cleaned: nothing in DB167's copy of this table is cleaned.
--- 2. r, s: the website's edits applied on top (macros/replay.sql).
--- 3. the final select: DB167's columns, plus the ones this table adds.
-
-with cleaned as (
-    select
-        "IdentificationID",
-        "DailyEffortID",
-        "SightingID",
-        "IndividualID",
-        "Research Group",
-        "Vessel",
-        "Date",
-        "Sighting",
-        "Beh Role",
-        "Best Fluke",
-        "Best Left",
-        "Best Right",
-        "Best Tail Stock",
-        "Biopsy Photo",
-        "Category",
-        "CRC ID",
-        "Field ID",
-        "FieldID",
-        "ForeLeft",
-        "ForeRight",
-        "HW ID",
-        "MatchNotes",
-        "MeasureAngle",
-        "MeasureImage",
-        "Other ID",
-        "Qual F",
-        "Qual L",
-        "Qual R",
-        "Record Type",
-        "Scarring",
-        "Scarring&Injury",
-        "ScarringInjury",
-        "Tag #",
-        "Tag Photo",
-        "Tag Type",
-        "TagType",
-        "TempID",
-        "Comments",
-        "SourceDB",
-        "Species"
-    from {{ source('raw', 'IdentificationT') }}
-),
-r as (
-    {{ replay_rows('cleaned', 'IdentificationT', 'IdentificationID') }}
-),
-s as (
-    select {{ replayed_columns('IdentificationT', 'r') }}, r.__edits from r
-)
-select
-    {{ column_list('IdentificationT', 's') }},
-    {{ vessel_id('s') }} as vessel_id
+-- IdentificationT: individual animals recognised in a sighting's photos, with
+-- the hashed Primary Key, the website's edits, and Foreign Keys to the effort,
+-- the sighting (SightingID settling a tie), research group, vessel and species.
+-- IndividualID is the Foreign Key to IndividualT, copied from DB167; one that
+-- names no individual is left NULL, an orphan.
+with {{ replayed('IdentificationT') }}
+select s.id, {{ column_list('IdentificationT', 's', {'IndividualID': checked_reference('s."IndividualID"', 'IndividualT')}) }},
+       {{ edited_reference('daily_effort_id', 'effort.id', 'DailyEffortT') }} as daily_effort_id,
+       {{ edited_reference('sighting_id', 'sighting.id', 'SightingT') }} as sighting_id,
+       rg.id::integer as research_group_id,
+       vk.vessel_id::integer as vessel_id,
+       sp.id::integer as species_id
 from s
-{{ vessel_joins('s') }}
+left join lateral {{ parent_id(ref('keyed_DailyEffortT'), 'DailyEffortID', 's.__effort', 's."DailyEffortID"') }} effort on true
+left join lateral {{ parent_id(ref('keyed_SightingT'), 'SightingID', 's.__sighting', 's."SightingID"') }} sighting on true
+{{ species_join('s') }}
+{{ group_and_vessel_joins('s') }}

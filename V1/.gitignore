@@ -24,14 +24,19 @@ venv/
 
 # Data — large, and reproducible from source
 *.csv
-!ETL/seed/*.csv
+!Archive/ETL/seed/*.csv
 !Django/survey/species_colours.csv
+!Django/survey/sub_areas.csv
+!ETL/dbt/seeds/*.csv
+!ETL/ci/track_files/*.csv
 db_dumps/
 *.dump
 *.sql.gz
+!ETL/ci/seed.sql.gz
 
 # Django
 staticfiles/
+track-checks/
 media/
 db.sqlite3
 
@@ -44,8 +49,22 @@ smoke*.py
 .idea/
 .vscode/
 
-# dbt
+# dbt, Elementary, and the pipeline's test reports and site
 ETL/dbt/target/
 ETL/dbt/logs/
 ETL/dbt/dbt_packages/
 ETL/dbt/.user.yml
+ETL/dbt/edr_target/
+ETL/verify/reports/
+ETL/site/
+ETL/run/
+
+# dbt (archived)
+Archive/ETL/dbt/target/
+Archive/ETL/dbt/logs/
+Archive/ETL/dbt/dbt_packages/
+Archive/ETL/dbt/.user.yml
+
+# Local Cloudflare Pages preview state, and the local copy of the GPS track bucket
+.wrangler/
+track_files_reference/

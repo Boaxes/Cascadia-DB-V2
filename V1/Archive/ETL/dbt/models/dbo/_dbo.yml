@@ -1,0 +1,2158 @@
+# The live tables: their columns, types and keys. macros/structure.sql applies
+# what is under `meta` once each table is built.
+
+models:
+  - name: AdditionalCameraT
+    config:
+      meta:
+        structure:
+          primary_key: ["AdditionalCameraID"]
+    columns:
+      - name: "AdditionalCameraID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_additionalcamerat_dailyeffortid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "ResearchGroupID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "ResearchGroupT", "column": "ResearchGroupID", "name": "fk_additionalcamerat_researchgroupid"}}
+      - name: "SurveyDate"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "VesselID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "VesselT", "column": "VesselID", "name": "fk_additionalcamerat_vesselid"}}
+      - name: "SightingID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "SightingT", "column": "SightingID", "name": "fk_additionalcamerat_sightingid"}}
+      - name: "SightingNum"
+        quote: true
+        data_type: "text"
+      - name: "FieldIDs"
+        quote: true
+        data_type: "text"
+      - name: "PhotographerID"
+        quote: true
+        data_type: "integer"
+      - name: "PhotographerInitials"
+        quote: true
+        data_type: "text"
+      - name: "ImageSeriesName"
+        quote: true
+        data_type: "text"
+      - name: "StartFrame"
+        quote: true
+        data_type: "integer"
+      - name: "EndFrame"
+        quote: true
+        data_type: "integer"
+      - name: "Notes"
+        quote: true
+        data_type: "text"
+  - name: CollaboratorT
+    config:
+      meta:
+        structure:
+          primary_key: ["CollaboratorID"]
+    columns:
+      - name: "CollaboratorID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "Collaborator"
+        quote: true
+        data_type: "text"
+  - name: CRC_Vessels_ByYear_T
+    config:
+      meta:
+        structure:
+          primary_key: ["CRCVesselID"]
+    columns:
+      - name: "CRCVesselID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "EffortYear"
+        quote: true
+        data_type: "smallint"
+      - name: "RecordCount"
+        quote: true
+        data_type: "integer"
+      - name: "IncludeVessel"
+        quote: true
+        data_type: "boolean"
+        config:
+          meta: {"not_null": true}
+      - name: "Comments"
+        quote: true
+        data_type: "text"
+      - name: "FlaggedToCheck"
+        quote: true
+        data_type: "boolean"
+        config:
+          meta: {"not_null": true}
+  - name: DailyConditionT
+    config:
+      meta:
+        structure:
+          primary_key: ["DailyConditionID"]
+          triggers:
+            - {"name": "condition_geometry", "function": "child_geometry"}
+    columns:
+      - name: "DailyConditionID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_dailyconditiont_dailyeffortid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Date"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "ConditionTime"
+        quote: true
+        data_type: "time without time zone"
+      - name: "Dec Lat"
+        quote: true
+        data_type: "double precision"
+      - name: "Dec Long"
+        quote: true
+        data_type: "double precision"
+      - name: "% Cloud Cover"
+        quote: true
+        data_type: "integer"
+      - name: "Beaufort"
+        quote: true
+        data_type: "integer"
+      - name: "Precipitation"
+        quote: true
+        data_type: "text"
+      - name: "Quality"
+        quote: true
+        data_type: "text"
+      - name: "Swell"
+        quote: true
+        data_type: "integer"
+      - name: "Visibility"
+        quote: true
+        data_type: "text"
+      - name: "Visibility (nm)"
+        quote: true
+        data_type: "text"
+      - name: "Comments"
+        quote: true
+        data_type: "text"
+      - name: "SourceDB"
+        quote: true
+        data_type: "text"
+      - name: "ConditionDateTime"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "geom"
+        quote: true
+        data_type: "geometry(Point,4326)"
+      - name: "visibility_nm"
+        quote: true
+        data_type: "numeric(8,2)"
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+  - name: DailyEffortT
+    config:
+      meta:
+        structure:
+          primary_key: ["DailyEffortID"]
+          indexes:
+            - {"name": "ix_dailyeffortt_date", "columns": ["Date"]}
+            - {"name": "ix_dailyeffortt_research_group", "columns": ["Research Group"]}
+            - {"name": "ix_dailyeffortt_research_group_date_vessel", "columns": ["Research Group", "Date", "Vessel"]}
+            - {"name": "ix_dailyeffortt_vessel", "columns": ["Vessel"]}
+    columns:
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Date"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "Start Time"
+        quote: true
+        data_type: "time without time zone"
+      - name: "End Time"
+        quote: true
+        data_type: "time without time zone"
+      - name: "Distance Units"
+        quote: true
+        data_type: "text"
+      - name: "Launch"
+        quote: true
+        data_type: "text"
+      - name: "Locality"
+        quote: true
+        data_type: "text"
+      - name: "Personnel"
+        quote: true
+        data_type: "text"
+      - name: "PhotoDataBy"
+        quote: true
+        data_type: "text"
+      - name: "Project/Objective"
+        quote: true
+        data_type: "text"
+      - name: "Record Source"
+        quote: true
+        data_type: "text"
+      - name: "Region"
+        quote: true
+        data_type: "text"
+      - name: "Return"
+        quote: true
+        data_type: "text"
+      - name: "Sub-area"
+        quote: true
+        data_type: "text"
+      - name: "Survey Comments"
+        quote: true
+        data_type: "text"
+      - name: "Survey Type"
+        quote: true
+        data_type: "text"
+      - name: "Time Off Effort"
+        quote: true
+        data_type: "time without time zone"
+      - name: "Total Distance"
+        quote: true
+        data_type: "text"
+      - name: "Total Survey Effort"
+        quote: true
+        data_type: "time without time zone"
+      - name: "SourceDB"
+        quote: true
+        data_type: "text"
+      - name: "Start Dec Lat"
+        quote: true
+        data_type: "double precision"
+      - name: "Start Dec Long"
+        quote: true
+        data_type: "double precision"
+      - name: "End Dec Lat"
+        quote: true
+        data_type: "double precision"
+      - name: "End Dec Long"
+        quote: true
+        data_type: "double precision"
+      - name: "SentToAnnualDB"
+        quote: true
+        data_type: "boolean"
+        config:
+          meta: {"not_null": true}
+      - name: "Finalized"
+        quote: true
+        data_type: "boolean"
+        config:
+          meta: {"not_null": true}
+      - name: "total_distance_nm"
+        quote: true
+        data_type: "numeric(10,3)"
+      - name: "start_point"
+        quote: true
+        data_type: "geometry(Point,4326)"
+      - name: "end_point"
+        quote: true
+        data_type: "geometry(Point,4326)"
+      - name: "start_coord_source"
+        quote: true
+        data_type: "text"
+      - name: "end_coord_source"
+        quote: true
+        data_type: "text"
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+  - name: DailyEventT
+    config:
+      meta:
+        structure:
+          primary_key: ["DailyEventID"]
+          indexes:
+            - {"name": "ix_dailyeventt_event_code_id", "columns": ["event_code_id"]}
+          triggers:
+            - {"name": "event_geometry", "function": "child_geometry"}
+    columns:
+      - name: "DailyEventID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_dailyeventt_dailyeffortid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Date"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Time"
+        quote: true
+        data_type: "time without time zone"
+      - name: "Code"
+        quote: true
+        data_type: "text"
+      - name: "Dec Lat"
+        quote: true
+        data_type: "double precision"
+      - name: "Dec Long"
+        quote: true
+        data_type: "double precision"
+      - name: "Line"
+        quote: true
+        data_type: "text"
+      - name: "ObsL"
+        quote: true
+        data_type: "text"
+      - name: "ObsR"
+        quote: true
+        data_type: "text"
+      - name: "Rec"
+        quote: true
+        data_type: "text"
+      - name: "Comments"
+        quote: true
+        data_type: "text"
+      - name: "SourceDB"
+        quote: true
+        data_type: "text"
+      - name: "EventDateTime"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "geom"
+        quote: true
+        data_type: "geometry(Point,4326)"
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+      - name: "event_code_id"
+        quote: true
+        data_type: "integer"
+  - name: DataStatusT
+    config:
+      meta:
+        structure:
+          primary_key: ["DataStatusID"]
+    columns:
+      - name: "DataStatusID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "StatusStartDate"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "StatusEndDate"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "DataStatusTypeID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DataStatusTypeT", "column": "DataStatusTypeID", "name": "fk_datastatust_datastatustypeid"}}
+  - name: DataStatusTypeT
+    config:
+      meta:
+        structure:
+          primary_key: ["DataStatusTypeID"]
+    columns:
+      - name: "DataStatusTypeID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DataStatusType"
+        quote: true
+        data_type: "text"
+  - name: DroneDeploymentT
+    config:
+      meta:
+        structure:
+          primary_key: ["DroneEventID"]
+    columns:
+      - name: "DroneEventID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_dronedeploymentt_dailyeffortid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "DroneDate"
+        quote: true
+        data_type: "date"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Drone"
+        quote: true
+        data_type: "text"
+      - name: "SightingNum"
+        quote: true
+        data_type: "text"
+      - name: "FieldID"
+        quote: true
+        data_type: "text"
+      - name: "LidarUnit"
+        quote: true
+        data_type: "text"
+      - name: "FlightNum"
+        quote: true
+        data_type: "text"
+      - name: "LaunchTime"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "LaunchLatitude"
+        quote: true
+        data_type: "double precision"
+      - name: "LaunchLongitude"
+        quote: true
+        data_type: "double precision"
+      - name: "ReturnTime"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "ReturnLatitude"
+        quote: true
+        data_type: "double precision"
+      - name: "ReturnLongitude"
+        quote: true
+        data_type: "double precision"
+      - name: "StartFrame"
+        quote: true
+        data_type: "text"
+      - name: "EndFrame"
+        quote: true
+        data_type: "text"
+      - name: "GPSPhoto"
+        quote: true
+        data_type: "text"
+      - name: "VideoFile"
+        quote: true
+        data_type: "text"
+      - name: "TargetVessels"
+        quote: true
+        data_type: "text"
+      - name: "Comments"
+        quote: true
+        data_type: "text"
+      - name: "SerialNumber"
+        quote: true
+        data_type: "text"
+      - name: "Pilot"
+        quote: true
+        data_type: "text"
+      - name: "LaunchStaff"
+        quote: true
+        data_type: "text"
+      - name: "CalibrationObject"
+        quote: true
+        data_type: "text"
+      - name: "Description"
+        quote: true
+        data_type: "text"
+      - name: "CalibrationObjectType"
+        quote: true
+        data_type: "text"
+  - name: DroneTargetAnimalT
+    config:
+      meta:
+        structure:
+          primary_key: ["DroneTargetAnimalID"]
+          indexes:
+            - {"name": "ix_dronetargetanimalt_droneeventid", "columns": ["DroneEventID"]}
+    columns:
+      - name: "DroneTargetAnimalID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_dronetargetanimalt_dailyeffortid"}}
+      - name: "DroneEventID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DroneDeploymentT", "column": "DroneEventID", "name": "fk_dronetargetanimalt_droneeventid"}}
+      - name: "SightingNum"
+        quote: true
+        data_type: "text"
+      - name: "TargetAnimal"
+        quote: true
+        data_type: "text"
+      - name: "TimeOverThisAnimal"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "LatitudeOver"
+        quote: true
+        data_type: "double precision"
+      - name: "LongitudeOver"
+        quote: true
+        data_type: "double precision"
+      - name: "Field ID"
+        quote: true
+        data_type: "text"
+      - name: "CRC ID"
+        quote: true
+        data_type: "text"
+      - name: "FlightNum"
+        quote: true
+        data_type: "text"
+      - name: "Abbreviation"
+        quote: true
+        data_type: "text"
+      - name: "Comments"
+        quote: true
+        data_type: "text"
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "EffortDate"
+        quote: true
+        data_type: "date"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+  - name: EffortCrewT
+    config:
+      meta:
+        structure:
+          primary_key: ["EffortCrewID"]
+    columns:
+      - name: "EffortCrewID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_effortcrewt_dailyeffortid"}}
+      - name: "CrewName"
+        quote: true
+        data_type: "text"
+      - name: "Initials"
+        quote: true
+        data_type: "text"
+  - name: EffortProblemT
+    config:
+      meta:
+        structure:
+          primary_key: ["ProblemID"]
+    columns:
+      - name: "ProblemID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "EffortDate"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "RecSource"
+        quote: true
+        data_type: "text"
+      - name: "DailyEffortNum"
+        quote: true
+        data_type: "integer"
+      - name: "ThisVessel"
+        quote: true
+        data_type: "text"
+      - name: "PreferredRecordSource"
+        quote: true
+        data_type: "text"
+      - name: "PreferredVesselName"
+        quote: true
+        data_type: "text"
+      - name: "PreferredResearchGroup"
+        quote: true
+        data_type: "text"
+      - name: "Comments"
+        quote: true
+        data_type: "text"
+      - name: "LinkedProblemID"
+        quote: true
+        data_type: "integer"
+      - name: "MissingInAnnualUnionDB"
+        quote: true
+        data_type: "boolean"
+        config:
+          meta: {"not_null": true}
+      - name: "MissingInIanDB"
+        quote: true
+        data_type: "boolean"
+        config:
+          meta: {"not_null": true}
+      - name: "OriginalRG"
+        quote: true
+        data_type: "text"
+      - name: "OriginalVessel"
+        quote: true
+        data_type: "text"
+      - name: "FixedByUserID"
+        quote: true
+        data_type: "integer"
+  - name: EventCodeT
+    config:
+      meta:
+        structure:
+          primary_key: ["EventCodeID"]
+    columns:
+      - name: "EventCodeID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "EventCode"
+        quote: true
+        data_type: "text"
+      - name: "CodeDescription"
+        quote: true
+        data_type: "text"
+      - name: "SortOrder"
+        quote: true
+        data_type: "integer"
+      - name: "name"
+        quote: true
+        data_type: "text"
+  - name: IdentificationT
+    config:
+      meta:
+        structure:
+          primary_key: ["IdentificationID"]
+          indexes:
+            - {"name": "ix_identificationt_research_group_date_vessel_sighting", "columns": ["Research Group", "Date", "Vessel", "Sighting"]}
+            - {"name": "ix_identificationt_sightingid_crc_id", "columns": ["SightingID", "CRC ID"]}
+    columns:
+      - name: "IdentificationID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_identificationt_dailyeffortid"}}
+      - name: "SightingID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "SightingT", "column": "SightingID", "name": "fk_identificationt_sightingid"}}
+      - name: "IndividualID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "IndividualT", "column": "IndividualID", "name": "fk_identificationt_individualid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Date"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "Sighting"
+        quote: true
+        data_type: "text"
+      - name: "Beh Role"
+        quote: true
+        data_type: "text"
+      - name: "Best Fluke"
+        quote: true
+        data_type: "text"
+      - name: "Best Left"
+        quote: true
+        data_type: "text"
+      - name: "Best Right"
+        quote: true
+        data_type: "text"
+      - name: "Best Tail Stock"
+        quote: true
+        data_type: "text"
+      - name: "Biopsy Photo"
+        quote: true
+        data_type: "text"
+      - name: "Category"
+        quote: true
+        data_type: "text"
+      - name: "CRC ID"
+        quote: true
+        data_type: "integer"
+      - name: "Field ID"
+        quote: true
+        data_type: "text"
+      - name: "FieldID"
+        quote: true
+        data_type: "text"
+      - name: "ForeLeft"
+        quote: true
+        data_type: "text"
+      - name: "ForeRight"
+        quote: true
+        data_type: "text"
+      - name: "HW ID"
+        quote: true
+        data_type: "text"
+      - name: "MatchNotes"
+        quote: true
+        data_type: "text"
+      - name: "MeasureAngle"
+        quote: true
+        data_type: "integer"
+      - name: "MeasureImage"
+        quote: true
+        data_type: "text"
+      - name: "Other ID"
+        quote: true
+        data_type: "text"
+      - name: "Qual F"
+        quote: true
+        data_type: "integer"
+      - name: "Qual L"
+        quote: true
+        data_type: "integer"
+      - name: "Qual R"
+        quote: true
+        data_type: "integer"
+      - name: "Record Type"
+        quote: true
+        data_type: "text"
+      - name: "Scarring"
+        quote: true
+        data_type: "text"
+      - name: "Scarring&Injury"
+        quote: true
+        data_type: "text"
+      - name: "ScarringInjury"
+        quote: true
+        data_type: "text"
+      - name: "Tag #"
+        quote: true
+        data_type: "text"
+      - name: "Tag Photo"
+        quote: true
+        data_type: "text"
+      - name: "Tag Type"
+        quote: true
+        data_type: "text"
+      - name: "TagType"
+        quote: true
+        data_type: "text"
+      - name: "TempID"
+        quote: true
+        data_type: "text"
+      - name: "Comments"
+        quote: true
+        data_type: "text"
+      - name: "SourceDB"
+        quote: true
+        data_type: "text"
+      - name: "Species"
+        quote: true
+        data_type: "text"
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+  - name: IndividualT
+    config:
+      meta:
+        structure:
+          primary_key: ["IndividualID"]
+    columns:
+      - name: "IndividualID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "Species"
+        quote: true
+        data_type: "text"
+      - name: "CRC ID"
+        quote: true
+        data_type: "integer"
+  - name: OtherSpeciesT
+    config:
+      meta:
+        structure:
+          primary_key: ["OtherSpeciesID"]
+          indexes:
+            - {"name": "ix_otherspeciest_sighting_id", "columns": ["sighting_id"]}
+    columns:
+      - name: "OtherSpeciesID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_otherspeciest_dailyeffortid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Date"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "Sighting"
+        quote: true
+        data_type: "text"
+      - name: "Species"
+        quote: true
+        data_type: "text"
+      - name: "Class"
+        quote: true
+        data_type: "text"
+      - name: "Count"
+        quote: true
+        data_type: "integer"
+      - name: "Comments"
+        quote: true
+        data_type: "text"
+      - name: "SourceDB"
+        quote: true
+        data_type: "text"
+      - name: "sighting_id"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "SightingT", "column": "SightingID", "name": "fk_otherspeciest_sighting_id"}}
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+  - name: PermitTakeT
+    config:
+      meta:
+        structure:
+          primary_key: ["PermitTakeID"]
+    columns:
+      - name: "PermitTakeID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_permittaket_dailyeffortid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Date"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "Sighting"
+        quote: true
+        data_type: "text"
+      - name: "ApprTakes"
+        quote: true
+        data_type: "integer"
+      - name: "BiopTakes"
+        quote: true
+        data_type: "integer"
+      - name: "DartTagTakes"
+        quote: true
+        data_type: "integer"
+      - name: "Permit"
+        quote: true
+        data_type: "text"
+      - name: "SCTagTakes"
+        quote: true
+        data_type: "integer"
+      - name: "SoundTakes"
+        quote: true
+        data_type: "integer"
+      - name: "UWTakes"
+        quote: true
+        data_type: "integer"
+      - name: "Comments"
+        quote: true
+        data_type: "text"
+      - name: "SourceDB"
+        quote: true
+        data_type: "text"
+  - name: ResearchGroupT
+    config:
+      meta:
+        structure:
+          primary_key: ["ResearchGroupID"]
+    columns:
+      - name: "ResearchGroupID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "Code"
+        quote: true
+        data_type: "text"
+      - name: "ResearchGroup"
+        quote: true
+        data_type: "text"
+  - name: SampleIdentificationT
+    config:
+      meta:
+        structure:
+          primary_key: ["SampleIdentificationID"]
+    columns:
+      - name: "SampleIdentificationID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "SightingID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "SightingT", "column": "SightingID", "name": "fk_sampleidentificationt_sightingid"}}
+      - name: "IdentificationID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true, "references": {"table": "IdentificationT", "column": "IdentificationID", "name": "fk_sampleidentificationt_identificationid"}}
+      - name: "SightingDate"
+        quote: true
+        data_type: "date"
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Sighting"
+        quote: true
+        data_type: "text"
+      - name: "CRC ID"
+        quote: true
+        data_type: "integer"
+      - name: "Field ID"
+        quote: true
+        data_type: "text"
+      - name: "Sample #"
+        quote: true
+        data_type: "text"
+      - name: "Sample Type"
+        quote: true
+        data_type: "text"
+      - name: "Certainty of Sample ID"
+        quote: true
+        data_type: "text"
+      - name: "Sampled By"
+        quote: true
+        data_type: "text"
+      - name: "IndividualID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "IndividualT", "column": "IndividualID", "name": "fk_sampleidentificationt_individualid"}}
+  - name: SampleT
+    config:
+      meta:
+        structure:
+          primary_key: ["SampleID"]
+          indexes:
+            - {"name": "ix_samplet_date", "columns": ["Date"]}
+            - {"name": "ix_samplet_research_group", "columns": ["Research Group"]}
+            - {"name": "ix_samplet_sighting", "columns": ["Sighting"]}
+            - {"name": "ix_samplet_vessel", "columns": ["Vessel"]}
+    columns:
+      - name: "SampleID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_samplet_dailyeffortid"}}
+      - name: "SightingID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "SightingT", "column": "SightingID", "name": "fk_samplet_sightingid"}}
+      - name: "SightingEventID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "SightingEventT", "column": "SightingEventID", "name": "fk_samplet_sightingeventid"}}
+      - name: "IndividualID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "IndividualT", "column": "IndividualID", "name": "fk_samplet_individualid"}}
+      - name: "Species"
+        quote: true
+        data_type: "text"
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Date"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "Sighting"
+        quote: true
+        data_type: "text"
+      - name: "SampleTime"
+        quote: true
+        data_type: "time without time zone"
+      - name: "Angle"
+        quote: true
+        data_type: "text"
+      - name: "Certainty of Sample ID"
+        quote: true
+        data_type: "text"
+      - name: "Distance"
+        quote: true
+        data_type: "text"
+      - name: "Event"
+        quote: true
+        data_type: "text"
+      - name: "Field ID"
+        quote: true
+        data_type: "text"
+      - name: "Preservation"
+        quote: true
+        data_type: "text"
+      - name: "Reaction"
+        quote: true
+        data_type: "text"
+      - name: "Sample #"
+        quote: true
+        data_type: "text"
+      - name: "Sample Number"
+        quote: true
+        data_type: "text"
+      - name: "Sample Photo"
+        quote: true
+        data_type: "text"
+      - name: "Sample Type"
+        quote: true
+        data_type: "text"
+      - name: "Sampled by"
+        quote: true
+        data_type: "text"
+      - name: "SampleEvent"
+        quote: true
+        data_type: "text"
+      - name: "Comments"
+        quote: true
+        data_type: "text"
+      - name: "SourceDB"
+        quote: true
+        data_type: "text"
+      - name: "species_id"
+        quote: true
+        data_type: "integer"
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+  - name: ServerSystemT
+    config:
+      meta:
+        structure:
+          primary_key: ["SystemID"]
+    columns:
+      - name: "SystemID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "VersionNumber"
+        quote: true
+        data_type: "double precision"
+      - name: "VersionName"
+        quote: true
+        data_type: "text"
+      - name: "BackupFolderPath"
+        quote: true
+        data_type: "text"
+      - name: "IsBackup"
+        quote: true
+        data_type: "boolean"
+      - name: "UI_Hidden"
+        quote: true
+        data_type: "boolean"
+  - name: SightingEventT
+    config:
+      meta:
+        structure:
+          primary_key: ["SightingEventID"]
+          indexes:
+            - {"name": "ix_sightingeventt_sighting_id", "columns": ["sighting_id"]}
+    columns:
+      - name: "SightingEventID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_sightingeventt_dailyeffortid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Date"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "EventTime"
+        quote: true
+        data_type: "time without time zone"
+      - name: "Sighting"
+        quote: true
+        data_type: "text"
+      - name: "EventID"
+        quote: true
+        data_type: "text"
+      - name: "Bearing"
+        quote: true
+        data_type: "text"
+      - name: "Dec Lat"
+        quote: true
+        data_type: "double precision"
+      - name: "Dec Long"
+        quote: true
+        data_type: "double precision"
+      - name: "Field ID"
+        quote: true
+        data_type: "text"
+      - name: "NumReact"
+        quote: true
+        data_type: "integer"
+      - name: "PosType"
+        quote: true
+        data_type: "text"
+      - name: "Range"
+        quote: true
+        data_type: "integer"
+      - name: "Reaction"
+        quote: true
+        data_type: "text"
+      - name: "SightEvent"
+        quote: true
+        data_type: "text"
+      - name: "SightEventComments"
+        quote: true
+        data_type: "text"
+      - name: "SourceDB"
+        quote: true
+        data_type: "text"
+      - name: "sighting_id"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "SightingT", "column": "SightingID", "name": "fk_sightingeventt_sighting_id"}}
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+  - name: SightingFollowT
+    config:
+      meta:
+        structure:
+          primary_key: ["SightingFollowID"]
+    columns:
+      - name: "SightingFollowID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_sightingfollowt_dailyeffortid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Date"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "Sighting"
+        quote: true
+        data_type: "text"
+      - name: "StartTime"
+        quote: true
+        data_type: "time without time zone"
+      - name: "EndTime"
+        quote: true
+        data_type: "time without time zone"
+      - name: "FollowNum"
+        quote: true
+        data_type: "integer"
+      - name: "Playback"
+        quote: true
+        data_type: "text"
+      - name: "SourceDB"
+        quote: true
+        data_type: "text"
+  - name: SightingIdentificationT
+    config:
+      meta:
+        structure:
+          primary_key: ["SightingIdentificationID"]
+    columns:
+      - name: "SightingIdentificationID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "IndividualID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "IndividualT", "column": "IndividualID", "name": "fk_sightingidentificationt_individualid"}}
+      - name: "SightingID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true, "references": {"table": "SightingT", "column": "SightingID", "name": "fk_sightingidentificationt_sightingid"}}
+      - name: "IdentificationID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "IdentificationT", "column": "IdentificationID", "name": "fk_sightingidentificationt_identificationid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "SightingDate"
+        quote: true
+        data_type: "date"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Sighting"
+        quote: true
+        data_type: "text"
+      - name: "Species"
+        quote: true
+        data_type: "text"
+      - name: "CRC ID"
+        quote: true
+        data_type: "integer"
+      - name: "Field ID"
+        quote: true
+        data_type: "text"
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+  - name: SightingT
+    config:
+      meta:
+        structure:
+          primary_key: ["SightingID"]
+          indexes:
+            - {"name": "ix_sightingt_date", "columns": ["Date"]}
+            - {"name": "ix_sightingt_date_rg_hash_vessel_hash_sighting_hash", "columns": ["Date", "RG_hash", "Vessel_hash", "Sighting_hash"]}
+            - {"name": "ix_sightingt_end_geom", "columns": ["end_geom"], "using": "gist"}
+            - {"name": "ix_sightingt_geom", "columns": ["geom"], "using": "gist"}
+            - {"name": "ix_sightingt_research_group", "columns": ["Research Group"]}
+            - {"name": "ix_sightingt_research_group_date_vessel_sighting", "columns": ["Research Group", "Date", "Vessel", "Sighting"]}
+            - {"name": "ix_sightingt_sighting", "columns": ["Sighting"]}
+            - {"name": "ix_sightingt_vessel", "columns": ["Vessel"]}
+          triggers:
+            - {"name": "sighting_geometry", "function": "sighting_geometry"}
+    columns:
+      - name: "SightingID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_sightingt_dailyeffortid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Date"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "Sighting"
+        quote: true
+        data_type: "text"
+      - name: "Species"
+        quote: true
+        data_type: "text"
+      - name: "Start Time"
+        quote: true
+        data_type: "time without time zone"
+      - name: "StartDateTime"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "Start Dec Lat"
+        quote: true
+        data_type: "double precision"
+      - name: "Start Dec Long"
+        quote: true
+        data_type: "double precision"
+      - name: "End Time"
+        quote: true
+        data_type: "time without time zone"
+      - name: "EndDateTime"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "End Dec Lat"
+        quote: true
+        data_type: "double precision"
+      - name: "End Dec Long"
+        quote: true
+        data_type: "double precision"
+      - name: "TargetDecLat"
+        quote: true
+        data_type: "double precision"
+      - name: "TargetDecLong"
+        quote: true
+        data_type: "double precision"
+      - name: "Est Size Best"
+        quote: true
+        data_type: "integer"
+      - name: "Est Size Max"
+        quote: true
+        data_type: "integer"
+      - name: "Est Size Min"
+        quote: true
+        data_type: "integer"
+      - name: "Acoustics"
+        quote: true
+        data_type: "text"
+      - name: "Est ID"
+        quote: true
+        data_type: "integer"
+      - name: "Actual ID"
+        quote: true
+        data_type: "integer"
+      - name: "AltSighting"
+        quote: true
+        data_type: "text"
+      - name: "AltVessel"
+        quote: true
+        data_type: "text"
+      - name: "Angle"
+        quote: true
+        data_type: "integer"
+      - name: "Bearing"
+        quote: true
+        data_type: "integer"
+      - name: "CloseApproachCount"
+        quote: true
+        data_type: "integer"
+      - name: "D units"
+        quote: true
+        data_type: "text"
+      - name: "Depth"
+        quote: true
+        data_type: "double precision"
+      - name: "DOT"
+        quote: true
+        data_type: "text"
+      - name: "Frames 1"
+        quote: true
+        data_type: "text"
+      - name: "Frames 2"
+        quote: true
+        data_type: "text"
+      - name: "Frames 3"
+        quote: true
+        data_type: "text"
+      - name: "GEX"
+        quote: true
+        data_type: "integer"
+      - name: "GEY"
+        quote: true
+        data_type: "integer"
+      - name: "Group Beh"
+        quote: true
+        data_type: "text"
+      - name: "Group Type"
+        quote: true
+        data_type: "text"
+      - name: "Heading"
+        quote: true
+        data_type: "integer"
+      - name: "Height"
+        quote: true
+        data_type: "double precision"
+      - name: "Height1"
+        quote: true
+        data_type: "text"
+      - name: "Loc Code"
+        quote: true
+        data_type: "integer"
+      - name: "LocDesc"
+        quote: true
+        data_type: "text"
+      - name: "Num Calves"
+        quote: true
+        data_type: "text"
+      - name: "Obs"
+        quote: true
+        data_type: "text"
+      - name: "Obs1"
+        quote: true
+        data_type: "text"
+      - name: "Other Beh 1"
+        quote: true
+        data_type: "text"
+      - name: "Other Beh 2"
+        quote: true
+        data_type: "text"
+      - name: "Other Beh 3"
+        quote: true
+        data_type: "text"
+      - name: "Permit"
+        quote: true
+        data_type: "text"
+      - name: "Photographer 1"
+        quote: true
+        data_type: "text"
+      - name: "Photographer 2"
+        quote: true
+        data_type: "text"
+      - name: "Photographer 3"
+        quote: true
+        data_type: "text"
+      - name: "Photos?"
+        quote: true
+        data_type: "boolean"
+        config:
+          meta: {"not_null": true}
+      - name: "Position Type"
+        quote: true
+        data_type: "text"
+      - name: "PreyType"
+        quote: true
+        data_type: "text"
+      - name: "Range"
+        quote: true
+        data_type: "integer"
+      - name: "RangeSource"
+        quote: true
+        data_type: "text"
+      - name: "RangeSource1"
+        quote: true
+        data_type: "text"
+      - name: "Reticle"
+        quote: true
+        data_type: "double precision"
+      - name: "Reticle1"
+        quote: true
+        data_type: "text"
+      - name: "Roll/File Number 1"
+        quote: true
+        data_type: "text"
+      - name: "Roll/File Number 2"
+        quote: true
+        data_type: "text"
+      - name: "Roll/File Number 3"
+        quote: true
+        data_type: "text"
+      - name: "Scattering"
+        quote: true
+        data_type: "text"
+      - name: "Series Number 1"
+        quote: true
+        data_type: "text"
+      - name: "Series Number 2"
+        quote: true
+        data_type: "text"
+      - name: "Series Number 3"
+        quote: true
+        data_type: "text"
+      - name: "Sight Type"
+        quote: true
+        data_type: "text"
+      - name: "Temp"
+        quote: true
+        data_type: "text"
+      - name: "Total Samples"
+        quote: true
+        data_type: "integer"
+      - name: "Total Tags"
+        quote: true
+        data_type: "integer"
+      - name: "Comments"
+        quote: true
+        data_type: "text"
+      - name: "SourceDB"
+        quote: true
+        data_type: "text"
+      - name: "RG_hash"
+        quote: true
+        data_type: "bytea"
+      - name: "Vessel_hash"
+        quote: true
+        data_type: "bytea"
+      - name: "Sighting_hash"
+        quote: true
+        data_type: "bytea"
+      - name: "identified_individual_count"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true, "default": "0"}
+      - name: "geom"
+        quote: true
+        data_type: "geometry(Point,4326)"
+      - name: "end_geom"
+        quote: true
+        data_type: "geometry(Point,4326)"
+      - name: "num_calves"
+        quote: true
+        data_type: "integer"
+      - name: "depth_m"
+        quote: true
+        data_type: "numeric(10,2)"
+      - name: "species_id"
+        quote: true
+        data_type: "integer"
+      - name: "species_uncertain"
+        quote: true
+        data_type: "boolean"
+        config:
+          meta: {"not_null": true, "default": "false"}
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+  - name: SourceT
+    config:
+      meta:
+        structure:
+          primary_key: ["SourceID"]
+    columns:
+      - name: "SourceID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "Source"
+        quote: true
+        data_type: "text"
+  - name: SpeciesT
+    config:
+      meta:
+        structure:
+          primary_key: ["species_id"]
+          unique: [["code"]]
+    columns:
+      - name: "species_id"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true, "identity": true}
+      - name: "code"
+        quote: true
+        data_type: "text"
+        config:
+          meta: {"not_null": true}
+      - name: "common_name"
+        quote: true
+        data_type: "text"
+      - name: "scientific_name"
+        quote: true
+        data_type: "text"
+      - name: "category"
+        quote: true
+        data_type: "text"
+        config:
+          meta: {"not_null": true, "default": "'unidentified'::text"}
+  - name: TagSummaryT
+    config:
+      meta:
+        structure:
+          primary_key: ["TagSummaryID"]
+    columns:
+      - name: "TagSummaryID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_tagsummaryt_dailyeffortid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Date"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "Sighting"
+        quote: true
+        data_type: "text"
+      - name: "Attachment"
+        quote: true
+        data_type: "text"
+      - name: "CallTypes"
+        quote: true
+        data_type: "text"
+      - name: "CEE"
+        quote: true
+        data_type: "text"
+      - name: "DataCollected"
+        quote: true
+        data_type: "text"
+      - name: "DeployBodyLoc"
+        quote: true
+        data_type: "text"
+      - name: "DeployDateTime"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "DeployRxn"
+        quote: true
+        data_type: "text"
+      - name: "DeployTime"
+        quote: true
+        data_type: "time without time zone"
+      - name: "DeployType"
+        quote: true
+        data_type: "text"
+      - name: "Descriptions"
+        quote: true
+        data_type: "text"
+      - name: "DiveTypes"
+        quote: true
+        data_type: "text"
+      - name: "Field ID"
+        quote: true
+        data_type: "text"
+      - name: "GPSTrackSource"
+        quote: true
+        data_type: "text"
+      - name: "HoursData"
+        quote: true
+        data_type: "double precision"
+      - name: "HoursTotal"
+        quote: true
+        data_type: "double precision"
+      - name: "PlaybackEnd"
+        quote: true
+        data_type: "time without time zone"
+      - name: "PlaybackStart"
+        quote: true
+        data_type: "time without time zone"
+      - name: "PlaybackType"
+        quote: true
+        data_type: "text"
+      - name: "PreyData"
+        quote: true
+        data_type: "text"
+      - name: "RecoverDateTime"
+        quote: true
+        data_type: "time without time zone"
+      - name: "Segments"
+        quote: true
+        data_type: "text"
+      - name: "SonarLogFilename"
+        quote: true
+        data_type: "text"
+      - name: "Tag#"
+        quote: true
+        data_type: "text"
+      - name: "TagDataFilename"
+        quote: true
+        data_type: "text"
+      - name: "TagOffDateTime"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "TagType"
+        quote: true
+        data_type: "text"
+      - name: "VHFChannel"
+        quote: true
+        data_type: "double precision"
+      - name: "Video"
+        quote: true
+        data_type: "text"
+      - name: "TagComments"
+        quote: true
+        data_type: "text"
+      - name: "SourceDB"
+        quote: true
+        data_type: "text"
+      - name: "Playback"
+        quote: true
+        data_type: "text"
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+  - name: TrackCompleteCodeT
+    config:
+      meta:
+        structure:
+          primary_key: ["TrackCompleteCodeID"]
+    columns:
+      - name: "TrackCompleteCodeID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "TrackCompleteCode"
+        quote: true
+        data_type: "text"
+      - name: "SortOrder"
+        quote: true
+        data_type: "integer"
+  - name: TrackFileList
+    config:
+      meta:
+        structure:
+          primary_key: ["FileName"]
+    columns:
+      - name: "FileName"
+        quote: true
+        data_type: "text"
+        config:
+          meta: {"not_null": true}
+  - name: TrackFolderT
+    config:
+      meta:
+        structure:
+          primary_key: ["TrackFolderID"]
+    columns:
+      - name: "TrackFolderID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "TrackFolder"
+        quote: true
+        data_type: "text"
+      - name: "EffortYear"
+        quote: true
+        data_type: "integer"
+  - name: TrackingT
+    config:
+      meta:
+        structure:
+          primary_key: ["TrackingID"]
+    columns:
+      - name: "TrackingID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "DailyEffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_trackingt_dailyeffortid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "Date"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "Sighting"
+        quote: true
+        data_type: "text"
+      - name: "Time"
+        quote: true
+        data_type: "time without time zone"
+      - name: "VesselDecLat"
+        quote: true
+        data_type: "double precision"
+      - name: "VesselDecLong"
+        quote: true
+        data_type: "double precision"
+      - name: "TargetDecLat"
+        quote: true
+        data_type: "double precision"
+      - name: "TargetDecLong"
+        quote: true
+        data_type: "double precision"
+      - name: "Angle"
+        quote: true
+        data_type: "integer"
+      - name: "Bearing"
+        quote: true
+        data_type: "integer"
+      - name: "BearingType"
+        quote: true
+        data_type: "text"
+      - name: "BreachCount"
+        quote: true
+        data_type: "integer"
+      - name: "CalfCount"
+        quote: true
+        data_type: "integer"
+      - name: "Code"
+        quote: true
+        data_type: "text"
+      - name: "ContactCount"
+        quote: true
+        data_type: "integer"
+      - name: "Depth"
+        quote: true
+        data_type: "integer"
+      - name: "DistBetweenSG"
+        quote: true
+        data_type: "integer"
+      - name: "FieldID"
+        quote: true
+        data_type: "text"
+      - name: "FocalGroupSize"
+        quote: true
+        data_type: "integer"
+      - name: "FollowNum"
+        quote: true
+        data_type: "integer"
+      - name: "GenBeh"
+        quote: true
+        data_type: "text"
+      - name: "GEX"
+        quote: true
+        data_type: "integer"
+      - name: "GEY"
+        quote: true
+        data_type: "integer"
+      - name: "Heading"
+        quote: true
+        data_type: "double precision"
+      - name: "Height"
+        quote: true
+        data_type: "double precision"
+      - name: "LogCount"
+        quote: true
+        data_type: "integer"
+      - name: "Orientation"
+        quote: true
+        data_type: "integer"
+      - name: "Range"
+        quote: true
+        data_type: "integer"
+      - name: "RangeSource"
+        quote: true
+        data_type: "text"
+      - name: "RespCount"
+        quote: true
+        data_type: "integer"
+      - name: "Reticle"
+        quote: true
+        data_type: "double precision"
+      - name: "SlapCount"
+        quote: true
+        data_type: "integer"
+      - name: "SpacingWithinSG"
+        quote: true
+        data_type: "text"
+      - name: "SpyhopCount"
+        quote: true
+        data_type: "integer"
+      - name: "SubGroups"
+        quote: true
+        data_type: "integer"
+      - name: "SurfaceLungeCount"
+        quote: true
+        data_type: "integer"
+      - name: "TargetLat"
+        quote: true
+        data_type: "text"
+      - name: "TargetLong"
+        quote: true
+        data_type: "text"
+      - name: "TargetPosType"
+        quote: true
+        data_type: "text"
+      - name: "TrackSighting"
+        quote: true
+        data_type: "text"
+      - name: "TrackVessel"
+        quote: true
+        data_type: "text"
+      - name: "VesselLat"
+        quote: true
+        data_type: "text"
+      - name: "VesselLong"
+        quote: true
+        data_type: "text"
+      - name: "TrackComments"
+        quote: true
+        data_type: "text"
+      - name: "SourceDB"
+        quote: true
+        data_type: "text"
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+  - name: TrackT
+    config:
+      meta:
+        structure:
+          primary_key: ["TrackID"]
+    columns:
+      - name: "TrackID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "UnifiedDB_DailyEffortID"
+        quote: true
+        data_type: "integer"
+      - name: "ResearchGroupID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "ResearchGroupT", "column": "ResearchGroupID", "name": "fk_trackt_researchgroupid"}}
+      - name: "TrackCompleteCodeID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "TrackCompleteCodeT", "column": "TrackCompleteCodeID", "name": "fk_trackt_trackcompletecodeid"}}
+      - name: "VesselID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "VesselT", "column": "VesselID", "name": "fk_trackt_vesselid"}}
+      - name: "SourceID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "SourceT", "column": "SourceID", "name": "fk_trackt_sourceid"}}
+      - name: "SurveyDate"
+        quote: true
+        data_type: "date"
+      - name: "TrackFileName"
+        quote: true
+        data_type: "text"
+      - name: "TrackFileType"
+        quote: true
+        data_type: "text"
+      - name: "Useable"
+        quote: true
+        data_type: "boolean"
+        config:
+          meta: {"not_null": true}
+      - name: "HitRate"
+        quote: true
+        data_type: "text"
+      - name: "TrackFileSize"
+        quote: true
+        data_type: "text"
+      - name: "Comments"
+        quote: true
+        data_type: "text"
+      - name: "StartTime"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "EndTime"
+        quote: true
+        data_type: "timestamp without time zone"
+      - name: "GPSPointCount"
+        quote: true
+        data_type: "double precision"
+      - name: "TrackDuration"
+        quote: true
+        data_type: "double precision"
+      - name: "EffortID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "DailyEffortT", "column": "DailyEffortID", "name": "fk_trackt_effortid"}}
+      - name: "Research Group"
+        quote: true
+        data_type: "text"
+      - name: "Vessel"
+        quote: true
+        data_type: "text"
+      - name: "geom"
+        quote: true
+        data_type: "geometry(MultiLineString,4326)"
+      - name: "length_nm"
+        quote: true
+        data_type: "numeric(12,3)"
+      - name: "point_count"
+        quote: true
+        data_type: "integer"
+      - name: "track_status"
+        quote: true
+        data_type: "text"
+      - name: "file_name"
+        quote: true
+        data_type: "text"
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+  - name: UserT
+    config:
+      meta:
+        structure:
+          primary_key: ["UserID"]
+    columns:
+      - name: "UserID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "OrganizationID"
+        quote: true
+        data_type: "integer"
+      - name: "UserCategoryID"
+        quote: true
+        data_type: "integer"
+      - name: "FirstName"
+        quote: true
+        data_type: "text"
+      - name: "LastName"
+        quote: true
+        data_type: "text"
+      - name: "Username"
+        quote: true
+        data_type: "text"
+      - name: "Password"
+        quote: true
+        data_type: "text"
+  - name: VesselListT
+    config:
+      meta:
+        structure:
+          primary_key: ["vessel_id"]
+          unique: [["vessel_text"]]
+    columns:
+      - name: "vessel_id"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true, "identity": true}
+      - name: "vessel_text"
+        quote: true
+        data_type: "text"
+        config:
+          meta: {"not_null": true}
+      - name: "code"
+        quote: true
+        data_type: "text"
+      - name: "name"
+        quote: true
+        data_type: "text"
+      - name: "legacy_vessel_id"
+        quote: true
+        data_type: "integer"
+  - name: VesselT
+    config:
+      meta:
+        structure:
+          primary_key: ["VesselID"]
+    columns:
+      - name: "VesselID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"not_null": true}
+      - name: "ResearchGroupID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "ResearchGroupT", "column": "ResearchGroupID", "name": "fk_vesselt_researchgroupid"}}
+      - name: "CollaboratorID"
+        quote: true
+        data_type: "integer"
+        config:
+          meta: {"references": {"table": "CollaboratorT", "column": "CollaboratorID", "name": "fk_vesselt_collaboratorid"}}
+      - name: "VesselName"
+        quote: true
+        data_type: "text"
+      - name: "VesselCode"
+        quote: true
+        data_type: "text"
+      - name: "VesselDetails"
+        quote: true
+        data_type: "text"
+      - name: "SortOrder"
+        quote: true
+        data_type: "integer"

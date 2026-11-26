@@ -14,12 +14,18 @@
   var species = config.species || {};
   var OTHER = { name: "Not identified", colour: "#5d6e77" };
 
+  /* A count as people read it: 1,049, and "1 Animal" against "2 Animals". */
+  function num(n) { return Number(n).toLocaleString("en-US"); }
+  function plural(n, one) { return num(n) + " " + one + (Number(n) === 1 ? "" : "s"); }
+
   /* The view and the layers are kept in the link (setPageState, filters.js),
      so applying filters, reloading or sharing the link comes back to the
      same map. The map opens straight at that view rather than moving to it. */
   var view = (getPageState("view") || "").split(",").map(Number);
   var hasView = view.length === 3 && view.every(isFinite);
-  var map = L.map("explore-map", { preferCanvas: true })
+  /* A track is under two pixels wide. The tolerance gives a finger or a
+     mouse a few pixels either side of it to click. */
+  var map = L.map("explore-map", { preferCanvas: true, renderer: L.canvas({ tolerance: 5 }) })
     .setView(hasView ? [view[0], view[1]] : [44, -124], hasView ? view[2] : 5);
 
   basemap(map);
@@ -47,6 +53,53 @@
     primaryLengthUnit: "nauticalmiles", secondaryLengthUnit: "kilometers",
     primaryAreaUnit: "sqkilometers", position: "topleft"
   }).addTo(map);
+  /* The plugin words its own tooltip in sentence case. */
+  var measureToggle = document.querySelector(".leaflet-control-measure-toggle");
+  if (measureToggle) measureToggle.title = "Measure Distances and Areas";
+
+  /* Fullscreen is the map and its legend only; the sidebars are siblings, so
+     they drop away on their own. */
+  var mapBox = document.querySelector(".explore-map");
+  if (mapBox.requestFullscreen) {
+    var FullscreenControl = L.Control.extend({
+      options: { position: "topleft" },
+      onAdd: function () {
+        var bar = L.DomUtil.create("div", "leaflet-bar leaflet-control leaflet-control-fullscreen");
+        var link = L.DomUtil.create("a", "", bar);
+        link.href = "#";
+        link.setAttribute("role", "button");
+        function sync() {
+          var on = document.fullscreenElement === mapBox;
+          link.innerHTML = on ? "&#x2715;" : "&#x26F6;";
+          link.title = on ? "Exit Fullscreen" : "Fullscreen";
+          link.setAttribute("aria-label", link.title);
+          map.invalidateSize();
+        }
+        L.DomEvent.disableClickPropagation(bar);
+        L.DomEvent.on(link, "click", function (e) {
+          L.DomEvent.preventDefault(e);
+          if (document.fullscreenElement === mapBox) document.exitFullscreen();
+          else mapBox.requestFullscreen();
+        });
+        document.addEventListener("fullscreenchange", sync);
+        sync();
+        return bar;
+      }
+    });
+    new FullscreenControl().addTo(map);
+  }
+
+  screenshotControl(map, {
+    node: mapBox,
+    skip: ".side-handle, .map-loading",
+    title: "Explore Map",
+    caption: function () {
+      return config.counts + ". " + (config.filters.length
+        ? "Filters: " + config.filters.join(", ") + "."
+        : "No filters applied.");
+    },
+    filename: "explore-map-" + new Date().toISOString().slice(0, 10)
+  });
 
   var trackLayer = L.layerGroup().addTo(map);
   var gapLayer = L.layerGroup().addTo(map);
@@ -103,7 +156,7 @@
     areaField.value = geometry ? JSON.stringify(geometry) : "";
     var state = document.getElementById("area-state");
     state.firstChild.textContent = geometry
-      ? "An area is drawn. Apply filters to use it. "
+      ? "An area is drawn. Apply Filters to use it. "
       : "Draw an area on the map with the shape tools. ";
     areaField.dispatchEvent(new Event("change", { bubbles: true }));
   }
@@ -202,8 +255,8 @@
         marker.bindPopup(
           "<strong>" + meta.name + "</strong><br>" +
           (year || "") +
-          (size ? " &middot; about " + size + " animal" + (size === 1 ? "" : "s") : "") +
-          '<br><a href="/sightings/' + id + '/" data-modal-url="/sightings/' + id + '/">Open sighting ' + id + "</a>"
+          (size ? " &middot; about " + plural(size, "Animal") : "") +
+          '<br><a href="/sightings/' + id + '/" data-modal-url="/sightings/' + id + '/">Open Sighting ' + id + "</a>"
         );
 
         markers.push(marker);
@@ -258,12 +311,16 @@
         var parts = geometry.type === "MultiLineString"
           ? geometry.coordinates : [geometry.coordinates];
 
-        parts.forEach(function (part) {
-          var line = L.polyline(flip(part), TRACK);
-          line.on("add", line.bringToBack);  // keep sightings on top
-          line.bindTooltip("Track " + trackId + ", effort " + effort);
-          line.addTo(trackLayer);
-        });
+        /* One layer per track, however many runs it has, so clicking any
+           part of it selects all of it. */
+        var track = L.featureGroup(parts.map(function (part) {
+          return L.polyline(flip(part), TRACK);
+        }));
+        track.on("add", track.bringToBack);  // keep sightings on top
+        track.bindTooltip("Track " + trackId + ", Effort " + effort, { sticky: true });
+        clickableTrack(track, TRACK, feature.properties,
+                       { effortLink: true, managerUrl: config.trackManagerUrl });
+        track.addTo(trackLayer);
 
         /* The straight line between two runs is the part nobody recorded, so
            it is dashed rather than drawn as track. */
@@ -288,7 +345,7 @@
   function tooMany(shown, total, what) {
     if (total <= shown) return "";
     return '<p class="small muted" style="padding:12px 14px">Showing the first ' +
-      shown + " of " + total + " " + what +
+      num(shown) + " of " + num(total) + " " + what +
       ". Narrow the filters, or open the full list.</p>";
   }
 
@@ -298,11 +355,11 @@
         ' data-modal-url="/sightings/' + row.id + '/">' +
         '<div class="t"><span class="result-dot" style="background:' + row.colour + '"></span>' +
         row.name + (row.size ? '<span class="result-count" title="Animals in the '
-          + 'group, as the observer best estimated it">' + row.size
-          + ' animals</span>' : "") +
+          + 'group, as the observer best estimated it">'
+          + plural(row.size, "Animal") + '</span>' : "") +
         '</div><div class="s">' + (row.year || "Year not recorded") +
-        " &middot; sighting " + row.id + "</div></a>";
-    }).join("") + tooMany(rows.length, total, "sightings");
+        " &middot; Sighting " + row.id + "</div></a>";
+    }).join("") + tooMany(rows.length, total, "Sightings");
     if (showing === "sightings") container.innerHTML = panels.sightings;
   }
 
@@ -313,12 +370,12 @@
       return '<a class="result-item" href="/efforts/' + id + '/"' +
         ' data-modal-url="/efforts/' + id + '/">' +
         '<div class="t">' + (locality || "Locality not recorded") +
-        (sightings ? '<span class="result-count">' + sightings + ' sighting'
-          + (sightings === 1 ? '' : 's') + '</span>' : "") +
+        (sightings ? '<span class="result-count">' + plural(sightings, "Sighting")
+          + '</span>' : "") +
         '</div><div class="s">' + (date || "Date not recorded") +
-        (vessel ? " &middot; " + vessel : "") + " &middot; effort " + id +
+        (vessel ? " &middot; " + vessel : "") + " &middot; Effort " + id +
         "</div></a>";
-    }).join("") + tooMany(data.rows.length, data.total, "efforts");
+    }).join("") + tooMany(data.rows.length, data.total, "Efforts");
     if (showing === "efforts") container.innerHTML = panels.efforts;
   }
 
@@ -332,6 +389,10 @@
       });
       listLink.href = (showing === "efforts" ? "/efforts/" : "/sightings/") +
         (config.query ? "?" + config.query : "");
+      /* Show the Add To Export button of the open tab. */
+      document.querySelectorAll("[data-export-tab]").forEach(function (form) {
+        form.hidden = form.dataset.exportTab !== showing;
+      });
 
       if (panels[showing] !== null) {
         container.innerHTML = panels[showing];
@@ -342,7 +403,7 @@
         .then(function (r) { return r.json(); })
         .then(renderEfforts)
         .catch(function () {
-          container.innerHTML = '<p class="small muted" style="padding:12px 14px">Could not load the efforts.</p>';
+          container.innerHTML = '<p class="small muted" style="padding:12px 14px">Could not load the Efforts.</p>';
         });
     });
   });

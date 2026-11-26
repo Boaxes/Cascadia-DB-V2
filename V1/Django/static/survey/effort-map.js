@@ -1,5 +1,5 @@
 /*
- * The map on one effort's detail page: its GPS track, its sightings, and
+ * The map on one effort's detail page: its GPS tracks, its sightings, and
  * where the day's first position came from.
  *
  * Runs both on the standalone page and again each time the detail is opened
@@ -17,7 +17,9 @@
   if (container._leaflet_id) container._leaflet_id = null;
   container.innerHTML = "";
 
-  var map = L.map(container);
+  /* Canvas, with a few pixels' tolerance, so a thin track is easy to
+     click or tap. */
+  var map = L.map(container, { renderer: L.canvas({ tolerance: 5 }) });
   basemap(map);
 
   var bounds = [];
@@ -29,7 +31,7 @@
     })
       .bindPopup(
         '<strong>' + s.label + "</strong><br>" + (s.time || "") +
-        '<br><a href="/sightings/' + s.id + '/" data-modal-url="/sightings/' + s.id + '/">Open sighting ' + s.id + "</a>"
+        '<br><a href="/sightings/' + s.id + '/" data-modal-url="/sightings/' + s.id + '/">Open Sighting ' + s.id + "</a>"
       )
       .addTo(map);
     bounds.push([s.lat, s.lon]);
@@ -48,17 +50,17 @@
   }
 
   endpoint(config.start, mapColour("green-fg"), config.startIsDeparture
-    ? "Start of the effort"
+    ? "Start of the Effort"
     : "First recorded position of the day, not the departure point");
-  endpoint(config.end, mapColour("danger"), "End of the effort" +
+  endpoint(config.end, mapColour("danger"), "End of the Effort" +
     (config.endSource ? " (" + config.endSource + ")" : ""));
 
   /* No GPS file, so the day is drawn from the positions that were recorded,
      joined in time order. Dashed because nothing between them was. */
-  if (!config.trackUrl && config.path && config.path.length > 1) {
+  if (!config.tracks.length && config.path && config.path.length > 1) {
     L.polyline(config.path, {
       color: mapColour("track"), weight: 2, opacity: 0.7, dashArray: "5 6"
-    }).bindPopup("No GPS file for this effort. This line joins the positions " +
+    }).bindPopup("No GPS file for this Effort. This line joins the positions " +
                  "that were recorded, in time order.").addTo(map);
     bounds = bounds.concat(config.path);
   }
@@ -68,16 +70,18 @@
     else map.setView([47.6, -122.8], 7);
   }
 
-  if (config.trackUrl) {
-    fetch(config.trackUrl)
+  /* Every track the Effort has, one request each. Most have one; some have
+     a file from each GPS device carried that day. */
+  function drawTrack(meta) {
+    return fetch("/api/track/" + meta.track + "/")
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (feature) {
-        if (!feature || !feature.geometry) { fit(); return; }
-        var line = L.geoJSON(feature, {
-          style: config.trackIsSuspect
-            ? { color: mapColour("danger"), weight: 2, opacity: 0.6, dashArray: "6 5" }
-            : { color: mapColour("track"), weight: 3, opacity: 0.7 }
-        }).addTo(map);
+        if (!feature || !feature.geometry) return;
+        var style = meta.suspect
+          ? { color: mapColour("danger"), weight: 2, opacity: 0.6, dashArray: "6 5" }
+          : { color: mapColour("track"), weight: 3, opacity: 0.7 };
+        var line = L.geoJSON(feature, { style: style }).addTo(map);
+        clickableTrack(line, style, meta, { managerUrl: config.trackManagerUrl });
 
         /* The same dashed bridge Explore draws. A track is one line per run
            of GPS, and without this the gaps read as the boat not being there
@@ -96,16 +100,25 @@
 
         /* A corrupted line spans an ocean. Drawing it is honest; letting it
            set the zoom would push every sighting off the screen. */
-        if (!config.trackIsSuspect) {
+        if (!meta.suspect) {
           var b = line.getBounds();
           bounds = bounds.concat([b.getSouthWest(), b.getNorthEast()]);
         }
-        fit();
       })
-      .catch(fit);
+      .catch(function () {});
+  }
+
+  if (config.tracks.length) {
+    Promise.all(config.tracks.map(drawTrack)).then(fit);
   } else {
     fit();
   }
+
+  screenshotControl(map, {
+    title: "Effort " + config.id,
+    caption: function () { return config.caption; },
+    filename: "effort-" + config.id + "-map"
+  });
 
   /* The modal animates in, so the container has no size at the moment the
      map is built. */

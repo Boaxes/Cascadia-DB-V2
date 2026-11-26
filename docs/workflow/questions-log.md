@@ -137,3 +137,40 @@ Asked: 2026-11-26
 Options: A Explore (recommended), B Sightings list, C New home page
 Answer: A. Explore opens after sign-in, and `/` goes to Explore.
 Affects: spec.md NAV
+
+### Q-021: Permission Table (Phase 1)
+Asked: 2026-11-26
+Options: A As in the table (recommended), B Audit Log readable by all, C Server for Audit Manager
+Answer: A.
+
+| Action | Viewer | Editor | Track Manager | Audit Manager | Admin |
+|---|---|---|---|---|---|
+| Browse Explore, Efforts, Sightings, Photo-ID, record History | Yes | Yes | Yes | Yes | Yes |
+| Export and SQL | Yes | Yes | Yes | Yes | Yes |
+| Feedback, Settings, change own password | Yes | Yes | Yes | Yes | Yes |
+| Edit and delete efforts and sightings | | Yes | Yes | Yes | Yes |
+| Track File Manager and the track buttons on effort pages | | | Yes | | Yes |
+| Audit Log page, and Undo of any change (tracks included) | | | | Yes | Yes |
+| Users and roles | | | | | Yes |
+| Server page | | | | | Yes |
+
+Changing one's own password moves out of the Django Admin. Photo-ID catalog editing is decided with the catalog pages.
+Affects: spec.md Users and Permissions
+
+### Q-022: Research Group Default (Phase 1)
+Asked: 2026-11-26
+Options: A CRC as V1 (recommended), B All groups, C Per user in Settings
+Answer: A, changed: CRC is the default, but without V1's special UI (the always-visible chip and separate All box). Research Group is an ordinary filter like Vessel, with CRC selected in it by default.
+Affects: spec.md filters, Explore, Efforts, Sightings mockups
+
+### Q-023: Default Years (Phase 1)
+Asked: 2026-11-26
+Options: A All years (recommended), B Explore last 5 years, C Current year
+Answer: A. Explore, Efforts and Sightings show all years by default.
+Affects: spec.md filters
+
+### Q-024: Rows Per Page (Phase 1)
+Asked: 2026-11-26
+Options: A 50 with picker (recommended), B 50, no picker, C 100 with picker
+Answer: B. Efforts and Sightings show 50 rows per page, with no page-size picker.
+Affects: spec.md Efforts and Sightings lists

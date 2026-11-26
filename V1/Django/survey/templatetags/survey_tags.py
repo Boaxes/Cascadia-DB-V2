@@ -1,3 +1,7 @@
+import json
+import math
+from decimal import Decimal
+
 from django import template
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
@@ -6,6 +10,9 @@ from ..glossary import text as glossary_text
 from ..services import querystring
 
 register = template.Library()
+
+# Past this a number is not a count, and is shown as it came.
+LARGEST_COUNT = 10 ** 15
 
 
 @register.simple_tag
@@ -47,7 +54,7 @@ def sort_header(context, key, label):
 
     if key == current:
         new_sort = key if descending else f"-{key}"
-        arrow = " ↓" if descending else " ↑"
+        arrow = "down" if descending else "up"
         css = "sorted"
     else:
         new_sort = key
@@ -55,8 +62,10 @@ def sort_header(context, key, label):
         css = ""
 
     url = querystring(request, sort=new_sort, page=None)
+    # The direction is drawn by CSS as a small chevron after the label.
+    indicator = format_html('<i class="sort-ind {}"></i>', arrow) if arrow else ""
     return format_html(
-        '<th class="{}"><a href="{}">{}{}</a></th>', css, url, label, arrow
+        '<th class="{}"><a href="{}">{}{}</a></th>', css, url, label, indicator
     )
 
 
@@ -106,6 +115,36 @@ def unknown(value):
 
 
 @register.filter
+def thousands(value):
+    """A whole number with thousands separators, as 1,049.
+
+    Anything else is returned as it was, so the next filter (dash, unknown)
+    still sees an empty value: None, empty or non-numeric text, booleans,
+    fractions, infinity, NaN and numbers too large to be a count. Whole
+    numbers are formatted directly, with no round trip through a float.
+    """
+    original = value
+    try:
+        if isinstance(value, bool) or value is None:
+            return original
+        if isinstance(value, str):
+            text = value.strip()
+            if not text:
+                return original
+            value = Decimal(text)
+        if isinstance(value, int):
+            return f"{value:,}"
+        if isinstance(value, float):
+            value = Decimal(value) if math.isfinite(value) else None
+        if isinstance(value, Decimal) and value.is_finite() and abs(value) < LARGEST_COUNT \
+                and value == value.to_integral_value():
+            return f"{int(value):,}"
+    except Exception:
+        pass
+    return original
+
+
+@register.filter
 def nm(value, places=1):
     """A distance in nautical miles, or a dash."""
     if value is None:
@@ -142,6 +181,20 @@ def species_colour(species_id, profile="cascadia"):
     from ..services import species_colour as colour
 
     return colour(species_id, profile)
+
+
+# The characters that could end a <script> early, as JSON escapes.
+SCRIPT_ESCAPES = {ord("<"): "\\u003C", ord(">"): "\\u003E", ord("&"): "\\u0026"}
+
+
+@register.filter
+def js(value):
+    """A value as JSON, safe to write inside an inline script.
+
+    Not json_script: the pop-over runs a record's scripts by re-creating
+    them, and a JSON block re-created that way would be run as code.
+    """
+    return mark_safe(json.dumps(value).translate(SCRIPT_ESCAPES))
 
 
 @register.simple_tag(takes_context=True)

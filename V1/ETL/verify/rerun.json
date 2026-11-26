@@ -1,0 +1,2641 @@
+{
+ "matching": {
+  "DailyEffortT": {
+   "before": 25065,
+   "after": 25018,
+   "same id and DB167 ID": 24896,
+   "renumbered by DB167, same id": 3,
+   "key columns changed in DB167, new id": 82,
+   "removed from DB167": 84,
+   "added to DB167": 37
+  },
+  "DailyEventT": {
+   "before": 78229,
+   "after": 78347,
+   "same id and DB167 ID": 78122,
+   "renumbered by DB167, same id": 77,
+   "key columns changed in DB167, new id": 0,
+   "removed from DB167": 30,
+   "added to DB167": 148
+  },
+  "DailyConditionT": {
+   "before": 53677,
+   "after": 53704,
+   "same id and DB167 ID": 53612,
+   "renumbered by DB167, same id": 46,
+   "key columns changed in DB167, new id": 0,
+   "removed from DB167": 19,
+   "added to DB167": 46
+  },
+  "SightingT": {
+   "before": 114451,
+   "after": 114876,
+   "same id and DB167 ID": 114069,
+   "renumbered by DB167, same id": 277,
+   "key columns changed in DB167, new id": 0,
+   "removed from DB167": 105,
+   "added to DB167": 530
+  },
+  "SightingEventT": {
+   "before": 8037,
+   "after": 8098,
+   "same id and DB167 ID": 0,
+   "renumbered by DB167, same id": 0,
+   "key columns changed in DB167, new id": 8018,
+   "removed from DB167": 19,
+   "added to DB167": 80
+  },
+  "OtherSpeciesT": {
+   "before": 5991,
+   "after": 6028,
+   "same id and DB167 ID": 5966,
+   "renumbered by DB167, same id": 0,
+   "key columns changed in DB167, new id": 0,
+   "removed from DB167": 25,
+   "added to DB167": 62
+  },
+  "SampleT": {
+   "before": 3086,
+   "after": 3102,
+   "same id and DB167 ID": 3071,
+   "renumbered by DB167, same id": 0,
+   "key columns changed in DB167, new id": 0,
+   "removed from DB167": 15,
+   "added to DB167": 31
+  },
+  "IdentificationT": {
+   "before": 86583,
+   "after": 86580,
+   "same id and DB167 ID": 86126,
+   "renumbered by DB167, same id": 222,
+   "key columns changed in DB167, new id": 0,
+   "removed from DB167": 235,
+   "added to DB167": 232
+  }
+ },
+ "explained": [
+  {
+   "table": "DailyConditionT",
+   "column": "(edit)",
+   "reason": "applied",
+   "count": 18,
+   "examples": [
+    {
+     "pk": "1604451485426495142",
+     "column": "Quality"
+    },
+    {
+     "pk": "2751059968574745549",
+     "column": "Quality"
+    },
+    {
+     "pk": "3047716198641053873",
+     "column": "Quality"
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "(id)",
+   "reason": "DB167 renumbered it; matched by its hashed key",
+   "count": 46,
+   "examples": [
+    {
+     "before": 57374,
+     "after": 58633
+    },
+    {
+     "before": 57399,
+     "after": 58606
+    },
+    {
+     "before": 57412,
+     "after": 58602
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "(record)",
+   "reason": "added to DB167 (or renumbered with changed key columns)",
+   "count": 46,
+   "examples": [
+    58603,
+    58619,
+    58584
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "(record)",
+   "reason": "removed from DB167 (or now an exact copy)",
+   "count": 19,
+   "examples": [
+    33347,
+    34347,
+    33346
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "ConditionTime",
+   "reason": "DB167's value changed",
+   "count": 1,
+   "examples": [
+    {
+     "record": 2878152268510075597,
+     "before": "11:12:26",
+     "after": null
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "DailyConditionID",
+   "reason": "DB167's value changed",
+   "count": 46,
+   "examples": [
+    {
+     "record": 2398907766659616948,
+     "before": 57374.0,
+     "after": 58633.0
+    },
+    {
+     "record": 570130029639636531,
+     "before": 57399.0,
+     "after": 58606.0
+    },
+    {
+     "record": 3544345370038774424,
+     "before": 57412.0,
+     "after": 58602.0
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "DailyEffortID",
+   "reason": "DB167's value changed",
+   "count": 7,
+   "examples": [
+    {
+     "record": 3968372302851111573,
+     "before": 28148.0,
+     "after": 29152.0
+    },
+    {
+     "record": 715660076098686270,
+     "before": 28143.0,
+     "after": 29178.0
+    },
+    {
+     "record": 1018493272716782695,
+     "before": 28148.0,
+     "after": 29152.0
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "Dec Lat",
+   "reason": "DB167's value changed",
+   "count": 45,
+   "examples": [
+    {
+     "record": 2398907766659616948,
+     "before": 46.96422133,
+     "after": 46.9642
+    },
+    {
+     "record": 570130029639636531,
+     "before": 48.20117,
+     "after": 48.2012
+    },
+    {
+     "record": 3544345370038774424,
+     "before": 48.3942415,
+     "after": 48.3942
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "Dec Long",
+   "reason": "DB167's value changed",
+   "count": 45,
+   "examples": [
+    {
+     "record": 2398907766659616948,
+     "before": -123.94909367,
+     "after": -123.9491
+    },
+    {
+     "record": 570130029639636531,
+     "before": -124.035781,
+     "after": -124.0358
+    },
+    {
+     "record": 3544345370038774424,
+     "before": -124.359462,
+     "after": -124.3595
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "SourceDB",
+   "reason": "DB167's value changed",
+   "count": 46,
+   "examples": [
+    {
+     "record": 2398907766659616948,
+     "before": null,
+     "after": "conditions from: CRC Sighting Data 2026.accdb - tx"
+    },
+    {
+     "record": 570130029639636531,
+     "before": null,
+     "after": "conditions from: CRC Sighting Data 2026.accdb - tx"
+    },
+    {
+     "record": 3544345370038774424,
+     "before": null,
+     "after": "conditions from: CRC Sighting Data 2026.accdb - tx"
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "daily_effort_id",
+   "reason": "its DailyEffortT record is gone or has a new id in today's DB167",
+   "count": 222,
+   "examples": [
+    {
+     "record": 8703843698844501289
+    },
+    {
+     "record": 8741790682309330516
+    },
+    {
+     "record": 8771103831489382400
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "daily_effort_id",
+   "reason": "worked out again from changed inputs",
+   "count": 222,
+   "examples": [
+    {
+     "record": 8703843698844501289,
+     "before": 9.083112579599905e+18,
+     "after": 7.693740695804141e+18
+    },
+    {
+     "record": 8741790682309330516,
+     "before": 3.5686386387425413e+18,
+     "after": 5.236396747048038e+18
+    },
+    {
+     "record": 8771103831489382400,
+     "before": 4.0155758493438074e+17,
+     "after": 1.0684403079612817e+18
+    }
+   ]
+  },
+  {
+   "table": "DailyConditionT",
+   "column": "geom",
+   "reason": "worked out again from changed inputs",
+   "count": 45,
+   "examples": [
+    {
+     "record": 2398907766659616948,
+     "before": "0101000020E6100000665F60F3BDFC5EC0523AC39A6B7B4740",
+     "after": "0101000020E61000008D28ED0DBEFC5EC0CF66D5E76A7B4740"
+    },
+    {
+     "record": 570130029639636531,
+     "before": "0101000020E61000005D34643C4A025FC0D97745F0BF194840",
+     "after": "0101000020E6100000984C158C4A025FC044FAEDEBC0194840"
+    },
+    {
+     "record": 3544345370038774424,
+     "before": "0101000020E6100000E789E76C01175FC0ED9C668176324840",
+     "after": "0101000020E61000005EBA490C02175FC0A60A462575324840"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "(edit)",
+   "reason": "applied",
+   "count": 44,
+   "examples": [
+    {
+     "pk": "1191342577527379616",
+     "column": "Launch"
+    },
+    {
+     "pk": "1191342577527379616",
+     "column": "Return"
+    },
+    {
+     "pk": "129891476748576374",
+     "column": "Region"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "(id)",
+   "reason": "DB167 renumbered it; matched by its hashed key",
+   "count": 3,
+   "examples": [
+    {
+     "before": 10015,
+     "after": 10016
+    },
+    {
+     "before": 28148,
+     "after": 29152
+    },
+    {
+     "before": 28143,
+     "after": 29178
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "(id)",
+   "reason": "its combination is shared with another record in one copy and not the other, so the Legacy ID is in its id in one copy only",
+   "count": 82,
+   "examples": [
+    21322,
+    12679,
+    9924
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "(record)",
+   "reason": "added to DB167 (or renumbered with changed key columns)",
+   "count": 37,
+   "examples": [
+    29203,
+    29199,
+    29194
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "(record)",
+   "reason": "removed from DB167 (or now an exact copy)",
+   "count": 84,
+   "examples": [
+    8405,
+    27050,
+    26999
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "DailyEffortID",
+   "reason": "DB167's value changed",
+   "count": 3,
+   "examples": [
+    {
+     "record": 8533490584247092581,
+     "before": 10015.0,
+     "after": 10016.0
+    },
+    {
+     "record": 6647073096327391983,
+     "before": 28148.0,
+     "after": 29152.0
+    },
+    {
+     "record": 8920315070210316512,
+     "before": 28143.0,
+     "after": 29178.0
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Distance Units",
+   "reason": "DB167's value changed",
+   "count": 18,
+   "examples": [
+    {
+     "record": 6200539266494371431,
+     "before": null,
+     "after": "nm"
+    },
+    {
+     "record": 8018276389393538703,
+     "before": null,
+     "after": "nm"
+    },
+    {
+     "record": 1310206681122349150,
+     "before": null,
+     "after": "nm"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Finalized",
+   "reason": "DB167's value changed",
+   "count": 8,
+   "examples": [
+    {
+     "record": 8018276389393538703,
+     "before": false,
+     "after": true
+    },
+    {
+     "record": 3623588931451105471,
+     "before": false,
+     "after": true
+    },
+    {
+     "record": 4833227340993545672,
+     "before": false,
+     "after": true
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "PhotoDataBy",
+   "reason": "DB167's value changed",
+   "count": 8,
+   "examples": [
+    {
+     "record": 8018276389393538703,
+     "before": null,
+     "after": "JET"
+    },
+    {
+     "record": 3623588931451105471,
+     "before": null,
+     "after": "JET"
+    },
+    {
+     "record": 4833227340993545672,
+     "before": null,
+     "after": "JET"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Project/Objective",
+   "reason": "DB167's value changed",
+   "count": 3,
+   "examples": [
+    {
+     "record": 8018276389393538703,
+     "before": null,
+     "after": "Entanglement Response"
+    },
+    {
+     "record": 3623588931451105471,
+     "before": null,
+     "after": "Entanglement Response"
+    },
+    {
+     "record": 1709355543992302415,
+     "before": null,
+     "after": "Entanglement Response"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "SourceDB",
+   "reason": "DB167's value changed",
+   "count": 19,
+   "examples": [
+    {
+     "record": 6200539266494371431,
+     "before": "TabletDB Version: 7.0 - Build 2026-04-17",
+     "after": "imported to CRC UnifiedDB from: CRC Sighting Data 2026.accdb on 2026-10-01 16:49:28"
+    },
+    {
+     "record": 8018276389393538703,
+     "before": "TabletDB Version: 7.1 - Build 2026-06-12",
+     "after": "imported to CRC UnifiedDB from: CRC Sighting Data 2026.accdb on 2026-10-01 16:45:25"
+    },
+    {
+     "record": 1310206681122349150,
+     "before": "TabletDB Version: 7.1 - Build 2026-06-12",
+     "after": "imported to CRC UnifiedDB from: CRC Sighting Data 2026.accdb on 2026-10-01 16:44:14"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "Survey Comments",
+   "reason": "DB167's value changed",
+   "count": 7,
+   "examples": [
+    {
+     "record": 8018276389393538703,
+     "before": "ent response with OR team. OSU and OCA were standing by. We headed out with Dawn B. from OSU. Removed some surface tailing gear, attempted cutting grapple, but couldn't reach the decending line under the whale. USCG brought out our inflatable as well. Put telemetry on",
+     "after": "ent response with OR team. OSU and OCA were standing by. We headed out with Dawn B. from OSU. Removed some surface tailing gear, attempted cutting grapple, but couldn't reach the decending line under the whale. USCG brought out our inflatable as well. Put telemetry on. Er images still need to be sent to matching-JET20260928"
+    },
+    {
+     "record": 3623588931451105471,
+     "before": null,
+     "after": "successful disentanglement. Case# 20260723Mn"
+    },
+    {
+     "record": 4833227340993545672,
+     "before": null,
+     "after": "survey west of sekiu as part of UW surveys. Also to see we couls relo9cate a recently reported et mn,"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "end_coord_source",
+   "reason": "worked out again from changed inputs",
+   "count": 1,
+   "examples": [
+    {
+     "record": 8533490584247092581,
+     "before": "event_T",
+     "after": "gps_track"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "end_point",
+   "reason": "worked out again from changed inputs",
+   "count": 19,
+   "examples": [
+    {
+     "record": 6200539266494371431,
+     "before": "0101000020E61000006A54F9017C065FC0D1869198FF734740",
+     "after": "0101000020E61000006DC5FEB27B065FC04ED1915CFE734740"
+    },
+    {
+     "record": 8018276389393538703,
+     "before": "0101000020E6100000D71003FA10205FC0F8DF4A766C4B4640",
+     "after": "0101000020E6100000F2D24D6210205FC0CF66D5E76A4B4640"
+    },
+    {
+     "record": 1310206681122349150,
+     "before": "0101000020E61000003A26A498F00B5FC05B4C01A32ADF4440",
+     "after": "0101000020E6100000C05B2041F10B5FC0BA490C022BDF4440"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "start_coord_source",
+   "reason": "worked out again from changed inputs",
+   "count": 1,
+   "examples": [
+    {
+     "record": 8533490584247092581,
+     "before": "event_B",
+     "after": "gps_track"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "start_point",
+   "reason": "worked out again from changed inputs",
+   "count": 19,
+   "examples": [
+    {
+     "record": 6200539266494371431,
+     "before": "0101000020E6100000E68C0F50AD065FC0374788B8DA734740",
+     "after": "0101000020E6100000423EE8D9AC065FC007CE1951DA734740"
+    },
+    {
+     "record": 8018276389393538703,
+     "before": "0101000020E6100000CEF2231B5B055FC0E4A25A44144E4640",
+     "after": "0101000020E610000036AB3E575B055FC0AE47E17A144E4640"
+    },
+    {
+     "record": 1310206681122349150,
+     "before": "0101000020E6100000AFBCFD1CD30B5FC06EC0E78711DF4440",
+     "after": "0101000020E6100000401361C3D30B5FC09E5E29CB10DF4440"
+    }
+   ]
+  },
+  {
+   "table": "DailyEffortT",
+   "column": "total_distance_nm",
+   "reason": "worked out again from changed inputs",
+   "count": 18,
+   "examples": [
+    {
+     "record": 6200539266494371431,
+     "before": null,
+     "after": 26.0
+    },
+    {
+     "record": 8018276389393538703,
+     "before": null,
+     "after": 46.0
+    },
+    {
+     "record": 1310206681122349150,
+     "before": null,
+     "after": 52.0
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "(id)",
+   "reason": "DB167 renumbered it; matched by its hashed key",
+   "count": 77,
+   "examples": [
+    {
+     "before": 78687,
+     "after": 80029
+    },
+    {
+     "before": 78652,
+     "after": 80101
+    },
+    {
+     "before": 78633,
+     "after": 80129
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "(record)",
+   "reason": "added to DB167 (or renumbered with changed key columns)",
+   "count": 148,
+   "examples": [
+    80063,
+    80038,
+    80092
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "(record)",
+   "reason": "removed from DB167 (or now an exact copy)",
+   "count": 30,
+   "examples": [
+    52821,
+    43883,
+    43887
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "DailyEffortID",
+   "reason": "DB167's value changed",
+   "count": 4,
+   "examples": [
+    {
+     "record": 3449606237465714,
+     "before": 28143.0,
+     "after": 29178.0
+    },
+    {
+     "record": 8052435218900617402,
+     "before": 28148.0,
+     "after": 29152.0
+    },
+    {
+     "record": 1256054060864559520,
+     "before": 28143.0,
+     "after": 29178.0
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "DailyEventID",
+   "reason": "DB167's value changed",
+   "count": 77,
+   "examples": [
+    {
+     "record": 2950419369215394187,
+     "before": 78687.0,
+     "after": 80029.0
+    },
+    {
+     "record": 7610293824553223123,
+     "before": 78652.0,
+     "after": 80101.0
+    },
+    {
+     "record": 1875620180163560582,
+     "before": 78633.0,
+     "after": 80129.0
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "Dec Lat",
+   "reason": "DB167's value changed",
+   "count": 74,
+   "examples": [
+    {
+     "record": 2950419369215394187,
+     "before": 48.2637455,
+     "after": 48.2637
+    },
+    {
+     "record": 7610293824553223123,
+     "before": 48.036494,
+     "after": 48.0365
+    },
+    {
+     "record": 1875620180163560582,
+     "before": 46.90954883,
+     "after": 46.9095
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "Dec Long",
+   "reason": "DB167's value changed",
+   "count": 72,
+   "examples": [
+    {
+     "record": 2950419369215394187,
+     "before": -124.29703817,
+     "after": -124.297
+    },
+    {
+     "record": 7610293824553223123,
+     "before": -122.38577567,
+     "after": -122.3858
+    },
+    {
+     "record": 1875620180163560582,
+     "before": -124.17904617,
+     "after": -124.179
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "SourceDB",
+   "reason": "DB167's value changed",
+   "count": 77,
+   "examples": [
+    {
+     "record": 2950419369215394187,
+     "before": null,
+     "after": "daily events from: CRC Sighting Data 2026.accdb -"
+    },
+    {
+     "record": 7610293824553223123,
+     "before": null,
+     "after": "daily events from: CRC Sighting Data 2026.accdb -"
+    },
+    {
+     "record": 1875620180163560582,
+     "before": null,
+     "after": "daily events from: CRC Sighting Data 2026.accdb -"
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "Time",
+   "reason": "DB167's value changed",
+   "count": 74,
+   "examples": [
+    {
+     "record": 2950419369215394187,
+     "before": null,
+     "after": "17:38:03"
+    },
+    {
+     "record": 7610293824553223123,
+     "before": null,
+     "after": "16:38:22"
+    },
+    {
+     "record": 1875620180163560582,
+     "before": null,
+     "after": "14:26:18"
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "daily_effort_id",
+   "reason": "its DailyEffortT record is gone or has a new id in today's DB167",
+   "count": 185,
+   "examples": [
+    {
+     "record": 660917513560784979
+    },
+    {
+     "record": 5016649381184275473
+    },
+    {
+     "record": 8052462596966057572
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "daily_effort_id",
+   "reason": "worked out again from changed inputs",
+   "count": 185,
+   "examples": [
+    {
+     "record": 660917513560784979,
+     "before": 7.510303238383996e+18,
+     "after": 2.212415513890498e+18
+    },
+    {
+     "record": 5016649381184275473,
+     "before": 8.947707528455688e+18,
+     "after": 7.722342258304622e+18
+    },
+    {
+     "record": 8052462596966057572,
+     "before": 2.0404471982188157e+18,
+     "after": 8.960176551589307e+18
+    }
+   ]
+  },
+  {
+   "table": "DailyEventT",
+   "column": "geom",
+   "reason": "worked out again from changed inputs",
+   "count": 74,
+   "examples": [
+    {
+     "record": 2950419369215394187,
+     "before": "0101000020E6100000137462AC02135FC0CC7B9C69C2214840",
+     "after": "0101000020E61000005EBA490C02135FC044FAEDEBC0214840"
+    },
+    {
+     "record": 7610293824553223123,
+     "before": "0101000020E6100000858F6F8CB0985EC00740DCD5AB044840",
+     "after": "0101000020E6100000FFB27BF2B0985EC0E9263108AC044840"
+    },
+    {
+     "record": 1875620180163560582,
+     "before": "0101000020E6100000F127117E750B5FC0877B97186C744740",
+     "after": "0101000020E6100000FA7E6ABC740B5FC023DBF97E6A744740"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "(id)",
+   "reason": "DB167 renumbered it; matched by its hashed key",
+   "count": 222,
+   "examples": [
+    {
+     "before": 90289,
+     "after": 92523
+    },
+    {
+     "before": 90336,
+     "after": 92347
+    },
+    {
+     "before": 90307,
+     "after": 92541
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "(record)",
+   "reason": "added to DB167 (or renumbered with changed key columns)",
+   "count": 232,
+   "examples": [
+    92401,
+    92133,
+    92162
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "(record)",
+   "reason": "removed from DB167 (or now an exact copy)",
+   "count": 235,
+   "examples": [
+    83585,
+    9219,
+    52262
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Best Fluke",
+   "reason": "DB167's value changed",
+   "count": 1,
+   "examples": [
+    {
+     "record": 8945077929948276155,
+     "before": "20260703-ROB-0093.JPG",
+     "after": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Best Left",
+   "reason": "DB167's value changed",
+   "count": 1,
+   "examples": [
+    {
+     "record": 8945077929948276155,
+     "before": null,
+     "after": "20260703-ROB-0093.JPG"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "CRC ID",
+   "reason": "DB167's value changed",
+   "count": 30,
+   "examples": [
+    {
+     "record": 2957722930285381039,
+     "before": null,
+     "after": 13547.0
+    },
+    {
+     "record": 3008997080991551573,
+     "before": null,
+     "after": 20182.0
+    },
+    {
+     "record": 6294633277961828567,
+     "before": null,
+     "after": 13529.0
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Category",
+   "reason": "DB167's value changed",
+   "count": 45,
+   "examples": [
+    {
+     "record": 2957722930285381039,
+     "before": null,
+     "after": "4C"
+    },
+    {
+     "record": 1131543413811329038,
+     "before": null,
+     "after": "2B"
+    },
+    {
+     "record": 166174889449113622,
+     "before": null,
+     "after": "3A"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Comments",
+   "reason": "DB167's value changed",
+   "count": 100,
+   "examples": [
+    {
+     "record": 8251154848514049220,
+     "before": "CRC-10437",
+     "after": null
+    },
+    {
+     "record": 2957722930285381039,
+     "before": "crc-13547",
+     "after": "13547"
+    },
+    {
+     "record": 6015728895786485821,
+     "before": "HW-MN0524909",
+     "after": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "DailyEffortID",
+   "reason": "DB167's value changed",
+   "count": 26,
+   "examples": [
+    {
+     "record": 4384866617062604149,
+     "before": 28143.0,
+     "after": 29178.0
+    },
+    {
+     "record": 3914936361658642663,
+     "before": 28148.0,
+     "after": 29152.0
+    },
+    {
+     "record": 7004256675437249943,
+     "before": 28148.0,
+     "after": 29152.0
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Field ID",
+   "reason": "DB167's value changed",
+   "count": 8,
+   "examples": [
+    {
+     "record": 8945077929948276155,
+     "before": "b",
+     "after": "B"
+    },
+    {
+     "record": 2567608363140598173,
+     "before": "b",
+     "after": "B"
+    },
+    {
+     "record": 8567124985715448278,
+     "before": "f",
+     "after": "F"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "FieldID",
+   "reason": "DB167's value changed",
+   "count": 222,
+   "examples": [
+    {
+     "record": 8251154848514049220,
+     "before": null,
+     "after": "1i"
+    },
+    {
+     "record": 2957722930285381039,
+     "before": null,
+     "after": "6"
+    },
+    {
+     "record": 6015728895786485821,
+     "before": null,
+     "after": "q"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "IdentificationID",
+   "reason": "DB167's value changed",
+   "count": 222,
+   "examples": [
+    {
+     "record": 8251154848514049220,
+     "before": 90289.0,
+     "after": 92523.0
+    },
+    {
+     "record": 2957722930285381039,
+     "before": 90336.0,
+     "after": 92347.0
+    },
+    {
+     "record": 6015728895786485821,
+     "before": 90307.0,
+     "after": 92541.0
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Qual F",
+   "reason": "DB167's value changed",
+   "count": 44,
+   "examples": [
+    {
+     "record": 2957722930285381039,
+     "before": null,
+     "after": 1.0
+    },
+    {
+     "record": 1131543413811329038,
+     "before": null,
+     "after": 2.0
+    },
+    {
+     "record": 166174889449113622,
+     "before": null,
+     "after": 3.0
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Qual L",
+   "reason": "DB167's value changed",
+   "count": 46,
+   "examples": [
+    {
+     "record": 2957722930285381039,
+     "before": null,
+     "after": 2.0
+    },
+    {
+     "record": 1131543413811329038,
+     "before": null,
+     "after": 2.0
+    },
+    {
+     "record": 166174889449113622,
+     "before": null,
+     "after": 1.0
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Qual R",
+   "reason": "DB167's value changed",
+   "count": 35,
+   "examples": [
+    {
+     "record": 1131543413811329038,
+     "before": null,
+     "after": 2.0
+    },
+    {
+     "record": 166174889449113622,
+     "before": null,
+     "after": 2.0
+    },
+    {
+     "record": 3008997080991551573,
+     "before": null,
+     "after": 3.0
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Record Type",
+   "reason": "DB167's value changed",
+   "count": 53,
+   "examples": [
+    {
+     "record": 2957722930285381039,
+     "before": null,
+     "after": "ID"
+    },
+    {
+     "record": 1131543413811329038,
+     "before": null,
+     "after": "ID"
+    },
+    {
+     "record": 166174889449113622,
+     "before": null,
+     "after": "ID"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Scarring",
+   "reason": "DB167's value changed",
+   "count": 1,
+   "examples": [
+    {
+     "record": 7938414702974898335,
+     "before": null,
+     "after": "20260711-ROB-0245.JPG"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Scarring&Injury",
+   "reason": "DB167's value changed",
+   "count": 1,
+   "examples": [
+    {
+     "record": 7938414702974898335,
+     "before": null,
+     "after": "20260711-ROB-0245.JPG"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "ScarringInjury",
+   "reason": "DB167's value changed",
+   "count": 2,
+   "examples": [
+    {
+     "record": 5354230769025813964,
+     "before": "20260825-ROB-1106.JPG",
+     "after": null
+    },
+    {
+     "record": 8526169760786733986,
+     "before": "20260826-ROB-0178.JPG",
+     "after": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "SightingID",
+   "reason": "DB167's value changed",
+   "count": 1,
+   "examples": [
+    {
+     "record": 4795217180560230058,
+     "before": 13361.0,
+     "after": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "SourceDB",
+   "reason": "DB167's value changed",
+   "count": 222,
+   "examples": [
+    {
+     "record": 8251154848514049220,
+     "before": null,
+     "after": "identifications from: CRC Sighting Data 2026.accdb"
+    },
+    {
+     "record": 2957722930285381039,
+     "before": null,
+     "after": "identifications from: CRC Sighting Data 2026.accdb"
+    },
+    {
+     "record": 6015728895786485821,
+     "before": null,
+     "after": "identifications from: CRC Sighting Data 2026.accdb"
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "Species",
+   "reason": "DB167's value changed",
+   "count": 1,
+   "examples": [
+    {
+     "record": 4795217180560230058,
+     "before": "Mn",
+     "after": null
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "daily_effort_id",
+   "reason": "its DailyEffortT record is gone or has a new id in today's DB167",
+   "count": 352,
+   "examples": [
+    {
+     "record": 3318056882862817339
+    },
+    {
+     "record": 1215803916450005627
+    },
+    {
+     "record": 5488380513120159772
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "daily_effort_id",
+   "reason": "worked out again from changed inputs",
+   "count": 352,
+   "examples": [
+    {
+     "record": 3318056882862817339,
+     "before": 5.615187283871843e+18,
+     "after": 8.509636182700101e+18
+    },
+    {
+     "record": 1215803916450005627,
+     "before": 5.615187283871843e+18,
+     "after": 8.509636182700101e+18
+    },
+    {
+     "record": 5488380513120159772,
+     "before": 5.615187283871843e+18,
+     "after": 8.509636182700101e+18
+    }
+   ]
+  },
+  {
+   "table": "IdentificationT",
+   "column": "species_id",
+   "reason": "worked out again from changed inputs",
+   "count": 1,
+   "examples": [
+    {
+     "record": 4795217180560230058,
+     "before": 24.0,
+     "after": null
+    }
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "(record)",
+   "reason": "added to DB167 (or renumbered with changed key columns)",
+   "count": 62,
+   "examples": [
+    6392,
+    6396,
+    6390
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "(record)",
+   "reason": "removed from DB167 (or now an exact copy)",
+   "count": 25,
+   "examples": [
+    6340,
+    6347,
+    6346
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "daily_effort_id",
+   "reason": "its DailyEffortT record is gone or has a new id in today's DB167",
+   "count": 5,
+   "examples": [
+    {
+     "record": 1748466396147615649
+    },
+    {
+     "record": 5368108871787488636
+    },
+    {
+     "record": 1301066788726450736
+    }
+   ]
+  },
+  {
+   "table": "OtherSpeciesT",
+   "column": "daily_effort_id",
+   "reason": "worked out again from changed inputs",
+   "count": 5,
+   "examples": [
+    {
+     "record": 1748466396147615649,
+     "before": 3.5686386387425413e+18,
+     "after": 5.236396747048038e+18
+    },
+    {
+     "record": 5368108871787488636,
+     "before": 3.5686386387425413e+18,
+     "after": 5.236396747048038e+18
+    },
+    {
+     "record": 1301066788726450736,
+     "before": 3.5686386387425413e+18,
+     "after": 5.236396747048038e+18
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "(edit)",
+   "reason": "applied",
+   "count": 14,
+   "examples": [
+    {
+     "pk": "1124103076870768905",
+     "column": "Sample Type"
+    },
+    {
+     "pk": "2670327357090296823",
+     "column": "Certainty of Sample ID"
+    },
+    {
+     "pk": "2729681172768989465",
+     "column": "Sample Type"
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "(record)",
+   "reason": "added to DB167 (or renumbered with changed key columns)",
+   "count": 31,
+   "examples": [
+    4161,
+    4145,
+    4136
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "(record)",
+   "reason": "removed from DB167 (or now an exact copy)",
+   "count": 15,
+   "examples": [
+    3104,
+    3106,
+    1761
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "daily_effort_id",
+   "reason": "its DailyEffortT record is gone or has a new id in today's DB167",
+   "count": 26,
+   "examples": [
+    {
+     "record": 8601967345873461878
+    },
+    {
+     "record": 3614446289801160135
+    },
+    {
+     "record": 1660148078317750748
+    }
+   ]
+  },
+  {
+   "table": "SampleT",
+   "column": "daily_effort_id",
+   "reason": "worked out again from changed inputs",
+   "count": 26,
+   "examples": [
+    {
+     "record": 8601967345873461878,
+     "before": 5.008788337702896e+18,
+     "after": 5.439938943379265e+18
+    },
+    {
+     "record": 3614446289801160135,
+     "before": 5.59403978993821e+18,
+     "after": 3.0994617362458076e+18
+    },
+    {
+     "record": 1660148078317750748,
+     "before": 3.5686386387425413e+18,
+     "after": 5.236396747048038e+18
+    }
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "(id)",
+   "reason": "DB167 changed a key column, so the record has a new id: EventDateTime",
+   "count": 8018,
+   "examples": [
+    {
+     "DB167 ID": 4714,
+     "before": {
+      "EventDateTime": null
+     },
+     "after": {
+      "EventDateTime": "2018-08-27T00:00:00"
+     }
+    },
+    {
+     "DB167 ID": 764,
+     "before": {
+      "EventDateTime": null
+     },
+     "after": {
+      "EventDateTime": "2011-08-01T00:00:00"
+     }
+    },
+    {
+     "DB167 ID": 5905,
+     "before": {
+      "EventDateTime": null
+     },
+     "after": {
+      "EventDateTime": "2017-10-06T00:00:00"
+     }
+    }
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "(record)",
+   "reason": "added to DB167 (or renumbered with changed key columns)",
+   "count": 80,
+   "examples": [
+    9317,
+    9349,
+    9373
+   ]
+  },
+  {
+   "table": "SightingEventT",
+   "column": "(record)",
+   "reason": "removed from DB167 (or now an exact copy)",
+   "count": 19,
+   "examples": [
+    1587,
+    8207,
+    1588
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "(edit)",
+   "reason": "applied",
+   "count": 7,
+   "examples": [
+    {
+     "pk": "2734141022794117135",
+     "column": "Start Dec Long"
+    },
+    {
+     "pk": "2965448760500437555",
+     "column": "Start Dec Long"
+    },
+    {
+     "pk": "3586556297968357277",
+     "column": "End Dec Lat"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "(id)",
+   "reason": "DB167 renumbered it; matched by its hashed key",
+   "count": 277,
+   "examples": [
+    {
+     "before": 118613,
+     "after": 121452
+    },
+    {
+     "before": 118472,
+     "after": 121679
+    },
+    {
+     "before": 118525,
+     "after": 121462
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "(record)",
+   "reason": "added to DB167 (or renumbered with changed key columns)",
+   "count": 530,
+   "examples": [
+    121525,
+    121826,
+    121321
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "(record)",
+   "reason": "removed from DB167 (or now an exact copy)",
+   "count": 105,
+   "examples": [
+    37535,
+    24170,
+    97415
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Actual ID",
+   "reason": "DB167's value changed",
+   "count": 45,
+   "examples": [
+    {
+     "record": 7904460641032735985,
+     "before": null,
+     "after": 1.0
+    },
+    {
+     "record": 310560439071946971,
+     "before": null,
+     "after": 1.0
+    },
+    {
+     "record": 447088328801270924,
+     "before": null,
+     "after": 7.0
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "CloseApproachCount",
+   "reason": "DB167's value changed",
+   "count": 6,
+   "examples": [
+    {
+     "record": 4558323721432242779,
+     "before": null,
+     "after": 0.0
+    },
+    {
+     "record": 6693238782485479875,
+     "before": null,
+     "after": 0.0
+    },
+    {
+     "record": 4043549391583929521,
+     "before": null,
+     "after": 0.0
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Comments",
+   "reason": "DB167's value changed",
+   "count": 2,
+   "examples": [
+    {
+     "record": 7697059431387587709,
+     "before": "gear free at end",
+     "after": "Entangled. Gear free at end"
+    },
+    {
+     "record": 5059703887236538989,
+     "before": "1130 gear free",
+     "after": "entanglement response. 1130 gear free"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "D units",
+   "reason": "DB167's value changed",
+   "count": 257,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": null,
+     "after": "m"
+    },
+    {
+     "record": 7904460641032735985,
+     "before": null,
+     "after": "m"
+    },
+    {
+     "record": 590340069279403834,
+     "before": null,
+     "after": "m"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "DailyEffortID",
+   "reason": "DB167's value changed",
+   "count": 72,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": 28148.0,
+     "after": 29152.0
+    },
+    {
+     "record": 6600327471665517287,
+     "before": 28148.0,
+     "after": 29152.0
+    },
+    {
+     "record": 4093750750407565222,
+     "before": 28148.0,
+     "after": 29152.0
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "End Dec Lat",
+   "reason": "DB167's value changed",
+   "count": 204,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": 42.38893367,
+     "after": 42.3889
+    },
+    {
+     "record": 7904460641032735985,
+     "before": 48.5374195,
+     "after": 48.5374
+    },
+    {
+     "record": 590340069279403834,
+     "before": 40.241636,
+     "after": 40.2416
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "End Dec Long",
+   "reason": "DB167's value changed",
+   "count": 204,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": -124.49205383,
+     "after": -124.4921
+    },
+    {
+     "record": 7904460641032735985,
+     "before": -124.8231165,
+     "after": -124.8231
+    },
+    {
+     "record": 590340069279403834,
+     "before": -124.4792085,
+     "after": -124.4792
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "End Time",
+   "reason": "DB167's value changed",
+   "count": 204,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": null,
+     "after": "18:47:49"
+    },
+    {
+     "record": 7904460641032735985,
+     "before": null,
+     "after": "10:46:23"
+    },
+    {
+     "record": 590340069279403834,
+     "before": null,
+     "after": "12:27:43"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Est ID",
+   "reason": "DB167's value changed",
+   "count": 2,
+   "examples": [
+    {
+     "record": 5890903257545506778,
+     "before": null,
+     "after": 0.0
+    },
+    {
+     "record": 2428952915255080158,
+     "before": null,
+     "after": 1.0
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Frames 1",
+   "reason": "DB167's value changed",
+   "count": 44,
+   "examples": [
+    {
+     "record": 4093750750407565222,
+     "before": "to",
+     "after": null
+    },
+    {
+     "record": 1912243007691170788,
+     "before": "to",
+     "after": null
+    },
+    {
+     "record": 4862285488122771197,
+     "before": "664 to 817",
+     "after": "664 to 681"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Frames 2",
+   "reason": "DB167's value changed",
+   "count": 6,
+   "examples": [
+    {
+     "record": 4862285488122771197,
+     "before": null,
+     "after": "704 to 817"
+    },
+    {
+     "record": 1068537890987891584,
+     "before": null,
+     "after": "1250 to 1315"
+    },
+    {
+     "record": 406401075035087014,
+     "before": null,
+     "after": "523 to 569"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Beh",
+   "reason": "DB167's value changed",
+   "count": 1,
+   "examples": [
+    {
+     "record": 7697059431387587709,
+     "before": null,
+     "after": "Surface Active"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Group Type",
+   "reason": "the spelling rule chose another spelling, as DB167 has new values",
+   "count": 6,
+   "examples": [
+    {
+     "record": 5656241751681949326,
+     "raw": "Pair+1",
+     "before": "Pair + 1",
+     "after": "Pair+1"
+    },
+    {
+     "record": 4282408048643631905,
+     "raw": "Pair + 1",
+     "before": "Pair + 1",
+     "after": "Pair+1"
+    },
+    {
+     "record": 8008168359271448965,
+     "raw": "Pair+ 1",
+     "before": "Pair + 1",
+     "after": "Pair+1"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Height1",
+   "reason": "DB167's value changed",
+   "count": 257,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": null,
+     "after": "0"
+    },
+    {
+     "record": 7904460641032735985,
+     "before": null,
+     "after": "0"
+    },
+    {
+     "record": 590340069279403834,
+     "before": null,
+     "after": "0"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 1",
+   "reason": "DB167's value changed",
+   "count": 8,
+   "examples": [
+    {
+     "record": 6516730788403227237,
+     "before": null,
+     "after": "Jenn Tackaberry"
+    },
+    {
+     "record": 8867365655067514199,
+     "before": "JET",
+     "after": null
+    },
+    {
+     "record": 401672358867056206,
+     "before": null,
+     "after": "Jenn Tackaberry"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Photographer 2",
+   "reason": "DB167's value changed",
+   "count": 6,
+   "examples": [
+    {
+     "record": 4862285488122771197,
+     "before": null,
+     "after": "Jenn Tackaberry"
+    },
+    {
+     "record": 1068537890987891584,
+     "before": null,
+     "after": "Jenn Tackaberry"
+    },
+    {
+     "record": 406401075035087014,
+     "before": null,
+     "after": "Jenn Tackaberry"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Position Type",
+   "reason": "DB167's value changed",
+   "count": 257,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": null,
+     "after": "Precise"
+    },
+    {
+     "record": 7904460641032735985,
+     "before": null,
+     "after": "Precise"
+    },
+    {
+     "record": 590340069279403834,
+     "before": null,
+     "after": "Precise"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "PreyType",
+   "reason": "the spelling rule chose another spelling, as DB167 has new values",
+   "count": 19,
+   "examples": [
+    {
+     "record": 4848798913094224584,
+     "raw": "Fish",
+     "before": "FISH",
+     "after": "Fish"
+    },
+    {
+     "record": 2071089501960935249,
+     "raw": "Fish",
+     "before": "FISH",
+     "after": "Fish"
+    },
+    {
+     "record": 3740561618878865222,
+     "raw": "Fish",
+     "before": "FISH",
+     "after": "Fish"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Reticle1",
+   "reason": "DB167's value changed",
+   "count": 257,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": null,
+     "after": "0"
+    },
+    {
+     "record": 7904460641032735985,
+     "before": null,
+     "after": "0"
+    },
+    {
+     "record": 590340069279403834,
+     "before": null,
+     "after": "0"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Series Number 1",
+   "reason": "DB167's value changed",
+   "count": 100,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": null,
+     "after": "Y:\\ENP\\2026 Working\\2026 CRC\\20260826-ROB"
+    },
+    {
+     "record": 7904460641032735985,
+     "before": null,
+     "after": "Y:\\ENP\\2026 Working\\2026 CRC\\20260727-ROB"
+    },
+    {
+     "record": 6600327471665517287,
+     "before": null,
+     "after": "Y:\\ENP\\2026 Working\\2026 CRC\\20260826-ROB"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Series Number 2",
+   "reason": "DB167's value changed",
+   "count": 6,
+   "examples": [
+    {
+     "record": 4862285488122771197,
+     "before": null,
+     "after": "Y:\\ENP\\2026 Working\\2026 CRC\\20260826-ROB"
+    },
+    {
+     "record": 1068537890987891584,
+     "before": null,
+     "after": "Y:\\ENP\\2026 Working\\2026 CRC\\20260826-ROB"
+    },
+    {
+     "record": 406401075035087014,
+     "before": null,
+     "after": "Y:\\ENP\\2026 Working\\2026 CRC\\20260826-ROB"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "SightingID",
+   "reason": "DB167's value changed",
+   "count": 277,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": 118613.0,
+     "after": 121452.0
+    },
+    {
+     "record": 7904460641032735985,
+     "before": 118472.0,
+     "after": 121679.0
+    },
+    {
+     "record": 590340069279403834,
+     "before": 118525.0,
+     "after": 121462.0
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "SourceDB",
+   "reason": "DB167's value changed",
+   "count": 277,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": null,
+     "after": "sightings from: CRC Sighting Data 2026.accdb - txf"
+    },
+    {
+     "record": 7904460641032735985,
+     "before": null,
+     "after": "sightings from: CRC Sighting Data 2026.accdb - txf"
+    },
+    {
+     "record": 590340069279403834,
+     "before": null,
+     "after": "sightings from: CRC Sighting Data 2026.accdb - txf"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Start Dec Lat",
+   "reason": "DB167's value changed",
+   "count": 256,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": 42.38644283,
+     "after": 42.3864
+    },
+    {
+     "record": 7904460641032735985,
+     "before": 48.53060533,
+     "after": 48.5306
+    },
+    {
+     "record": 590340069279403834,
+     "before": 40.24024367,
+     "after": 40.2402
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Start Dec Long",
+   "reason": "DB167's value changed",
+   "count": 257,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": -124.49348867,
+     "after": -124.4935
+    },
+    {
+     "record": 7904460641032735985,
+     "before": -124.8365645,
+     "after": -124.8366
+    },
+    {
+     "record": 590340069279403834,
+     "before": -124.47655217,
+     "after": -124.4766
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Start Time",
+   "reason": "DB167's value changed",
+   "count": 257,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": null,
+     "after": "18:45:39"
+    },
+    {
+     "record": 7904460641032735985,
+     "before": null,
+     "after": "10:10:59"
+    },
+    {
+     "record": 590340069279403834,
+     "before": null,
+     "after": "12:25:39"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "TargetDecLat",
+   "reason": "DB167's value changed",
+   "count": 7,
+   "examples": [
+    {
+     "record": 1912243007691170788,
+     "before": 48.47697,
+     "after": 48.477
+    },
+    {
+     "record": 6891421963083339944,
+     "before": 43.74893,
+     "after": 43.7489
+    },
+    {
+     "record": 3282335057155217673,
+     "before": 43.82541,
+     "after": 43.8254
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "TargetDecLong",
+   "reason": "DB167's value changed",
+   "count": 7,
+   "examples": [
+    {
+     "record": 1912243007691170788,
+     "before": -124.85651,
+     "after": -124.8565
+    },
+    {
+     "record": 6891421963083339944,
+     "before": -124.65938,
+     "after": -124.6594
+    },
+    {
+     "record": 3282335057155217673,
+     "before": -124.66734,
+     "after": -124.6673
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Total Samples",
+   "reason": "DB167's value changed",
+   "count": 45,
+   "examples": [
+    {
+     "record": 7904460641032735985,
+     "before": null,
+     "after": 0.0
+    },
+    {
+     "record": 310560439071946971,
+     "before": null,
+     "after": 0.0
+    },
+    {
+     "record": 447088328801270924,
+     "before": null,
+     "after": 0.0
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "Total Tags",
+   "reason": "DB167's value changed",
+   "count": 45,
+   "examples": [
+    {
+     "record": 7904460641032735985,
+     "before": null,
+     "after": 0.0
+    },
+    {
+     "record": 310560439071946971,
+     "before": null,
+     "after": 0.0
+    },
+    {
+     "record": 447088328801270924,
+     "before": null,
+     "after": 0.0
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "daily_effort_id",
+   "reason": "its DailyEffortT record is gone or has a new id in today's DB167",
+   "count": 564,
+   "examples": [
+    {
+     "record": 2815912898412938042
+    },
+    {
+     "record": 1746891729451353514
+    },
+    {
+     "record": 3179059180356765419
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "daily_effort_id",
+   "reason": "worked out again from changed inputs",
+   "count": 564,
+   "examples": [
+    {
+     "record": 2815912898412938042,
+     "before": 8.970813216498533e+18,
+     "after": 2.5906810666600837e+18
+    },
+    {
+     "record": 1746891729451353514,
+     "before": 8.722228258507176e+18,
+     "after": 1.7272610696547756e+18
+    },
+    {
+     "record": 3179059180356765419,
+     "before": 1.7318907990733386e+18,
+     "after": 8.13624195808999e+18
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "depth_m",
+   "reason": "worked out again from changed inputs",
+   "count": 167,
+   "examples": [
+    {
+     "record": 7904460641032735985,
+     "before": null,
+     "after": 157.0
+    },
+    {
+     "record": 6600327471665517287,
+     "before": null,
+     "after": 95.0
+    },
+    {
+     "record": 4909157591214991941,
+     "before": null,
+     "after": 119.0
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "end_geom",
+   "reason": "worked out again from changed inputs",
+   "count": 204,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": "0101000020E61000002EEE58CF7D1F5FC04C7B1894C8314540",
+     "after": "0101000020E61000002497FF907E1F5FC00BB5A679C7314540"
+    },
+    {
+     "record": 7904460641032735985,
+     "before": "0101000020E61000001213D4F0AD345FC0C85D8429CA444840",
+     "after": "0101000020E61000009B559FABAD345FC0696FF085C9444840"
+    },
+    {
+     "record": 590340069279403834,
+     "before": "0101000020E6100000C6DD205AAB1E5FC0A4C4AEEDED1E4440",
+     "after": "0101000020E6100000910F7A36AB1E5FC0575BB1BFEC1E4440"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "geom",
+   "reason": "worked out again from changed inputs",
+   "count": 257,
+   "examples": [
+    {
+     "record": 5093990899883182829,
+     "before": "0101000020E61000002EA68051951F5FC0D54F6AF576314540",
+     "after": "0101000020E6100000DD240681951F5FC05396218E75314540"
+    },
+    {
+     "record": 7904460641032735985,
+     "before": "0101000020E6100000A71FD4458A355FC076B71DE0EA434840",
+     "after": "0101000020E61000005AF5B9DA8A355FC0F9A067B3EA434840"
+    },
+    {
+     "record": 590340069279403834,
+     "before": "0101000020E6100000393FACD47F1E5FC04ADCF84DC01E4440",
+     "after": "0101000020E61000008351499D801E5FC0E63FA4DFBE1E4440"
+    }
+   ]
+  },
+  {
+   "table": "SightingT",
+   "column": "identified_individual_count",
+   "reason": "worked out again from changed inputs",
+   "count": 8,
+   "examples": [
+    {
+     "record": 6680352020341477720,
+     "before": 1.0,
+     "after": 0.0
+    },
+    {
+     "record": 4885753195126889664,
+     "before": 1.0,
+     "after": 0.0
+    },
+    {
+     "record": 1382794507782764868,
+     "before": 1.0,
+     "after": 0.0
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "DeployBodyLoc",
+   "reason": "the spelling rule chose another spelling, as DB167 has new values",
+   "count": 2,
+   "examples": [
+    {
+     "record": 183,
+     "raw": "rt side",
+     "before": "rt side",
+     "after": "RT SIDE"
+    },
+    {
+     "record": 294,
+     "raw": "rt side",
+     "before": "rt side",
+     "after": "RT SIDE"
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "daily_effort_id",
+   "reason": "its DailyEffortT record is new in today's DB167",
+   "count": 22,
+   "examples": [
+    {
+     "record": 148
+    },
+    {
+     "record": 284
+    },
+    {
+     "record": 286
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "daily_effort_id",
+   "reason": "worked out again from changed inputs",
+   "count": 22,
+   "examples": [
+    {
+     "record": 148,
+     "before": null,
+     "after": 6.774117665062059e+18
+    },
+    {
+     "record": 284,
+     "before": null,
+     "after": 3.0994617362458076e+18
+    },
+    {
+     "record": 286,
+     "before": null,
+     "after": 3.0994617362458076e+18
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "sighting_id",
+   "reason": "its SightingT record is gone or has a new id in today's DB167",
+   "count": 10,
+   "examples": [
+    {
+     "record": 953
+    },
+    {
+     "record": 954
+    },
+    {
+     "record": 955
+    }
+   ]
+  },
+  {
+   "table": "TagSummaryT",
+   "column": "sighting_id",
+   "reason": "worked out again from changed inputs",
+   "count": 10,
+   "examples": [
+    {
+     "record": 953,
+     "before": 4.944149180585233e+18,
+     "after": null
+    },
+    {
+     "record": 954,
+     "before": 1.3271826294018726e+18,
+     "after": null
+    },
+    {
+     "record": 955,
+     "before": 5.144572321494682e+18,
+     "after": null
+    }
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "(create)",
+   "reason": "created on the website, and there",
+   "count": 17,
+   "examples": [
+    "1588",
+    "1589",
+    "1590"
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "(delete)",
+   "reason": "stays deleted",
+   "count": 6,
+   "examples": [
+    "842",
+    "846",
+    "850"
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "(edit)",
+   "reason": "applied",
+   "count": 308,
+   "examples": [
+    {
+     "pk": "1266",
+     "column": "EffortID"
+    },
+    {
+     "pk": "1266",
+     "column": "daily_effort_id"
+    },
+    {
+     "pk": "1588",
+     "column": "Vessel"
+    }
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "daily_effort_id",
+   "reason": "its DailyEffortT record is gone or has a new id in today's DB167",
+   "count": 1,
+   "examples": [
+    {
+     "record": 1336
+    }
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "daily_effort_id",
+   "reason": "the plan's track matches hold",
+   "count": 4,
+   "examples": [
+    {
+     "track": 1588,
+     "effort": 29152
+    },
+    {
+     "track": 1592,
+     "effort": 29178
+    },
+    {
+     "track": 1266,
+     "effort": 10016
+    }
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "daily_effort_id",
+   "reason": "worked out again from changed inputs",
+   "count": 1,
+   "examples": [
+    {
+     "record": 1336,
+     "before": 6.763937422322511e+18,
+     "after": null
+    }
+   ]
+  },
+  {
+   "table": "TrackT",
+   "column": "track_status",
+   "reason": "worked out again from changed inputs",
+   "count": 1,
+   "examples": [
+    {
+     "record": 1336,
+     "before": "available",
+     "after": "unassociated"
+    }
+   ]
+  }
+ ],
+ "unexplained": []
+}

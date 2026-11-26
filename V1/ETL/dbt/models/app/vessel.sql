@@ -1,11 +1,6 @@
-{{ config(materialized='updatable_view') }}
-SELECT vessel_id       AS id,
-       legacy_vessel_id,
-       COALESCE(code, vessel_text)  AS code,
-       COALESCE(name, vessel_text)  AS name
-FROM   {{ ref('VesselListT') }} v
--- Only vessels CRC worked from, on the same reasoning.
-WHERE  EXISTS (SELECT 1 FROM {{ ref('DailyEffortT') }} e
-               WHERE e.vessel_id = v.vessel_id AND e."Research Group" = 'CRC')
-   OR  EXISTS (SELECT 1 FROM {{ ref('SightingT') }} s
-               WHERE s.vessel_id = v.vessel_id AND s."Research Group" = 'CRC')
+-- The vessel filter and names: every vessel any effort or sighting uses, one
+-- row per vessel.
+select vessel_id as id, legacy_vessel_id, code, coalesce(name, code) as name
+from {{ ref('VesselListT') }} v
+where exists (select 1 from {{ ref('DailyEffortT') }} e where e.vessel_id = v.vessel_id)
+   or exists (select 1 from {{ ref('SightingT') }} s where s.vessel_id = v.vessel_id)

@@ -1,27 +1,16 @@
 """
-Tests run against a database built the way the live one is: a copy of
-`reference`, the untouched pull of the live database, with the pipeline set up
-on it and run.
+Tests run against a copy of your local database: whatever ops/pull-db.sh last
+put there, frozen as `reference` by ops/make-reference.sh, and copied afresh
+for each run so a test can write freely and nothing carries over.
 
-Every model the application reads sits on a view the pipeline creates
-(`managed = False`), so a test database built by Django's migrations would
-have nothing in it to read. A copy of `reference` has everything, and making it
-fresh for each run means a test can write freely and nothing carries over.
+    ops/test.sh reference        (PowerShell: ops\\test.ps1 reference)
 
-    ops/make-reference.sh                                  # once, after ops/pull-db.sh
-    docker compose exec web python manage.py test
-
-Before any test runs, the copy is set up exactly as the switch to the new
-pipeline sets up the live database:
-
-  1. raw's lists (species, event code names, vessels) are seeded from dbo;
-  2. raw.track_geometry is seeded from the lines on dbo.TrackT, for every file
-     in the bucket;
-  3. dbt builds dbo and app, every test passes, and the build is swapped in.
+Every model the application reads sits on a view (`managed = False`), so a
+test database built by Django's migrations would have nothing in it to read.
 
 The bucket is a temporary folder (SPACES_LOCAL_DIR), holding a stand-in file
-for every track file the live data says is stored. Uploads in the tests land
-there, never in the real bucket. Setting it up takes about a minute.
+for every track file the data says is stored. Uploads in the tests land there,
+never in the real bucket.
 """
 
 import os
@@ -63,6 +52,9 @@ class ReferenceCopyRunner(DiscoverRunner):
         # The bucket first: nothing may reach the real one, even by accident.
         self.bucket = tempfile.mkdtemp(prefix="test-bucket-")
         os.environ["SPACES_LOCAL_DIR"] = self.bucket
+        # ...and the checks of the files written there (survey/track_checks.py).
+        self.checks = tempfile.mkdtemp(prefix="test-checks-")
+        settings.TRACK_CHECKS_DIR = self.checks
 
         with _admin_connection() as conn:
             found = conn.execute("SELECT 1 FROM pg_database WHERE datname = %s",
@@ -84,8 +76,7 @@ class ReferenceCopyRunner(DiscoverRunner):
         from django.core.management import call_command
         from django.db import connection
 
-        from admintools.trackfix import HAS_FILE
-        from admintools.tests import rebuild
+        from datahealth.trackfix import HAS_FILE
 
         started = time.monotonic()
         with connection.cursor() as cur:
@@ -105,10 +96,32 @@ class ReferenceCopyRunner(DiscoverRunner):
             with open(os.path.join(self.bucket, name), "wb") as f:
                 f.write(STAND_IN)
 
-        rebuild.dbt("run-operation", "seed_lists_from_dbo")
-        call_command("regenerate_track_geometry", seed_from_dbo=True, stdout=open(os.devnull, "w"))
-        rebuild.build_and_swap()
-        print(f"Test database built by the pipeline in {time.monotonic() - started:.0f}s, "
+        # The reference copy predates the audit log's legacy_pk and db167_state
+        # columns, which the pipeline adds (ETL/dbt/macros/schemas.sql,
+        # persistent_tables).
+        with connection.cursor() as cur:
+            cur.execute("ALTER TABLE app.audit_log ADD COLUMN IF NOT EXISTS legacy_pk text")
+            cur.execute("ALTER TABLE app.audit_log ADD COLUMN IF NOT EXISTS db167_state text NOT NULL DEFAULT 'pending'")
+            cur.execute("ALTER TABLE app.audit_log ADD COLUMN IF NOT EXISTS db167_checked_at timestamptz")
+            cur.execute("ALTER TABLE app.audit_log ADD COLUMN IF NOT EXISTS db167_fields jsonb")
+
+            # ...and the edit_file action, which a copy built before it lacks.
+            cur.execute("ALTER TABLE app.audit_log DROP CONSTRAINT IF EXISTS audit_log_action_check")
+            cur.execute("""
+                ALTER TABLE app.audit_log ADD CONSTRAINT audit_log_action_check
+                CHECK (action IN ('create', 'update', 'delete', 'restore', 'upload',
+                                  'associate', 'dissociate', 'edit_file'))""")
+
+        # The reference copy predates the Django admin's log table, the feedback
+        # pictures' table and the roles.
+        call_command("migrate", "admin", verbosity=0)
+        call_command("migrate", "feedback", verbosity=0)
+        call_command("migrate", "datahealth", verbosity=0)
+        call_command("setup_access", stdout=open(os.devnull, "w"))
+        # The land outline lives in public, which the reference copy may not hold.
+        call_command("load_land", stdout=open(os.devnull, "w"))
+
+        print(f"Test database copied in {time.monotonic() - started:.0f}s, "
               f"with {len(stored):,} track files in the stand-in bucket.", file=sys.stderr)
 
     def teardown_databases(self, old_config, **kwargs):
@@ -116,3 +129,4 @@ class ReferenceCopyRunner(DiscoverRunner):
         with _admin_connection() as conn:
             conn.execute(f"DROP DATABASE IF EXISTS {_ident(_test_name())} WITH (FORCE)")
         shutil.rmtree(self.bucket, ignore_errors=True)
+        shutil.rmtree(self.checks, ignore_errors=True)

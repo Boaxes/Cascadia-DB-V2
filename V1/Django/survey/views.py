@@ -6,67 +6,27 @@ all have to filter the same way, and the export has to match the list it came
 from.
 """
 
-import datetime
-import io
 import json
-import os
-import zipfile
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.gis.db.models import GeometryField
 from django.contrib.gis.db.models.functions import AsGeoJSON
 from django.core.cache import cache
 from django.db.models import Count, Func, Q
 from django.db import connection
-from django.http import (Http404, HttpResponse, HttpResponseBadRequest,
-                         JsonResponse, QueryDict)
-from django.shortcuts import render
+from django.http import Http404, JsonResponse
+from django.shortcuts import redirect, render
 
-from .exporters import (OPTIONAL_SIGHTING_FIELDS, columns_for, csv_response,
-                        excel_response, geojson_response)
+from .export_stack import filter_string
 from .filters import (NON_ANIMAL, filter_efforts, filter_sightings,
-                      species_choices)
-from . import track_objects
+                      research_group_choice, species_choices)
 from .history import record_history
 from .models import (DailyCondition, DailyEffort, DailyEvent,
                      Sighting, Species, Track)
-from .services import (PAGE_SIZES, apply_sort, colour_profile, filter_options,
+from .services import (COLOUR_PROFILE_COOKIE, COLOUR_PROFILES, PAGE_SIZES, apply_sort,
+                       colour_profile, filter_options, filter_options_for,
                        paginate)
-
-# Explore, Efforts and Sightings each remember what they are showing, so
-# filtering one list does not change what an export from another produces.
-# Sorting and paging are left out: they describe a page, not a result.
-EXPORT_AREAS = ("explore", "efforts", "sightings")
-NOT_A_FILTER = {"page", "per_page", "sort",
-                # How the page was left, kept in the link (filters.js): which
-                # filter sections were open, and the Explore map's view and
-                # layers. They describe the page, not the result.
-                "open", "view", "base", "labels", "tracks", "points",
-                "clusters"}
-
-
-def remember_export_state(request, area, params, count):
-    # Sessions are database rows, so writing one on every list page view is a
-    # write to the database on every list page view. Only save when something
-    # changed.
-    state = request.session.get("export_state") or {}
-    entry = {
-        # Every value, not just the last: species, vessel and month repeat.
-        "filters": {k: [v for v in params.getlist(k) if v] for k in params
-                    if k not in NOT_A_FILTER and any(params.getlist(k))},
-        "count": count,
-    }
-    if state.get(area) == entry:
-        return
-    state[area] = entry
-    request.session["export_state"] = state
-
-
-def export_state(request):
-    stored = request.session.get("export_state") or {}
-    return {area: stored.get(area) or {"filters": {}, "count": None}
-            for area in EXPORT_AREAS}
-
 
 # The Explore map
 
@@ -86,34 +46,41 @@ def explore(request):
         error, applied, excluded = str(exc), [], 0
         sighting_count = effort_count = 0
 
-    # See the note in views/efforts.py.
-    if not error:
-        remember_export_state(request, "explore", request.GET, sighting_count)
-
     include_non_animal = request.GET.get("include_non_animal") == "1"
+    options = filter_options_for(request.GET)
 
     return render(request, "survey/explore.html", {
         "section": "explore",
-        "options": filter_options(),
-        "species_list": species_choices(include_non_animal),
+        "options": options,
+        "species_list": species_choices(include_non_animal, options),
         "include_non_animal": include_non_animal,
         "species_meta": species_meta(colour_profile(request)),
-        "legend": legend_entries(),
+        "legend": legend_entries(options),
         "sighting_count": sighting_count,
         "effort_count": effort_count,
         "applied": applied,
         "excluded_no_position": excluded,
         "error": error,
         "params": request.GET,
-        # Species and vessel take several values, so the template needs every
-        # one of them to mark the right options selected, not just the last.
-        "selected": {
-            "species": request.GET.getlist("species"),
-            "vessels": request.GET.getlist("vessel"),
-            "months": request.GET.getlist("month"),
-            "years": request.GET.getlist("year"),
-        },
+        "export_qs": filter_string(request.GET),
+        "selected": selected_filters(request),
+        "research_group": research_group_choice(request.GET),
     })
+
+
+def selected_filters(request):
+    """Every value of each filter that takes several, so the template marks
+    all of them selected, not just the last."""
+    get = request.GET.getlist
+    return {
+        "species": get("species"),
+        "vessels": get("vessel"),
+        "months": get("month"),
+        "years": get("year"),
+        "research_groups": get("research_group"),
+        "sub_areas": get("sub_area"),
+        "projects": get("project_objective"),
+    }
 
 
 def species_meta(profile):
@@ -131,9 +98,9 @@ def species_meta(profile):
     }
 
 
-def legend_entries():
+def legend_entries(options=None):
     """One row per animal group that has sightings, in the picker's order."""
-    return [g for g in filter_options()["species_groups"]
+    return [g for g in (options or filter_options())["species_groups"]
             if g["count"] and g["key"] != "other"]
 
 
@@ -178,11 +145,6 @@ def effort_list(request):
     queryset, sort_key, sort_desc = apply_sort(queryset, request, EFFORT_SORTS, "-date")
     page, per_page = paginate(request, queryset)
 
-    # Only a filter set that actually worked is worth remembering. Storing
-    # one that could not be read would hand the export a query it cannot run.
-    if not error:
-        remember_export_state(request, "efforts", request.GET, page.paginator.count)
-
     return render(request, "survey/effort_list.html", {
         "section": "efforts",
         "page": page,
@@ -193,14 +155,11 @@ def effort_list(request):
         "applied": applied,
         "excluded_no_position": excluded,
         "error": error,
-        "options": filter_options(),
+        "options": filter_options_for(request.GET, "efforts"),
         "params": request.GET,
-        "selected": {
-            "species": request.GET.getlist("species"),
-            "vessels": request.GET.getlist("vessel"),
-            "months": request.GET.getlist("month"),
-            "years": request.GET.getlist("year"),
-        },
+        "export_qs": filter_string(request.GET),
+        "selected": selected_filters(request),
+        "research_group": research_group_choice(request.GET),
     })
 
 
@@ -220,7 +179,7 @@ def effort_detail(request, legacy_id):
     )
     # One query for the whole day, in time order, from the view.
     timeline = list(effort.timeline.all())
-    history, record_actions = record_history("daily_effort", legacy_id)
+    history, record_actions = record_history("daily_effort", effort.pk)
 
     context = {
         "section": "efforts",
@@ -228,16 +187,22 @@ def effort_detail(request, legacy_id):
         "tracks": tracks,
         "sightings": sightings,
         "timeline": timeline,
+        # What the Track File Manager can make a track from (datahealth/trackfix.py).
+        "positioned_count": sum(1 for r in timeline if r.at and r.lat is not None and r.lon is not None),
         "species_seen": species_seen(sightings),
         "history": history,
         "record_actions": record_actions,
         "distance": compare_distance(effort, tracks),
-        "track_geojson_url": f"/api/track/{tracks[0].legacy_track_id}/"
-                             if tracks and tracks[0].legacy_track_id else None,
+        # Every track with a line is drawn, each with the popup Explore
+        # shows. An Effort can have several, one per GPS device or file.
+        "map_tracks": [
+            {"track": t.legacy_track_id, **track_popup_fields(t, effort)}
+            for t in tracks if t.legacy_track_id and t.geom
+        ],
         # A corrupted line runs off across the ocean. It is still drawn,
         # because it is what the database holds, but the map is framed on
         # the sightings instead so the page stays readable.
-        "track_is_suspect": bool(tracks) and tracks[0].length_is_plausible is False,
+        "track_is_suspect": any(t.length_is_plausible is False for t in tracks),
         # Only for efforts with no GPS file. The timeline is already loaded,
         # so this costs nothing and is worked out per request rather than
         # stored, which is what the old reconstructed_path column did.
@@ -342,12 +307,8 @@ def sighting_list(request):
     queryset, sort_key, sort_desc = apply_sort(queryset, request, SIGHTING_SORTS, "-date")
     page, per_page = paginate(request, queryset)
 
-    # See the note in views/efforts.py: a filter set that could not be read
-    # must not become the export's stored state.
-    if not error:
-        remember_export_state(request, "sightings", request.GET, page.paginator.count)
-
     include_non_animal = request.GET.get("include_non_animal") == "1"
+    options = filter_options_for(request.GET)
 
     return render(request, "survey/sighting_list.html", {
         "section": "sightings",
@@ -359,16 +320,13 @@ def sighting_list(request):
         "applied": applied,
         "excluded_no_position": excluded,
         "error": error,
-        "options": filter_options(),
-        "species_list": species_choices(include_non_animal),
+        "options": options,
+        "species_list": species_choices(include_non_animal, options),
         "include_non_animal": include_non_animal,
         "params": request.GET,
-        "selected": {
-            "species": request.GET.getlist("species"),
-            "vessels": request.GET.getlist("vessel"),
-            "months": request.GET.getlist("month"),
-            "years": request.GET.getlist("year"),
-        },
+        "export_qs": filter_string(request.GET),
+        "selected": selected_filters(request),
+        "research_group": research_group_choice(request.GET),
     })
 
 
@@ -382,7 +340,7 @@ def sighting_detail(request, legacy_id):
         raise Http404(f"No sighting with identifier {legacy_id}")
 
     samples = list(sighting.samples.select_related("species").all())
-    history, record_actions = record_history("sighting", legacy_id)
+    history, record_actions = record_history("sighting", sighting.pk)
 
     effort = sighting.daily_effort
     track_id = None
@@ -415,196 +373,45 @@ def _attached_records(sighting):
     """
     groups = []
     for table, label, columns in [
-        ("SightingEventT", "Sighting events",
+        ("SightingEventT", "Sighting Events",
          ['"EventTime"', '"SightEvent"', '"Field ID"', '"Reaction"',
           '"NumReact"', '"Range"', '"SightEventComments"']),
-        ("OtherSpeciesT", "Other species present",
+        ("OtherSpeciesT", "Other Species Present",
          ['"Species"', '"Class"', '"Count"', '"Comments"']),
-        ("TagSummaryT", "Tag deployments",
+        ("TagSummaryT", "Tag Deployments",
          ['"Tag#"', '"TagType"', '"DeployBodyLoc"', '"DeployDateTime"',
           '"DeployRxn"', '"HoursTotal"', '"TagComments"']),
     ]:
+        # Each table has its Foreign Key to the sighting, sighting_id.
         with connection.cursor() as cur:
-            if table == "TagSummaryT":
-                # TagSummaryT has no working effort or sighting link, so it is
-                # reached by the natural key DB167's own views use.
-                cur.execute(f"""
-                    SELECT {", ".join(columns)} FROM dbo."TagSummaryT" t
-                    WHERE t."Research Group" = %s AND t."Vessel" = %s
-                      AND t."Date"::date = %s AND t."Sighting" = %s
-                """, [sighting.research_group, _vessel_text(sighting),
-                      sighting.sighting_date, sighting.sighting_number])
-            else:
-                cur.execute(f"""
-                    SELECT {", ".join(columns)} FROM dbo."{table}"
-                    WHERE sighting_id = %s
-                """, [sighting.legacy_sighting_id])
+            cur.execute(f"""
+                SELECT {", ".join(columns)} FROM dbo."{table}"
+                WHERE sighting_id = %s
+            """, [sighting.pk])
             names = [c[0] for c in cur.description]
             rows = cur.fetchall()
         rows = [r for r in rows if any(v not in (None, "") for v in r)]
         if rows:
             groups.append({"label": label, "columns": names, "rows": rows})
 
+    # The animals identified, from IdentificationT and the catalogue of known
+    # animals, IndividualT. SightingIdentificationT, an old copy DB167 stopped
+    # updating, stays in raw.
     with connection.cursor() as cur:
         cur.execute("""
-            SELECT "CRC ID", "Field ID", "Species"
-            FROM   dbo."SightingIdentificationT"
-            WHERE  "SightingID" = %s ORDER BY "CRC ID"
-        """, [sighting.legacy_sighting_id])
+            SELECT DISTINCT coalesce(n."CRC ID", i."CRC ID") AS "CRC ID", i."Field ID",
+                   coalesce(n."Species", i."Species") AS "Species"
+            FROM   dbo."IdentificationT" i
+            LEFT   JOIN dbo."IndividualT" n ON n."IndividualID" = i."IndividualID"
+            WHERE  i.sighting_id = %s
+            ORDER  BY 1, 2
+        """, [sighting.pk])
         identifications = cur.fetchall()
     if identifications:
-        groups.append({"label": "Individuals identified",
+        groups.append({"label": "Individuals Identified",
                        "columns": ["CRC ID", "Field ID", "Species"],
                        "rows": identifications})
     return groups
-
-
-def _vessel_text(sighting):
-    """The vessel exactly as the sighting records it, for a natural-key join."""
-    with connection.cursor() as cur:
-        cur.execute('SELECT "Vessel" FROM dbo."SightingT" WHERE "SightingID" = %s',
-                    [sighting.legacy_sighting_id])
-        row = cur.fetchone()
-    return row[0] if row else None
-
-FORMATS = ["csv", "excel", "geojson"]
-
-AREA_LABELS = {
-    "explore": "Explore",
-    "efforts": "Efforts",
-    "sightings": "Sightings",
-}
-
-# Explore and Sightings both export sightings; Efforts exports efforts.
-AREA_RECORD = {"explore": "sightings", "sightings": "sightings",
-               "efforts": "efforts"}
-
-
-@login_required
-def export_page(request):
-    state = export_state(request)
-
-    areas = []
-    for area in EXPORT_AREAS:
-        entry = state[area]
-        areas.append({
-            "key": area,
-            "label": AREA_LABELS[area],
-            "record": AREA_RECORD[area],
-            "count": entry["count"],
-            "filters": entry["filters"],
-            "visited": entry["count"] is not None,
-        })
-
-    return render(request, "survey/export.html", {
-        "section": "export",
-        "areas": areas,
-        "optional_fields": OPTIONAL_SIGHTING_FIELDS,
-        "formats": FORMATS,
-    })
-
-
-@login_required
-def export_download(request):
-    area = request.GET.get("area")
-    if area not in EXPORT_AREAS:
-        return HttpResponseBadRequest("Choose one of the three areas to export.")
-
-    fmt = request.GET.get("format", "csv")
-    if fmt not in FORMATS:
-        return HttpResponseBadRequest(f"Unknown format {fmt}.")
-
-    state = export_state(request)[area]
-    filters = QueryDict(mutable=True)
-    for key, values in state["filters"].items():
-        # Sessions saved before lists were stored hold a plain string.
-        filters.setlist(key, values if isinstance(values, list) else [values])
-    record_type = AREA_RECORD[area]
-
-    # The stored filters were readable when they were stored, but a session
-    # can outlive a code change, so a failure here answers plainly rather
-    # than turning into a server error over a download.
-    try:
-        if record_type == "efforts":
-            queryset = DailyEffort.objects.select_related("vessel")
-            queryset, _applied, _excluded = filter_efforts(queryset, filters)
-            lat_field, lon_field = "start_lat", "start_lon"
-        else:
-            queryset = Sighting.objects.select_related(
-                "species", "vessel", "daily_effort"
-            )
-            queryset, _applied, _excluded = filter_sightings(queryset, filters)
-            lat_field, lon_field = "lat", "lon"
-    except ValueError as exc:
-        return HttpResponseBadRequest(
-            f"The saved filters for {AREA_LABELS[area]} could not be used: "
-            f"{exc} Open that page again to reset them."
-        )
-
-    # A download from one effort or sighting page exports that record alone,
-    # not whatever the list happened to be showing.
-    one = request.GET.get("one")
-    if one:
-        field = ("legacy_daily_effort_id" if record_type == "efforts"
-                 else "legacy_sighting_id")
-        queryset = queryset.model.objects.filter(**{field: one})
-        if not queryset.exists():
-            raise Http404(one)
-
-    columns = columns_for(record_type, request.GET.getlist("field"))
-
-    # The area is named only where it differs from the record type, so an
-    # export of sightings from the Sightings list is not called
-    # "sightings_sightings".
-    source = record_type if area == record_type else f"{record_type}_from_{area}"
-    filename = f"cascadia_{source}_{datetime.date.today().isoformat()}"
-
-    if fmt == "csv":
-        response = csv_response(queryset, columns, filename)
-    elif fmt == "excel":
-        response = excel_response(queryset, columns, filename)
-    else:
-        response = geojson_response(queryset, columns, filename,
-                                    lat_field, lon_field)
-
-    if request.GET.get("tracks") == "1":
-        return zip_with_tracks(response, queryset, record_type, filename)
-    return response
-
-
-def zip_with_tracks(response, queryset, record_type, filename):
-    """The data file plus a tracks folder, as one zip.
-
-    The point of the export is that an analyst gets the positions and the GPS
-    behind them together. The files come from object storage at full
-    resolution, not from the simplified geometry in the database.
-    """
-    efforts = (queryset if record_type == "efforts"
-               else DailyEffort.objects.filter(
-                   id__in=queryset.values("daily_effort_id")))
-    keys = list(
-        Track.objects.filter(daily_effort__in=efforts, object_key__isnull=False)
-        .order_by().values_list("object_key", flat=True).distinct()
-    )
-
-    buffer = io.BytesIO()
-    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
-        name = response["Content-Disposition"].split("filename=")[-1].strip('"')
-        archive.writestr(name, response.content)
-        for key, body in track_objects.fetch(keys):
-            archive.writestr(f"tracks/{key}", body)
-        if not track_objects.configured():
-            archive.writestr(
-                "tracks/README.txt",
-                "The GPS files were not included because object storage is not "
-                "configured on this server. Set SEDB_BUCKET_URL for a public "
-                "bucket, or SEDB_BUCKET_ENDPOINT with SEDB_BUCKET_KEY and "
-                "SEDB_BUCKET_SECRET for a private one.\n"
-                f"{len(keys)} track files belong to this export.\n")
-
-    zipped = HttpResponse(buffer.getvalue(), content_type="application/zip")
-    zipped["Content-Disposition"] = f'attachment; filename="{filename}.zip"'
-    return zipped
 
 
 # JSON the maps load
@@ -715,38 +522,72 @@ def tracks_json(request):
     # drawn always describe the same efforts as the sightings beside them.
     queryset = queryset.filter(daily_effort__in=efforts)
 
-    rows = (
+    tracks = (
         queryset.order_by()
+        .select_related("daily_effort__vessel")
+        .only(
+            "legacy_track_id", "object_key", "survey_date", "research_group",
+            "point_count", "length_nm", "start_time_utc", "end_time_utc",
+            "daily_effort", "daily_effort__legacy_daily_effort_id",
+            "daily_effort__effort_date", "daily_effort__research_group",
+            "daily_effort__vessel", "daily_effort__vessel__name",
+            "daily_effort__vessel__code",
+        )
         .annotate(
             geojson=AsGeoJSON(
                 SimplifyPreserveTopology("geom", EXPLORE_TOLERANCE),
                 precision=4,
             )
         )
-        .values_list(
-            "legacy_track_id", "daily_effort__legacy_daily_effort_id", "geojson",
-            "survey_date", "object_key"
-        )
     )
 
     # The date and file name are here so the browser can build the track
     # picker from this response. Listing every track in the page instead would
     # be another query and another few thousand options nobody scrolls.
+    # The rest is what the popup shows when a track is clicked, so clicking
+    # one costs no request.
     features = [
         {
             "type": "Feature",
             "properties": {
-                "track": track_id,
-                "effort": effort_id,
-                "label": f"{survey_date} {os.path.basename(key or '')}".strip(),
+                "track": track.legacy_track_id,
+                "effort": track.daily_effort.legacy_daily_effort_id,
+                "label": f"{track.survey_date} {track.file_name or ''}".strip(),
+                **track_popup_fields(track, track.daily_effort),
             },
-            "geometry": json.loads(geojson),
+            "geometry": json.loads(track.geojson),
         }
-        for track_id, effort_id, geojson, survey_date, key in rows
-        if geojson
+        for track in tracks
+        if track.geojson
     ]
 
-    return JsonResponse({"type": "FeatureCollection", "features": features})
+    # Without the spaces json.dumps puts after every comma and colon, which
+    # across every coordinate pair is more than the popup fields add.
+    return JsonResponse({"type": "FeatureCollection", "features": features},
+                        json_dumps_params={"separators": (",", ":")})
+
+
+def track_popup_fields(track, effort):
+    """What a track's popup on a map shows, as short JSON keys.
+
+    The vessel and date are the Effort's, because the popup describes the
+    Effort the track belongs to. A length the track's own times show to be
+    impossible is flagged, so a corrupted 56,000 nm line is not read as real.
+    The flag is left out when it is false, which is nearly every track.
+    """
+    vessel = effort.vessel if effort and effort.vessel_id else None
+    fields = {
+        "date": str(effort.effort_date) if effort and effort.effort_date else None,
+        "vessel": vessel.label if vessel else None,
+        "group": track.research_group or (effort.research_group if effort else None),
+        "object_key": track.object_key,
+        "points": track.point_count,
+        "length_nm": (round(float(track.length_nm), 1)
+                      if track.length_nm is not None else None),
+    }
+    if track.length_is_plausible is False:
+        fields["suspect"] = True
+    return fields
 
 
 @login_required
@@ -776,3 +617,20 @@ def track_full_json(request, legacy_id):
         },
         "geometry": json.loads(row["geojson"]),
     })
+
+
+@login_required
+def settings_page(request):
+    """The reader's own settings. Each is a cookie, so it belongs to the
+    browser it was chosen in and needs nothing stored in the database."""
+    if request.method == "POST":
+        profile = request.POST.get("colour_profile")
+        if profile in COLOUR_PROFILES:
+            response = redirect("settings")
+            response.set_cookie(COLOUR_PROFILE_COOKIE, profile, max_age=365 * 24 * 3600,
+                                samesite="Lax", secure=request.is_secure())
+            messages.success(request, "Settings saved.")
+            return response
+        messages.error(request, "Choose a color profile.")
+        return redirect("settings")
+    return render(request, "survey/settings.html", {"section": "settings"})

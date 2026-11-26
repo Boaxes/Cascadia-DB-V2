@@ -5,10 +5,9 @@
 #     cp .env.example .env      # once
 #     docker compose up         # database + web application
 #
-# The ETL is a one-shot, so it sits behind a profile and is run on demand:
+# The import is a one-shot, so it sits behind a profile and is run on demand:
 #
 #     docker compose run --rm etl python import_raw.py
-#     docker compose run --rm etl dbt build
 
 name: cascadia
 
@@ -53,8 +52,10 @@ services:
     volumes:
       # The source is mounted, so an edit on the host reloads the server.
       - ./Django:/app
-      # The pipeline, which the tests run to rebuild their database.
-      - ./ETL/dbt:/dbt
+      # The tests that need the live data's copy. PYTHONPATH makes them importable.
+      - ./TESTS:/TESTS
+    environment:
+      PYTHONPATH: /
     ports:
       - "${WEB_PORT:-8000}:8000"
     depends_on:
@@ -62,31 +63,48 @@ services:
         condition: service_healthy
 
   # -------------------------------------------------------------------------
-  # The import. Separate image because it is the only thing that needs the
-  # Microsoft ODBC driver, and only it talks to DB167.
+  # The import of every DB167 table into raw. Separate image because it is the
+  # only thing that needs the Microsoft ODBC driver, and only it talks to DB167.
   # -------------------------------------------------------------------------
   etl:
     build: ./ETL
     profiles: ["etl"]
     env_file: .env
-    environment:
-      # So a plain `dbt build` finds the project and its profile.
-      DBT_PROJECT_DIR: /app/dbt
-      DBT_PROFILES_DIR: /app/dbt
-    ports:
-      # dbt's documentation site, with the lineage graph. Only published by
-      # `docker compose run --service-ports etl dbt docs serve ...`.
-      - "${DBT_DOCS_PORT:-8580}:8080"
     volumes:
       - ./ETL:/app
-      # The GPS cleaner lives with the application, because the track tool uses
-      # it too. The import reads the same module rather than a copy.
-      - ./Django/admintools/gps:/app/gps
-      # The original GPS files. Read only -- they are the archive.
-      - ${GPS_ARCHIVE:-./ETL/seed}:/archive:ro
     depends_on:
       db:
         condition: service_healthy
 
+  # -------------------------------------------------------------------------
+  # A local SQL Server holding copies of DB167 to test against: DB167_Today
+  # (DB167 as it is now) and DB167_LastImport (as it was at the live site's
+  # last import, rebuilt from its raw schema). Built by ETL/mirror_sqlserver.py.
+  # The same version as DB167 (2022 CU27). Microsoft publishes it for Intel
+  # only, so on an Apple Silicon Mac Docker runs it through Rosetta.
+  #
+  #     docker compose --profile mssql up -d mssql
+  # -------------------------------------------------------------------------
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-CU27-GDR1-ubuntu-22.04
+    platform: linux/amd64
+    profiles: ["mssql"]
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?set MSSQL_SA_PASSWORD in .env}
+      MSSQL_COLLATION: SQL_Latin1_General_CP1_CI_AS
+    ports:
+      - "${MSSQL_PORT:-1433}:1433"
+    volumes:
+      - mssqldata:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q 'select 1' -b -o /dev/null"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 30s
+
 volumes:
   pgdata:
+  mssqldata:

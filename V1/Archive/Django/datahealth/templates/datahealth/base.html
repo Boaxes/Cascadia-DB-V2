@@ -1,0 +1,16 @@
+{% extends "survey/base.html" %}
+{% comment %}
+  Data Health is part of the site: the same header, sign-in and styles.
+  Its own name and pages take the place of the site's in the header bar.
+{% endcomment %}
+{% block title %}{% block admin_title %}Data Health{% endblock %} &middot; Data Health{% endblock %}
+{% block brand_url %}{% url 'admin_home' %}{% endblock %}
+{% block brand %}Data Health{% endblock %}
+{% block nav %}
+  <a href="{% url 'admin_home' %}" class="{% if tab == 'dashboard' %}active{% endif %}">Dashboard</a>
+  <a href="{% url 'admin_tracks' %}" class="{% if tab == 'tracks' %}active{% endif %}">Track files</a>
+  <a href="{% url 'admin_audit' %}" class="{% if tab == 'audit' %}active{% endif %}">Audit log</a>
+  {% if perms.datahealth.manage_users %}<a href="{% url 'data_health_users' %}" class="{% if tab == 'users' %}active{% endif %}">Users</a>{% endif %}
+{% endblock %}
+
+{% block body %}{% block admin_body %}{% endblock %}{% endblock %}

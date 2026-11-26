@@ -1,0 +1,195 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% comment %}
+  The Server page of the Django admin. Two things: the console, which is every
+  log the server keeps as one (a plain sentence for each thing that happened, or
+  with Advanced on, every line of every log in full), and a graph of the machine with a few facts under
+  it. Both refresh themselves every five seconds.
+{% endcomment %}
+{% block breadcrumbs %}<div class="breadcrumbs"><a href="{% url 'admin:index' %}">Home</a> &rsaquo; Server</div>{% endblock %}
+{% block content_title %}{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'datahealth/server.css' %}">{% endblock %}
+
+{% block content %}
+<div class="server-page">
+  <div class="card card-tight console-card">
+    <div class="console-head">
+      <span>Console <span class="muted">Times In UTC</span></span>
+      <button type="button" class="btn btn-small" id="console-advanced" aria-pressed="false">Advanced</button>
+    </div>
+    <div class="console simple" id="console" tabindex="0" aria-label="Server Log, Times In UTC"></div>
+  </div>
+
+  <div class="card server-graph">
+    <div class="graph-legend" id="graph-legend"></div>
+    <div class="graph-plot" id="graph-plot">
+      <svg id="graph" role="img" aria-label="Processor, memory and disk use over the last {{ feed.hours }} hours"></svg>
+      <div class="graph-tip" id="graph-tip" hidden></div>
+    </div>
+    <dl class="server-facts" id="server-facts"></dl>
+  </div>
+</div>
+{{ feed|json_script:"server-feed" }}
+{% endblock %}
+
+{% block footer %}{{ block.super }}
+<script>
+(function () {
+  var feed = JSON.parse(document.getElementById("server-feed").textContent);
+  var feedUrl = "{% url 'admin:server_feed' %}";
+
+  /* ------------------------------------------------------------ the console */
+
+  var box = document.getElementById("console"), cursor = feed.cursor, KEEP = 3000;
+  function write(lines) {
+    if (!lines.length) return;
+    var atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 40;
+    var piece = document.createDocumentFragment();
+    lines.forEach(function (line) {
+      var row = document.createElement("div");
+      /* A line with no plain wording is only for Advanced. */
+      row.className = "ln " + line.lv + (line.plain === null ? " adv" : "");
+      [["t", line.t + "  "], ["plain", line.plain], ["full", (line.src + "            ").slice(0, 12) + " " + line.text]]
+        .forEach(function (part) {
+          if (part[1] === null) return;
+          var s = document.createElement("span"); s.className = part[0]; s.textContent = part[1]; row.appendChild(s);
+        });
+      piece.appendChild(row);
+    });
+    box.appendChild(piece);
+    while (box.childElementCount > KEEP) box.removeChild(box.firstChild);
+    if (atBottom) box.scrollTop = box.scrollHeight;
+  }
+  write(feed.lines);
+
+  /* The one switch. Off: a time and a plain sentence for each thing that happened,
+     and any error. On: every line of every log, in full. Remembered in this browser. */
+  var advanced = document.getElementById("console-advanced");
+  function setAdvanced(on) {
+    box.classList.toggle("simple", !on);
+    advanced.setAttribute("aria-pressed", on ? "true" : "false");
+    advanced.classList.toggle("btn-primary", on);
+    box.scrollTop = box.scrollHeight;
+    try { localStorage.setItem("server-console-advanced", on ? "1" : ""); } catch (e) {}
+  }
+  var remembered = false;
+  try { remembered = localStorage.getItem("server-console-advanced") === "1"; } catch (e) {}
+  setAdvanced(remembered);
+  advanced.addEventListener("click", function () { setAdvanced(advanced.getAttribute("aria-pressed") !== "true"); });
+
+  /* -------------------------------------------------------------- the graph */
+
+  var SERIES = [{ name: "Processor", at: 1, colour: "#2a78d6" }, { name: "Memory", at: 2, colour: "#eb6834" },
+                { name: "Disk", at: 3, colour: "#1baf7a" }];
+  var NS = "http://www.w3.org/2000/svg", svg = document.getElementById("graph"), plot = document.getElementById("graph-plot");
+  var tip = document.getElementById("graph-tip"), legend = document.getElementById("graph-legend");
+  var samples = feed.samples.slice(), now = feed.now, span = feed.hours * 3600;
+  var M = { top: 8, right: 10, bottom: 22, left: 34 }, geometry = null;
+
+  function el(name, attrs, parent) {
+    var node = document.createElementNS(NS, name);
+    Object.keys(attrs).forEach(function (k) { node.setAttribute(k, attrs[k]); });
+    parent.appendChild(node);
+    return node;
+  }
+  function two(n) { return (n < 10 ? "0" : "") + n; }
+  function clock(seconds) { var d = new Date(seconds * 1000); return two(d.getUTCHours()) + ":" + two(d.getUTCMinutes()); }
+  function percent(v) { return v == null ? "n/a" : Math.round(v) + "%"; }
+
+  function drawLegend() {
+    legend.textContent = "";
+    SERIES.forEach(function (s) {
+      var item = document.createElement("span"), key = document.createElement("i"), value = document.createElement("b");
+      key.style.background = s.colour;
+      value.textContent = percent(now[s.at]);
+      item.appendChild(key); item.appendChild(document.createTextNode(s.name + " ")); item.appendChild(value);
+      legend.appendChild(item);
+    });
+  }
+
+  function drawGraph() {
+    var W = plot.clientWidth, H = plot.clientHeight;
+    if (!W) return;
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var end = now[0], start = end - span, w = W - M.left - M.right, h = H - M.top - M.bottom;
+    function x(t) { return M.left + (t - start) / span * w; }
+    function y(v) { return M.top + (100 - v) / 100 * h; }
+    geometry = { x: x, start: start, end: end, w: w, h: h };
+
+    [0, 50, 100].forEach(function (v) {
+      el("line", { x1: M.left, x2: W - M.right, y1: y(v), y2: y(v), class: "grid" }, svg);
+      el("text", { x: M.left - 6, y: y(v) + 4, "text-anchor": "end", class: "axis" }, svg).textContent = v + "%";
+    });
+    for (var i = 0; i <= 4; i++) {
+      var t = start + span * i / 4;
+      el("text", { x: x(t), y: H - 6, "text-anchor": i === 0 ? "start" : i === 4 ? "end" : "middle", class: "axis" }, svg)
+        .textContent = i === 4 ? "now" : clock(t);
+    }
+    var points = samples.filter(function (p) { return p[0] >= start; }).concat([now]);
+    SERIES.forEach(function (s) {
+      /* A gap of more than five minutes is a time nobody used the site: the line stops there. */
+      var d = "", last = null;
+      points.forEach(function (p) {
+        if (p[s.at] == null) { last = null; return; }
+        d += (last === null || p[0] - last > 300 ? "M" : "L") + x(p[0]).toFixed(1) + " " + y(p[s.at]).toFixed(1);
+        last = p[0];
+      });
+      if (d) el("path", { d: d, fill: "none", stroke: s.colour, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+    });
+    geometry.points = points;
+    geometry.cross = el("line", { y1: M.top, y2: M.top + h, class: "cross", visibility: "hidden" }, svg);
+  }
+
+  plot.addEventListener("mousemove", function (e) {
+    if (!geometry || !geometry.points.length) return;
+    var left = e.clientX - plot.getBoundingClientRect().left;
+    var t = geometry.start + (left - M.left) / geometry.w * span, best = null;
+    geometry.points.forEach(function (p) { if (best === null || Math.abs(p[0] - t) < Math.abs(best[0] - t)) best = p; });
+    var px = geometry.x(best[0]);
+    geometry.cross.setAttribute("x1", px); geometry.cross.setAttribute("x2", px);
+    geometry.cross.setAttribute("visibility", "visible");
+    tip.textContent = "";
+    var head = document.createElement("strong"); head.textContent = clock(best[0]) + " UTC"; tip.appendChild(head);
+    SERIES.concat([{ name: "Database", at: 4 }]).forEach(function (s) {
+      var row = document.createElement("div");
+      row.textContent = s.name + " " + (s.at === 4 ? (best[4] == null ? "n/a" : best[4] + " ms") : percent(best[s.at]));
+      tip.appendChild(row);
+    });
+    tip.hidden = false;
+    tip.style.left = Math.min(Math.max(px + 10, 0), plot.clientWidth - tip.offsetWidth) + "px";
+  });
+  plot.addEventListener("mouseleave", function () { tip.hidden = true; if (geometry) geometry.cross.setAttribute("visibility", "hidden"); });
+
+  function drawFacts(facts) {
+    var list = document.getElementById("server-facts");
+    list.textContent = "";
+    facts.forEach(function (fact) {
+      var row = document.createElement("div"), dt = document.createElement("dt"), dd = document.createElement("dd");
+      dt.textContent = fact[0]; dd.textContent = fact[1];
+      row.appendChild(dt); row.appendChild(dd); list.appendChild(row);
+    });
+  }
+
+  drawLegend(); drawGraph(); drawFacts(feed.facts);
+  window.addEventListener("resize", drawGraph);
+
+  /* ------------------------------------------------------------ what is new */
+
+  setInterval(function () {
+    if (document.hidden) return;
+    fetch(feedUrl + "?cursor=" + encodeURIComponent(JSON.stringify(cursor)), { credentials: "same-origin" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d) return;
+        cursor = d.cursor;
+        write(d.lines);
+        /* A point a minute is enough for the line; the legend shows every reading. */
+        if (!samples.length || now[0] - samples[samples.length - 1][0] >= 60) samples.push(now);
+        now = d.now;
+        drawLegend(); drawGraph(); drawFacts(d.facts);
+      }).catch(function () {});
+  }, 5000);
+})();
+</script>
+{% endblock %}

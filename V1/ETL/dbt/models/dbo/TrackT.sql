@@ -1,123 +1,89 @@
--- TrackT: one GPS track file recorded during an effort, with the website's
--- changes applied, plus its line, status and vessel.
+-- TrackT: GPS track files, one row per file, with the website's edits. Its
+-- Primary Key is DB167's TrackID, which has never changed.
 --
--- 1. cleaned: DB167's rows, with the cleaning rules applied, each to a whole column:
---      R8  track comments carry <br> tags and an auto-generated statistics
---          block. The tags are stripped, the text kept.
---    It also gains a record for every file in DB167's file list that no track
---    record names, because without one the bucket and the database would
---    disagree about which files exist. They are numbered on from the highest
---    TrackID, in file-name order, as the old import did, and their date and
---    vessel read from the file name. "The highest TrackID" leaves out the
---    six records that name a vessel DB167 no longer has, which the old import
---    had already removed (they are deletions in the audit log, applied in r).
--- 2. r, s: the website's edits applied on top (macros/replay.sql).
--- 3. the final select: DB167's columns, plus the ones this table adds.
-
-{#- Status, worked out from two facts: is an effort linked, and is the file
-    stored (it has a row in raw.track_geometry, which holds every file in the
-    bucket). Both are read after the website's edits, so a link or an upload
-    made on the website shows here too. The website writes the same status
-    when it links or uploads; the rebuild works it out again rather than
-    trusting what was written. -#}
-{% set status %}
-    case when s."EffortID" is not null and g.object_key is not null then 'available'
-         when s."EffortID" is not null then 'missing_file'
-         when g.object_key is not null then 'unassociated'
-         else 'unresolved' end
-{% endset %}
-
-{#- The vessel: its text, ignoring case, and otherwise DB167's own VesselID,
-    or the one the website set (macros/lists.sql, vessel_id). -#}
-{% set vessel %}
-    case when s.__edits ? 'vessel_id' then vessel_edited.same_as
-         else coalesce(vessel_by_text.same_as,
-                       (select min(l.same_as) from {{ ref('vessel_for_text') }} l
-                        where l.legacy_vessel_id = s."VesselID")) end
-{% endset %}
-
-with kept as (
-    select t.* from {{ source('raw', 'TrackT') }} t
-    where not (t."VesselID" is not null
-               and not exists (select 1 from {{ source('raw', 'VesselT') }} v where v."VesselID" = t."VesselID"))
-),
-unnamed_files as (
-    select f.* from {{ source('raw', 'TrackFileList') }} f
-    where not exists (select 1 from kept k
-                      where lower(btrim(cast(k."TrackFileName" as text))) = lower(btrim(f."FileName")))
-),
-cleaned as (
-    select
-        t."TrackID" as "TrackID",
-        t."UnifiedDB_DailyEffortID" as "UnifiedDB_DailyEffortID",
-        t."ResearchGroupID" as "ResearchGroupID",
-        t."TrackCompleteCodeID" as "TrackCompleteCodeID",
-        t."VesselID" as "VesselID",
-        t."SourceID" as "SourceID",
-        t."SurveyDate" as "SurveyDate",
-        t."TrackFileName" as "TrackFileName",
-        t."TrackFileType" as "TrackFileType",
-        t."Useable" as "Useable",
-        t."HitRate" as "HitRate",
-        t."TrackFileSize" as "TrackFileSize",
-        case when t."Comments" ~ '<[^>]*>' then btrim(regexp_replace(t."Comments", '<[^>]*>', ' ', 'g')) else t."Comments" end as "Comments",
-        t."StartTime" as "StartTime",
-        t."EndTime" as "EndTime",
-        t."GPSPointCount" as "GPSPointCount",
-        t."TrackDuration" as "TrackDuration",
-        t."EffortID" as "EffortID",
-        t."Research Group" as "Research Group",
-        t."Vessel" as "Vessel"
-    from {{ source('raw', 'TrackT') }} t
-
+-- A file in the bucket that no track record names gets one
+-- (models/build/bucket_tracks.sql). Comments lose the HTML tags DB167 stores
+-- in them.
+--
+-- A track whose VesselID names a vessel VesselT no longer has, and which has no
+-- typed Vessel and no EffortID, has nothing that says whose it is, so it is left out.
+-- A track whose EffortID names an effort DB167 removed as a copy of another
+-- (seeds/removed_efforts.csv) has its EffortID changed to the effort it kept.
+--
+--   daily_effort_id  FK to DailyEffortT.id: the effort a person matched the
+--                    track to on the website, else the effort DB167's EffortID
+--                    names in this copy of DB167; NULL (unmatched) if that
+--                    effort is not in this copy
+--   vessel_id        FK to VesselListT, by the typed Vessel, else by VesselID
+--   geom, length_nm, point_count  the file's line, from app.track_geometry
+--   track_status     available (matched, file has points), blank (matched,
+--                    file has no points yet), unassociated (stored, not
+--                    matched) or unresolved (neither)
+--   file_name        the file's name in the bucket: TrackFileName, unless the
+--                    website set it
+--   StartTime, EndTime  DB167 keeps them in Pacific local time; dbo keeps UTC,
+--                    converted here (macros/track_times.sql). The website's own
+--                    values are UTC already and are replayed as they are.
+--
+-- ResearchGroupID, TrackCompleteCodeID and SourceID are copied from DB167, or
+-- set on the website; one that names no record is left NULL, an orphan.
+{%- set overrides = {
+    'Comments': "case when c0.\"Comments\" ~ '<[^>]*>' then " ~ trimmed("regexp_replace(c0.\"Comments\", '<[^>]*>', ' ', 'g')") ~ " else c0.\"Comments\" end",
+    'EffortID': kept_effort('c0."EffortID"'),
+    'StartTime': 'app.track_time_utc(c0."StartTime", ' ~ geometry_time('first_time') ~ ')',
+    'EndTime': 'app.track_time_utc(c0."EndTime", ' ~ geometry_time('last_time') ~ ')',
+} %}
+{%- set from_bucket = {
+    'TrackID': 'b."TrackID"', 'SurveyDate': 'b.survey_date', 'TrackFileName': 'b.file_name',
+    'TrackFileType': "'csv'", 'Useable': 'true', 'Vessel': 'b.vessel',
+} %}
+with {{ cleaned_ctes('TrackT', overrides) }},
+rows as (
+    select {{ column_list('TrackT', 'c') }} from c
+    where not {{ track_names_no_vessel('c') }}
     union all
-
     select
-        ((select max("TrackID") from kept) + row_number() over (order by f."FileName"))::integer as "TrackID",
-        null::integer as "UnifiedDB_DailyEffortID",
-        null::integer as "ResearchGroupID",
-        null::integer as "TrackCompleteCodeID",
-        null::integer as "VesselID",
-        null::integer as "SourceID",
-        (case when btrim(f."FileName") ~ '^[0-9]{8}'
-                     then to_date(left(btrim(f."FileName"), 8), 'YYYYMMDD') end)::date as "SurveyDate",
-        btrim(f."FileName") as "TrackFileName",
-        'csv'::text as "TrackFileType",
-        true as "Useable",
-        null::text as "HitRate",
-        null::text as "TrackFileSize",
-        null::text as "Comments",
-        null::timestamp without time zone as "StartTime",
-        null::timestamp without time zone as "EndTime",
-        null::double precision as "GPSPointCount",
-        null::double precision as "TrackDuration",
-        null::integer as "EffortID",
-        null::text as "Research Group",
-        {{ vessel_in_file_name('f."FileName"') }} as "Vessel"
-    from unnamed_files f
+    {%- for col in raw_columns('TrackT') %}
+        ({{ from_bucket.get(col.name, 'null') }})::{{ col.data_type }}{{ "," if not loop.last }}
+    {%- endfor %}
+    from {{ ref('bucket_tracks') }} b
 ),
 r as (
-    {{ replay_rows('cleaned', 'TrackT', 'TrackID') }}
+    {{ replay_rows('rows', 'TrackT', 'TrackID') }}
 ),
 s as (
     select {{ replayed_columns('TrackT', 'r') }}, r.__edits,
-           btrim(cast(r."TrackFileName" as text)) as __file_as_imported
+           {{ edited('file_name', 'btrim(' ~ edited('TrackFileName', 'r."TrackFileName"', 'text', 'r.__edits') ~ ')', 'text', 'r.__edits') }} as file_name
     from r
 ),
-named as (
-    select s.*, {{ edited('file_name', 's.__file_as_imported', 'text', 's.__edits') }} as __file_name
+matched as (
+    select s.*,
+           {{ edited('daily_effort_id', legacy_id(ref('keyed_DailyEffortT'), 'DailyEffortID', 's."EffortID"'), 'bigint', 's.__edits') }} as __effort
     from s
+),
+-- An effort DB167 has since removed, or the website deleted, leaves the track
+-- unmatched, waiting to be matched again.
+linked as (
+    select m.*, (select v.id from (select m.__effort as id) v
+                 where {{ exists_after_replay('DailyEffortT', 'v.id') }}) as daily_effort_id
+    from matched m
 )
-select
-    {{ column_list('TrackT', 's') }},
-    -- The line comes from the file itself, one row per file in the bucket
-    -- (raw.track_geometry). Records naming the same file share its line.
-    g.geom::geometry(MultiLineString,4326) as geom,
-    g.length_nm::numeric(12,3) as length_nm,
-    g.point_count::integer as point_count,
-    {{ status }} as track_status,
-    s.__file_name as file_name,
-    {{ vessel }} as vessel_id
-from named s
-left join {{ source('raw', 'track_geometry') }} g on lower(g.object_key) = lower(s.__file_name)
-{{ vessel_joins('s') }}
+select {{ column_list('TrackT', 's', {
+           'ResearchGroupID': checked_reference('s."ResearchGroupID"', 'ResearchGroupT'),
+           'TrackCompleteCodeID': checked_reference('s."TrackCompleteCodeID"', 'TrackCompleteCodeT'),
+           'SourceID': checked_reference('s."SourceID"', 'SourceT'),
+       }) }},
+       s.daily_effort_id,
+       coalesce(vk.vessel_id, (select min(v.vessel_id) from {{ ref('vessels') }} v
+                               where v.legacy_vessel_id = s."VesselID"))::integer as vessel_id,
+       g.geom::geometry(MultiLineString, 4326) as geom,
+       g.length_nm::numeric(12,3) as length_nm,
+       g.point_count::integer as point_count,
+       case when s.daily_effort_id is not null and coalesce(g.point_count, 0) > 0 then 'available'
+            when s.daily_effort_id is not null then 'blank'
+            when g.object_key is not null then 'unassociated'
+            else 'unresolved' end as track_status,
+       s.file_name
+from linked s
+left join {{ source('app', 'track_geometry') }} g on lower(g.object_key) = lower(s.file_name)
+left join {{ ref('vessel_keys') }} vk on vk.key = {{ build_fn() }}.key_text(s."Vessel")

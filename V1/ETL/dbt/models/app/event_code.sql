@@ -1,8 +1,3 @@
--- What a daily event's code means. DB167's EventCodeT, plus a short name.
-{{ config(materialized='updatable_view') }}
-SELECT c."EventCodeID"     AS id,
-       c."EventCode"       AS code,
-       c.name,
-       c."CodeDescription" AS description,
-       c."SortOrder"       AS sort_order
-FROM   {{ ref('EventCodeT') }} c
+-- Names of the day-log codes, including those added to EventCodeT.
+select "EventCodeID" as id, "EventCode" as code, name, "CodeDescription" as description, "SortOrder" as sort_order
+from {{ ref('EventCodeT') }} c

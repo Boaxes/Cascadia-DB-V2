@@ -1,62 +1,122 @@
 {% extends "survey/base.html" %}
-{% load survey_tags %}
+{% load static humanize %}
 {% block title %}Export &middot; Sightings and Effort Explorer{% endblock %}
 
 {% block content %}
 <h1>Export</h1>
-<p class="muted">
-  Download what you are looking at, with the GPS files that go with it.
-</p>
 
-<form method="get" action="{% url 'export_download' %}" class="card export-form">
+{% comment %}
+  Removing a query is a post, so it has a form of its own, and the buttons
+  point at it with the form attribute. export.js fills in `next` with the
+  reader's choices, so removing a query does not undo them. Ticking a query's
+  related records posts the same way, through related-form.
+{% endcomment %}
+<form id="remove-form" method="post" action="{% url 'export_remove' %}">{% csrf_token %}<input type="hidden" name="next" value=""></form>
+<form id="related-form" method="post" action="{% url 'export_related' %}">{% csrf_token %}<input type="hidden" name="next" value=""><input type="hidden" name="index" value=""><input type="hidden" name="related" value=""></form>
 
-  <h2>1. What to export
-    {% tip "export_areas" %}
-  </h2>
-  <div class="export-sources">
-    {% for area in areas %}
-      <label class="export-source {% if not area.visited %}is-unvisited{% endif %}">
-        <input type="radio" name="area" value="{{ area.key }}"
-               {% if forloop.first %}checked{% endif %}>
-        <span class="t">{{ area.label }}</span>
-        <span class="s">
-          {% if area.visited %}
-            {{ area.count }} {{ area.record }}
-            {% if area.filters %}with your filters{% else %}, unfiltered{% endif %}
-          {% else %}
-            Not opened yet. Visit {{ area.label }} first.
-          {% endif %}
-        </span>
-      </label>
-    {% endfor %}
+<form id="export-form" method="get" action="{% url 'export_download' %}" data-preview="{% url 'export_preview' %}" data-rows="{{ preview_rows }}">
+<div class="export-grid">
+  <div>
+    <div class="card card-tight">
+      <div class="card-head pad"><h2>Queries</h2><span class="small muted">Added from Explore, Efforts, Sightings and their pages</span></div>
+      <table class="data">
+        <thead><tr><th>Query</th><th class="num">Efforts</th><th class="num">Sightings</th><th></th></tr></thead>
+        <tbody>
+          {% for q in queries %}
+            <tr>
+              <td class="export-query"><span class="muted">{{ q.number }}.</span> {{ q.label }}
+                {% if q.problem %}<div class="small export-problem">{{ q.problem }}</div>
+                {% elif q.note %}<div class="small muted">{{ q.note }}</div>{% endif %}
+                {% if q.related_label %}<label class="check small"><input type="checkbox" data-related="{{ forloop.counter0 }}"{% if q.related %} checked{% endif %}> {{ q.related_label }}</label>{% endif %}</td>
+              <td class="num">{% if q.efforts is None %}<span class="none">-</span>{% else %}{{ q.efforts|intcomma }}{% endif %}</td>
+              <td class="num">{% if q.sightings is None %}<span class="none">-</span>{% else %}{{ q.sightings|intcomma }}{% endif %}</td>
+              <td class="right"><button class="btn btn-small" type="submit" form="remove-form" name="index" value="{{ forloop.counter0 }}">Remove</button></td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="4" class="empty">Nothing to export yet. Use Add To Export on Explore, Efforts or Sightings.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if queries|length > 1 %}
+      <p class="small muted">Queries combine with OR: {{ efforts_in_all|intcomma }} Effort{{ efforts_in_all|pluralize }} and {{ sightings_in_all|intcomma }} Sighting{{ sightings_in_all|pluralize }} in all. A row that matches two queries appears once, and the Matched Queries column says which.</p>
+    {% endif %}
+
+    <div class="card card-tight">
+      <div class="card-head pad"><h2>Sheets</h2><span class="small muted">Related records that have one per row are columns. The rest get their own sheet.</span></div>
+      <table class="data">
+        <thead><tr><th></th><th>Sheet</th><th>Layout</th><th class="num">Rows</th><th class="num">Columns</th><th></th></tr></thead>
+        <tbody>
+          {% for sheet in sheets %}
+            <tr data-sheet-row="{{ sheet.key }}">
+              <td><input type="checkbox" name="sheet" value="{{ sheet.key }}" data-title="{{ sheet.title }}" aria-label="{{ sheet.title }}"{% if sheet.ticked %} checked{% endif %}></td>
+              <td><strong>{{ sheet.title }}</strong></td>
+              <td class="muted">{{ sheet.layout }}</td>
+              <td class="num">{{ sheet.rows|intcomma }}</td>
+              <td class="num">{% if sheet.chooser %}<span data-chosen="{{ sheet.key }}">{{ sheet.chosen }}</span> of {{ sheet.total }}{% else %}<span class="none">-</span>{% endif %}</td>
+              <td class="right">{% if sheet.chooser %}<button class="btn btn-small" type="button" data-cols="{{ sheet.key }}">Choose Columns</button>{% endif %}</td>
+            </tr>
+            {% if sheet.chooser %}
+              <tr class="cols-row" data-cols-row="{{ sheet.key }}" hidden>
+                <td colspan="6" class="cols"><input type="hidden" name="col_{{ sheet.key }}" value=""><div class="colgroups">
+                  {% for group in sheet.groups %}
+                    <div><h3>{{ group.name }}{% if group.appended %} (Appended){% endif %}</h3>
+                      {% for column in group.columns %}
+                        <label><input type="checkbox" name="col_{{ sheet.key }}" value="{{ column.key }}"{% if column.checked %} checked{% endif %}{% if column.required %} disabled{% endif %}> {{ column.label }}</label>
+                      {% endfor %}
+                    </div>
+                  {% endfor %}
+                </div></td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card card-tight">
+      <div class="card-head pad"><h2>Preview</h2><span class="small muted" id="pv-note"></span></div>
+      <div class="problem-tabs pad-x" id="tabs" data-first="{{ first_tab }}"></div>
+      <div class="scroll"><table class="data" id="preview"></table></div>
+    </div>
   </div>
 
-  <h2>2. Format</h2>
-  <div class="export-formats">
-    <label><input type="radio" name="format" value="csv" checked> CSV
-      {% tip "export_csv" %}
-    </label>
-    <label><input type="radio" name="format" value="excel"> Excel
-      {% tip "export_excel" %}
-    </label>
-    <label><input type="radio" name="format" value="geojson"> GeoJSON
-      {% tip "export_geojson" %}
-    </label>
-  </div>
-
-  <h2>3. GPS files</h2>
-  <label class="export-tracks">
-    <input type="checkbox" name="tracks" value="1">
-    Include the GPS track files
-    {% tip "export_tracks" %}
-  </label>
-  <p class="small muted" style="margin:6px 0 0">
-    The download becomes a zip: your data file, and a <code>tracks/</code>
-    folder beside it.
-  </p>
-
-  <div class="export-actions">
-    <button class="btn btn-primary" type="submit">Download</button>
-  </div>
+  <aside>
+    <div class="card">
+      <div class="card-head"><h2>Download</h2></div>
+      <div class="filters export-options">
+        <div class="field"><label for="fmt">Download As</label>
+          <select id="fmt" name="format">
+            {% for f in formats %}<option value="{{ f.key }}" data-note="{{ f.note }}" data-holds="{{ f.holds }}"{% if f.zipped %} data-zipped="1"{% endif %}{% if choice.format == f.key %} selected{% endif %}>{{ f.label }}</option>{% endfor %}
+          </select>
+          <p class="field-note" id="fmt-note"></p>
+        </div>
+        <div class="field"><label class="check"><input type="checkbox" id="raw" name="raw" value="1"{% if raw %} checked{% endif %}> Include The Raw GPS Files Of These Efforts</label>
+          <p class="field-note">The original track files, named by their file names, in a folder called tracks:
+            {{ track_files|intcomma }} file{{ track_files|pluralize }} for the {{ efforts_in_all|intcomma }} Effort{{ efforts_in_all|pluralize }} in this export.
+            An Effort with no track, or a blank one, is skipped and noted in track_file_list.csv.</p>
+          <p class="field-note" id="raw-zip" hidden>This format is not a zip, so with this ticked the download is a zip holding the file and the tracks folder.</p>
+        </div>
+        <div class="field"><label for="tz">Time Zone</label>
+          <select id="tz" name="tz">
+            {% for zone in zones %}<option value="{{ zone }}"{% if choice.zone.name == zone %} selected{% endif %}>{{ zone }}</option>{% endfor %}
+          </select>
+          <p class="field-note">Every date and time in the file is converted to this zone.</p>
+        </div>
+        <div class="field"><label for="df">Dates</label>
+          <select id="df" name="df">
+            {% for key, label in date_formats %}<option value="{{ key }}"{% if choice.date_format == key %} selected{% endif %}>{{ label }}</option>{% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="row-actions"><button class="btn btn-primary" type="submit" id="dl"{% if not ready %} disabled{% endif %}>Download</button></div>
+      <p class="small muted" id="summary" style="margin:10px 0 0"></p>
+    </div>
+  </aside>
+</div>
 </form>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'survey/export.js' %}"></script>
 {% endblock %}

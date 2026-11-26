@@ -1,0 +1,131 @@
+/* The Django admin in the site's colours. Loaded after app.css, whose tokens
+   these are; this file only hands them to the admin's own variables and
+   tidies the few places the two meet. --accent is the site's, as app.css
+   sets it, so the admin's yellow never appears. */
+
+:root {
+  --primary: var(--accent);
+  --secondary: var(--accent-dark);
+  --primary-fg: #fff;
+
+  --body-fg: var(--text);
+  --body-bg: var(--card);
+  --body-quiet-color: var(--muted);
+  --body-medium-color: var(--text);
+  --body-loud-color: var(--navy);
+
+  --header-color: #fff;
+  --header-branding-color: #fff;
+  --header-bg: var(--navy);
+  --header-link-color: #fff;
+
+  --breadcrumbs-fg: var(--muted);
+  --breadcrumbs-link-fg: var(--accent);
+  --breadcrumbs-bg: var(--card);
+
+  --link-fg: var(--accent);
+  --link-hover-color: var(--accent-dark);
+  --link-selected-fg: var(--accent-dark);
+
+  --hairline-color: var(--border-soft);
+  --border-color: var(--border);
+
+  --error-fg: var(--red-fg);
+
+  --message-success-bg: var(--green-bg);
+  --message-warning-bg: var(--amber-bg);
+  --message-error-bg: var(--red-bg);
+
+  --darkened-bg: var(--page);
+  --selected-bg: var(--sea-100);
+  --selected-row: var(--sea-50);
+
+  --button-fg: #fff;
+  --button-bg: var(--accent);
+  --button-hover-bg: var(--accent-dark);
+  --default-button-bg: var(--accent-dark);
+  --default-button-hover-bg: var(--navy);
+  --close-button-bg: var(--muted);
+  --close-button-hover-bg: var(--text);
+  --delete-button-bg: var(--danger);
+  --delete-button-hover-bg: var(--danger-dark);
+
+  --object-tools-fg: #fff;
+  --object-tools-bg: var(--accent);
+  --object-tools-hover-bg: var(--accent-dark);
+
+  --font-family-primary: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* The page sits on the site's grey, with the admin's panels on white cards. */
+body { font-family: var(--font-family-primary); }
+#container { min-height: 100vh; }
+.breadcrumbs { border-bottom: 1px solid var(--border); padding: 10px 24px; }
+.breadcrumbs a:hover { color: var(--accent-dark); }
+#content { padding: 20px 24px; }
+#content h1 { font-size: 22px; font-weight: 600; color: var(--text); }
+#content h2 { font-size: 16px; font-weight: 600; }
+
+/* Section headings on the index and in forms: the site's ocean, not the
+   admin's pale blue. */
+.module h2, .module caption, .inline-group h2 {
+  background: var(--navy); color: #fff; font-size: 13px; font-weight: 600;
+  letter-spacing: 0; text-transform: none;
+}
+.module h2 a, .module caption a { color: #fff; }
+.module, #changelist .changelist-form-container, fieldset.module {
+  border-radius: 6px;
+}
+#content-main .module, #content-related .module { border: 1px solid var(--border); overflow: hidden; }
+
+fieldset.module .description { padding: 8px 10px; color: var(--muted); }
+
+/* Table headers and filter headings, as the site draws them. */
+thead th, tfoot td { background: var(--page); color: var(--muted); font-weight: 600; }
+#changelist-filter h2 { background: var(--navy); color: #fff; font-size: 13px; }
+#changelist-filter h3 { font-size: 12px; }
+#changelist-filter li.selected a { color: var(--accent); }
+
+/* Buttons keep the site's rounded corners. */
+.button, input[type=submit], input[type=button], .submit-row input, a.button,
+.object-tools a { border-radius: 4px; }
+
+/* The date picker's month bar was the admin's yellow behind dark text. */
+.calendar caption, .calendarbox h2 { background: var(--accent-light); color: var(--text); }
+
+/* Messages, in the site's own colours. */
+ul.messagelist li { color: var(--text); }
+ul.messagelist li.success { color: var(--green-fg); }
+ul.messagelist li.warning { color: var(--amber-fg); }
+ul.messagelist li.error { color: var(--red-fg); }
+
+/* The site's lists set a bottom margin on every list; the admin's own lists
+   are spaced by the admin. */
+#content ul, #content ol, #nav-sidebar ul { margin-bottom: 0; }
+
+/* The admin's own page headings, field names, column headings and buttons
+   come from Django in sentence case. The site writes them in Title Case, so
+   they are shown that way here. Help text, values and the headings already
+   written in Title Case are left as they are. */
+#content h1, .form-row label, .aligned label, #changelist thead th,
+#changelist-filter h2, #changelist-filter h3, #changelist-filter summary, .selector h2, .object-tools a,
+.button, input[type=submit], input[type=button], .submit-row a,
+.dashboard #content-main .module th a, .related-widget-wrapper-link,
+#recent-actions-module h2, #recent-actions-module h3, #recent-actions-module p,
+.skip-to-content-link { text-transform: capitalize; }
+
+/* The filter headings fold open with a chevron, not the admin's arrow letters. */
+#changelist-filter details > summary::before,
+#changelist-filter details[open] > summary::before {
+  content: ""; display: inline-block; width: 5px; height: 5px; margin: 0 8px 2px 2px;
+  border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+}
+#changelist-filter details[open] > summary::before { transform: rotate(45deg); }
+
+/* A phone: app.css narrows the header; the admin's own responsive rules
+   take care of the rest. */
+@media (max-width: 767px) {
+  .breadcrumbs { padding: 10px 12px; }
+  #content { padding: 12px; }
+}

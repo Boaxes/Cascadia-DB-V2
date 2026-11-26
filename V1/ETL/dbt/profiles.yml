@@ -12,7 +12,18 @@ cascadia:
       user: "{{ env_var('PGUSER', 'cascadia') }}"
       password: "{{ env_var('PGPASSWORD', 'cascadia') }}"
       dbname: "{{ env_var('PGDATABASE', 'cascadia') }}"
-      # Only used by anything that names no schema of its own. Every model
-      # does, through its folder in dbt_project.yml.
       schema: dbt_scratch
+      threads: 4
+
+elementary:
+  target: local
+  outputs:
+    local:
+      type: postgres
+      host: "{{ env_var('PGHOST', 'db') }}"
+      port: "{{ env_var('PGPORT', '5432') | as_number }}"
+      user: "{{ env_var('PGUSER', 'cascadia') }}"
+      password: "{{ env_var('PGPASSWORD', 'cascadia') }}"
+      dbname: "{{ env_var('PGDATABASE', 'cascadia') }}"
+      schema: elementary
       threads: 4

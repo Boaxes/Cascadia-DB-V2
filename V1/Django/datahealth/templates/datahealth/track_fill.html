@@ -1,0 +1,89 @@
+{% extends "datahealth/base.html" %}
+{% load static %}
+{% block admin_title %}Fill From File{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+
+{% block admin_body %}
+<main class="page">
+<div id="detail">
+<div class="detail-head"><h1>Fill From File</h1></div>
+{% csrf_token %}
+{% if not storage_ok %}
+  <ul class="messages"><li class="error">File storage has no key here, so a file cannot be changed.</li></ul>
+{% endif %}
+<div class="card">
+  <div class="card-head"><h2>{{ track.object_key }}</h2></div>
+  <p>Choose a CSV with <span class="mono">datetime_utc</span>, <span class="mono">latitude</span> and <span class="mono">longitude</span> columns.
+  Its points replace this file's points. The current file is kept in History.</p>
+  <input type="file" id="pick" accept=".csv,text/csv" {% if not storage_ok %}disabled{% endif %}>
+</div>
+<ul class="messages" id="fill-msg" hidden></ul>
+<div id="compare" hidden>
+  <div class="detail-row">
+    <div class="card map-card"><div class="card-head"><h2>Map</h2>
+      <span class="small muted"><span class="legend-swatch dashed" style="color:#fff;border-color:#fff;filter:drop-shadow(0 0 1px #000)"></span> Current &nbsp; <span class="legend-swatch solid" style="color:var(--track);filter:drop-shadow(0 0 1px #000)"></span> New</span></div><div class="map" id="cmap"></div></div>
+    <div class="card"><div class="card-head"><h2>What Changes</h2></div>
+      <table class="data"><thead><tr><th></th><th class="num">Current</th><th class="num">New</th></tr></thead><tbody id="cmp"></tbody></table>
+      <p class="small muted" id="dropped" style="margin:10px 0 0"></p>
+      <div class="row-actions" style="margin-top:14px"><button class="btn btn-primary" type="button" id="go">Replace File</button>
+        <button class="btn" type="button" data-close-modal>Cancel</button></div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var BASE = "{% url 'admin_tracks' %}api/{{ track.legacy_track_id }}/fill/", ID = {{ track.legacy_track_id }};
+  var map = null;
+  function token() { return document.querySelector("[name=csrfmiddlewaretoken]").value; }
+  function esc(v) { return String(v === null || v === undefined ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function post(path, form) {
+    return fetch(BASE + path, { method: "POST", body: form, credentials: "same-origin", headers: { "X-CSRFToken": token() } })
+      .then(function (r) { return r.json(); });
+  }
+  function span(t) { return t.first ? t.first.slice(0, 16) + " to " + t.last.slice(0, 16) : "-"; }
+  function note(kind, text) { var m = $("fill-msg"); m.hidden = false; m.innerHTML = '<li class="' + kind + '">' + esc(text) + "</li>"; }
+  $("pick").addEventListener("change", function () {
+    if (!this.files.length) return;
+    var form = new FormData(); form.append("file", this.files[0]);
+    $("go").disabled = true; $("fill-msg").hidden = true;
+    post("preview/", form).then(function (data) {
+      if (!data.ok) { $("compare").hidden = true; note("error", data.message); return; }
+      var a = data.current, b = data.new;
+      $("compare").hidden = false; $("go").disabled = false;
+      $("cmp").innerHTML =
+        "<tr><td>Points</td><td class=\"num\">" + fmt(a.points) + "</td><td class=\"num\">" + fmt(b.points) + "</td></tr>" +
+        "<tr><td>Time Span (UTC)</td><td class=\"num\">" + span(a) + "</td><td class=\"num\">" + span(b) + "</td></tr>" +
+        "<tr><td>Length</td><td class=\"num\">" + a.nm.toFixed(1) + " nm</td><td class=\"num\">" + b.nm.toFixed(1) + " nm</td></tr>" +
+        "<tr><td>Lines With Errors</td><td class=\"num\">" + a.errors + "</td><td class=\"num\">" + b.errors + "</td></tr>";
+      $("dropped").textContent = data.dropped ? fmt(data.dropped) + (data.dropped === 1 ? " row" : " rows") + " in the new file with a bad date or position " + (data.dropped === 1 ? "is" : "are") + " dropped." : "";
+      if (map) map.remove();
+      map = L.map("cmap"); basemap(map);
+      var l1 = a.line.length ? L.polyline(a.line, { color: "#ffffff", weight: 3, dashArray: "6 6" }).addTo(map) : null;
+      var l2 = L.polyline(b.line, { color: mapColour("track"), weight: 3 }).addTo(map);
+      var all = L.featureGroup([l2].concat(l1 ? [l1] : []));
+      map.fitBounds(all.getBounds(), { padding: [20, 20] });
+      setTimeout(function () { map.invalidateSize(); map.fitBounds(all.getBounds(), { padding: [20, 20] }); }, 350);
+    });
+  });
+  $("go").onclick = function () {
+    var form = new FormData(); form.append("file", $("pick").files[0]);
+    $("go").disabled = true;
+    post("", form).then(function (data) {
+      if (!data.ok) { note("error", data.message); $("go").disabled = false; return; }
+      note("success", "File replaced. The earlier file is kept in History, and the Effort match is unchanged.");
+      window.dispatchEvent(new CustomEvent("track-changed", { detail: { id: ID } }));
+    });
+  };
+})();
+</script>
+</div>
+</main>
+{% endblock %}
+{% block scripts %}
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="{% static 'survey/basemap.js' %}"></script>
+  <script src="{% static 'survey/track-lines.js' %}"></script>
+{% endblock %}

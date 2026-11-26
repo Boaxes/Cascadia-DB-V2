@@ -10,19 +10,30 @@
 <aside class="filter-panel" id="filter-panel">
 <form method="get" id="filters">
   <h2>Filters</h2>
+  {% comment %}
+    Research Group is always in view, never folded: it has a default (CRC)
+    that applies when nothing is chosen, so the reader must always see it.
+    "All Research Groups" sends research_group=all, which removes the filter.
+  {% endcomment %}
+  <div class="filters rg-filter">
+    <p class="rg-state"><span class="rg-chip" id="rg-chip">Research Group: <strong>{{ research_group.label }}</strong></span></p>
+    {% include "survey/_tagpicker.html" with name="research_group" label="Research Group" items=options.research_groups selected=selected.research_groups count="efforts" placeholder=research_group.label tip="research_group" %}
+    <div class="field">
+      <label class="check">
+        <input type="checkbox" id="rg-all" name="research_group" value="all" {% if research_group.groups is None %}checked{% endif %}>
+        All Research Groups
+      </label>
+    </div>
+  </div>
   {% if page != "explore" %}
   <details class="fsec" data-key="general" {% section_open "general" %}>
-    <summary><svg class="fsec-ico" viewBox="0 0 24 24"><path d="M2 20c1.5 1 3 1 4.5 0s3-1 4.5 0 3 1 4.5 0 3-1 4.5 0"/><path d="M4 16 3 12h18l-2 4"/><path d="M12 12V3l6 5h-6"/></svg>{% if page == "efforts" %}Vessel{% else %}Species &amp; vessel{% endif %} <span class="fsec-count"></span></summary>
+    <summary><svg class="fsec-ico" viewBox="0 0 24 24"><path d="M2 20c1.5 1 3 1 4.5 0s3-1 4.5 0 3 1 4.5 0 3-1 4.5 0"/><path d="M4 16 3 12h18l-2 4"/><path d="M12 12V3l6 5h-6"/></svg>{% if page == "efforts" %}Vessel{% else %}Species &amp; Vessel{% endif %} <span class="fsec-count"></span></summary>
   {% endif %}
   <div class="filters">
     {% if page != "efforts" %}
       {% include "survey/_tagpicker.html" with name="species" label="Species" items=species_list selected=selected.species grouped=True %}
     {% endif %}
-    {% if page == "efforts" %}
-      {% include "survey/_tagpicker.html" with name="vessel" label="Vessel" items=options.vessels selected=selected.vessels count="efforts" %}
-    {% else %}
-      {% include "survey/_tagpicker.html" with name="vessel" label="Vessel" items=options.vessels selected=selected.vessels count="sightings" %}
-    {% endif %}
+    {% include "survey/_tagpicker.html" with name="vessel" label="Vessel" items=options.vessels selected=selected.vessels count="efforts" %}
   </div>
   {% if page != "explore" %}</details>{% endif %}
 
@@ -32,16 +43,18 @@
       <div class="field">
         <label for="region">Region</label>
         <select id="region" name="region">
-          <option value="">All regions</option>
+          <option value="">All Regions</option>
           {% for r in options.regions %}
             <option value="{{ r }}" {% if params.region == r %}selected{% endif %}>{{ r }}</option>
           {% endfor %}
         </select>
       </div>
+      {% comment %} North to south, those with 250 or more Efforts first. {% endcomment %}
+      {% include "survey/_tagpicker.html" with name="sub_area" label="Sub-Area" items=options.sub_areas selected=selected.sub_areas count="efforts" placeholder="All Sub-Areas" %}
       <div class="field">
         <label for="locality">Locality</label>
         <select id="locality" name="locality">
-          <option value="">All localities</option>
+          <option value="">All Localities</option>
           {% for l in options.localities %}
             <option value="{{ l }}" {% if params.locality == l %}selected{% endif %}>{{ l }}</option>
           {% endfor %}
@@ -53,9 +66,9 @@
       {% else %}
         {% comment %} Folded until wanted: the map is the tallest thing here. {% endcomment %}
         <details class="area-picker" {% if params.area %}open{% endif %}>
-          <summary>Draw an area {% if params.area %}<span class="muted">(applied)</span>{% endif %}</summary>
+          <summary>Draw an Area {% if params.area %}<span class="muted">(applied)</span>{% endif %}</summary>
           <div id="filter-map" class="map filter-map"></div>
-          <a href="#" id="clear-area" class="small">Clear the area</a>
+          <a href="#" id="clear-area" class="small">Clear the Area</a>
         </details>
       {% endif %}
     </div>
@@ -70,21 +83,38 @@
     <summary><svg class="fsec-ico" viewBox="0 0 24 24"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg>Other <span class="fsec-count"></span></summary>
     <div class="filters">
       <div class="field">
-        <label for="survey_type">Survey type</label>
+        <label for="survey_type">Survey Type</label>
         <select id="survey_type" name="survey_type">
-          <option value="">All types</option>
+          <option value="">All Types</option>
           {% for t in options.survey_types %}
             <option value="{{ t }}" {% if params.survey_type == t %}selected{% endif %}>{{ t }}</option>
           {% endfor %}
         </select>
       </div>
+      {% include "survey/_tagpicker.html" with name="project_objective" label="Project/Objective" items=options.projects selected=selected.projects count="efforts" placeholder="All Projects" %}
       <div class="field">
-        <label for="track">GPS track</label>
+        <label for="tags">Tags {% tip "tags" %}</label>
+        <select id="tags" name="tags">
+          <option value="">Either</option>
+          <option value="with" {% if params.tags == 'with' %}selected{% endif %}>With Tags</option>
+          <option value="without" {% if params.tags == 'without' %}selected{% endif %}>Without Tags</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="samples">Samples {% tip "samples" %}</label>
+        <select id="samples" name="samples">
+          <option value="">Either</option>
+          <option value="with" {% if params.samples == 'with' %}selected{% endif %}>With Samples</option>
+          <option value="without" {% if params.samples == 'without' %}selected{% endif %}>Without Samples</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="track">GPS Track</label>
         <select id="track" name="track">
           <option value="">Any</option>
           <option value="available" {% if params.track == 'available' %}selected{% endif %}>Available</option>
-          <option value="none" {% if params.track == 'none' %}selected{% endif %}>No track file</option>
-          <option value="missing_file" {% if params.track == 'missing_file' %}selected{% endif %}>File missing</option>
+          <option value="none" {% if params.track == 'none' %}selected{% endif %}>No Track File</option>
+          <option value="blank" {% if params.track == 'blank' %}selected{% endif %}>Blank</option>
         </select>
       </div>
       <div class="field">
@@ -92,12 +122,12 @@
           Free text, not a drop-down: personnel holds 1,602 distinct values
           mixing initials and full names.
         {% endcomment %}
-        <label for="crew">Crew member</label>
+        <label for="crew">Crew Member</label>
         <input type="search" id="crew" name="crew" placeholder="e.g. JC or Calambokidis" value="{{ params.crew|default:'' }}">
       </div>
       {% if page != "efforts" %}
         <div class="field">
-          <label for="position_type">Position type</label>
+          <label for="position_type">Position Type</label>
           <select id="position_type" name="position_type">
             <option value="">Any</option>
             {% for p in options.position_types %}
@@ -105,33 +135,45 @@
             {% endfor %}
           </select>
         </div>
+        <div class="field">
+          <label for="uncertain">Uncertain Species {% tip "species_uncertain" %}</label>
+          <select id="uncertain" name="uncertain">
+            <option value="">Include</option>
+            <option value="exclude" {% if params.uncertain == 'exclude' %}selected{% endif %}>Exclude</option>
+            <option value="only" {% if params.uncertain == 'only' or params.uncertain == '1' %}selected{% endif %}>Only</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="land">Sightings on Land {% tip "sightings_on_land" %}</label>
+          <select id="land" name="land">
+            <option value="">Include</option>
+            <option value="exclude" {% if params.land == 'exclude' %}selected{% endif %}>Exclude</option>
+            <option value="only" {% if params.land == 'only' %}selected{% endif %}>Only</option>
+          </select>
+        </div>
         <div class="field checks">
           <label class="check">
-            <input type="checkbox" name="uncertain" value="1" {% if params.uncertain == '1' %}checked{% endif %}>
-            Only uncertain species {% tip "species_uncertain" %}
-          </label>
-          <label class="check">
             <input type="checkbox" name="include_non_animal" value="1" {% if include_non_animal %}checked{% endif %}>
-            Include ships, boats and other non-animal records
+            Include Ships, Boats and Other Non-Animal Records
+          </label>
+          {% comment %}
+            On by default, so the link carries nothing until it is unticked.
+            The 0 is sent first and the box's 1 after it, so the last value is
+            the choice. Filters.js drops the 0 when the box is ticked, which
+            keeps the link short; without it the page still works.
+          {% endcomment %}
+          <input type="hidden" name="match_sightings" value="0" id="match-sightings-off">
+          <label class="check">
+            <input type="checkbox" name="match_sightings" value="1" id="match-sightings" {% if params.match_sightings != '0' %}checked{% endif %}>
+            Only Efforts With Matching Sightings {% tip "match_sightings" %}
           </label>
         </div>
       {% endif %}
-      {% comment %}
-        Not a filter: it has no name, so it is never submitted, and choosing
-        one stores it in a cookie and reloads (filters.js).
-      {% endcomment %}
-      <div class="field">
-        <label for="colour-profile">Color Profile</label>
-        <select id="colour-profile">
-          <option value="cascadia" {% if colour_profile == "cascadia" %}selected{% endif %}>Cascadia</option>
-          <option value="generic" {% if colour_profile == "generic" %}selected{% endif %}>Generic</option>
-        </select>
-      </div>
     </div>
   </details>
 
   <div class="panel-actions">
-    <button class="btn btn-primary" type="submit">Apply filters</button>
+    <button class="btn btn-primary" type="submit">Apply Filters</button>
     <a class="btn" href="{% if page == 'efforts' %}{% url 'effort_list' %}{% elif page == 'sightings' %}{% url 'sighting_list' %}{% else %}{% url 'explore' %}{% endif %}">Reset</a>
   </div>
 </form>

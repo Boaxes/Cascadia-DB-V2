@@ -8,12 +8,11 @@
 -- Those are inferred, seeded and enforced in `dbo`, where they can be
 -- corrected and the correction recorded. `raw` takes the data as it is.
 
--- Only DB167's tables are replaced. raw also holds the build's other
--- inputs (the curated lists and the GPS lines), which an import leaves
--- alone.
+-- Only DB167's tables are replaced. Any other table in raw, such as
+-- those the archived pipeline kept there, is left alone.
 CREATE SCHEMA IF NOT EXISTS raw;
 
-DROP TABLE IF EXISTS raw."AdditionalCameraT" CASCADE;
+DROP TABLE IF EXISTS raw."AdditionalCameraT";
 CREATE TABLE raw."AdditionalCameraT" (
     "AdditionalCameraID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -34,14 +33,25 @@ CREATE TABLE raw."AdditionalCameraT" (
     PRIMARY KEY ("AdditionalCameraID")
 );
 
-DROP TABLE IF EXISTS raw."CollaboratorT" CASCADE;
+DROP TABLE IF EXISTS raw."AnnualDBT";
+CREATE TABLE raw."AnnualDBT" (
+    "AnnualDBID" integer NOT NULL,
+    "dbYear" integer,
+    "AnnualDBFileName" text,
+    "AnnualDBName" text,
+    "AnnualDBPath" text,
+    "SortOrder" integer,
+    PRIMARY KEY ("AnnualDBID")
+);
+
+DROP TABLE IF EXISTS raw."CollaboratorT";
 CREATE TABLE raw."CollaboratorT" (
     "CollaboratorID" integer NOT NULL,
     "Collaborator" text,
     PRIMARY KEY ("CollaboratorID")
 );
 
-DROP TABLE IF EXISTS raw."CRC_Vessels_ByYear_T" CASCADE;
+DROP TABLE IF EXISTS raw."CRC_Vessels_ByYear_T";
 CREATE TABLE raw."CRC_Vessels_ByYear_T" (
     "CRCVesselID" integer NOT NULL,
     "Research Group" text,
@@ -54,13 +64,14 @@ CREATE TABLE raw."CRC_Vessels_ByYear_T" (
     PRIMARY KEY ("CRCVesselID")
 );
 
-DROP TABLE IF EXISTS raw."DailyConditionT" CASCADE;
+DROP TABLE IF EXISTS raw."DailyConditionT";
 CREATE TABLE raw."DailyConditionT" (
     "DailyConditionID" integer NOT NULL,
     "DailyEffortID" integer,
     "Research Group" text,
     "Vessel" text,
     "Date" timestamp,
+    "ConditionDateTime" timestamp,
     "ConditionTime" time,
     "Dec Lat" double precision,
     "Dec Long" double precision,
@@ -73,11 +84,10 @@ CREATE TABLE raw."DailyConditionT" (
     "Visibility (nm)" text,
     "Comments" text,
     "SourceDB" text,
-    "ConditionDateTime" timestamp,
     PRIMARY KEY ("DailyConditionID")
 );
 
-DROP TABLE IF EXISTS raw."DailyEffortT" CASCADE;
+DROP TABLE IF EXISTS raw."DailyEffortT";
 CREATE TABLE raw."DailyEffortT" (
     "DailyEffortID" integer NOT NULL,
     "Research Group" text,
@@ -90,6 +100,7 @@ CREATE TABLE raw."DailyEffortT" (
     "Locality" text,
     "Personnel" text,
     "PhotoDataBy" text,
+    "PhotoDataDate" timestamp,
     "Project/Objective" text,
     "Record Source" text,
     "Region" text,
@@ -107,10 +118,48 @@ CREATE TABLE raw."DailyEffortT" (
     "End Dec Long" double precision,
     "SentToAnnualDB" boolean NOT NULL,
     "Finalized" boolean NOT NULL,
+    "MnSent" text,
+    "BmSent" text,
+    "ErSent" text,
     PRIMARY KEY ("DailyEffortID")
 );
 
-DROP TABLE IF EXISTS raw."DailyEventT" CASCADE;
+DROP TABLE IF EXISTS raw."DailyEffortT_IanDB_SnapshotT";
+CREATE TABLE raw."DailyEffortT_IanDB_SnapshotT" (
+    "EffortID" integer NOT NULL,
+    "Research Group" text,
+    "Vessel" text,
+    "EffortDate" timestamp,
+    "Survey type" text,
+    "Project/Objective" text,
+    "Region" text,
+    "Sub-area" text,
+    "Locality" text,
+    "Launch" text,
+    "Return" text,
+    "Launch Loc Code" text,
+    "Personnel" text,
+    "Start Time" time,
+    "End Time" time,
+    "Time Off Effort" time,
+    "Total Survey Effort" time,
+    "Start Dec Lat" double precision,
+    "Start Dec Long" double precision,
+    "End Dec Lat" double precision,
+    "End Dec Long" double precision,
+    "Permit" text,
+    "Distance" double precision,
+    "DIst Unit" text,
+    "CRCTrackFolder" text,
+    "SentToAnnualDB" boolean NOT NULL,
+    "AnnualDBID" integer,
+    "Imported20251214" boolean,
+    "ImportedDate" text,
+    "Survey Comments" text,
+    PRIMARY KEY ("EffortID")
+);
+
+DROP TABLE IF EXISTS raw."DailyEventT";
 CREATE TABLE raw."DailyEventT" (
     "DailyEventID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -131,7 +180,30 @@ CREATE TABLE raw."DailyEventT" (
     PRIMARY KEY ("DailyEventID")
 );
 
-DROP TABLE IF EXISTS raw."DataStatusT" CASCADE;
+DROP TABLE IF EXISTS raw."DatabaseFieldT";
+CREATE TABLE raw."DatabaseFieldT" (
+    "FieldID" integer NOT NULL,
+    "TableID" integer NOT NULL,
+    "ColumnOrder" integer NOT NULL,
+    "FieldName" text NOT NULL,
+    "DataType" text NOT NULL,
+    "AllowsNull" boolean NOT NULL,
+    "IsIdentity" boolean NOT NULL,
+    "IsComputed" boolean NOT NULL,
+    "Description" text,
+    PRIMARY KEY ("FieldID")
+);
+
+DROP TABLE IF EXISTS raw."DatabaseTableT";
+CREATE TABLE raw."DatabaseTableT" (
+    "TableID" integer NOT NULL,
+    "SchemaName" text NOT NULL,
+    "TableName" text NOT NULL,
+    "Description" text,
+    PRIMARY KEY ("TableID")
+);
+
+DROP TABLE IF EXISTS raw."DataStatusT";
 CREATE TABLE raw."DataStatusT" (
     "DataStatusID" integer NOT NULL,
     "Research Group" text,
@@ -141,14 +213,14 @@ CREATE TABLE raw."DataStatusT" (
     PRIMARY KEY ("DataStatusID")
 );
 
-DROP TABLE IF EXISTS raw."DataStatusTypeT" CASCADE;
+DROP TABLE IF EXISTS raw."DataStatusTypeT";
 CREATE TABLE raw."DataStatusTypeT" (
     "DataStatusTypeID" integer NOT NULL,
     "DataStatusType" text,
     PRIMARY KEY ("DataStatusTypeID")
 );
 
-DROP TABLE IF EXISTS raw."DroneDeploymentT" CASCADE;
+DROP TABLE IF EXISTS raw."DroneDeploymentT";
 CREATE TABLE raw."DroneDeploymentT" (
     "DroneEventID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -181,7 +253,7 @@ CREATE TABLE raw."DroneDeploymentT" (
     PRIMARY KEY ("DroneEventID")
 );
 
-DROP TABLE IF EXISTS raw."DroneTargetAnimalT" CASCADE;
+DROP TABLE IF EXISTS raw."DroneTargetAnimalT";
 CREATE TABLE raw."DroneTargetAnimalT" (
     "DroneTargetAnimalID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -202,7 +274,7 @@ CREATE TABLE raw."DroneTargetAnimalT" (
     PRIMARY KEY ("DroneTargetAnimalID")
 );
 
-DROP TABLE IF EXISTS raw."EffortCrewT" CASCADE;
+DROP TABLE IF EXISTS raw."EffortCrewT";
 CREATE TABLE raw."EffortCrewT" (
     "EffortCrewID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -211,7 +283,7 @@ CREATE TABLE raw."EffortCrewT" (
     PRIMARY KEY ("EffortCrewID")
 );
 
-DROP TABLE IF EXISTS raw."EffortProblemT" CASCADE;
+DROP TABLE IF EXISTS raw."EffortProblemT";
 CREATE TABLE raw."EffortProblemT" (
     "ProblemID" integer NOT NULL,
     "Research Group" text,
@@ -232,7 +304,7 @@ CREATE TABLE raw."EffortProblemT" (
     PRIMARY KEY ("ProblemID")
 );
 
-DROP TABLE IF EXISTS raw."EventCodeT" CASCADE;
+DROP TABLE IF EXISTS raw."EventCodeT";
 CREATE TABLE raw."EventCodeT" (
     "EventCodeID" integer NOT NULL,
     "EventCode" text,
@@ -241,7 +313,7 @@ CREATE TABLE raw."EventCodeT" (
     PRIMARY KEY ("EventCodeID")
 );
 
-DROP TABLE IF EXISTS raw."IdentificationT" CASCADE;
+DROP TABLE IF EXISTS raw."IdentificationT";
 CREATE TABLE raw."IdentificationT" (
     "IdentificationID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -264,6 +336,8 @@ CREATE TABLE raw."IdentificationT" (
     "ForeLeft" text,
     "ForeRight" text,
     "HW ID" text,
+    "TempID" text,
+    "MatchPQ?" text,
     "MatchNotes" text,
     "MeasureAngle" integer,
     "MeasureImage" text,
@@ -279,14 +353,18 @@ CREATE TABLE raw."IdentificationT" (
     "Tag Photo" text,
     "Tag Type" text,
     "TagType" text,
-    "TempID" text,
+    "Drone Image" text,
     "Comments" text,
     "SourceDB" text,
     "Species" text,
+    "SentToMatching" date,
+    "SentToMnID" date,
+    "Tag" boolean NOT NULL,
+    "Priority" boolean NOT NULL,
     PRIMARY KEY ("IdentificationID")
 );
 
-DROP TABLE IF EXISTS raw."IndividualT" CASCADE;
+DROP TABLE IF EXISTS raw."IndividualT";
 CREATE TABLE raw."IndividualT" (
     "IndividualID" integer NOT NULL,
     "Species" text,
@@ -294,7 +372,7 @@ CREATE TABLE raw."IndividualT" (
     PRIMARY KEY ("IndividualID")
 );
 
-DROP TABLE IF EXISTS raw."OtherSpeciesT" CASCADE;
+DROP TABLE IF EXISTS raw."OtherSpeciesT";
 CREATE TABLE raw."OtherSpeciesT" (
     "OtherSpeciesID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -310,7 +388,7 @@ CREATE TABLE raw."OtherSpeciesT" (
     PRIMARY KEY ("OtherSpeciesID")
 );
 
-DROP TABLE IF EXISTS raw."PermitTakeT" CASCADE;
+DROP TABLE IF EXISTS raw."PermitTakeT";
 CREATE TABLE raw."PermitTakeT" (
     "PermitTakeID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -330,7 +408,7 @@ CREATE TABLE raw."PermitTakeT" (
     PRIMARY KEY ("PermitTakeID")
 );
 
-DROP TABLE IF EXISTS raw."ResearchGroupT" CASCADE;
+DROP TABLE IF EXISTS raw."ResearchGroupT";
 CREATE TABLE raw."ResearchGroupT" (
     "ResearchGroupID" integer NOT NULL,
     "Code" text,
@@ -338,7 +416,7 @@ CREATE TABLE raw."ResearchGroupT" (
     PRIMARY KEY ("ResearchGroupID")
 );
 
-DROP TABLE IF EXISTS raw."SampleIdentificationT" CASCADE;
+DROP TABLE IF EXISTS raw."SampleIdentificationT";
 CREATE TABLE raw."SampleIdentificationT" (
     "SampleIdentificationID" integer NOT NULL,
     "SightingID" integer,
@@ -357,7 +435,7 @@ CREATE TABLE raw."SampleIdentificationT" (
     PRIMARY KEY ("SampleIdentificationID")
 );
 
-DROP TABLE IF EXISTS raw."SampleT" CASCADE;
+DROP TABLE IF EXISTS raw."SampleT";
 CREATE TABLE raw."SampleT" (
     "SampleID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -385,10 +463,12 @@ CREATE TABLE raw."SampleT" (
     "SampleEvent" text,
     "Comments" text,
     "SourceDB" text,
+    "Latitude" double precision,
+    "Longitude" double precision,
     PRIMARY KEY ("SampleID")
 );
 
-DROP TABLE IF EXISTS raw."ServerSystemT" CASCADE;
+DROP TABLE IF EXISTS raw."ServerSystemT";
 CREATE TABLE raw."ServerSystemT" (
     "SystemID" integer NOT NULL,
     "VersionNumber" double precision,
@@ -399,7 +479,7 @@ CREATE TABLE raw."ServerSystemT" (
     PRIMARY KEY ("SystemID")
 );
 
-DROP TABLE IF EXISTS raw."SightingEventT" CASCADE;
+DROP TABLE IF EXISTS raw."SightingEventT";
 CREATE TABLE raw."SightingEventT" (
     "SightingEventID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -407,6 +487,7 @@ CREATE TABLE raw."SightingEventT" (
     "Vessel" text,
     "Date" timestamp,
     "EventTime" time,
+    "EventDateTime" timestamp,
     "Sighting" text,
     "EventID" text,
     "Bearing" text,
@@ -420,10 +501,11 @@ CREATE TABLE raw."SightingEventT" (
     "SightEvent" text,
     "SightEventComments" text,
     "SourceDB" text,
+    "Time" time,
     PRIMARY KEY ("SightingEventID")
 );
 
-DROP TABLE IF EXISTS raw."SightingFollowT" CASCADE;
+DROP TABLE IF EXISTS raw."SightingFollowT";
 CREATE TABLE raw."SightingFollowT" (
     "SightingFollowID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -439,7 +521,7 @@ CREATE TABLE raw."SightingFollowT" (
     PRIMARY KEY ("SightingFollowID")
 );
 
-DROP TABLE IF EXISTS raw."SightingIdentificationT" CASCADE;
+DROP TABLE IF EXISTS raw."SightingIdentificationT";
 CREATE TABLE raw."SightingIdentificationT" (
     "SightingIdentificationID" integer NOT NULL,
     "IndividualID" integer,
@@ -455,7 +537,7 @@ CREATE TABLE raw."SightingIdentificationT" (
     PRIMARY KEY ("SightingIdentificationID")
 );
 
-DROP TABLE IF EXISTS raw."SightingT" CASCADE;
+DROP TABLE IF EXISTS raw."SightingT";
 CREATE TABLE raw."SightingT" (
     "SightingID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -537,14 +619,101 @@ CREATE TABLE raw."SightingT" (
     PRIMARY KEY ("SightingID")
 );
 
-DROP TABLE IF EXISTS raw."SourceT" CASCADE;
+DROP TABLE IF EXISTS raw."SightingT_IanDB_SnapShotT";
+CREATE TABLE raw."SightingT_IanDB_SnapShotT" (
+    "SightingID" integer NOT NULL,
+    "EffortID" integer,
+    "Research Group" text,
+    "ResearchGroupID" integer,
+    "SightingDate" timestamp,
+    "Vessel" text,
+    "Sighting" text,
+    "SpeciesID" integer,
+    "SpeciesCertaintyID" integer,
+    "SightingTypeID" integer,
+    "Start Time" time,
+    "Start Dec Lat" double precision,
+    "Start Dec Long" double precision,
+    "Depth" double precision,
+    "Temp" text,
+    "PreyType" text,
+    "End Time" time,
+    "End Dec Lat" double precision,
+    "End Dec Long" double precision,
+    "Position Type" text,
+    "Species" text,
+    "Est Size Best" integer,
+    "Est Size Min" integer,
+    "Est Size Max" integer,
+    "CloseApproachCount" integer,
+    "Num Calves" text,
+    "EstIDs" integer,
+    "NumIDs" integer,
+    "Group Type" text,
+    "GroupBehaviorID" integer,
+    "Group Beh" text,
+    "Other Beh 1" text,
+    "Other Beh 2" text,
+    "Other Beh 3" text,
+    "Scattering" text,
+    "Feed" text,
+    "Reaction" text,
+    "PhotosYN" boolean NOT NULL,
+    "PhotographerID" integer,
+    "ImageSeriesName" text,
+    "StartFrame" integer,
+    "EndFrame" integer,
+    "Comments" text,
+    "TotalSamples" integer,
+    "TotalTags" integer,
+    "Bearing" integer,
+    "Heading" integer,
+    "Angle" integer,
+    "Range" integer,
+    "RangeTypeID" integer,
+    "EyeHeight" integer,
+    "TargetLatitude" double precision,
+    "TargetLongitude" double precision,
+    "Photographer 1" text,
+    "RollFile Number 1" text,
+    "Frames 1" text,
+    "Photographer 2" text,
+    "RollFile Number 2" text,
+    "Frames 2" text,
+    "Photographer 3" text,
+    "RollFile Number 3" text,
+    "Frames 3" text,
+    "Start Lat" text,
+    "Start Long" text,
+    "End Lat" text,
+    "End Long" text,
+    "Sight Type" text,
+    PRIMARY KEY ("SightingID")
+);
+
+DROP TABLE IF EXISTS raw."SourceT";
 CREATE TABLE raw."SourceT" (
     "SourceID" integer NOT NULL,
     "Source" text,
     PRIMARY KEY ("SourceID")
 );
 
-DROP TABLE IF EXISTS raw."TagSummaryT" CASCADE;
+DROP TABLE IF EXISTS raw."SpeciesT";
+CREATE TABLE raw."SpeciesT" (
+    "SpeciesID" integer NOT NULL,
+    "CommonName" text,
+    "Abbreviation" text,
+    "Order" text,
+    "Genus" text,
+    "Species" text,
+    "Class" text,
+    "Type" text,
+    "SortOrder" integer,
+    "TypeSort" integer,
+    PRIMARY KEY ("SpeciesID")
+);
+
+DROP TABLE IF EXISTS raw."TagSummaryT";
 CREATE TABLE raw."TagSummaryT" (
     "TagSummaryID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -583,10 +752,14 @@ CREATE TABLE raw."TagSummaryT" (
     "TagComments" text,
     "SourceDB" text,
     "Playback" text,
+    "RecoverDate" timestamp,
+    "RecoverTime" timestamp,
+    "TagOffDate" timestamp,
+    "TagOffTime" timestamp,
     PRIMARY KEY ("TagSummaryID")
 );
 
-DROP TABLE IF EXISTS raw."TrackCompleteCodeT" CASCADE;
+DROP TABLE IF EXISTS raw."TrackCompleteCodeT";
 CREATE TABLE raw."TrackCompleteCodeT" (
     "TrackCompleteCodeID" integer NOT NULL,
     "TrackCompleteCode" text,
@@ -594,13 +767,13 @@ CREATE TABLE raw."TrackCompleteCodeT" (
     PRIMARY KEY ("TrackCompleteCodeID")
 );
 
-DROP TABLE IF EXISTS raw."TrackFileList" CASCADE;
+DROP TABLE IF EXISTS raw."TrackFileList";
 CREATE TABLE raw."TrackFileList" (
     "FileName" text NOT NULL,
     PRIMARY KEY ("FileName")
 );
 
-DROP TABLE IF EXISTS raw."TrackFolderT" CASCADE;
+DROP TABLE IF EXISTS raw."TrackFolderT";
 CREATE TABLE raw."TrackFolderT" (
     "TrackFolderID" integer NOT NULL,
     "TrackFolder" text,
@@ -608,7 +781,7 @@ CREATE TABLE raw."TrackFolderT" (
     PRIMARY KEY ("TrackFolderID")
 );
 
-DROP TABLE IF EXISTS raw."TrackingT" CASCADE;
+DROP TABLE IF EXISTS raw."TrackingT";
 CREATE TABLE raw."TrackingT" (
     "TrackingID" integer NOT NULL,
     "DailyEffortID" integer,
@@ -661,7 +834,7 @@ CREATE TABLE raw."TrackingT" (
     PRIMARY KEY ("TrackingID")
 );
 
-DROP TABLE IF EXISTS raw."TrackT" CASCADE;
+DROP TABLE IF EXISTS raw."TrackT";
 CREATE TABLE raw."TrackT" (
     "TrackID" integer NOT NULL,
     "UnifiedDB_DailyEffortID" integer,
@@ -686,7 +859,7 @@ CREATE TABLE raw."TrackT" (
     PRIMARY KEY ("TrackID")
 );
 
-DROP TABLE IF EXISTS raw."UserT" CASCADE;
+DROP TABLE IF EXISTS raw."UserT";
 CREATE TABLE raw."UserT" (
     "UserID" integer NOT NULL,
     "OrganizationID" integer,
@@ -698,7 +871,7 @@ CREATE TABLE raw."UserT" (
     PRIMARY KEY ("UserID")
 );
 
-DROP TABLE IF EXISTS raw."VesselT" CASCADE;
+DROP TABLE IF EXISTS raw."VesselT";
 CREATE TABLE raw."VesselT" (
     "VesselID" integer NOT NULL,
     "ResearchGroupID" integer,
@@ -719,6 +892,8 @@ $$;
 
 CREATE TRIGGER "AdditionalCameraT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
     ON raw."AdditionalCameraT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
+CREATE TRIGGER "AnnualDBT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
+    ON raw."AnnualDBT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
 CREATE TRIGGER "CollaboratorT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
     ON raw."CollaboratorT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
 CREATE TRIGGER "CRC_Vessels_ByYear_T_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
@@ -727,8 +902,14 @@ CREATE TRIGGER "DailyConditionT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRU
     ON raw."DailyConditionT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
 CREATE TRIGGER "DailyEffortT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
     ON raw."DailyEffortT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
+CREATE TRIGGER "DailyEffortT_IanDB_SnapshotT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
+    ON raw."DailyEffortT_IanDB_SnapshotT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
 CREATE TRIGGER "DailyEventT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
     ON raw."DailyEventT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
+CREATE TRIGGER "DatabaseFieldT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
+    ON raw."DatabaseFieldT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
+CREATE TRIGGER "DatabaseTableT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
+    ON raw."DatabaseTableT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
 CREATE TRIGGER "DataStatusT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
     ON raw."DataStatusT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
 CREATE TRIGGER "DataStatusTypeT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
@@ -767,8 +948,12 @@ CREATE TRIGGER "SightingIdentificationT_frozen" BEFORE INSERT OR UPDATE OR DELET
     ON raw."SightingIdentificationT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
 CREATE TRIGGER "SightingT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
     ON raw."SightingT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
+CREATE TRIGGER "SightingT_IanDB_SnapShotT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
+    ON raw."SightingT_IanDB_SnapShotT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
 CREATE TRIGGER "SourceT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
     ON raw."SourceT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
+CREATE TRIGGER "SpeciesT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
+    ON raw."SpeciesT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
 CREATE TRIGGER "TagSummaryT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE
     ON raw."TagSummaryT" FOR EACH STATEMENT EXECUTE FUNCTION raw.frozen();
 CREATE TRIGGER "TrackCompleteCodeT_frozen" BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE

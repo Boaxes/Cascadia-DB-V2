@@ -21,8 +21,8 @@
           {% for step in entry.steps %}
             <li class="chain-step chain-{{ step.source }}">
               <span class="chain-where">
-                {% if step.source == "original" %}Original database{% endif %}
-                {% if step.source == "rule" %}After cleaning{% endif %}
+                {% if step.source == "original" %}Original Database{% endif %}
+                {% if step.source == "rule" %}After Cleaning{% endif %}
                 {% if step.source == "edit" %}{{ step.actor }}{% endif %}
               </span>
               <span class="chain-value">
@@ -41,7 +41,7 @@
     {% for action in record_actions %}
       <div class="prov-entry">
         <div class="prov-head">
-          <span class="prov-field">{{ action.action }}</span>
+          <span class="prov-field">{{ action.action_label }}</span>
           <span>{{ action.actor }}</span>
           <span class="chain-when">{{ action.at|date:"j M Y" }}</span>
         </div>

@@ -3,17 +3,20 @@
   JavaScript it stays a plain multiple select, so the filter still works.
 
   Takes: name, label, items, selected, count ("sightings" or "efforts": which
-  number to show beside each vessel), grouped (species only).
+  number to show beside each vessel), grouped (species only), placeholder
+  (what an empty picker says, when that is not "All ..."), tip (a glossary
+  key).
 {% endcomment %}
+{% load survey_tags %}
 <div class="field">
-  <label for="{{ name }}">{{ label }}</label>
-  <select id="{{ name }}" name="{{ name }}" multiple size="6" data-tagpicker="All {{ label|lower }}{% if not grouped %}s{% endif %}">
+  <label for="{{ name }}">{{ label }}{% if tip %} {% tip tip %}{% endif %}</label>
+  <select id="{{ name }}" name="{{ name }}" multiple size="6" data-tagpicker="{% if placeholder %}{{ placeholder }}{% else %}All {{ label }}{% if not grouped %}s{% endif %}{% endif %}">
     {% if grouped %}
       {% regroup items by group as groups %}
       {% for g in groups %}
         <optgroup label="{{ g.list.0.group_label }}" data-colour="{% if colour_profile == "generic" %}{{ g.list.0.group_colour }}{% endif %}">
           {% for o in g.list %}
-            <option value="{{ o.id }}" data-count="{{ o.count }}" data-colour="{% if colour_profile == "generic" %}{{ o.colour }}{% else %}{{ o.cascadia_colour }}{% endif %}" {% if o.id|stringformat:"s" in selected %}selected{% endif %}>{{ o.label }}{% if not o.authoritative %} (name unconfirmed){% endif %}</option>
+            <option value="{{ o.id }}" data-count="{{ o.count }}" data-colour="{% if colour_profile == "generic" %}{{ o.colour }}{% else %}{{ o.cascadia_colour }}{% endif %}" {% if o.id|stringformat:"s" in selected %}selected{% endif %}>{{ o.label }}{% if not o.authoritative %} (Name Unconfirmed){% endif %}</option>
           {% endfor %}
         </optgroup>
       {% endfor %}

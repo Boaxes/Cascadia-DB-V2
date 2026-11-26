@@ -58,9 +58,12 @@
 
     function members(gi) { return opts.filter(function (o) { return o.dataset.g == gi; }); }
 
+    /* Told to the page as a change on the select, so other controls (the
+       All Research Groups box) can follow a pick. */
     function set(list_, on) {
       list_.forEach(function (o) { o.selected = on; });
       render();
+      select.dispatchEvent(new Event("change", { bubbles: true }));
     }
 
     function render() {
@@ -138,6 +141,8 @@
         if (first) set([opts[first.dataset.i]], !first.checked);
       }
     });
+    /* Redrawn on request after the page changes the select itself. */
+    select.addEventListener("tagpicker:refresh", render);
     document.addEventListener("mousedown", function (e) { if (!root.contains(e.target)) open(false); });
     document.addEventListener("focusin", function (e) { if (!root.contains(e.target)) open(false); });
 

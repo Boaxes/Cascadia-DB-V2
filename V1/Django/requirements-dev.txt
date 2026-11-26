@@ -1,5 +1,5 @@
-# Only in the local image (Dockerfile), never on the server: the tests rebuild
-# the database with dbt after writing through the website, to check a change
-# survives a rebuild. The same versions as ETL/requirements.txt.
-dbt-core>=1.12.5,<1.13
-dbt-postgres>=1.11,<1.12
+# Only in the local image (Dockerfile), never on the server.
+
+# Reads the GeoPackage the export writes, in the tests, to show that GDAL (and
+# so QGIS) can open it. The writer itself is the standard library's sqlite3.
+pyogrio>=0.9

@@ -1,25 +1,10 @@
-{{ config(materialized='updatable_view', meta={'check_option': true}) }}
-SELECT t."TrackID"          AS id,
-       t."TrackID"          AS legacy_track_id,
-       t."Research Group"   AS research_group,
-       t."EffortID"         AS daily_effort_id,
-       t.file_name          AS object_key,
-       t.track_status,
-       t.vessel_id,
-       (SELECT s."Source" FROM {{ ref('SourceT') }} s
-         WHERE s."SourceID" = t."SourceID")            AS track_source,
-       (SELECT c."TrackCompleteCode" FROM {{ ref('TrackCompleteCodeT') }} c
-         WHERE c."TrackCompleteCodeID" = t."TrackCompleteCodeID") AS track_complete_code,
-       t."SurveyDate"       AS survey_date,
-       COALESCE(t."Useable", true) AS useable,
-       t.geom,
-       t.point_count,
-       t."StartTime"        AS start_time_utc,
-       t."EndTime"          AS end_time_utc,
-       t.length_nm,
-       t."Comments"         AS comments
-FROM   {{ ref('TrackT') }} t
--- Tracks carry a research group on only some rows, and an unassociated file has
--- none at all, so filtering them out would hide exactly the ones the track tool
--- exists to resolve.
-WHERE  t."Research Group" IS NULL OR t."Research Group" = 'CRC'
+-- GPS tracks on the map and each effort's page. Every research group. The
+-- effort is the Foreign Key daily_effort_id, pointing at DailyEffortT.id.
+select "TrackID" as id, "TrackID" as legacy_track_id, "Research Group" as research_group, daily_effort_id,
+       file_name as object_key, track_status, vessel_id,
+       (select s."Source" from {{ ref('SourceT') }} s where s."SourceID" = t."SourceID") as track_source,
+       (select c."TrackCompleteCode" from {{ ref('TrackCompleteCodeT') }} c
+        where c."TrackCompleteCodeID" = t."TrackCompleteCodeID") as track_complete_code,
+       "SurveyDate" as survey_date, coalesce("Useable", true) as useable, geom, point_count,
+       "StartTime" as start_time_utc, "EndTime" as end_time_utc, length_nm, "Comments" as comments
+from {{ ref('TrackT') }} t
