@@ -32,4 +32,5 @@ Phase 1: Spec And Mockup. In progress, step 2 (asking), on branch `phase-1-spec`
 ## Waiting On Brandon
 
 - Commit the refreshed `V1/` on `phase-1-spec` (the gate stops the agent from doing it).
+- Update `docs/workflow/phase-5-build.md` so the build is one step (Q-059), if you want the doc to match.
 - Edit the V1 line in `CLAUDE.md` (Sources section): change `f4b2a36` to `3a637f1` and `2026-09-29` to `2026-11-21`.

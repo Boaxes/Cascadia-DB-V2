@@ -384,3 +384,8 @@ Asked: 2026-11-26
 Options: A On by default, as V1 (recommended), B Off by default
 Answer: A. The No-Track Path setting is on by default. Closes assumption A-11; the spec has no open assumptions.
 Affects: spec.md TRACK-08
+
+### Q-059: Phase 5 As One Step (Workflow)
+Asked: 2026-11-26 (raised by Brandon while reviewing the full plan)
+Answer: The Phase 5 build is one step, not one branch and pull request per feature as `phase-5-build.md` describes. Everything else in the five-phase plan stands. `phase-5-build.md` is Brandon-only, so he updates it; the agent follows this answer in the meantime.
+Affects: docs/workflow/phase-5-build.md (Brandon), Phase 5 working method
