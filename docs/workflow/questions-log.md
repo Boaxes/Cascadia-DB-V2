@@ -86,3 +86,30 @@ Asked: 2026-11-26
 Options: A localStorage (recommended), B Cookies
 Answer: B, cookies. Only the query text is saved, never results, so it fits within the cookie size limit.
 Affects: spec.md Analysis, mockups/export.html
+
+### Re-Check Against Current V1 (Phase 1)
+2026-11-26: `V1/` refreshed by Brandon to `3a637f1`. Every earlier decision was re-checked against current V1. Q-002, Q-003, Q-004, Q-006, Q-007, Q-010 and Q-012 stand. Q-001 and Q-005 were asked again as Q-013, because current V1 already has four roles. Q-011 is answered by current V1 (the Cascadia Admin home is now three link cards) and is folded into the inventory confirmation. The inventory was redone (Q-008, Q-009).
+
+### Q-013: Role Model Against Current V1 (Phase 1)
+Asked: 2026-11-26
+Options: A Five roles mapped onto V1 (recommended), B V1's four roles, fixed
+Answer: A. Viewer (read). Editor (also edit and delete efforts and sightings). Track Manager (Editor plus the Track File Manager). Audit Manager (Editor plus the Audit Log and Undo). Admin (everything plus users and roles). Track Manager and Audit Manager sit side by side, and one person can hold both. Access comes from roles only, with no per-user permission grants. Supersedes Q-001 and Q-005.
+Affects: spec.md Users and Permissions
+
+### Q-014: Who Can Export (Phase 1)
+Asked: 2026-11-26
+Options: A Every role (recommended), B Editor and up, C Data roles only
+Answer: A. Every role, Viewer included, can export and use the SQL page.
+Affects: spec.md Users and Permissions, Exports
+
+### Q-015: DB167 Write-Back (Phase 1)
+Asked: 2026-11-26
+Options: A Drop, keep entries ready (recommended), B Keep as in V1, C Drop entirely
+Answer: A. V2 has no DB167 state and no T-SQL migration script. Audit entries hold the table, key, old and new values so a later job can write back.
+Affects: spec.md Audit Log, Out Of Scope; Phase 2 audit design
+
+### Q-016: Other V1 Admin Tools (Phase 1)
+Asked: 2026-11-26
+Options (multi-select): Feedback to GitHub, Server page, Data Pipeline page, Read-only record admin
+Answer: Feedback to GitHub and Server page stay. Data Pipeline page and the Django Admin read-only record pages are dropped. Feedback pictures move behind the login (Q-002). Which role sees the Server page goes into the permission table, to be confirmed.
+Affects: spec.md Pages, v1-inventory.md rows 19, 26, 27, 28
