@@ -174,3 +174,27 @@ Asked: 2026-11-26
 Options: A 50 with picker (recommended), B 50, no picker, C 100 with picker
 Answer: B. Efforts and Sightings show 50 rows per page, with no page-size picker.
 Affects: spec.md Efforts and Sightings lists
+
+### Q-025: Track Display Settings (Phase 1)
+Asked: 2026-11-26
+Options (multi-select): Show points, Gaps as dashed lines, Timeline events, Direction arrows
+Answer: All four are user settings. In addition, gaps need stronger controls than one toggle: the user controls what counts as a gap and what a gap renders as. Settings are stored per user in a cookie. Gap details asked as Q-029 and Q-030.
+Affects: spec.md Track Display Settings, mockups/settings.html, every map mockup
+
+### Q-026: Track Colour (Phase 1)
+Asked: 2026-11-26
+Options: A One colour (recommended), B One or by vessel, C One, vessel, or time
+Answer: A. One track colour, set by the colour profile. A suspect track (implied speed over 40 kn) is always red and dashed.
+Affects: spec.md Track Display Settings
+
+### Q-027: Where Track Settings Live (Phase 1)
+Asked: 2026-11-26
+Options: A Cookie plus map toggles (recommended), B Cookie only, C User account in the database
+Answer: A. The Settings page saves defaults in a cookie. Each map's layer panel can flip a setting for that view only without changing the saved default.
+Affects: spec.md Track Display Settings, Map Behaviour
+
+### Q-028: Track Level Of Detail (Phase 1)
+Asked: 2026-11-26
+Options: A Simplified on Explore, full points on detail views from DuckLake (recommended), B As V1, C Full points everywhere
+Answer: B. Explore draws lines simplified to about 550 m, effort and sighting detail draw the stored line (about 11 m), and only the Track File Manager shows full points. Correction from Brandon: the website reads GPS points from PostGIS, which holds a copy; DuckLake is the source of truth (V2Spec). Option A wrongly had the site reading points from DuckLake. The storage design is Phase 2.
+Affects: spec.md Map Behaviour, Tracks; Phase 2 DuckLake and PostGIS design
