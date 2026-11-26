@@ -10,7 +10,7 @@ How to read the requirements: each has a stable ID that Phase 5 tests cite, and 
 
 ### Purpose
 
-Cascadia DB V2 is the internal website of Cascadia Research Collective. People use it to explore marine mammal survey records (efforts, sightings, GPS tracks, samples) and the photo-ID catalogs, to fix GPS track files, to review and undo changes, and to take data away for analysis. It is a partial rebuild of V1 to a new spec, with clean, simple code.
+Cascadia DB V2 builds **Unified DB**, the internal website of Cascadia Research Collective (Q-060). People use it to explore marine mammal survey records (efforts, sightings, GPS tracks, samples) and the photo-ID catalogs, to fix GPS track files, to review and undo changes, and to take data away for analysis. It is a partial rebuild of V1 to a new spec, with clean, simple code.
 
 ### Goals
 
@@ -63,7 +63,7 @@ Photo-ID catalog data cannot be edited by any role (Q-049).
 
 | ID | Requirement | Check |
 |---|---|---|
-| NAV-01 | Every signed-in page has a left sidebar with, in order: logo and site name; the Global Search box (SRCH); group **Survey** (Explore, Efforts, Sightings); group **Photo-ID** (Individuals); group **Data** (Export, SQL); group **Manage** (Track File Manager, Audit Log, Users, Server); and at the bottom Feedback, Settings, and the user's name with Sign Out. | The rendered sidebar for an Admin lists these links in this order. |
+| NAV-01 | Every signed-in page has a left sidebar with, in order: the logo and the site name "Unified DB" (Q-060); the Global Search box (SRCH); group **Survey** (Explore, Efforts, Sightings); group **Photo-ID** (Individuals); group **Data** (Export, SQL); group **Manage** (Track File Manager, Audit Log, Users, Server); and at the bottom Feedback, Settings, and the user's name with Sign Out. | The rendered sidebar for an Admin lists these links in this order. |
 | NAV-02 | A link shows only to roles that can open it (ROLE-06). The Manage group is hidden when it would be empty. | A Viewer's sidebar has no Manage group; a Track Manager's Manage group holds only Track File Manager. |
 | NAV-03 | The current page's link is marked active. | On `/sightings/`, the Sightings link has the active state. |
 | NAV-04 | The Export link shows how many queries are on the export stack, for example "Export (3)", when there are any. | After adding two queries, the link reads "Export (2)". |
@@ -103,7 +103,7 @@ Every page needs a login (Q-002), uses the sidebar (NAV-01) and follows the empt
 
 | ID | Requirement | Check |
 |---|---|---|
-| AUTH-01 | `/login/` shows Username and Password and has no sidebar. A wrong pair shows "That username and password do not match an account." | POST with a bad password returns the page with that message. |
+| AUTH-01 | `/login/` shows the logo, "Unified DB", Username and Password, and has no sidebar. A wrong pair shows "That username and password do not match an account." | POST with a bad password returns the page with that message. |
 | AUTH-02 | Every other URL redirects a signed-out visitor to `/login/?next=<url>` (Q-002). | GET `/efforts/` signed out redirects to login. |
 | AUTH-03 | Sign Out is a POST from the sidebar and returns to `/login/`. | GET `/logout/` does not sign out; POST does. |
 

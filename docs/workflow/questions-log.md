@@ -389,3 +389,14 @@ Affects: spec.md TRACK-08
 Asked: 2026-11-26 (raised by Brandon while reviewing the full plan)
 Answer: The Phase 5 build is one step, not one branch and pull request per feature as `phase-5-build.md` describes. Everything else in the five-phase plan stands. `phase-5-build.md` is Brandon-only, so he updates it; the agent follows this answer in the meantime.
 Affects: docs/workflow/phase-5-build.md (Brandon), Phase 5 working method
+
+### Q-060: Site Name (Phase 1)
+Asked: 2026-11-26, after the mockup review
+Options: Keep "Cascadia DB" (used in the mockups), or another name
+Answer: The site is named Unified DB. Brandon typed "Unified Db"; the agent writes "Unified DB" with DB in capitals, as in "Cascadia DB", and flagged it for him to correct if he wants "Db". Brandon also said the mockups look fine for now.
+Affects: spec.md NAV-01, AUTH-01, Purpose; every mockup (sidebar, page titles, Sign In)
+
+### Q-061: Reference Screenshots (Phase 1)
+Asked: 2026-11-26 (Brandon stopped the screenshot capture)
+Answer: Skip the reference screenshots in `docs/ui/` (Phase 1, step 5). The build will probably not match exactly what Brandon wants, and that is fine: the site is refined through his feedback after it is built, so some drift from the mockups is acceptable. The mockups in `mockups/` stay as the visual reference. `phase-1-spec-and-mockup.md` and `phase-5-build.md` still mention `docs/ui/`; they are Brandon-only, so he updates them if he wants the docs to match.
+Affects: Phase 1 exit checklist (screenshots), Phase 5 "match the approved screenshot" steps

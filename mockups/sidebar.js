@@ -19,7 +19,7 @@
     "</div>" : "";
   var html =
     '<aside class="sidebar" id="sidebar">' +
-    '<a class="brand" href="explore.html"><img src="cascadia-logo.png" alt=""><span>Cascadia DB</span></a>' +
+    '<a class="brand" href="explore.html"><img src="cascadia-logo.png" alt=""><span>Unified DB</span></a>' +
     '<div class="search"><svg class="icon"><use href="icons.svg#search"/></svg>' +
     '<input type="text" placeholder="Search IDs, Vessels, Places" value="' + (results ? "20417" : "") + '">' + results + "</div>" +
     '<nav class="nav-group"><h3>Survey</h3>' +
@@ -44,7 +44,7 @@
     '<button class="btn btn-sm btn-quiet" type="button">Sign Out</button></div>' +
     "</aside>";
   var top = '<div class="topbar"><button class="btn btn-sm" type="button" id="menu-button" aria-label="Menu">' +
-    '<svg class="icon"><use href="icons.svg#menu"/></svg></button><img src="cascadia-logo.png" alt=""><b>Cascadia DB</b></div>';
+    '<svg class="icon"><use href="icons.svg#menu"/></svg></button><img src="cascadia-logo.png" alt=""><b>Unified DB</b></div>';
   document.currentScript.insertAdjacentHTML("beforebegin", html);
   document.addEventListener("DOMContentLoaded", function () {
     var main = document.querySelector(".main");
