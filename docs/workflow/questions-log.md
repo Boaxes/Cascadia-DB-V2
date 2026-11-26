@@ -324,3 +324,27 @@ Asked: 2026-11-26
 Options: A Site layout (recommended), B Django Admin
 Answer: A. V1's Server content (event console with Advanced toggle, 24-hour CPU, memory and disk graph, facts, 5-second refresh) moves into the site's own layout under Manage.
 Affects: spec.md Server, mockups/server.html
+
+### Q-049: Editing Photo-ID Catalogs (Phase 1)
+Asked: 2026-11-26
+Options: A Both record kinds (recommended), B Individual only, C Catalog sightings only
+Answer: None of them. Photo-ID catalog data (MnID, Bm, ErId) cannot be edited on the site at all; it changes only through dbt transformations. This supersedes Q-035 and removes Edit and Delete from the Individual page header (Q-040). History on catalog records still shows pipeline changes, read only.
+Affects: spec.md Users and Permissions, Individual page; mockups/individual.html
+
+### Q-050: Empty And Error States (Phase 1)
+Asked: 2026-11-26
+Options: A This standard (recommended), B 403 without the role
+Answer: A. No rows: "No [Efforts] match these filters." with Reset Filters. Map data failure: notice "Could not load the map data." with Try Again. Not found: 404 "No [Effort] with ID [N]." with a link to the list. No permission: 403 "This page needs the [Track Manager] role." with a link home. Form error: each bad field outlined with its reason, nothing saved. Server error: 500 "Something went wrong. It has been logged.", recorded in the Server log.
+Affects: spec.md Cross-Cutting Behaviour, every page
+
+### Q-051: Feedback Areas (Phase 1)
+Asked: 2026-11-26
+Options: A V2 page areas (recommended), B No Area field
+Answer: A. Areas: Explore, Efforts, Sightings, Individuals, Export, SQL, Track File Manager, Audit Log, Settings, Sign In And Accounts, Other. The rest of the form stays as V1 (Title, Details, Type, up to 3 pictures, opens a GitHub issue).
+Affects: spec.md Feedback, mockups/feedback.html
+
+### Q-052: Extra Features (Phase 1)
+Asked: 2026-11-26
+Options (multi-select): Global ID Search, Individual Filter, Density Layer, Dark Mode
+Answer: Global ID Search, extended to "global search with fuzzy resolving", and the Individual Filter. Density Layer and Dark Mode are not in V2. The scope of fuzzy resolving is asked as Q-053.
+Affects: spec.md Search, Explore and Sightings filters
