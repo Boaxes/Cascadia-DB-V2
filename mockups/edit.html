@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edit Sighting 120417 | Cascadia DB</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="sightings">
+<div class="app">
+<script src="sidebar.js"></script>
+<div class="main">
+  <div class="page" style="max-width:900px">
+    <p class="small" style="margin-bottom:8px"><a href="sighting.html">Back to Sighting 120417</a></p>
+
+    <!-- Step 1: the form -->
+    <section id="step1">
+      <div class="page-head">
+        <div>
+          <h1>Edit Sighting 120417</h1>
+          <p class="muted">Change the values, then review them before saving.</p>
+        </div>
+      </div>
+      <div class="notice red">One value needs fixing before you can review the changes.</div>
+      <div class="card">
+        <div class="form-grid">
+          <label class="field"><span>Species</span><select><option>Humpback Whale</option><option>Killer Whale</option><option>Gray Whale</option></select></label>
+          <label class="field"><span>Sighting Number</span><input type="number" value="3"></label>
+          <label class="field"><span>Date</span><input type="date" value="2026-09-14"></label>
+          <label class="field"><span>Time</span><input type="time" value="09:41"></label>
+          <div class="field-error"><label class="field" style="margin-bottom:0"><span>Latitude</span><input type="text" value="48.6x"></label><p class="reason">Enter a number between -90 and 90, for example 48.571.</p></div>
+          <label class="field"><span>Longitude</span><input type="text" value="-123.1455"></label>
+          <label class="field"><span>End Latitude</span><input type="text" value="48.5788"></label>
+          <label class="field"><span>End Longitude</span><input type="text" value="-123.1391"></label>
+          <label class="field"><span>Position Type</span><select><option>Precise</option><option>Calculated</option><option>Estimated</option><option>General</option></select></label>
+          <label class="field"><span>Sighting Type</span><select><option>S</option><option>SBE</option><option>SE</option><option>UNK</option></select></label>
+          <label class="field"><span>Best Estimate</span><input type="number" value="3"></label>
+          <label class="field"><span>Smallest Estimate</span><input type="number" value="2"></label>
+          <label class="field"><span>Largest Estimate</span><input type="number" value="4"></label>
+          <label class="field"><span>Calves</span><input type="number" value="1"></label>
+          <label class="field"><span>Group Behaviour</span><input type="text" value="Travel"></label>
+          <label class="field"><span>Group Type</span><input type="text" value="Mother and Calf With Escort"></label>
+          <label class="field"><span>Depth (m)</span><input type="number" value="142"></label>
+        </div>
+        <label class="field"><span>Comments</span><textarea>Mother and calf with one escort, slow travel north.</textarea></label>
+        <div class="actions">
+          <a class="btn btn-primary" href="?step=2">Review Changes</a>
+          <a class="btn" href="sighting.html">Cancel</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 2: review -->
+    <section id="step2" hidden>
+      <div class="page-head">
+        <div>
+          <h1>Confirm These Changes</h1>
+          <p class="muted">Sighting 120417. Only the fields below will change.</p>
+        </div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Field</th><th>From</th><th>To</th></tr></thead>
+          <tbody>
+            <tr><td>Latitude</td><td>48.5710</td><td>48.5712</td></tr>
+            <tr><td>Best Estimate</td><td>3</td><td>4</td></tr>
+            <tr><td>Largest Estimate</td><td>4</td><td>5</td></tr>
+          </tbody>
+        </table>
+        <label class="field" style="margin-top:14px"><span>Why (Optional)</span><textarea placeholder="For example: corrected from the field notebook"></textarea></label>
+        <div class="actions">
+          <button class="btn btn-primary" type="button">Save These Changes</button>
+          <a class="btn" href="edit.html">Back To the Form</a>
+        </div>
+        <p class="small muted" style="margin:10px 0 0">The change is recorded in the Audit Log and can be undone from there.</p>
+      </div>
+    </section>
+  </div>
+</div>
+</div>
+<script>
+  // Mockup only: ?step=2 shows the review step.
+  if (new URLSearchParams(location.search).get("step") === "2") {
+    document.getElementById("step1").hidden = true;
+    document.getElementById("step2").hidden = false;
+  }
+</script>
+</body>
+</html>

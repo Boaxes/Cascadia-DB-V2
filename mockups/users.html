@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Users | Cascadia DB</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="users">
+<div class="app">
+<script src="sidebar.js"></script>
+<div class="main">
+  <div class="page">
+    <div class="page-head">
+      <div><h1>Users</h1><p class="muted">Django Admin, styled like the site. Access comes only from roles.</p></div>
+      <div class="actions"><button class="btn btn-primary" type="button">Add User</button></div>
+    </div>
+
+    <div class="card">
+      <div class="form-grid" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        <label class="field"><span>Search</span><input type="text" placeholder="Username, Name or Email"></label>
+        <label class="field"><span>Role</span><select><option>All Roles</option><option>Viewer</option><option>Editor</option><option>Track Manager</option><option>Audit Manager</option><option>Admin</option></select></label>
+        <label class="field"><span>Active</span><select><option>All</option><option>Yes</option><option>No</option></select></label>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="sorted"><a href="#">Username</a></th><th><a href="#">Name</a></th><th><a href="#">Email</a></th><th>Roles</th><th>Active</th><th><a href="#">Last Login</a></th></tr></thead>
+        <tbody>
+          <tr><td>alee</td><td>Avery Lee</td><td>alee@example.org</td><td><span class="pill">Viewer</span></td><td>Yes</td><td>2026-11-21 08:12</td></tr>
+          <tr><td>jpark</td><td>Jordan Park</td><td>jpark@example.org</td><td><span class="pill blue">Editor</span></td><td>Yes</td><td>2026-11-25 16:40</td></tr>
+          <tr><td>mellis</td><td>Morgan Ellis</td><td>mellis@example.org</td><td><span class="pill blue">Track Manager</span> <span class="pill blue">Audit Manager</span></td><td>Yes</td><td>2026-11-26 09:05</td></tr>
+          <tr><td>rchen</td><td>Riley Chen</td><td>rchen@example.org</td><td><span class="pill blue">Editor</span></td><td>Yes</td><td>2026-11-24 10:31</td></tr>
+          <tr><td>staylor</td><td>Sam Taylor</td><td>staylor@example.org</td><td><span class="pill green">Admin</span></td><td>Yes</td><td>2026-11-26 07:58</td></tr>
+          <tr><td>cnguyen</td><td>Casey Nguyen</td><td>cnguyen@example.org</td><td><span class="pill">Viewer</span></td><td>No</td><td>2025-03-02 13:17</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:14px;max-width:620px">
+      <h2>Change User</h2>
+      <div class="form-grid">
+        <label class="field"><span>Username</span><input type="text" value="mellis"></label>
+        <label class="field"><span>Email</span><input type="text" value="mellis@example.org"></label>
+        <label class="field"><span>First Name</span><input type="text" value="Morgan"></label>
+        <label class="field"><span>Last Name</span><input type="text" value="Ellis"></label>
+      </div>
+      <h3>Roles</h3>
+      <label class="check"><input type="checkbox"> Viewer</label>
+      <label class="check"><input type="checkbox"> Editor</label>
+      <label class="check"><input type="checkbox" checked> Track Manager</label>
+      <label class="check"><input type="checkbox" checked> Audit Manager</label>
+      <label class="check"><input type="checkbox"> Admin</label>
+      <h3 style="margin-top:10px">Status</h3>
+      <label class="check"><input type="checkbox" checked> Active</label>
+      <p style="margin-top:10px"><a href="#">Set Password</a></p>
+      <div class="actions"><button class="btn btn-primary" type="button">Save</button><button class="btn" type="button">Cancel</button></div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

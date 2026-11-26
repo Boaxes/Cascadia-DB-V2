@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explore | Cascadia DB</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="explore">
+<div class="app">
+<script src="sidebar.js"></script>
+<div class="main">
+  <div class="explore">
+    <div class="filters" data-for="explore"></div>
+    <script src="filters.js"></script>
+
+    <div class="map-wrap">
+      <img class="map" src="map-explore.svg" alt="Map of sightings and tracks">
+      <div class="layer-panel">
+        <h3 style="margin-top:0">Basemap</h3>
+        <label class="check"><input type="radio" name="base" checked> Satellite</label>
+        <label class="check"><input type="radio" name="base"> Map</label>
+        <label class="check"><input type="radio" name="base"> Ocean</label>
+        <label class="check"><input type="checkbox" checked> Place Names</label>
+        <h3>Layers</h3>
+        <label class="check"><input type="checkbox" checked> Tracks</label>
+        <label class="check"><input type="checkbox" checked> Sightings</label>
+        <label class="check"><input type="checkbox" checked> Group Into Clusters</label>
+        <details><summary class="small"><b>Tracks in This View</b></summary>
+        <label class="check"><input type="checkbox"> Show Points</label>
+        <label class="check"><input type="checkbox"> Show Timeline Events</label>
+        <label class="check"><input type="checkbox"> Show Direction Arrows</label>
+        <label class="check"><input type="checkbox" checked> Show Path When There Is No Track</label>
+        <label class="field" style="margin:4px 0 0"><span>Gap Style</span><select><option>Dashed Line</option><option>Faint Line</option><option>Nothing</option></select></label>
+        <p class="small muted" style="margin:6px 0 0">Changes here apply to this view only. Defaults are in <a href="settings.html">Settings</a>.</p></details>
+        <h3>Species</h3>
+        <div class="legend-row"><span class="dot" style="background:#1f77b4"></span>Humpback Whale</div>
+        <div class="legend-row"><span class="dot" style="background:#d62728"></span>Killer Whale</div>
+        <div class="legend-row"><span class="dot" style="background:#2ca02c"></span>Harbor Porpoise</div>
+        <div class="legend-row"><span class="dot" style="background:#ff7f0e"></span>Gray Whale</div>
+        <div class="legend-row"><span class="dot" style="background:#9467bd"></span>Dall's Porpoise</div>
+        <div class="legend-row"><span class="dot" style="background:#17becf"></span>Steller Sea Lion</div>
+        <div class="legend-row"><span class="dot" style="background:#8c564b"></span>Harbor Seal</div>
+      </div>
+      <div class="map-tools">
+        <button class="btn" type="button" title="Fullscreen" aria-label="Fullscreen"><svg class="icon"><use href="icons.svg#fullscreen"/></svg></button>
+        <button class="btn" type="button" title="Screenshot" aria-label="Screenshot"><svg class="icon"><use href="icons.svg#camera"/></svg></button>
+        <button class="btn" type="button" title="Draw an Area" aria-label="Draw an Area"><svg class="icon"><use href="icons.svg#draw"/></svg></button>
+      </div>
+      <div class="map-label">Map picture only. The real map is MapLibre with deck.gl layers.</div>
+    </div>
+
+    <aside class="results">
+      <div class="tabs"><button class="on" type="button">Sightings</button><button type="button">Efforts</button></div>
+      <p class="applied">Showing <b>CRC</b> sightings in <b>all years</b>.</p>
+      <p style="margin-bottom:4px"><b>4,812 sightings</b> across <b>1,906 efforts</b></p>
+      <p class="small muted">37 without a position are not on the map.</p>
+      <div class="actions" style="margin-bottom:8px">
+        <a class="btn btn-sm" href="sightings.html">Open As a List</a>
+        <button class="btn btn-sm" type="button">Add to Export</button>
+      </div>
+      <a class="result" href="sighting.html"><span class="dot" style="background:#1f77b4"></span>Humpback Whale, 3 animals<small>2026-09-14 &middot; Sighting 120417</small></a>
+      <a class="result" href="sighting.html"><span class="dot" style="background:#d62728"></span>Killer Whale, 7 animals<small>2026-09-14 &middot; Sighting 120416</small></a>
+      <a class="result" href="sighting.html"><span class="dot" style="background:#2ca02c"></span>Harbor Porpoise, 2 animals<small>2026-09-12 &middot; Sighting 120409</small></a>
+      <a class="result" href="sighting.html"><span class="dot" style="background:#1f77b4"></span>Humpback Whale, 1 animal<small>2026-09-12 &middot; Sighting 120408</small></a>
+      <a class="result" href="sighting.html"><span class="dot" style="background:#ff7f0e"></span>Gray Whale, 2 animals<small>2026-09-03 &middot; Sighting 120391</small></a>
+      <a class="result" href="sighting.html"><span class="dot" style="background:#9467bd"></span>Dall's Porpoise, 12 animals<small>2026-08-29 &middot; Sighting 120377</small></a>
+      <a class="result" href="sighting.html"><span class="dot" style="background:#17becf"></span>Steller Sea Lion, 30 animals<small>2026-08-29 &middot; Sighting 120376</small></a>
+      <a class="result" href="sighting.html"><span class="dot" style="background:#1f77b4"></span>Humpback Whale, 2 animals<small>2026-08-21 &middot; Sighting 120360</small></a>
+      <p class="small muted" style="margin-top:10px">Showing the first 300 of 4,812. Narrow the filters, or open the full list.</p>
+    </aside>
+  </div>
+</div>
+</div>
+</body>
+</html>

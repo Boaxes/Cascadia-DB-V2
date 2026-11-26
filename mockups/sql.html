@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL | Cascadia DB</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="sql">
+<div class="app">
+<script src="sidebar.js"></script>
+<div class="main">
+  <div class="page">
+    <div class="page-head">
+      <div><h1>SQL</h1><p class="muted">Read-only SQL over the gold tables. Queries run in this browser with DuckDB.</p></div>
+    </div>
+
+    <div class="sql">
+      <aside>
+        <section class="card tree">
+          <h2>Tables</h2>
+          <details open><summary>sightings</summary><ul>
+            <li>sighting_id INTEGER</li><li>effort_id INTEGER</li><li>sighting_date DATE</li><li>sighting_time TIME</li>
+            <li>species_code VARCHAR</li><li>group_size_best INTEGER</li><li>latitude DOUBLE</li><li>longitude DOUBLE</li>
+          </ul></details>
+          <details><summary>efforts</summary><ul>
+            <li>effort_id INTEGER</li><li>effort_date DATE</li><li>vessel_id INTEGER</li><li>locality VARCHAR</li><li>distance_nm DOUBLE</li>
+          </ul></details>
+          <details><summary>tracks</summary><ul><li>track_id INTEGER</li><li>effort_id INTEGER</li><li>point_count INTEGER</li><li>length_nm DOUBLE</li></ul></details>
+          <details><summary>gps_points</summary><ul><li>track_id INTEGER</li><li>recorded_at TIMESTAMP</li><li>latitude DOUBLE</li><li>longitude DOUBLE</li></ul></details>
+          <details><summary>samples</summary><ul><li>sample_id INTEGER</li><li>sighting_id INTEGER</li><li>sample_type VARCHAR</li></ul></details>
+          <details><summary>individuals</summary><ul><li>individual_id VARCHAR</li><li>catalog VARCHAR</li><li>species_code VARCHAR</li><li>sex VARCHAR</li></ul></details>
+          <details><summary>catalog_sightings</summary><ul><li>individual_id VARCHAR</li><li>seen_date DATE</li><li>region VARCHAR</li><li>sharing_status VARCHAR</li></ul></details>
+          <details><summary>species</summary><ul><li>species_code VARCHAR</li><li>common_name VARCHAR</li><li>scientific_name VARCHAR</li></ul></details>
+          <details><summary>vessels</summary><ul><li>vessel_id INTEGER</li><li>vessel_name VARCHAR</li></ul></details>
+        </section>
+
+        <section class="card">
+          <h2>Saved Queries</h2>
+          <div class="table-wrap">
+            <table>
+              <tbody>
+                <tr><td>Humpbacks By Month</td><td class="num"><button class="btn btn-sm" type="button">Open</button> <button class="btn btn-sm" type="button">Delete</button></td></tr>
+                <tr><td>Long Efforts 2024</td><td class="num"><button class="btn btn-sm" type="button">Open</button> <button class="btn btn-sm" type="button">Delete</button></td></tr>
+                <tr><td>Samples Without Sex</td><td class="num"><button class="btn btn-sm" type="button">Open</button> <button class="btn btn-sm" type="button">Delete</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small muted" style="margin:8px 0 0">Saved in this browser only, up to 20 queries.</p>
+        </section>
+      </aside>
+
+      <div>
+        <section class="card">
+          <textarea class="editor" spellcheck="false">select month(s.sighting_date) as month,
+       count(*) as sightings,
+       sum(s.group_size_best) as animals
+from sightings s
+join species sp using (species_code)
+where sp.common_name = 'Humpback Whale'
+  and year(s.sighting_date) = 2024
+group by 1
+order by 1;</textarea>
+          <div class="actions" style="margin-top:10px;align-items:flex-end">
+            <button class="btn btn-primary" type="button">Run</button>
+            <label class="field" style="margin:0;flex:1;max-width:260px"><span>Query Name</span><input type="text" value="Humpbacks By Month"></label>
+            <button class="btn" type="button">Save Query</button>
+            <button class="btn" type="button">Send to Export</button>
+          </div>
+        </section>
+
+        <section class="card" id="results">
+          <div class="card-head"><h2>Results</h2><span class="muted small">Showing the first 1,000 of 12 rows</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th class="num">Month</th><th class="num">Sightings</th><th class="num">Animals</th></tr></thead>
+              <tbody>
+                <tr><td class="num">4</td><td class="num">6</td><td class="num">9</td></tr>
+                <tr><td class="num">5</td><td class="num">18</td><td class="num">31</td></tr>
+                <tr><td class="num">6</td><td class="num">47</td><td class="num">88</td></tr>
+                <tr><td class="num">7</td><td class="num">96</td><td class="num">171</td></tr>
+                <tr><td class="num">8</td><td class="num">131</td><td class="num">240</td></tr>
+                <tr><td class="num">9</td><td class="num">104</td><td class="num">186</td></tr>
+                <tr><td class="num">10</td><td class="num">52</td><td class="num">79</td></tr>
+                <tr><td class="num">11</td><td class="num">14</td><td class="num">20</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+  // Mockup only: ?error=1 shows how a DuckDB error appears under the editor (SQL-06).
+  if (new URLSearchParams(location.search).has("error")) {
+    document.getElementById("results").innerHTML =
+      '<div class="notice red mono">Binder Error: Referenced column "group_size" not found in FROM clause!<br>' +
+      'Candidate bindings: "s.group_size_best", "s.group_size_min"</div>';
+  }
+</script>
+</body>
+</html>

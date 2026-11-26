@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" preserveAspectRatio="xMidYMid slice">
+  <!-- Static picture standing in for an Individual's map: every position seen, from Mexico to British Columbia. Invented data. -->
+  <rect width="900" height="500" fill="#0f3040"/>
+  <path d="M560 0 L900 0 L900 500 L760 500 L740 470 L720 430 L700 400 L690 360 L660 320 L640 280 L620 240 L610 200 L600 160 L590 120 L575 80 L565 40 Z" fill="#2c3a2a"/>
+  <path d="M520 20 L560 40 L555 70 L520 60 Z" fill="#33432f"/>
+  <g font-family="system-ui, sans-serif" font-size="13" fill="#e9eef0" opacity=".85">
+    <text x="610" y="60">British Columbia</text><text x="640" y="150">Washington and Oregon</text><text x="700" y="300">California</text><text x="760" y="440">Mexico</text>
+  </g>
+  <g stroke="#fff" stroke-width="1.2" fill="#1f77b4">
+    <circle cx="545" cy="48" r="6"/><circle cx="552" cy="62" r="5"/><circle cx="580" cy="110" r="6"/><circle cx="588" cy="150" r="5"/>
+    <circle cx="610" cy="245" r="6"/><circle cx="640" cy="300" r="6"/><circle cx="655" cy="315" r="5"/><circle cx="690" cy="395" r="6"/>
+    <circle cx="715" cy="440" r="6"/><circle cx="725" cy="455" r="5"/><circle cx="560" cy="78" r="5"/>
+  </g>
+</svg>

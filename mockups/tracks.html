@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Track File Manager | Cascadia DB</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="tracks">
+<div class="app">
+<script src="sidebar.js"></script>
+<div class="main">
+  <div class="tfm">
+
+    <section>
+      <div class="pane-head">
+        <div class="tabs" style="margin-bottom:8px"><button class="on" type="button">Track Files</button><button type="button">From Positions</button></div>
+        <div class="actions" style="margin-bottom:8px">
+          <button class="btn btn-sm" type="button">Import</button>
+          <button class="btn btn-sm" type="button">Change Track File</button>
+        </div>
+        <label class="field" style="margin-bottom:6px"><span>File Name</span><input type="text" placeholder="Search File Names"></label>
+        <div class="form-grid">
+          <label class="field" style="margin-bottom:6px"><span>Status</span><select><option>All</option><option>Matched</option><option>Not Matched</option><option>Blank</option><option>Deleted</option></select></label>
+          <label class="field" style="margin-bottom:6px"><span>Vessel</span><select><option>All Vessels</option><option>Kestrel</option><option>Tern</option><option>Salish Wren</option></select></label>
+          <label class="field" style="margin-bottom:6px"><span>Year</span><select><option>All Years</option><option>2026</option><option>2025</option><option>2024</option></select></label>
+          <label class="field" style="margin-bottom:6px"><span>Track Health</span><select><option>Any</option><option>Good</option><option>Unlikely Speed</option><option>Misordered Time</option></select></label>
+        </div>
+      </div>
+      <a class="file-row on" href="#">20240509-KES-tbltGPS.csv <span class="pill green">Matched</span><small>Effort 20417 &middot; 2,041 points</small></a>
+      <a class="file-row" href="#">20240508-KES-tbltGPS.csv <span class="pill green">Matched</span><small>Effort 20409 &middot; 1,876 points</small></a>
+      <a class="file-row" href="#">20240507-TRN_GPX-pc.csv <span class="pill amber">Not Matched</span><small>No effort &middot; 3,112 points</small></a>
+      <a class="file-row" href="#">20240502-SWR-etrex.csv <span class="pill green">Matched</span> <span class="pill red">Unlikely Speed</span><small>Effort 20388 &middot; 2,507 points</small></a>
+      <a class="file-row" href="#">20240430-TRN-tbltGPS.csv <span class="pill">Blank</span><small>Effort 20376 &middot; 0 points</small></a>
+      <a class="file-row" href="#">20240426-KES_GPX-pc.csv <span class="pill green">Matched</span><small>Effort 20361 &middot; 1,422 points</small></a>
+      <a class="file-row" href="#">20240419-SWR-tbltGPS.csv <span class="pill red">Deleted</span><small>Was effort 20344 &middot; 988 points</small></a>
+      <a class="file-row" href="#">20240418-KES-tbltGPS.csv <span class="pill green">Matched</span><small>Effort 20339 &middot; 2,230 points</small></a>
+    </section>
+
+    <section>
+      <div class="pane-head">
+        <div class="tabs" style="margin-bottom:8px">
+          <button class="on" type="button">20240509-KES-tbltGPS.csv</button>
+          <button type="button">20240507-TRN_GPX-pc.csv</button>
+        </div>
+        <div class="actions">
+          <button class="btn btn-sm" type="button" disabled>Restore</button>
+          <button class="btn btn-sm" type="button">Fill From File</button>
+          <button class="btn btn-sm" type="button">Delete</button>
+          <button class="btn btn-sm" type="button">Revert</button>
+          <button class="btn btn-sm btn-primary" type="button">Save</button>
+          <button class="btn btn-sm" type="button">Save As Track File</button>
+        </div>
+      </div>
+      <div class="notice amber" style="margin:10px 12px 0">Line 9: the latitude is not a number. Nothing is saved until every line is valid.</div>
+      <pre class="code"><div><span>1</span><span>datetime_utc,latitude,longitude</span></div><div><span>2</span><span>2024-05-09 15:02:11,48.54210,-123.17730</span></div><div><span>3</span><span>2024-05-09 15:02:41,48.54302,-123.17881</span></div><div><span>4</span><span>2024-05-09 15:03:11,48.54397,-123.18044</span></div><div class="sel"><span>5</span><span>2024-05-09 15:03:41,48.54481,-123.18219</span></div><div class="sel"><span>6</span><span>2024-05-09 15:04:11,48.54570,-123.18390</span></div><div class="sel"><span>7</span><span>2024-05-09 15:04:41,48.54655,-123.18566</span></div><div><span>8</span><span>2024-05-09 15:05:11,48.54744,-123.18731</span></div><div class="bad"><span>9</span><span>2024-05-09 15:05:41,48.5x831,-123.18902</span></div><div><span>10</span><span>2024-05-09 15:06:11,48.54920,-123.19077</span></div><div><span>11</span><span>2024-05-09 15:06:41,48.55008,-123.19250</span></div><div><span>12</span><span>2024-05-09 15:07:11,48.55091,-123.19428</span></div><div><span>13</span><span>2024-05-09 15:41:50,48.57402,-123.24117</span></div><div><span>14</span><span>2024-05-09 15:42:20,48.57488,-123.24290</span></div><div><span>15</span><span>2024-05-09 15:42:50,48.57571,-123.24466</span></div><div><span>16</span><span>2024-05-09 15:43:20,48.57660,-123.24639</span></div></pre>
+    </section>
+
+    <section>
+      <div class="map-wrap" style="height:330px;flex:none">
+        <img class="map" src="map-track.svg" alt="Map of the open track file">
+        <div class="layer-panel" style="width:200px">
+          <h3 style="margin-top:0">Tracks in This View</h3>
+          <label class="check"><input type="checkbox" checked> Show Points</label>
+          <label class="check"><input type="checkbox" checked> Show Timeline Events</label>
+          <label class="check"><input type="checkbox" checked> Show Direction Arrows</label>
+          <label class="field" style="margin:4px 0 0"><span>Gap Style</span><select><option>Dashed Line</option><option>Faint Line</option><option>Nothing</option></select></label>
+        </div>
+        <div class="map-label">Full points. Map picture only.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border)">
+        <button class="btn btn-sm" type="button">Play</button>
+        <input type="range" min="0" max="100" value="35" style="flex:1" aria-label="Playback Position">
+        <span class="small muted">15:41 UTC</span>
+      </div>
+      <div style="padding:12px">
+        <div class="card">
+          <h2>Track Health</h2>
+          <p><span class="pill green">Good</span></p>
+          <dl class="pairs">
+            <div><dt>Points</dt><dd>2,041</dd></div>
+            <div><dt>Time Span</dt><dd>15:02–22:48 UTC</dd></div>
+            <div><dt>Duration</dt><dd>7 h 46 min</dd></div>
+            <div><dt>Distance</dt><dd>48.2 nm</dd></div>
+            <div><dt>Average Speed</dt><dd>6.2 kn</dd></div>
+            <div><dt>Top Speed</dt><dd>17.9 kn</dd></div>
+            <div><dt>Gaps Over 30 Min</dt><dd>1</dd></div>
+            <div><dt>Repeated Rows</dt><dd>0</dd></div>
+          </dl>
+        </div>
+        <div class="card">
+          <h2>Matched Effort</h2>
+          <dl class="pairs">
+            <div><dt>Effort</dt><dd><a href="effort.html">20417</a></dd></div>
+            <div><dt>Date</dt><dd>2024-05-09</dd></div>
+            <div><dt>Vessel</dt><dd>Kestrel</dd></div>
+            <div><dt>Locality</dt><dd>Haro Strait</dd></div>
+          </dl>
+          <div class="actions" style="margin-top:10px"><button class="btn btn-sm" type="button">Unmatch</button></div>
+        </div>
+        <div class="card">
+          <h2>History</h2>
+          <table>
+            <thead><tr><th>When</th><th>Who</th><th>Change</th><th></th></tr></thead>
+            <tbody>
+              <tr><td>2026-10-02 09:14</td><td>Riley Chen</td><td>Edited File</td><td><button class="btn btn-sm" type="button">Load Version</button></td></tr>
+              <tr><td>2026-06-18 14:40</td><td>Morgan Ellis</td><td>Linked to Effort</td><td></td></tr>
+              <tr><td>2026-06-18 14:39</td><td>Morgan Ellis</td><td>Imported</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</div>
+</body>
+</html>

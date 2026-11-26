@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feedback | Cascadia DB</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="feedback">
+<div class="app">
+<script src="sidebar.js"></script>
+<div class="main">
+  <div class="page" style="max-width:720px">
+    <div class="page-head">
+      <div><h1>Feedback</h1><p class="muted">Sends a GitHub issue to the developers, with any pictures attached.</p></div>
+    </div>
+
+    <div class="notice green" id="sent" hidden>Feedback sent. It is issue number 214.</div>
+    <div class="notice" id="off" hidden>Feedback is not set up yet.</div>
+
+    <form class="card" id="form">
+      <label class="field"><span>Title</span><input type="text" maxlength="200" placeholder="A short summary"></label>
+      <label class="field"><span>Details</span><textarea placeholder="What happened, and what you expected"></textarea></label>
+      <div class="form-grid">
+        <label class="field"><span>Type</span><select><option>Bug</option><option>Enhancement</option><option>Data Problem</option><option>Question</option></select></label>
+        <label class="field"><span>Area</span><select>
+          <option>Explore</option><option>Efforts</option><option>Sightings</option><option>Individuals</option><option>Export</option><option>SQL</option>
+          <option>Track File Manager</option><option>Audit Log</option><option>Settings</option><option>Sign In and Accounts</option><option>Other</option>
+        </select></label>
+      </div>
+      <label class="field"><span>Pictures</span><input type="file" multiple accept="image/png,image/jpeg,image/gif,image/webp"></label>
+      <p class="small muted">Up to 3 pictures: PNG, JPEG, GIF or WebP, 5 MB each.</p>
+      <div class="actions"><button class="btn btn-primary" type="button">Send Feedback</button></div>
+    </form>
+  </div>
+</div>
+</div>
+<script>
+  // Mockup only: ?sent=1 shows the success message, ?off=1 the not-set-up state.
+  var q = new URLSearchParams(location.search);
+  if (q.has("sent")) document.getElementById("sent").hidden = false;
+  if (q.has("off")) { document.getElementById("off").hidden = false; document.getElementById("form").hidden = true; }
+</script>
+</body>
+</html>

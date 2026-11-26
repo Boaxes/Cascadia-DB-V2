@@ -6,7 +6,7 @@ Sources: [V2Spec.MD](../../V2Spec.MD), [v1-inventory.md](v1-inventory.md) (V1 at
 
 How to read the requirements: each has a stable ID that Phase 5 tests cite, and a **Check** column that says what a test asserts. "V1" means the behaviour of V1 at `3a637f1`, described in the inventory.
 
-## 1. Purpose, Goals And Non-Goals
+## 1. Purpose, Goals and Non-Goals
 
 ### Purpose
 
@@ -31,7 +31,7 @@ Cascadia DB V2 is the internal website of Cascadia Research Collective. People u
 - No dbt models in this rebuild; the design leaves room for them (V2Spec).
 - See section 6 for the full list.
 
-## 2. Users And Permissions
+## 2. Users and Permissions
 
 Access comes only from roles. A role is a Django Group. One person may hold several roles; their access is the union. There are no one-off permission grants per user (Q-013).
 
@@ -99,7 +99,7 @@ Each Django app owns its URLs in its own `urls.py`, included from the project `u
 
 Every page needs a login (Q-002), uses the sidebar (NAV-01) and follows the empty and error states in ERR.
 
-### 4.1 Sign In And Sign Out
+### 4.1 Sign In and Sign Out
 
 | ID | Requirement | Check |
 |---|---|---|
@@ -117,8 +117,8 @@ Purpose: see survey sightings and tracks on a map and narrow them with filters. 
 | EXPL-02 | The map shows every matching sighting with a position as a dot in its species colour, sized `min(3 + sqrt(group size) * 1.2, 12)` px, or 3 px when size is unknown, plus the matching efforts' tracks through the track component (TRACK). | With a filter matching 3 positioned sightings, the map source holds 3 points. |
 | EXPL-03 | The map legend has toggles for Tracks, Sightings and Group Into Clusters, and a species legend: one row per animal group (Generic profile) or the 9 species most seen in the current results (Cascadia profile). Turning Tracks off hides gap joins too. | Unticking Tracks leaves no track or gap layer drawn. |
 | EXPL-04 | Map tools: Fullscreen, Screenshot (a PNG with a caption of counts and applied filters), the Clustering toggle, and drawing an area (polygon or rectangle) for the area filter. There is no Measure tool (Q-031). | Each control is present; there is no measure control. |
-| EXPL-05 | A sighting popup shows species, year, "About N animals" and Open Sighting. A track popup shows Effort Date, Vessel, Research Group, File, Points, Length, a Suspect pill when suspect, Open Effort, and Open In Track File Manager for Track Manager and Admin. | Popup content matches a known record. |
-| EXPL-06 | The results panel has tabs Sightings (the default) and Efforts. It shows "N sightings across M efforts", "N without a position are not on the map" when any exist, the first 300 rows of the open tab, "Showing the first 300 of N" beyond that, Open As A List (same filters) and Add To Export (Q-037). | With 301 matches, 300 rows and the note show. |
+| EXPL-05 | A sighting popup shows species, year, "About N animals" and Open Sighting. A track popup shows Effort Date, Vessel, Research Group, File, Points, Length, a Suspect pill when suspect, Open Effort, and Open in Track File Manager for Track Manager and Admin. | Popup content matches a known record. |
+| EXPL-06 | The results panel has tabs Sightings (the default) and Efforts. It shows "N sightings across M efforts", "N without a position are not on the map" when any exist, the first 300 rows of the open tab, "Showing the first 300 of N" beyond that, Open As a List (same filters) and Add to Export (Q-037). | With 301 matches, 300 rows and the note show. |
 | EXPL-07 | The applied filters are written out above the results, for example "Showing CRC sightings of Humpback Whale in 2024". V1 computed this but never showed it. | The sentence names each applied filter. |
 | EXPL-08 | Clicking a result row or a popup link opens the record in the modal (MODAL). | The click opens the modal and pushes the record URL. |
 | EXPL-09 | The map view, basemap, overlay, layer toggles and open filter sections are kept in the URL, so a link reopens the same view. | Reloading the URL restores the view. |
@@ -131,20 +131,20 @@ Purpose: see survey sightings and tracks on a map and narrow them with filters. 
 | EFF-02 | Every column sorts. Clicking the sorted column again reverses it, and sorting returns to page 1. The default is newest date first. Vessel sorts by name (Q-038). | `?sort=vessel` orders by vessel name. |
 | EFF-03 | 50 rows per page with no page-size picker. Pagination shows first, previous, next, last, nearby page numbers and "A–B of N" (Q-024). | 120 matches give 3 pages. |
 | EFF-04 | The filter panel (FILT), without the filters that apply only to sightings. | There is no Species filter on this page. |
-| EFF-05 | Clicking a row opens the effort in the modal. Add To Export adds the current filters to the export stack. | The stack count goes up by one. |
+| EFF-05 | Clicking a row opens the effort in the modal. Add to Export adds the current filters to the export stack. | The stack count goes up by one. |
 
 ### 4.4 Effort Detail (`/efforts/<id>/`)
 
 | ID | Requirement | Check |
 |---|---|---|
-| EDET-01 | Header "Effort N" with record tools: Add To Export, Edit and Delete (Editor and above), History. | A Viewer sees Add To Export and History only. |
+| EDET-01 | Header "Effort N" with record tools: Add to Export, Edit and Delete (Editor and above), History. | A Viewer sees Add to Export and History only. |
 | EDET-02 | Summary: Date, Time, Vessel, Locality, Region, Sub-Area, Survey Type, Time Searching, Sightings, and Comments when present. Sub-Area appears once on the page (V1 showed it twice). | Sub-Area appears exactly once. |
 | EDET-03 | GPS Data: Start and End positions, each with its source (for example "Log Entry (Begin)", "GPS Track (Start)", "Earliest Position (Not Departure)"), and the track file's status. | The source label matches the stored source. |
 | EDET-04 | Map: the effort's one GPS track through the track component at the stored resolution, about 11 m (Q-008, Q-028), with green start and red end markers and the effort's sightings. A suspect track is drawn red and dashed, left out of the map framing, and a notice explains it. | A suspect track shows the notice. |
 | EDET-05 | With no track file and the No-Track Path setting on (TRACK-08), a dashed line joins the effort's recorded timeline positions in time order, with a popup saying it is not a GPS track (Q-057). | With the setting on, an effort with no track shows the joined line; with it off, none. |
 | EDET-06 | Sightings card: one row per species, "N sightings, M animals", or "No sightings were recorded on this effort." | The empty text shows for an effort with no sightings. |
 | EDET-07 | Extra Info (collapsed): Crew, Objective, Launch, Return, Off Effort, Research Group, and the distance check (recorded nm, GPS track length, difference and percent, with notes for a suspect or untimed track). | |
-| EDET-08 | Track card: File, Status, Source, Points, Length (nm), and a Suspect pill. Track Manager and Admin also get Open In Track File Manager, Change Track File and Delete. With no track they get Add Track File, Create Track From Positions (when at least 2 positioned timeline rows exist) and Choose Existing File. | A Viewer sees no track buttons. |
+| EDET-08 | Track card: File, Status, Source, Points, Length (nm), and a Suspect pill. Track Manager and Admin also get Open in Track File Manager, Change Track File and Delete. With no track they get Add Track File, Create Track From Positions (when at least 2 positioned timeline rows exist) and Choose Existing File. | A Viewer sees no track buttons. |
 | EDET-09 | Timeline (collapsed): Time, Kind (Weather Reading, Log Entry, Sighting), Detail, Position. Sighting rows open the sighting. Empty: "Nothing was recorded during this effort." | |
 
 ### 4.5 Sightings List (`/sightings/`)
@@ -154,7 +154,7 @@ Purpose: see survey sightings and tracks on a map and narrow them with filters. 
 | SIGHT-01 | Columns: Date, Time, Sighting, Species, Group Size, Min–Max, Vessel, Position, Effort (Q-038). Species may carry the pills Two Species, Uncertain and Name Unconfirmed; Min–Max may carry Disagrees. | The header row matches. |
 | SIGHT-02 | Sorting and paging as EFF-02 and EFF-03. | |
 | SIGHT-03 | The full filter panel (FILT), including Individual (Q-052). | Filtering by a whale ID returns only sightings where it was identified. |
-| SIGHT-04 | Rows open the modal. Add To Export adds the current filters. | |
+| SIGHT-04 | Rows open the modal. Add to Export adds the current filters. | |
 
 ### 4.6 Sighting Detail (`/sightings/<id>/`)
 
@@ -164,17 +164,17 @@ Purpose: see survey sightings and tracks on a map and narrow them with filters. 
 | SDET-02 | Summary: Species (scientific and common name, with pills), Date, Time, Vessel, Group Size, Comments. GPS Data: position with position type, and end position. | |
 | SDET-03 | Map: the sighting and its effort's track through the track component, with the same settings as everywhere, including gaps and the suspect style, which V1 left out here. | A suspect effort track is red and dashed on the sighting map. |
 | SDET-04 | Effort card: Effort (link), Date, Vessel, Locality, Region, Sub-Area, Survey Type; or "This sighting is not attached to any effort." | |
-| SDET-05 | Extra Info (collapsed): Group Behaviour, Group Type, Sighting Type, Photos Taken, Individuals Identified, Calves, Minimum, Maximum, Depth, Number On The Day, Research Group. | |
+| SDET-05 | Extra Info (collapsed): Group Behaviour, Group Type, Sighting Type, Photos Taken, Individuals Identified, Calves, Minimum, Maximum, Depth, Number on the Day, Research Group. | |
 | SDET-06 | Samples: Number, Type, Species, Preservation, Taken By; or "No samples were taken at this sighting." | |
 | SDET-07 | Attached records, shown only when present: Sighting Events, Other Species Present, Tag Deployments, Individuals Identified. Each individual links to its Individual page. | An individual row links to `/individuals/<id>/`. |
 
-### 4.7 Edit And Delete (Efforts And Sightings)
+### 4.7 Edit and Delete (Efforts and Sightings)
 
 | ID | Requirement | Check |
 |---|---|---|
 | EDIT-01 | Editor and above only (ROLE-02). | A Viewer gets 403. |
 | EDIT-02 | Editable sighting fields (18): Species, Sighting Number, Date, Time, Latitude, Longitude, End Latitude, End Longitude, Position Type (Precise, Calculated, Estimated, General), Sighting Type (S, SBE, SE, UNK), Best, Smallest and Largest Estimate, Calves, Group Behaviour, Group Type, Depth (m), Comments. | The form has exactly these fields. |
-| EDIT-03 | Editable effort fields (13): Date, Start Time, End Time, Launch, Locality, Return, Region, Sub-Area, Survey Type, Project Or Objective, Personnel, Distance (nm), Comments. | The form has exactly these fields. |
+| EDIT-03 | Editable effort fields (13): Date, Start Time, End Time, Launch, Locality, Return, Region, Sub-Area, Survey Type, Project or Objective, Personnel, Distance (nm), Comments. | The form has exactly these fields. |
 | EDIT-04 | Two steps: the form (Review Changes is disabled until a value changes), then a Field, From, To table with an optional Why note and Save These Changes. Only changed fields are written, through the audit log. | Saving one change writes one audit entry with one field. |
 | EDIT-05 | Every input is validated. A bad number, date or time is shown against its field and nothing is saved (ERR-05). V1 showed an error page instead. | Latitude "abc" shows a field error. |
 | EDIT-06 | Delete lists the dependent records that go with it, counted per type ("3 sightings, 12 log entries"), takes an optional note, and says the record can be put back from the Audit Log. The record and every dependent row are kept in the audit entry, so Undo restores them. | Delete, then Undo, restores the record and its dependents. |
@@ -210,13 +210,13 @@ V1's export stack, kept (Q-017), plus whole gold tables and SQL queries (Q-041, 
 
 | ID | Requirement | Check |
 |---|---|---|
-| EXP-01 | Add To Export (on Explore, the lists and record pages) puts a query on a stack kept in the session: the filters or SQL, never rows. The stack holds up to 20 queries, and adding an identical query again does nothing ("Already In Export"). | A 21st add is refused with a message. |
-| EXP-02 | Queries card: each query with its label, Efforts and Sightings counts, an "Include The Sightings Of These Efforts" or "Include The Efforts Of These Sightings" box (on by default), and Remove. Empty: "Nothing to export yet. Use Add To Export on Explore, Efforts or Sightings." | |
+| EXP-01 | Add to Export (on Explore, the lists and record pages) puts a query on a stack kept in the session: the filters or SQL, never rows. The stack holds up to 20 queries, and adding an identical query again does nothing ("Already in Export"). | A 21st add is refused with a message. |
+| EXP-02 | Queries card: each query with its label, Efforts and Sightings counts, an "Include the Sightings of These Efforts" or "Include the Efforts of These Sightings" box (on by default), and Remove. Empty: "Nothing to export yet. Use Add to Export on Explore, Efforts or Sightings." | |
 | EXP-03 | Sheets card: Efforts, Sightings, Timeline, Weather, Samples, Identifications, Tags, Sighting Events, Other Species. Each has a tick box and row count; Efforts, Sightings, Timeline, Weather and Samples have Choose Columns. Efforts and Sightings are ticked by default. | |
 | EXP-04 | Whole Tables card: every gold table with a tick box. Each ticked table becomes one more sheet (Q-041). | Ticking a table adds a sheet with all its rows. |
 | EXP-05 | A SQL query sent from the SQL page appears in the Queries card under its name. When the file is built, the server runs that SQL in a read-only DuckDB over the same Parquet files, with a 60-second time limit (Q-057), and the result becomes its own sheet (Q-042). | A write statement is refused; a slow query fails with a message naming the limit. |
 | EXP-06 | Preview: tabs for the ticked sheets, 8 rows each, with the true total. | |
-| EXP-07 | Download panel: Format (XLSX, CSV zip, GeoJSON zip, GPX, GeoPackage, Parquet zip), Time Zone (UTC or Pacific), Dates (ISO or Excel), and Include The Raw GPS Files Of These Efforts (read from the droplet's disk). Formats that cannot hold a sheet say so. | GPX with only a Samples sheet ticked is refused with a message. |
+| EXP-07 | Download panel: Format (XLSX, CSV zip, GeoJSON zip, GPX, GeoPackage, Parquet zip), Time Zone (UTC or Pacific), Dates (ISO or Excel), and Include the Raw GPS Files of These Efforts (read from the droplet's disk). Formats that cannot hold a sheet say so. | GPX with only a Samples sheet ticked is refused with a message. |
 | EXP-08 | Rows matching several queries appear once; with 2 or more queries, a Matched Queries column says which. An XLSX sheet over 1,048,576 rows continues on a second sheet. | |
 | EXP-09 | Every download is recorded in the Server event log. | |
 
@@ -230,7 +230,7 @@ Read-only SQL over gold data, run in the browser with DuckDB WASM (Q-006, Q-019)
 | SQL-02 | Layout: a table list (each table's columns and types), a SQL editor, Run, and a results grid showing the first 1,000 rows and the total (Q-057). | `select 1` shows one row. |
 | SQL-03 | Only reading is possible; there is no way to change server data from this page. | |
 | SQL-04 | Save Query stores a named query's text in a cookie (never results), up to 20 queries per browser, one cookie each, up to 3,500 characters of SQL (a longer query cannot be saved, and the page says why) (Q-057); Saved Queries lists them to open or delete. There is no sharing (Q-012). | A saved query survives a reload in the same browser. |
-| SQL-05 | Send To Export puts the named query on the export stack (EXP-05). There is no direct download on this page (Q-042). | The Export count goes up by one. |
+| SQL-05 | Send to Export puts the named query on the export stack (EXP-05). There is no direct download on this page (Q-042). | The Export count goes up by one. |
 | SQL-06 | A SQL error shows DuckDB's message under the editor. | |
 
 ### 4.12 Settings (`/settings/`)
@@ -238,7 +238,7 @@ Read-only SQL over gold data, run in the browser with DuckDB WASM (Q-006, Q-019)
 | ID | Requirement | Check |
 |---|---|---|
 | SET-01 | Colour Profile: Cascadia (default) or Generic. | |
-| SET-02 | Track display defaults (TRACK-03): Show Points, Show Timeline Events, Show Direction Arrows, Show Path When There Is No Track, Gap After Minutes Of Silence, Gap After A Jump Of Metres, Gap Above A Speed Of Knots, and Gap Style (Dashed Line, Faint Line, Nothing) (Q-043). | |
+| SET-02 | Track display defaults (TRACK-03): Show Points, Show Timeline Events, Show Direction Arrows, Show Path When There Is No Track, Gap After Minutes of Silence, Gap After a Jump of Metres, Gap Above a Speed of Knots, and Gap Style (Dashed Line, Faint Line, Nothing) (Q-043). | |
 | SET-03 | Everything except the password is saved in cookies for one year; nothing goes in the database (Q-027). | Saving writes cookies and no database row. |
 | SET-04 | Change Password (Django's password change) is on this page for every role. | A Viewer can change their password. |
 | SET-05 | Save shows "Settings saved."; an out-of-range number shows a field error (ERR-05). | Minutes 0 is refused. |
@@ -296,7 +296,7 @@ Admin only, in the site's own layout (Q-048).
 
 | ID | Requirement | Check |
 |---|---|---|
-| FDBK-01 | Fields: Title (required, up to 200 characters), Details, Type (Bug, Enhancement, Data Problem, Question), Area (Explore, Efforts, Sightings, Individuals, Export, SQL, Track File Manager, Audit Log, Settings, Sign In And Accounts, Other) (Q-051), and up to 3 pictures (PNG, JPEG, GIF or WebP, 5 MB each). | |
+| FDBK-01 | Fields: Title (required, up to 200 characters), Details, Type (Bug, Enhancement, Data Problem, Question), Area (Explore, Efforts, Sightings, Individuals, Export, SQL, Track File Manager, Audit Log, Settings, Sign In and Accounts, Other) (Q-051), and up to 3 pictures (PNG, JPEG, GIF or WebP, 5 MB each). | |
 | FDBK-02 | Sending opens a GitHub issue with labels for the type and area, with the pictures attached inline through `gh issue create --attach` (Q-056), and shows "Feedback sent. It is issue number N." | A test with a stubbed `gh` receives each picture as an `--attach` argument. |
 | FDBK-03 | The site stores no pictures: an upload is held only for the request and removed afterwards, whether sending succeeds or fails (Q-056). | No picture table exists, and no file remains after a send. |
 | FDBK-04 | When GitHub is not set up, the page says "Feedback is not set up yet." and shows no form. | |
@@ -318,12 +318,13 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 
 | ID | Requirement | Check |
 |---|---|---|
-| FILT-01 | Filters: Research Group, Species (sightings only), Vessel, Individual (Explore and Sightings, Q-052), Region, Sub-Area, Locality, Draw An Area, Years, Months, Seasons, Exact Dates, Survey Type, Project Or Objective, Tags And Samples, GPS Track, Crew Member, Position Type, Uncertain Species, Sightings On Land, Include Non-Animal Records, Only Efforts With Matching Sightings. | Each filter changes the result count on test data. |
+| FILT-01 | Filters: Research Group, Species (sightings only), Vessel, Individual (Explore and Sightings, Q-052), Region, Sub-Area, Locality, Draw an Area, Years, Months, Seasons, Exact Dates, Survey Type, Project or Objective, Tags and Samples, GPS Track, Crew Member, Position Type, Uncertain Species, Sightings on Land, Include Non-Animal Records, Only Efforts With Matching Sightings. | Each filter changes the result count on test data. |
 | FILT-02 | Research Group is an ordinary multi-select like Vessel, with CRC selected by default. There is no special chip or separate All box (Q-022). | A fresh visit shows CRC selected; clearing it shows all groups. |
 | FILT-03 | Defaults: all years (Q-023), non-animal records excluded, Only Efforts With Matching Sightings on. | A fresh Sightings visit includes every year. |
 | FILT-04 | Individual is chosen by typing any whale ID or alias, resolved as in SRCH-02, and keeps only sightings where that whale was identified. | |
 | FILT-05 | Each option shows a live count for the current filters. Year and month chips select like a file manager (click, Shift, Ctrl). Each section heading shows how many of its filters are set. | |
 | FILT-06 | Apply Filters submits; Reset returns to the defaults. | |
+| FILT-07 | Below 768 px wide, the filter panel folds behind a Filters heading that shows how many filters are set; tapping it opens the panel above the results. | At 390 px wide, the list is visible without scrolling past the filters. |
 
 ### 5.3 Map (Q-003, Q-031, Q-032)
 
@@ -350,7 +351,7 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 | TRACK-07 | Settings come from Settings (cookie). Each map has a layer panel that flips a setting for that view only, without changing the saved default (Q-027). | Flipping Show Points on a map leaves the cookie unchanged. |
 | TRACK-08 | No-Track Path: when an effort has no track file, a dashed line joins its recorded timeline positions in time order. This is a user setting, on by default as in V1 (Q-058). | Turning it off removes the line from an effort with no track. |
 
-### 5.5 History And The Audit Log (Q-018, Q-044, Q-015)
+### 5.5 History and the Audit Log (Q-018, Q-044, Q-015)
 
 | ID | Requirement | Check |
 |---|---|---|
@@ -369,7 +370,7 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 | SRCH-04 | Choosing a record opens it in the modal; choosing a vessel, locality or species opens Sightings filtered by it. | |
 | SRCH-05 | No match: "Nothing matches [text]." | |
 
-### 5.7 Empty And Error States (Q-050)
+### 5.7 Empty and Error States (Q-050)
 
 | ID | Requirement | Check |
 |---|---|---|
@@ -390,7 +391,7 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 | UI-04 | Pages use the site's own components and show restraint: no dashboards or panels not in this spec. | |
 | UI-05 | Custom JavaScript stays small; behaviour is done with Django and htmx where possible. Libraries named in this spec are allowed. | |
 
-## 6. Out Of Scope
+## 6. Out of Scope
 
 - Public pages of any kind (Q-002).
 - Raw-tier tables and raw table export; only gold tables for now (Q-007).

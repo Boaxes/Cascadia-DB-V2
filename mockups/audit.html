@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Audit Log | Cascadia DB</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="audit">
+<div class="app">
+<script src="sidebar.js"></script>
+<div class="main">
+  <div class="page">
+    <div class="page-head">
+      <div><h1>Audit Log</h1><p class="muted">Every change in effect, by people and by the pipeline.</p></div>
+    </div>
+
+    <div class="card">
+      <div class="form-grid" style="grid-template-columns:repeat(6,minmax(0,1fr))">
+        <label class="field"><span>Record Type</span><select><option>All Records</option><option>Effort</option><option>Sighting</option><option>Track File</option><option>Individual</option></select></label>
+        <label class="field"><span>Record Number</span><input type="text" placeholder="Any"></label>
+        <label class="field"><span>Who</span><select><option>Everyone</option><option>Pipeline</option><option>Riley Chen</option><option>Morgan Ellis</option><option>Sam Taylor</option></select></label>
+        <label class="field"><span>Change</span><select><option>All Changes</option><option>Edited</option><option>Deleted</option><option>Created</option><option>Edited File</option><option>Linked</option><option>Unlinked</option></select></label>
+        <label class="field"><span>From</span><input type="date"></label>
+        <label class="field"><span>To</span><input type="date"></label>
+      </div>
+      <div class="actions"><button class="btn btn-primary" type="button">Apply Filters</button><button class="btn" type="button">Reset</button></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="sorted"><a href="#">When</a></th><th>Who</th><th>Change</th><th>Record</th><th>What Changed</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr data-modal="entry"><td>2026-11-24 10:42</td><td>Riley Chen</td><td>Edited</td><td>Sighting 120417</td><td>Group Size, Comments</td><td>Recount from photos</td></tr>
+          <tr data-modal="pipeline"><td>2026-11-23 02:10</td><td>Pipeline</td><td>Edited</td><td>Effort 20417</td><td>Locality</td><td>Locality names standardised</td></tr>
+          <tr data-modal="older"><td>2026-11-20 16:05</td><td>Riley Chen</td><td>Edited</td><td>Sighting 120417</td><td>Species</td><td></td></tr>
+          <tr data-modal="entry"><td>2026-11-19 11:30</td><td>Morgan Ellis</td><td>Edited File</td><td>Track File 20240509-KES-tbltGPS.csv</td><td>Points</td><td>Removed a stray fix</td></tr>
+          <tr data-modal="entry"><td>2026-11-18 09:02</td><td>Morgan Ellis</td><td>Linked</td><td>Track File 20240507-TRN_GPX-pc.csv</td><td>Effort</td><td></td></tr>
+          <tr data-modal="entry"><td>2026-11-15 14:47</td><td>Sam Taylor</td><td>Deleted</td><td>Effort 19980</td><td>Whole record, 4 sightings</td><td>Duplicate of effort 19979</td></tr>
+          <tr data-modal="pipeline"><td>2026-11-14 02:10</td><td>Pipeline</td><td>Edited</td><td>Sighting 118902</td><td>Latitude, Longitude</td><td>Position swapped sign fixed</td></tr>
+          <tr data-modal="pipeline"><td>2026-11-14 02:10</td><td>Pipeline</td><td>Created</td><td>Individual CRC-20417</td><td>Whole record</td><td>Catalog load</td></tr>
+          <tr data-modal="entry"><td>2026-11-12 08:55</td><td>Riley Chen</td><td>Edited</td><td>Effort 20388</td><td>Distance (nm)</td><td>Logbook value</td></tr>
+          <tr data-modal="entry"><td>2026-11-10 17:20</td><td>Morgan Ellis</td><td>Created</td><td>Track File 20240430-TRN-tbltGPS.csv</td><td>Whole record</td><td>Created from positions</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <span class="muted small">1–50 of 1,284</span>
+      <div class="pages"><a href="#">First</a><a href="#">Previous</a><span class="cur">1</span><a href="#">2</a><a href="#">3</a><span class="muted">&hellip;</span><a href="#">26</a><a href="#">Next</a><a href="#">Last</a></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<dialog class="modal" id="entry">
+  <div class="modal-bar"><h1>Audit Entry</h1><div class="actions"><button class="btn btn-danger" type="button">Undo</button><button class="btn btn-quiet" type="button" data-close>Close</button></div></div>
+  <div class="modal-body">
+    <div class="card">
+      <dl class="pairs">
+        <div><dt>When</dt><dd>2026-11-24 10:42</dd></div>
+        <div><dt>Who</dt><dd>Riley Chen</dd></div>
+        <div><dt>Record</dt><dd><a href="sighting.html">Sighting 120417</a></dd></div>
+        <div><dt>Note</dt><dd>Recount from photos</dd></div>
+      </dl>
+    </div>
+    <div class="card">
+      <h2>Changes</h2>
+      <table>
+        <thead><tr><th>Field</th><th>Before</th><th>After</th></tr></thead>
+        <tbody>
+          <tr><td>Group Size</td><td>3</td><td>4</td></tr>
+          <tr><td>Comments</td><td>Two adults, one calf</td><td>Two adults, one calf, one juvenile</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted">Undo puts the old values back and removes this entry from the log.</p>
+  </div>
+</dialog>
+
+<dialog class="modal" id="pipeline">
+  <div class="modal-bar"><h1>Audit Entry</h1><div class="actions"><button class="btn btn-quiet" type="button" data-close>Close</button></div></div>
+  <div class="modal-body">
+    <div class="notice">Change the pipeline rule to reverse this.</div>
+    <div class="card">
+      <dl class="pairs">
+        <div><dt>When</dt><dd>2026-11-23 02:10</dd></div>
+        <div><dt>Who</dt><dd>Pipeline</dd></div>
+        <div><dt>Record</dt><dd><a href="effort.html">Effort 20417</a></dd></div>
+        <div><dt>Note</dt><dd>Locality names standardised</dd></div>
+      </dl>
+    </div>
+    <div class="card">
+      <h2>Changes</h2>
+      <table>
+        <thead><tr><th>Field</th><th>Before</th><th>After</th></tr></thead>
+        <tbody><tr><td>Locality</td><td>Haro St.</td><td>Haro Strait</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="modal" id="older">
+  <div class="modal-bar"><h1>Audit Entry</h1><div class="actions"><button class="btn btn-danger" type="button" disabled>Undo</button><button class="btn btn-quiet" type="button" data-close>Close</button></div></div>
+  <div class="modal-body">
+    <div class="notice amber">Undo the newer change first. Sighting 120417 was changed again on 2026-11-24.</div>
+    <div class="card">
+      <dl class="pairs">
+        <div><dt>When</dt><dd>2026-11-20 16:05</dd></div>
+        <div><dt>Who</dt><dd>Riley Chen</dd></div>
+        <div><dt>Record</dt><dd><a href="sighting.html">Sighting 120417</a></dd></div>
+        <div><dt>Note</dt><dd></dd></div>
+      </dl>
+    </div>
+    <div class="card">
+      <h2>Changes</h2>
+      <table>
+        <thead><tr><th>Field</th><th>Before</th><th>After</th></tr></thead>
+        <tbody><tr><td>Species</td><td>Unidentified Whale</td><td>Humpback Whale</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  // Mockup only: fakes the htmx modal. ?modal=1, ?modal=pipeline or ?modal=older opens one on load.
+  var open = function (id) { document.getElementById(id).showModal(); };
+  document.querySelectorAll("tr[data-modal]").forEach(function (r) { r.addEventListener("click", function () { open(r.dataset.modal); }); });
+  document.querySelectorAll("[data-close]").forEach(function (b) { b.addEventListener("click", function () { b.closest("dialog").close(); }); });
+  var m = new URLSearchParams(location.search).get("modal");
+  if (m) open(m === "1" ? "entry" : m);
+</script>
+</body>
+</html>

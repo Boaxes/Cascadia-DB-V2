@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sightings | Cascadia DB</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="sightings">
+<div class="app">
+<script src="sidebar.js"></script>
+<div class="main">
+  <div class="with-filters">
+    <div class="filters" data-for="sightings"></div>
+    <script src="filters.js"></script>
+    <div class="page">
+      <div class="page-head">
+        <div>
+          <h1>Sightings</h1>
+          <p class="applied">Showing <b>CRC</b> sightings in <b>all years</b>.</p>
+        </div>
+        <div class="actions"><button class="btn" type="button">Add to Export</button></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="sorted"><a href="#">Date</a></th>
+              <th><a href="#">Time</a></th>
+              <th><a href="#">Sighting</a></th>
+              <th><a href="#">Species</a></th>
+              <th class="num"><a href="#">Group Size</a></th>
+              <th><a href="#">Min–Max</a></th>
+              <th><a href="#">Vessel</a></th>
+              <th><a href="#">Position</a></th>
+              <th><a href="#">Effort</a></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>2026-09-14</td><td>09:41</td><td><a href="sighting.html">120417</a></td><td><span class="dot" style="background:#1f77b4"></span>Humpback Whale</td><td class="num">3</td><td>2–4</td><td>Kestrel</td><td>Precise</td><td><a href="effort.html">20417</a></td></tr>
+            <tr><td>2026-09-14</td><td>13:20</td><td><a href="sighting.html">120416</a></td><td><span class="dot" style="background:#d62728"></span>Killer Whale</td><td class="num">7</td><td>6–9</td><td>Kestrel</td><td>Precise</td><td><a href="effort.html">20417</a></td></tr>
+            <tr><td>2026-09-12</td><td>10:05</td><td><a href="sighting.html">120409</a></td><td><span class="dot" style="background:#2ca02c"></span>Harbor Porpoise <span class="pill amber">Uncertain</span></td><td class="num">2</td><td>1–3</td><td>Tern</td><td>Estimated</td><td><a href="effort.html">20416</a></td></tr>
+            <tr><td>2026-09-12</td><td>11:52</td><td><a href="sighting.html">120408</a></td><td><span class="dot" style="background:#1f77b4"></span>Humpback Whale</td><td class="num">1</td><td>1–1</td><td>Tern</td><td>Precise</td><td><a href="effort.html">20416</a></td></tr>
+            <tr><td>2026-09-03</td><td>14:33</td><td><a href="sighting.html">120391</a></td><td><span class="dot" style="background:#ff7f0e"></span>Gray Whale</td><td class="num">2</td><td>2–2</td><td>Salish Wren</td><td>Calculated</td><td><a href="effort.html">20414</a></td></tr>
+            <tr><td>2026-08-29</td><td>08:57</td><td><a href="sighting.html">120377</a></td><td><span class="dot" style="background:#9467bd"></span>Dall's Porpoise</td><td class="num">12</td><td>14–20 <span class="pill red">Disagrees</span></td><td>Kestrel</td><td>Precise</td><td><a href="effort.html">20411</a></td></tr>
+            <tr><td>2026-08-29</td><td>12:16</td><td><a href="sighting.html">120376</a></td><td><span class="dot" style="background:#17becf"></span>Steller Sea Lion</td><td class="num">30</td><td>25–40</td><td>Kestrel</td><td>General</td><td><a href="effort.html">20411</a></td></tr>
+            <tr><td>2026-08-21</td><td>15:08</td><td><a href="sighting.html">120360</a></td><td><span class="dot" style="background:#2ca02c"></span>Harbor Porpoise <span class="pill blue">Two Species</span></td><td class="num">5</td><td>4–6</td><td>Tern</td><td>Estimated</td><td><a href="effort.html">20408</a></td></tr>
+            <tr><td>2026-08-14</td><td>10:44</td><td><a href="sighting.html">120351</a></td><td><span class="dot" style="background:#1f77b4"></span>Humpback Whale</td><td class="num">2</td><td>2–3</td><td>Kestrel</td><td>Precise</td><td><a href="effort.html">20405</a></td></tr>
+            <tr><td>2026-08-02</td><td>09:15</td><td><a href="sighting.html">120342</a></td><td><span class="dot" style="background:#8c564b"></span>Harbor Seal</td><td class="num">4</td><td>3–6</td><td>Salish Wren</td><td>Calculated</td><td><a href="effort.html">20402</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span class="muted small">1–50 of 4,812</span>
+        <div class="pages">
+          <a href="#">First</a><a href="#">Previous</a>
+          <span class="cur">1</span><a href="#">2</a><a href="#">3</a><span class="muted">&hellip;</span><a href="#">97</a>
+          <a href="#">Next</a><a href="#">Last</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+  // Mockup only: a row opens the sighting (a modal in the real site).
+  document.querySelectorAll("tbody tr").forEach(function (row) {
+    row.addEventListener("click", function () { location.href = "sighting.html"; });
+  });
+</script>
+</body>
+</html>

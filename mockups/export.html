@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Export | Cascadia DB</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="export">
+<div class="app">
+<script src="sidebar.js"></script>
+<div class="main">
+  <div class="page">
+    <div class="page-head">
+      <div><h1>Export</h1><p class="muted">Add lists, records or SQL queries, choose sheets, and download them as one file.</p></div>
+    </div>
+
+    <div class="export-grid">
+      <div>
+        <section class="card">
+          <h2>Queries</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Query</th><th class="num">Efforts</th><th class="num">Sightings</th><th>Related Records</th><th></th></tr></thead>
+              <tbody>
+                <tr><td>Sightings: CRC, Humpback Whale, 2024</td><td class="num">212</td><td class="num">486</td><td><label class="check"><input type="checkbox" checked> Include the Efforts of These Sightings</label></td><td><button class="btn btn-sm" type="button">Remove</button></td></tr>
+                <tr><td>Effort 20417</td><td class="num">1</td><td class="num">9</td><td><label class="check"><input type="checkbox" checked> Include the Sightings of These Efforts</label></td><td><button class="btn btn-sm" type="button">Remove</button></td></tr>
+                <tr><td><span class="pill blue">SQL</span> Humpbacks By Month</td><td class="num"></td><td class="num"></td><td class="muted small">Its own sheet</td><td><button class="btn btn-sm" type="button">Remove</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small muted" style="margin:8px 0 0">Rows that match more than one query appear once, with a Matched Queries column.</p>
+        </section>
+
+        <section class="card">
+          <h2>Sheets</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th></th><th>Sheet</th><th class="num">Rows</th><th>Columns</th></tr></thead>
+              <tbody>
+                <tr><td><input type="checkbox" checked></td><td>Efforts</td><td class="num">213</td><td>11 of 33 <button class="btn btn-sm" type="button">Choose Columns</button></td></tr>
+                <tr><td><input type="checkbox" checked></td><td>Sightings</td><td class="num">495</td><td>14 of 33 <button class="btn btn-sm" type="button">Choose Columns</button></td></tr>
+                <tr><td><input type="checkbox"></td><td>Timeline</td><td class="num">2,904</td><td>6 of 6 <button class="btn btn-sm" type="button">Choose Columns</button></td></tr>
+                <tr><td><input type="checkbox"></td><td>Weather</td><td class="num">731</td><td>11 of 11 <button class="btn btn-sm" type="button">Choose Columns</button></td></tr>
+                <tr><td><input type="checkbox"></td><td>Samples</td><td class="num">38</td><td>6 of 6 <button class="btn btn-sm" type="button">Choose Columns</button></td></tr>
+                <tr><td><input type="checkbox"></td><td>Identifications</td><td class="num">164</td><td>4 of 4</td></tr>
+                <tr><td><input type="checkbox"></td><td>Tags</td><td class="num">3</td><td>8 of 8</td></tr>
+                <tr><td><input type="checkbox"></td><td>Sighting Events</td><td class="num">57</td><td>8 of 8</td></tr>
+                <tr><td><input type="checkbox"></td><td>Other Species</td><td class="num">21</td><td>5 of 5</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Whole Tables</h2>
+          <p class="small muted">Each ticked table becomes one more sheet with all its rows.</p>
+          <div class="pairs">
+            <label class="check"><input type="checkbox"> Efforts <span class="opt-count">25,018</span></label>
+            <label class="check"><input type="checkbox"> Sightings <span class="opt-count">114,876</span></label>
+            <label class="check"><input type="checkbox"> Tracks <span class="opt-count">1,542</span></label>
+            <label class="check"><input type="checkbox"> GPS Points <span class="opt-count">10,341,020</span></label>
+            <label class="check"><input type="checkbox"> Samples <span class="opt-count">3,102</span></label>
+            <label class="check"><input type="checkbox"> Individuals <span class="opt-count">10,743</span></label>
+            <label class="check"><input type="checkbox"> Catalog Sightings <span class="opt-count">166,885</span></label>
+            <label class="check"><input type="checkbox"> Species <span class="opt-count">65</span></label>
+            <label class="check"><input type="checkbox"> Vessels <span class="opt-count">1,310</span></label>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Preview</h2>
+          <div class="tabs"><button class="on" type="button">Efforts</button><button type="button">Sightings</button><button type="button">Humpbacks By Month</button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Effort</th><th>Date</th><th>Vessel</th><th>Locality</th><th>Survey Type</th><th class="num">Distance (nm)</th><th>Matched Queries</th></tr></thead>
+              <tbody>
+                <tr><td>20417</td><td>2024-09-14</td><td>Kestrel</td><td>Haro Strait</td><td>Dedicated</td><td class="num">42.6</td><td>1, 2</td></tr>
+                <tr><td>20409</td><td>2024-09-12</td><td>Tern</td><td>Port Angeles</td><td>Dedicated</td><td class="num">38.1</td><td>1</td></tr>
+                <tr><td>20391</td><td>2024-09-03</td><td>Kestrel</td><td>San Juan Channel</td><td>Opportunistic</td><td class="num">17.4</td><td>1</td></tr>
+                <tr><td>20377</td><td>2024-08-29</td><td>Salish Wren</td><td>Grays Harbor</td><td>Dedicated</td><td class="num">51.0</td><td>1</td></tr>
+                <tr><td>20360</td><td>2024-08-21</td><td>Tern</td><td>Haro Strait</td><td>Dedicated</td><td class="num">44.8</td><td>1</td></tr>
+                <tr><td>20344</td><td>2024-08-14</td><td>Kestrel</td><td>Juan de Fuca Strait</td><td>Dedicated</td><td class="num">39.2</td><td>1</td></tr>
+                <tr><td>20321</td><td>2024-08-02</td><td>Salish Wren</td><td>Rosario Strait</td><td>Opportunistic</td><td class="num">12.9</td><td>1</td></tr>
+                <tr><td>20307</td><td>2024-07-26</td><td>Tern</td><td>Haro Strait</td><td>Dedicated</td><td class="num">47.3</td><td>1</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small muted" style="margin:6px 0 0">8 of 213 rows.</p>
+        </section>
+      </div>
+
+      <aside class="card">
+        <h2>Download</h2>
+        <label class="field"><span>Format</span><select><option>XLSX</option><option>CSV Zip</option><option>GeoJSON Zip</option><option>GPX</option><option>GeoPackage</option><option>Parquet Zip</option></select></label>
+        <label class="field"><span>Time Zone</span><select><option>UTC</option><option>Pacific</option></select></label>
+        <label class="field"><span>Dates</span><select><option>ISO</option><option>Excel</option></select></label>
+        <label class="check"><input type="checkbox"> Include the Raw GPS Files of These Efforts (198 Files)</label>
+        <button class="btn btn-primary" type="button" style="width:100%;justify-content:center;margin-top:10px">Download</button>
+      </aside>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

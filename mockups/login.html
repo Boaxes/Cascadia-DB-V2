@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign In | Cascadia DB</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="center-page">
+  <form class="card login">
+    <img src="cascadia-logo.png" alt="">
+    <h1>Cascadia DB</h1>
+    <p class="muted">Marine mammal survey records and photo-ID catalogs.</p>
+    <div class="notice red" id="error" hidden>That username and password do not match an account.</div>
+    <label class="field"><span>Username</span><input type="text" autocomplete="username"></label>
+    <label class="field"><span>Password</span><input type="password" autocomplete="current-password"></label>
+    <button class="btn btn-primary" type="button" style="width:100%;justify-content:center">Sign In</button>
+  </form>
+</div>
+<script>
+  // Mockup only: ?error=1 shows the wrong-password message.
+  if (new URLSearchParams(location.search).has("error")) document.getElementById("error").hidden = false;
+</script>
+</body>
+</html>

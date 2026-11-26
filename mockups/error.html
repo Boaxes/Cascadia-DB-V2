@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not Found | Cascadia DB</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="none">
+<div class="app">
+<script src="sidebar.js"></script>
+<div class="main">
+  <div class="page">
+    <div class="card" style="max-width:560px;margin:60px auto;text-align:center">
+      <p class="muted small" id="code">404</p>
+      <h1 id="title">Not Found</h1>
+      <p id="message" style="margin-top:8px">No effort with ID 999999.</p>
+      <a class="btn btn-primary" id="link" href="efforts.html">Back to Efforts</a>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+  // Mockup only: ?code=403 shows the no-permission page (ERR-04), ?code=500 the server error (ERR-06).
+  var pages = {
+    "403": ["Not Allowed", "This page needs the Track Manager role.", "Go to Explore", "explore.html"],
+    "500": ["Something Went Wrong", "Something went wrong. It has been logged.", "Go to Explore", "explore.html"]
+  };
+  var c = new URLSearchParams(location.search).get("code");
+  if (pages[c]) {
+    document.getElementById("code").textContent = c;
+    document.getElementById("title").textContent = pages[c][0];
+    document.getElementById("message").textContent = pages[c][1];
+    document.getElementById("link").textContent = pages[c][2];
+    document.getElementById("link").href = pages[c][3];
+    document.title = pages[c][0] + " | Cascadia DB";
+  }
+</script>
+</body>
+</html>

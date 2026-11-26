@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" preserveAspectRatio="xMidYMid slice">
+  <!-- Static picture standing in for one effort's map: one GPS track, a gap, points, arrows, timeline events, start and end. Invented data. -->
+  <rect width="900" height="500" fill="#0f3040"/>
+  <path d="M0 0 L900 0 L900 70 L820 90 L760 80 L700 110 L640 100 L600 60 L520 50 L460 80 L380 70 L300 40 L200 60 L120 40 L0 60 Z" fill="#2c3a2a"/>
+  <path d="M0 500 L0 420 L90 400 L170 430 L260 410 L330 440 L420 430 L500 460 L580 450 L660 470 L760 440 L900 460 L900 500 Z" fill="#2c3a2a"/>
+  <path d="M600 60 L640 100 L610 140 L570 120 Z" fill="#33432f"/>
+  <g font-family="system-ui, sans-serif" font-size="13" fill="#e9eef0" opacity=".85">
+    <text x="300" y="30">San Juan Islands</text><text x="420" y="480">Olympic Peninsula</text><text x="40" y="250" opacity=".7">Haro Strait</text>
+  </g>
+  <!-- Track part 1 -->
+  <path d="M110 300 C170 260 210 230 270 235 C330 240 360 280 410 270" fill="none" stroke="#ffeb3b" stroke-width="3" stroke-linecap="round"/>
+  <!-- Gap join: dashed -->
+  <path d="M410 270 L520 210" fill="none" stroke="#ffeb3b" stroke-width="2" stroke-dasharray="6 7" opacity=".85"/>
+  <!-- Track part 2 -->
+  <path d="M520 210 C580 180 640 200 690 240 C740 280 770 320 820 330" fill="none" stroke="#ffeb3b" stroke-width="3" stroke-linecap="round"/>
+  <!-- Points -->
+  <g fill="#0b2c3d" stroke="#ffeb3b" stroke-width="1">
+    <circle cx="150" cy="275" r="2.5"/><circle cx="195" cy="248" r="2.5"/><circle cx="240" cy="234" r="2.5"/><circle cx="290" cy="238" r="2.5"/><circle cx="340" cy="255" r="2.5"/><circle cx="380" cy="272" r="2.5"/>
+    <circle cx="560" cy="190" r="2.5"/><circle cx="610" cy="188" r="2.5"/><circle cx="660" cy="212" r="2.5"/><circle cx="705" cy="255" r="2.5"/><circle cx="750" cy="298" r="2.5"/><circle cx="790" cy="322" r="2.5"/>
+  </g>
+  <!-- Direction arrows -->
+  <g fill="#ffeb3b">
+    <path d="M220 238 l12 -2 -8 9 z"/><path d="M355 262 l12 5 -11 4 z"/><path d="M630 192 l12 4 -10 6 z"/><path d="M730 275 l9 9 -12 -1 z"/>
+  </g>
+  <!-- Timeline events: weather (blue), log entry (grey) -->
+  <g stroke="#fff" stroke-width="1.2">
+    <rect x="262" y="226" width="9" height="9" fill="#4f8ea9"/><rect x="598" y="180" width="9" height="9" fill="#4f8ea9"/>
+    <rect x="400" y="262" width="9" height="9" fill="#95a6b1"/><rect x="516" y="203" width="9" height="9" fill="#95a6b1"/>
+  </g>
+  <!-- Sightings -->
+  <g stroke="#fff" stroke-width="1.2"><circle cx="300" cy="225" r="7" fill="#1f77b4"/><circle cx="680" cy="245" r="6" fill="#d62728"/><circle cx="770" cy="300" r="5" fill="#1f77b4"/></g>
+  <!-- Start and end -->
+  <circle cx="110" cy="300" r="8" fill="#2e6b48" stroke="#fff" stroke-width="2"/>
+  <circle cx="820" cy="330" r="8" fill="#b3372f" stroke="#fff" stroke-width="2"/>
+</svg>

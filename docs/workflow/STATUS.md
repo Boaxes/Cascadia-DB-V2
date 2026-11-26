@@ -26,11 +26,13 @@ Phase 1: Spec And Mockup. In progress, step 2 (asking), on branch `phase-1-spec`
 
 ## Next
 
-- `docs/spec/spec.md` written (step 3): 158 requirements with IDs and checks, sections 1 to 7, no open assumptions (Q-001 to Q-058).
-- Step 4: build the static HTML mockups in `mockups/` (one file per page, shared `style.css`), preview each with the `mockups` launch configuration, then iterate with Brandon.
+- `docs/spec/spec.md` written (step 3): 159 requirements with IDs and checks, no open assumptions (Q-001 to Q-059).
+- Mockups drafted (step 4): 19 pages in `mockups/` plus `index.html` (the list of pages and URL variants), shared `style.css`, `icons.svg`, `sidebar.js`, `filters.js` and three map pictures. Each page checked in the preview at 1440 px and 390 px (no horizontal overflow, no console errors). Labels follow Title Case with small words lowercase; messages are sentence case (spec updated to match).
+- Next: Brandon reviews the mockups (`preview_start` with the `mockups` configuration, start at `index.html`), iterate, keep spec and mockups in step, then capture the screenshots (step 5).
 
 ## Waiting On Brandon
 
+- Review the mockups. Open questions from drafting: the site name shown in the sidebar and on Sign In (the mockups use "Cascadia DB"; V1 said "Sightings and Effort Explorer").
 - Commit the refreshed `V1/` on `phase-1-spec` (the gate stops the agent from doing it).
 - Update `docs/workflow/phase-5-build.md` so the build is one step (Q-059), if you want the doc to match.
 - Edit the V1 line in `CLAUDE.md` (Sources section): change `f4b2a36` to `3a637f1` and `2026-09-29` to `2026-11-21`.
