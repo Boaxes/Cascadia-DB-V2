@@ -1,6 +1,6 @@
 # V1 Inventory
 
-Every page and feature in V1 as committed at `3a637f1` (2026-11-21, `Boaxes/Cascadia-DB` main), what it does today, who uses it, and a proposal for V2. A proposal is only settled once Brandon confirms it in [questions-log.md](../workflow/questions-log.md). An earlier draft was written from a stale copy (`f4b2a36`) and has been replaced (Q-009).
+Every page and feature in V1 as committed at `3a637f1` (2026-11-21, `Boaxes/Cascadia-DB` main), what it does today, who uses it, and a proposal for V2. **Every row was confirmed by Brandon on 2026-11-26 (Q-017).** Decisions are in [questions-log.md](../workflow/questions-log.md). An earlier draft was written from a stale copy (`f4b2a36`) and has been replaced (Q-009).
 
 ## Access In V1 Today
 
@@ -33,7 +33,7 @@ Problems found:
 | # | V1 page or feature | What it does today | Who | Proposal | Reason |
 |---|---|---|---|---|---|
 | 1 | Login, Logout | Django `LoginView`; logout is a POST from the profile menu | Any | **Keep** | Django built-in |
-| 2 | `/` | Redirects to Explore; no home page | Any | Asked with navigation | |
+| 2 | `/` | Redirects to Explore; no home page | Any | **Keep** | Explore stays the landing page (Q-020) |
 | 3 | Explore | Filter panel, Leaflet map (clusters, species dots, simplified tracks with dashed gaps), results tabs (first 300 sightings or efforts), Add To Export, measure, draw area, fullscreen, screenshot, resizable side panels | Any | **Change** | MapLibre plus deck.gl (Q-003) with the single track component; show applied filters, which V1 computes but never renders; show an error when a map fetch fails (V1 hides it); the Tracks toggle must hide gap dashes too |
 | 4 | Efforts list | 8 columns, sortable, 50 per page, filters, Add To Export, rows open the modal | Any | **Keep** | Restyle into the sidebar layout |
 | 5 | Effort detail | Summary, GPS data with start and end sources, map, species seen, extra info, distance check, tracks table with track actions for DM, timeline, history | Any | **Change** | One GPS track per effort (Q-008), drawn by the single track component; drop the duplicate Sub-Area |
@@ -44,10 +44,10 @@ Problems found:
 | 10 | Record modal (`modal.js`) | Fetches the whole page, lifts out the detail, re-runs its scripts, `pushState`, Back stack, forms post inside | Any | **Change** | Rebuild with htmx and `<dialog>` (Q-010) |
 | 11 | Filter panel | Research Group (defaults to CRC), species, vessel, region, sub-area, locality, draw area, years, months, seasons, dates, survey type, objective, tags and samples, GPS track, crew, position type, uncertain, sightings on land, non-animal, matching sightings; live facet counts | Any | **Keep** | Core to the site; audit `filters.js` and `tagpicker.js` line by line |
 | 12 | Export stack | Add To Export puts queries (filters, not rows) in a session stack of up to 20; related records on by default | Any | **Keep** | Every role can export (Q-014) |
-| 13 | Export page and download | Queries table, 9 sheets with column chooser, 8-row preview, XLSX, CSV zip, GeoJSON zip, GPX, GeoPackage, UTC or Pacific, ISO or Excel dates, raw GPS files in a zip | DM | **Change** | Add whole gold tables (Q-004, Q-007) and SQL queries run in DuckDB WASM (Q-006) with saved queries in cookies (Q-012); GPS files come from the droplet's disk |
+| 13 | Export page and download | Queries table, 9 sheets with column chooser, 8-row preview, XLSX, CSV zip, GeoJSON zip, GPX, GeoPackage, UTC or Pacific, ISO or Excel dates, raw GPS files in a zip | DM | **Change** | Add whole gold tables (Q-004, Q-007) and queries sent from the new SQL page, which runs in DuckDB WASM (Q-006, Q-019) and saves queries in cookies (Q-012); GPS files come from the droplet's disk |
 | 14 | Settings page | One setting: Color Profile (Cascadia or Generic), in a cookie | Any | **Change** | Becomes the one place for display settings, including track display (V1 keeps the track toggles in the Track File Manager's localStorage) |
 | 15 | Map JSON APIs | Compact sightings array, simplified tracks GeoJSON, first 300 efforts, one full track | Any | **Change** | Redesigned for MapLibre and deck.gl in the map app's own `urls.py` |
-| 16 | Record history dialog | Per field: original DB167 value, after cleaning (with the rule), then each edit | Any | **Change** | Becomes the per-record view of the single audit log; whether the original and cleaned steps stay is asked separately, since V2 is gold only for now |
+| 16 | Record history dialog | Per field: original DB167 value, after cleaning (with the rule), then each edit | Any | **Change** | Becomes the per-record view of the single audit log; shows only audit log changes, without V1's original and cleaned steps (Q-018) |
 | 17 | Glossary tips, tag picker, year/month chips, seasons, page state in the URL, resizable panels | Small UI helpers | Any | **Keep** | Audit each JS file before copying |
 | 18 | Colour profiles | Cascadia (per species) and Generic (per group) colours for dots, legend and track | Any | **Keep** | Moves to Settings (row 14) |
 | 19 | Feedback | Form that opens a GitHub issue with labels and up to 3 pictures; pictures stored in Postgres forever and served without login | Any | **Keep** | Q-016; pictures served only to signed-in users (Q-002) |

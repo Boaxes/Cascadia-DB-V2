@@ -113,3 +113,27 @@ Asked: 2026-11-26
 Options (multi-select): Feedback to GitHub, Server page, Data Pipeline page, Read-only record admin
 Answer: Feedback to GitHub and Server page stay. Data Pipeline page and the Django Admin read-only record pages are dropped. Feedback pictures move behind the login (Q-002). Which role sees the Server page goes into the permission table, to be confirmed.
 Affects: spec.md Pages, v1-inventory.md rows 19, 26, 27, 28
+
+### Q-017: Redone V1 Inventory (Phase 1)
+Asked: 2026-11-26
+Options: A Confirm all (recommended), B Confirm with changes
+Answer: A. All 28 rows of `v1-inventory.md` (at `3a637f1`) confirmed, including dropping the Cascadia Admin home (closes Q-011).
+Affects: v1-inventory.md, spec.md
+
+### Q-018: Record History Without Raw Data (Phase 1)
+Asked: 2026-11-26
+Options: A Audit log only (recommended), B Keep source values
+Answer: A. A record's History shows only what the audit log holds: each change by a person or the pipeline, with who, when, why, and old and new values. V1's "Original Database" and "After Cleaning" steps are not carried over.
+Affects: spec.md Audit Log (user-facing), record detail pages
+
+### Q-019: Sidebar Layout (Phase 1)
+Asked: 2026-11-26
+Options: A As proposed (recommended), B SQL as its own link, C Catalogs under Survey
+Answer: B. Top: logo and site name. Survey: Explore, Efforts, Sightings. Photo-ID: Humpback Whales (MnID), Blue Whales (Bm), Gray Whales (ErId). Data: Export, SQL. Manage: Track File Manager (Track Manager), Audit Log (Audit Manager), Users (Admin), Server (Admin). Bottom: Feedback, Settings, user name with Sign Out. Links show only to roles that can use them. The SQL page can send a query to the Export stack (Q-004).
+Affects: spec.md Information Architecture, every mockup
+
+### Q-020: Landing Page (Phase 1)
+Asked: 2026-11-26
+Options: A Explore (recommended), B Sightings list, C New home page
+Answer: A. Explore opens after sign-in, and `/` goes to Explore.
+Affects: spec.md NAV
