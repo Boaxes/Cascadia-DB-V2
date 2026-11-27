@@ -30,7 +30,7 @@ Every version of a record is a row. Nothing is ever deleted.
 
 D, with these rules.
 
-**Columns on every editable table** (efforts, sightings, conditions, events, samples, identifications, sighting events, other species, tag summaries, track metadata):
+**Columns on every data table except the lookups** (efforts, sightings, conditions, events, sighting events, other species, tag deployments, individuals, identifications, samples, track metadata):
 - `version_id` (identity) and `id` (the hashed record key, decision 002).
 - `valid_from` and `valid_to` (null on the current version).
 - `changed_by` (a user, or null for the pipeline) and `change_source` (site or pipeline).

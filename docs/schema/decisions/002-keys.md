@@ -15,7 +15,8 @@ What identifies each record in gold, and which ID people see and type.
 - **Survey records** (efforts, sightings, conditions, events, samples, identifications, sighting events and other species) are keyed by a 64-bit hash of their natural key, for example (research group, vessel, date, sighting number) for a sighting. This is V1's `key_hash`.
   - The key is the same on every load and survives DB167 renumbering, so versions and links stay attached.
   - The DB167 ID is kept as `legacy_id`. People see and type it ("Sighting 120417"), and URLs use it, as in V1.
-- **Lookup tables and catalog individuals** use plain identity keys, because nothing renumbers them. Individuals display as catalog plus number (CRC-20417).
+- **Lookup tables** keep the IDs the pipeline assigns, because nothing renumbers them.
+- **Catalog individuals** are keyed by a hash of (catalog, catalog number), so every version of a whale shares one key (decision 004). They display as catalog plus number (CRC-20417), and their URL is `/individuals/mn-20417/`. This detail was settled while writing the schema, and is listed for Brandon's review.
 
 ### B: Postgres Identity Keys
 
