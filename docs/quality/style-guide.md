@@ -11,7 +11,7 @@ How the Unified DB Django code is written, decided with Brandon in Phase 3. Each
 | `core` | Sign In and Sign Out, Settings, Feedback, the page layout and sidebar, the one track map component (TRACK-01), Global Search, the gold models, and the versioned write functions |
 | `survey` | Explore, Efforts, Effort, Sightings, Sighting, Edit and Delete |
 | `photoid` | Individuals, Individual |
-| `data` | Export, SQL |
+| `analysis` | Export, SQL (the sidebar's Data group; named `analysis` because `data` clashes with the `Data/` folder on Windows, CR-002) |
 | `manage` | Track File Manager, Audit Log, Server |
 
 Users and roles live in Django's admin and the `core` permissions (decision 006).

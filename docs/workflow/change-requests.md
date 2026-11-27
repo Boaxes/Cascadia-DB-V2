@@ -28,4 +28,4 @@ Raised: 2026-11-27, during Phase 4
 Files: `docs/quality/style-guide.md`
 Problem: the style guide names the Data group's app `data` (Q-097). Windows treats `data/` and `Data/` as the same folder, so the app's files land inside the read-only snapshot folder `Data/`. It happened once while scaffolding; the four files and three empty folders were removed straight away and `Data/` is as it was.
 Proposed change: rename the app to `analysis` (Export and SQL are how people take data away for analysis). The sidebar group is still labelled Data, and the URLs stay `/export/` and `/sql/`. Only the app's folder and Python name change.
-Decision:
+Decision: accepted in chat, 2026-11-27. Brandon: "Yes, use analysis".

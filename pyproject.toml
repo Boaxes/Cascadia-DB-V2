@@ -59,13 +59,13 @@ django_settings_module = "config.settings"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
-testpaths = ["core", "survey", "photoid", "data", "manage", "tests"]
+testpaths = ["core", "survey", "photoid", "analysis", "manage", "tests"]
 markers = ["spec(*ids): the spec requirement IDs this test proves"]
 addopts = "--strict-markers"
 
 [tool.coverage.run]
 branch = true
-source = ["config", "core", "survey", "photoid", "data", "manage"]
+source = ["config", "core", "survey", "photoid", "analysis", "manage"]
 omit = ["*/migrations/*", "*/tests/*"]
 
 [tool.coverage.report]

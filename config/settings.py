@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     "core",
     "survey",
     "photoid",
-    "data",
+    "analysis",
     "manage",
 ]
 

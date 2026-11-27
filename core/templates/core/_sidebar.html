@@ -24,8 +24,8 @@
       </nav>
       <nav class="nav-group">
         <h3>Data</h3>
-        {% include "core/_nav_link.html" with view="data:export_page" label="Export" icon="export" %}
-        {% include "core/_nav_link.html" with view="data:sql_page" label="SQL" icon="sql" %}
+        {% include "core/_nav_link.html" with view="analysis:export_page" label="Export" icon="export" %}
+        {% include "core/_nav_link.html" with view="analysis:sql_page" label="SQL" icon="sql" %}
       </nav>
     {% endif %}
     {% if perms.core.manage_tracks or perms.core.manage_audit or perms.core.manage_users or perms.core.view_server %}

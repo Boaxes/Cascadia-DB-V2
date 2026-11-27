@@ -8,6 +8,6 @@ urlpatterns = [
     path("", include("core.urls")),
     path("", include("survey.urls")),
     path("", include("photoid.urls")),
-    path("", include("data.urls")),
+    path("", include("analysis.urls")),
     path("", include("manage.urls")),
 ]
