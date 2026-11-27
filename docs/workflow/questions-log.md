@@ -482,3 +482,10 @@ Affects: decision 005 (analysis access), SQL-01
 Asked: 2026-11-27
 Options: A PostGIS only, dropping DuckLake (recommended), B DuckLake as source of truth plus the PostGIS copy
 Answer: Brandon asked how hard it would be to extend pg_ducklake to support PostGIS queries, and what the pg_duckdb spatial discussion's status means. Researched and answered in round 5.
+
+### Q-076: Where GPS Points Live, After Research (Phase 2, Round 5)
+Asked: 2026-11-27
+Findings shown: pg_duckdb runs a query that touches a DuckLake table in DuckDB's engine, which cannot call Postgres functions (pg_duckdb issue #615, open since February 2025, milestone "Long term"); PostGIS support in pg_duckdb is an open discussion (#606) with nothing built; DuckLake tables have no GiST index; Snowflake's pg_lake does PostGIS over Iceberg (not DuckLake) by translating functions one by one. Extending pg_ducklake would be a C++ fork of pg_duckdb's planner.
+Options: A PostGIS only, dropping DuckLake (recommended), B DuckLake as source of truth plus a PostGIS copy, C pg_lake with Iceberg tables
+Answer: B. DuckLake stays the source of truth (V2Spec, Q-028). Each track write goes to DuckLake first and then rebuilds that track in PostGIS, stamped with the DuckLake snapshot; a nightly check rebuilds any track whose stamp differs. This also settles Q-072 (sync) and Q-075.
+Affects: decision 003 (tracks), ducklake.md, schema.md track tables
