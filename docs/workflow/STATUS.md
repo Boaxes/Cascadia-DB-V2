@@ -35,11 +35,7 @@ Phase 2: Schema And DuckLake, on branch `phase-2-schema`. Every exit checklist i
 
 ## Waiting on Brandon
 
-- **CR-001** (`docs/workflow/change-requests.md`): versioned rows change AUD-02, AUD-04, AUD-05, HIST-01 to HIST-03, EDIT-06 and TFM-08, and decision 003 keeps MAP-06 as written. To accept it:
-  1. Delete the `Phase 1` line from the approvals file. That reopens Phase 1.
-  2. The agent edits the spec.
-  3. Brandon re-adds the Phase 1 line.
-  4. Then Phase 2 can be approved.
+- **CR-001** (`docs/workflow/change-requests.md`): versioned rows change AUD-02, AUD-04, AUD-05, HIST-01 to HIST-03, EDIT-06, TFM-08 and the roles table in `docs/spec/spec.md`, and the Undo button and notes in `mockups/audit.html`. Decision 003 keeps MAP-06 as written. Under the new gate (CLAUDE.md, The Gate), Brandon says yes in chat, the agent records it and makes the change, and Phase 1 stays approved.
 - **Review items settled while writing the schema** (not asked as questions):
   - An individual's key is a hash of (catalog, number), and its URL is `/individuals/mn-20417/` (decision 002).
   - Survey dates and times are stored as recorded in the field (no time zone). GPS and version times are stored in UTC.
