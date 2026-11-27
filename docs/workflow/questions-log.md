@@ -426,3 +426,27 @@ Asked: 2026-11-27
 Options: A replay an edit until the source changes that field, as V1 (recommended), B the edit always wins, C the source always wins
 Answer: None of these. Assume an incremental loading strategy in which the original database is not edited directly. There are no full rebuilds to replay edits over.
 Affects: decision 004 (audit), the pipeline contract in audit.md
+
+### Q-066: Lean Catalog Model (Phase 2, Round 2)
+Asked: 2026-11-27
+Options: A two tables plus one column on samples: `individual` (catalog code, number, species, sex, colour category, dead; other IDs and `extra` in jsonb) and `identification` (survey identifications and MnID photo-ID records together); MnID samples join `sample` with `individual_id` and `extra` (recommended), B three tables, with MnID photo-ID records in their own `catalog_record`
+Answer: A.
+Affects: decision 001 (catalogs), schema.md photo-ID tables
+
+### Q-067: Where Versions Live (Phase 2, Round 2)
+Asked: 2026-11-27
+Options: A every version in one table per record type, with a `_current` view; links checked by dbt tests rather than foreign keys (recommended), B a current table plus a `_history` table per record type
+Answer: A.
+Affects: decision 004 (audit), schema.md, audit.md
+
+### Q-068: Pipeline Version Against a Person's Edit (Phase 2, Round 2)
+Asked: 2026-11-27
+Options: A the newest version wins; the pipeline adds a version only when the source row changed, B a person's edit is never overwritten and the pipeline's change is held for review
+Answer: Neither is needed. Loading is incremental and only loads data not loaded before, so the pipeline adds new records and never sends a new version of a record already loaded. The question does not arise, and the design needs no source hash.
+Affects: decision 004 (audit), the pipeline contract in audit.md
+
+### Q-069: Restoring Versions From Before a Pipeline Change (Phase 2, Round 2)
+Asked: 2026-11-27
+Options: A any version can be restored, one rule for all (recommended), B keep AUD-05: only versions written by people can be restored
+Answer: A. Any version can be restored. AUD-05 changes; added to CR-001.
+Affects: spec.md AUD-05 (through CR-001), audit.md
