@@ -86,7 +86,7 @@ The GPS points' source of truth is DuckLake's `track_point` table, outside Postg
 | `sighting_event` | Reactions and follow events within a sighting. | 8,098 | SDET-07, EXP-03 |
 | `other_species` | Birds and other animals present at a sighting. | 6,028 | SDET-07, EXP-03 |
 | `tag_deployment` | Tags put on animals. | 1,048 | SDET-07, EXP-03 Tags, FILT Tags and Samples |
-| `individual` | One whale in one catalog (Mn, Bm, Er). `other_ids` holds aliases, retired IDs and cross-catalog IDs as given. `search_ids` holds the same, normalised by `gold.normalize_id()`. | about 22,500 | IND, IDET-01 to IDET-03, SRCH |
+| `individual` | One whale in one catalog (Mn, Bm, Er). `other_ids` holds aliases, retired IDs and cross-catalog IDs as given. `search_ids` holds the same, normalised by `gold.normalize_id()`. | about 16,000 (10,743 MnID plus V1's 11,802, less the 6,633 humpbacks both hold) | IND, IDET-01 to IDET-03, SRCH |
 | `identification` | One time an individual was seen: survey identifications (`source = 'survey'`) and catalog photo-ID records (`source` = the catalog code) together. `sighting_id` links a catalog record to a survey sighting where the pipeline matched one. | about 253,000 | IDET-04, IDET-05, IDET-07, SDET-07, FILT-04 |
 | `sample` | Biopsies, eDNA and other samples, from surveys and from catalogs (lab results in `extra`). | about 4,700 | SDET-06, IDET-06, EXP-03 |
 | `track` | A GPS track's metadata: file name, status, matched effort, the DuckLake snapshot of its points. | 1,570 | TFM, EDET-03, EDET-08 |

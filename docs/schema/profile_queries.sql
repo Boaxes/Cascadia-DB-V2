@@ -369,3 +369,35 @@ select count(*) as keys_used_twice from (
 -- 10,397,499 points in 1,552 tracks, one fix every 15 s, a random walk at about 7 knots.
 -- Run scratch/profile/track_size.py; it writes scratch/profile/points.parquet and prints the bytes.
 select 10397499 as points, 1552 as tracks;
+
+-- name: sightings_by_hour
+select hour(sighting_time::time) as hour, count(*) as n, round(100.0 * count(*) / sum(count(*)) over (), 1) as pct
+from 'Data/Postgres/app/sighting.parquet' where sighting_time is not null group by 1 order by 1;
+
+-- name: sub_area_extent
+-- Where surveys happen: the busiest sub-areas with the spread of their sighting positions.
+select e.sub_area, count(distinct e.id) as efforts, count(s.id) as sightings,
+       round(quantile_cont(s.lat, 0.1), 2) as lat_p10, round(quantile_cont(s.lat, 0.9), 2) as lat_p90,
+       round(quantile_cont(s.lon, 0.1), 2) as lon_p10, round(quantile_cont(s.lon, 0.9), 2) as lon_p90
+from 'Data/Postgres/app/daily_effort.parquet' e join 'Data/Postgres/app/sighting.parquet' s on s.daily_effort_id = e.id
+where s.lat is not null group by 1 order by efforts desc limit 15;
+
+-- name: species_by_region
+select e.region, sp.common_name, count(*) as n
+from 'Data/Postgres/app/sighting.parquet' s join 'Data/Postgres/app/daily_effort.parquet' e on e.id = s.daily_effort_id
+join 'Data/Postgres/app/species.parquet' sp on sp.id = s.species_id
+where e.region in ('US West Coast', 'British Columbia', 'Mexico')
+group by 1, 2
+qualify row_number() over (partition by e.region order by count(*) desc) <= 5
+order by 1, 3 desc;
+
+-- name: efforts_by_year_with_track
+select year(e.effort_date) as yr, count(*) as efforts, count(t.daily_effort_id) as with_track
+from 'Data/Postgres/app/daily_effort.parquet' e
+left join (select distinct daily_effort_id from 'Data/Postgres/app/track.parquet') t on t.daily_effort_id = e.id
+where e.effort_date >= date '2013-01-01' group by 1 order by 1;
+
+-- name: crc_share_of_tracked_efforts
+select e.research_group, count(*) as efforts_with_track from 'Data/Postgres/app/daily_effort.parquet' e
+join (select distinct daily_effort_id from 'Data/Postgres/app/track.parquet') t on t.daily_effort_id = e.id
+group by 1 order by 2 desc limit 5;
