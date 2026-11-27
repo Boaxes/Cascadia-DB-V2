@@ -1,0 +1,43 @@
+# The Docker stack GitHub runs: PostGIS 18 with PostGIS 3.6 (the image V1 uses) and the web app.
+# Every value here is for a throwaway local database, not a secret.
+name: unified-db
+
+services:
+  db:
+    image: imresamu/postgis:18-3.6
+    environment:
+      POSTGRES_DB: unified
+      POSTGRES_USER: unified
+      POSTGRES_PASSWORD: unified
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U unified -d unified"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      DJANGO_SECRET_KEY: docker-local-only
+      DJANGO_DEBUG: "true"
+      DJANGO_SECURE: "false"
+      DATABASE_URL: postgis://unified:unified@db:5432/unified
+      DUCKLAKE_DATA_PATH: /ducklake
+    volumes:
+      - .:/app
+      - ducklake:/ducklake
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  ducklake:
