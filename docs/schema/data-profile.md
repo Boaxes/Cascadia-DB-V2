@@ -110,8 +110,8 @@ One GPS track file per effort day, held in V1's DigitalOcean Spaces bucket (`obj
 - **`object_key`** repeats on 14 keys (query: track_duplicate_object_keys).
 - **Points per track** (query: track_size): 2,026 at the median, 19,389 at the 90th percentile, 38,778 at the 99th and 49,504 at most. That is 10,397,499 in total.
 - **Length:** 56 nm at the median, 113 nm at the 90th percentile and 407 nm at most.
-- **Fix rate and speed** (query: track_fix_rate_and_speed):
-  - Seconds between fixes: 1.2 (10th percentile), 15 (median), 30 (90th).
+- **Point spacing and speed** (query: track_point_spacing_and_speed):
+  - Seconds between GPS points: 1.2 (10th percentile), 15 (median), 30 (90th).
   - Mean speed: 3.0, 7.3 and 13.5 knots.
   - Duration: 3.8, 8.0 and 11.7 hours.
 - **Points by year** run from 50,620 (2025) to 1,489,436 (2017) (query: track_points_by_year).

@@ -10,7 +10,7 @@ Where the track catalog lives, how points are laid out, which copy is the source
 
 ## Findings
 
-- **Volume:** 10,397,499 points across 1,552 tracks: 2,026 at the median, 49,504 at most, one fix every 15 s at the median. That is about 116 MB as Parquet with zstd, or 11 bytes a point. It grows by about 1 million points a year.
+- **Volume:** 10,397,499 points across 1,552 tracks: 2,026 at the median, 49,504 at most, one GPS point every 15 s at the median. That is about 116 MB as Parquet with zstd, or 11 bytes a point. It grows by about 1 million points a year.
 - **PostGIS can't run spatial queries on DuckLake tables.**
   - pg_ducklake and pg_duckdb run any query that touches a DuckLake table in DuckDB's engine, which cannot call Postgres functions (pg_duckdb issue #615, open since February 2025, milestone "Long term").
   - PostGIS support is an open discussion (#606) with nothing built.
@@ -28,7 +28,7 @@ Where the track catalog lives, how points are laid out, which copy is the source
 ### What PostGIS Holds
 
 - **First choice (Q-071), replaced:** every point as a row (10.4 million rows), plus 11 m and 550 m lines with per-vertex step maxima, in three copy tables beside `gold.track`. Brandon rejected it as bloated (Q-078).
-- **Chosen (Q-078): one row per track.** `gold.track.geom` is a `MultiLineStringM` holding every fix, with M = the fix time. A new part starts where fixes are more than 60 s apart, the smallest gap the settings allow, so time gaps fall only between parts and the browser applies each user's rules (TRACK-06). Generated columns hold Explore's 550 m line, the point count, the length and the top speed. Effort and sighting maps simplify one track to 11 m on request.
+- **Chosen (Q-078): one row per track.** `gold.track.geom` is a `MultiLineStringM` holding every GPS point, with M = the point's time. A new part starts where GPS points are more than 60 s apart, the smallest gap the settings allow, so time gaps fall only between parts and the browser applies each user's rules (TRACK-06). Generated columns hold Explore's 550 m line, the point count, the length and the top speed. Effort and sighting maps simplify one track to 11 m on request.
 - **Rejected:** lines only (breaks MAP-06).
 
 ### Source of Truth and Sync
@@ -44,7 +44,7 @@ Where the track catalog lives, how points are laid out, which copy is the source
 DuckLake is the source of truth for points. Each `gold.track` version holds its points in `geom`, which the site reads.
 
 **DuckLake layout:**
-- One table, `track_point (track_id, fix_time, lon, lat)`, partitioned by year, on the droplet's disk.
+- One table, `track_point (track_id, point_time, lon, lat)`, partitioned by year, on the droplet's disk.
 - Every write is a snapshot.
 - `gold.track` is versioned like every other table (decision 004), and each version keeps its own `geom`, so earlier versions load straight from Postgres (TFM-04).
 

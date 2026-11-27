@@ -105,8 +105,8 @@ Species names and event codes are public reference lists, not records, so the re
   - 30 efforts with a second or third track file. Only one per effort may be matched (TFM-06); the extras are generated as not matched, with a file name dated to that effort.
 - **Points:**
   - 2,026 at the median, 19,389 at the 90th percentile, 49,504 at most.
-  - Fixes every 15 s at the median (1 to 30 s from the 10th to 90th percentile).
-  - Mean speed 3 / 7.3 / 13.5 kn, and a duration of 3.8 / 8.0 / 11.7 h (`track_size`, `track_fix_rate_and_speed`).
+  - A GPS point every 15 s at the median (1 to 30 s from the 10th to 90th percentile).
+  - Mean speed 3 / 7.3 / 13.5 kn, and a duration of 3.8 / 8.0 / 11.7 h (`track_size`, `track_point_spacing_and_speed`).
 - **Paths:**
   - Each track leaves a harbour in its sub-area, runs a survey pattern offshore (transect legs, loops, and stops at sightings), and returns. The land outline from `gold.land_inland` keeps every point at sea.
   - The sightings of a tracked effort lie on or near its track at their times.
@@ -114,7 +114,7 @@ Species names and event codes are public reference lists, not records, so the re
 - **Gaps and faults** (TRACK-04, TFM-04):
   - About 36% of tracks have one or more silences longer than 30 minutes, matching the split counts in `track_geometry_parts` (1 to 13 pieces, with one track of 29 and one of 262).
   - About 1% of tracks have a step over 40 kn (suspect). This is a chosen figure: V1's suspect count is not in `Data/`.
-  - Some tracks have fixes out of time order, and some have repeated rows.
+  - Some tracks have GPS points out of time order, and some have repeated rows.
 - **File names:** follow V1's form, `YYYYMMDD-VES_source.csv`.
 
 ## Photo-ID
@@ -148,7 +148,7 @@ Each is present in both sizes, so tests find it:
 | Effort with a track that has no points (blank) | Track pill Blank (EFF-01) |
 | Track with no effort | Not Matched (TFM-01) |
 | Second file for an effort, not matched | TFM-06 |
-| Suspect track; track with misordered and repeated fixes | TRACK-02, TFM-04 |
+| Suspect track; track with misordered and repeated GPS points | TRACK-02, TFM-04 |
 | Track with 262 pieces; the 49,504-point track | Gap drawing and performance |
 | Placeholder date 1950-01-01; noon placeholder times | Sorting and display |
 | Out-of-range values (Beaufort 32, cloud 1,002%, end longitude -258) | Display must not break |

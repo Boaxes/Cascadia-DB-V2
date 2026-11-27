@@ -507,13 +507,13 @@ create index sample_change on gold.sample (change_id);
 -- GPS tracks (decision 003). One row per track version. DuckLake is the source of truth for the
 -- points; `geom` is the PostGIS copy of all of them, written in the same action as DuckLake.
 --
--- geom: every fix in file order, with M = the fix time in seconds since 1970 (UTC). A new part
--- starts wherever two fixes are more than 60 s apart, the smallest gap the settings allow
+-- geom: every GPS point in file order, with M = the point's time in seconds since 1970 (UTC). A new part
+-- starts wherever two GPS points are more than 60 s apart, the smallest gap the settings allow
 -- (TRACK-04), so a time gap can only fall between parts. The browser compares the times either
 -- side of each part boundary with the user's minutes, and checks the distance and speed rules
 -- between consecutive vertices (TRACK-06).
 
--- Fastest step between consecutive fixes, in knots, across part boundaries (TRACK-02, TFM-04).
+-- Fastest step between consecutive GPS points, in knots, across part boundaries (TRACK-02, TFM-04).
 create function gold.track_top_knots(track geometry) returns real
 language sql immutable strict parallel safe as $$
     select max(knots)::real from (
@@ -524,7 +524,7 @@ language sql immutable strict parallel safe as $$
     ) steps
 $$;
 
--- Length in nautical miles along the fixes, not counting the jumps between parts.
+-- Length in nautical miles along the GPS points, not counting the jumps between parts.
 create function gold.track_length_nm(track geometry) returns numeric
 language sql immutable strict parallel safe as $$
     select round((ST_LengthSpheroid(track, 'SPHEROID["WGS 84",6378137,298.257223563]') / 1852.0)::numeric, 3)

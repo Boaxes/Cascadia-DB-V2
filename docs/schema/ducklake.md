@@ -1,6 +1,6 @@
 # GPS Track Storage: DuckLake and PostGIS
 
-How GPS points are stored, written and read (decision 003). DuckLake is the source of truth for points. In Postgres, each version of a track is one row of `gold.track`, and its `geom` holds every fix as a `MultiLineStringM`. The site and spatial queries read that.
+How GPS points are stored, written and read (decision 003). DuckLake is the source of truth for points. In Postgres, each version of a track is one row of `gold.track`, and its `geom` holds every GPS point as a `MultiLineStringM`. The site and spatial queries read that.
 
 ## Pieces
 
@@ -22,11 +22,11 @@ ATTACH 'ducklake:postgres:dbname=unified' AS lake (DATA_PATH '/srv/unified-db/du
 CREATE TABLE lake.track_point (
     track_id  BIGINT,       -- gold.track.id
     seq       INTEGER,      -- position in the file, from 1; the Track File Manager's line number
-    fix_time  TIMESTAMPTZ,  -- UTC
+    point_time TIMESTAMPTZ, -- UTC
     lon       DOUBLE,
     lat       DOUBLE
 );
-ALTER TABLE lake.track_point SET PARTITIONED BY (year(fix_time));
+ALTER TABLE lake.track_point SET PARTITIONED BY (year(point_time));
 ```
 
 - **Partitioned by year.** At V1's volume that's about 1 million points and 10 MB a year, so a year's files stay small, and the SQL page's points-by-year Parquet (decision 005) maps one-to-one.
@@ -38,14 +38,14 @@ ALTER TABLE lake.track_point SET PARTITIONED BY (year(fix_time));
 
 `gold.track.geom` is a `geometry(MultiLineStringM, 4326)`:
 
-- **Vertices:** one per fix, in file order. X and Y are longitude and latitude, and M is the fix time in seconds since 1970 (UTC). The Track File Manager's line N is vertex N across the parts.
-- **Parts:** a new part starts wherever two consecutive fixes are more than 60 s apart. Sixty seconds is the smallest gap the settings allow (TRACK-04: more than N minutes, N from 1).
+- **Vertices:** one per GPS point, in file order. X and Y are longitude and latitude, and M is the point's time in seconds since 1970 (UTC). The Track File Manager's line N is vertex N across the parts.
+- **Parts:** a new part starts wherever two consecutive GPS points are more than 60 s apart. Sixty seconds is the smallest gap the settings allow (TRACK-04: more than N minutes, N from 1).
   - Inside a part, no step can ever count as a time gap.
   - At each part boundary, the browser compares the two M values with the user's minutes, and draws the jump as a gap or as ordinary line (TRACK-05, TRACK-06).
 - **Distance and speed rules:** checked between consecutive vertices of whatever line was sent.
-  - On effort and sighting maps (11 m) and in the Track File Manager (every fix), that is exact or nearly so.
+  - On effort and sighting maps (11 m) and in the Track File Manager (every GPS point), that is exact or nearly so.
   - On Explore's 550 m line it is approximate, which is acceptable at that zoom.
-- **Size:** 10.4 million vertices of three doubles is about 250 MB before Postgres compresses it. The largest track (49,504 fixes) is about 1.2 MB.
+- **Size:** 10.4 million vertices of three doubles is about 250 MB before Postgres compresses it. The largest track (49,504 points) is about 1.2 MB.
 
 **Generated columns** need no code to keep them right:
 
@@ -53,10 +53,10 @@ ALTER TABLE lake.track_point SET PARTITIONED BY (year(fix_time));
 |---|---|---|
 | `geom_explore` | `ST_Simplify(geom, 0.005)` (about 550 m) | Explore's tracks, with a GiST index (MAP-05, EXPL-02) |
 | `point_count` | `ST_NPoints(geom)` | Track card, Explore popup (EDET-08, EXPL-05) |
-| `length_nm` | `gold.track_length_nm(geom)`, along the fixes and not across part jumps | Track card, distance check (EDET-07) |
+| `length_nm` | `gold.track_length_nm(geom)`, along the GPS points and not across part jumps | Track card, distance check (EDET-07) |
 | `top_knots` | `gold.track_top_knots(geom)`, the fastest step including across part boundaries | Suspect when over 40 kn (TRACK-02) |
 
-Track Health's other counts (fixes out of time order, repeated rows, gaps under the default rules) are computed from `geom` when the Track File Manager opens a track. That's one row, so it's quick.
+Track Health's other counts (GPS points out of time order, repeated rows, gaps under the default rules) are computed from `geom` when the Track File Manager opens a track. That's one row, so it's quick.
 
 ## Write Path
 
@@ -103,7 +103,7 @@ flowchart LR
     end
     T -- geom_explore, GiST --> EX[Explore map]
     T -- ST_Simplify geom, 11 m --> ED[Effort and sighting maps]
-    T -- geom, every fix --> TFM[Track File Manager]
+    T -- geom, every GPS point --> TFM[Track File Manager]
     T -- geom, GiST --> SQ[Spatial queries over tracks]
     V --> OLD[Track File Manager History: earlier versions]
     L --> EXP[Export: raw GPS files as<br/>datetime_utc,latitude,longitude CSV]
@@ -123,5 +123,5 @@ The DuckLake catalog is in the Postgres dump, and the data path is a folder of P
 ## What Phase 4 Must Confirm
 
 - The installed DuckLake version supports a Postgres catalog, `SET PARTITIONED BY`, and commit messages with extra info.
-- `ST_Simplify` on a `MultiLineStringM` keeps the M values. Building and simplifying the largest track (49,504 fixes) stays well under a second.
+- `ST_Simplify` on a `MultiLineStringM` keeps the M values. Building and simplifying the largest track (49,504 points) stays well under a second.
 - A restore from backup brings back both the catalog and the files.

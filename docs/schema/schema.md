@@ -14,7 +14,7 @@ The clean data the site reads, in PostgreSQL 18 with PostGIS 3.6. The runnable D
   - Lookup tables keep the IDs the pipeline assigns.
 - **Times:**
   - Survey dates and times are stored as recorded in the field: `date`, `time`, and `timestamp` without a time zone. This is how DB167 holds them.
-  - GPS fixes and version times are `timestamptz` (UTC).
+  - GPS point times and version times are `timestamptz` (UTC).
   - Export converts to UTC or Pacific on request (EXP-07).
 - **Positions:** `geometry(Point, 4326)`, longitude and latitude. The Parquet export writes them as WKT.
 - **No check constraints on measured values.** The profile found Beaufort up to 32 and cloud cover up to 1,002%. Gold stores what the pipeline delivers, and the pipeline's tests flag oddities. Checks exist only on controlled values (codes, statuses, version columns).
@@ -56,7 +56,7 @@ erDiagram
     daily_effort |o--o{ sighting : "has (optional)"
     daily_effort |o--o{ daily_condition : "weather readings"
     daily_effort |o--o{ daily_event : "log entries"
-    daily_effort |o--o| track : "one GPS track (every fix as MultiLineStringM)"
+    daily_effort |o--o| track : "one GPS track (every GPS point as MultiLineStringM)"
     event_code ||--o{ daily_event : "codes"
     species |o--o{ sighting : "of"
     sighting |o--o{ sighting_event : "events"
@@ -86,7 +86,7 @@ The GPS points' source of truth is DuckLake's `track_point` table, outside Postg
 | `individual` | One whale in one catalog (Mn, Bm, Er). `other_ids` holds aliases, retired IDs and cross-catalog IDs as given. `search_ids` holds the same, normalised by `gold.normalize_id()`. | about 22,500 | IND, IDET-01 to IDET-03, SRCH |
 | `identification` | One time an individual was seen: survey identifications (`source = 'survey'`) and catalog photo-ID records (`source` = the catalog code) together. `sighting_id` links a catalog record to a survey sighting where the pipeline matched one. | about 253,000 | IDET-04, IDET-05, IDET-07, SDET-07, FILT-04 |
 | `sample` | Biopsies, eDNA and other samples, from surveys and from catalogs (lab results in `extra`). | about 4,700 | SDET-06, IDET-06, EXP-03 |
-| `track` | One GPS track per row: file name, status, matched effort, the DuckLake snapshot, and `geom`, every fix as a `MultiLineStringM` with M = the fix time (seconds since 1970, UTC). A new part starts where two fixes are more than 60 s apart, the smallest gap the settings allow, so time gaps fall only between parts. Generated columns hold Explore's 550 m line, the point count, the length and the top speed (suspect above 40 kn). | 1,570 rows, 10.4 million vertices | TFM, TRACK, MAP-05, EDET-03, EDET-04, EDET-08, EXPL-02, EXPL-05 |
+| `track` | One GPS track per row: file name, status, matched effort, the DuckLake snapshot, and `geom`, every GPS point as a `MultiLineStringM` with M = the point's time (seconds since 1970, UTC). A new part starts where two GPS points are more than 60 s apart, the smallest gap the settings allow, so time gaps fall only between parts. Generated columns hold Explore's 550 m line, the point count, the length and the top speed (suspect above 40 kn). | 1,570 rows, 10.4 million vertices | TFM, TRACK, MAP-05, EDET-03, EDET-04, EDET-08, EXPL-02, EXPL-05 |
 | `species` | Species lookup. | 65 | FILT, SRCH |
 | `vessel` | Vessel lookup, with spellings in `aliases`. | 1,310 | FILT, SRCH |
 | `research_group` | Research group lookup, with sharing status. | 1,093 | FILT-02 |
@@ -585,7 +585,7 @@ Generated from the loaded schema. Each index names the query it serves.
   - `ST_Intersects`, `ST_NPoints` and the `&&` operator became stubs.
   - The four GiST indexes on geometry were left out: `land_inland_geom`, `sighting_geom`, `track_geom_explore` and `track_geom`.
   - Function bodies were not checked (`check_function_bodies = off`).
-  - So the geometry types, those four indexes, `gold.is_on_land()`, `gold.track_top_knots()`, `gold.track_length_nm()`, and whether `ST_Simplify` keeps M were not tested against PostGIS. Phase 4 loads the unchanged file into PostGIS, tests them on real-sized tracks, and times a `geom` of 49,504 fixes.
+  - So the geometry types, those four indexes, `gold.is_on_land()`, `gold.track_top_knots()`, `gold.track_length_nm()`, and whether `ST_Simplify` keeps M were not tested against PostGIS. Phase 4 loads the unchanged file into PostGIS, tests them on real-sized tracks, and times a `geom` of 49,504 GPS points.
 - **Behaviour test.** `scratch/pgcheck/behaviour.sql` checked the following (results in [audit.md](audit.md)):
   - A pipeline load, a hand edit, a delete with dependents under one `change_id`, and a restore.
   - That the `_current` views hide deleted records.

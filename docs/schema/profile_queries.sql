@@ -199,12 +199,12 @@ select count(*) as tracks, sum(point_count) as total_points,
        quantile_cont(length_nm, [0.5, 0.9]) as p50_p90_nm, max(length_nm) as max_nm
 from 'Data/Postgres/app/track.parquet' where point_count > 0;
 
--- name: track_fix_rate_and_speed
--- Seconds between fixes and mean speed in knots, from point count, duration and length.
-select quantile_cont(sec_per_fix, [0.1, 0.5, 0.9]) as sec_per_fix_p10_p50_p90,
+-- name: track_point_spacing_and_speed
+-- Seconds between GPS points and mean speed in knots, from point count, duration and length.
+select quantile_cont(sec_per_point, [0.1, 0.5, 0.9]) as sec_per_point_p10_p50_p90,
        quantile_cont(knots, [0.1, 0.5, 0.9]) as knots_p10_p50_p90,
        quantile_cont(hours, [0.1, 0.5, 0.9]) as hours_p10_p50_p90
-from (select epoch(end_time_utc - start_time_utc) / nullif(point_count - 1, 0) as sec_per_fix,
+from (select epoch(end_time_utc - start_time_utc) / nullif(point_count - 1, 0) as sec_per_point,
              length_nm / nullif(epoch(end_time_utc - start_time_utc) / 3600.0, 0) as knots,
              epoch(end_time_utc - start_time_utc) / 3600.0 as hours
       from 'Data/Postgres/app/track.parquet' where point_count > 1);
@@ -366,7 +366,7 @@ select count(*) as keys_used_twice from (
 
 -- name: track_parquet_size_estimate
 -- Size on disk of every GPS point in Parquet (zstd), using invented points at V1's volume:
--- 10,397,499 points in 1,552 tracks, one fix every 15 s, a random walk at about 7 knots.
+-- 10,397,499 points in 1,552 tracks, one GPS point every 15 s, a random walk at about 7 knots.
 -- Run scratch/profile/track_size.py; it writes scratch/profile/points.parquet and prints the bytes.
 select 10397499 as points, 1552 as tracks;
 
