@@ -4,38 +4,40 @@ The agent keeps this file current so any session can pick up where the last one 
 
 ## Current Phase
 
-Phase 1: Spec And Mockup. Complete and waiting for Brandon's approval, on branch `phase-1-spec`.
+Phase 2: Schema And DuckLake, on branch `phase-2-schema`. Phase 1 approved 2026-11-26.
 
 ## Done
 
-- Workflow, phase gate and phase docs set up (2026-11-26).
-- Branch `phase-1-spec` created (2026-11-26).
-- `V1/` refreshed by Brandon to `Boaxes/Cascadia-DB` main `3a637f1` (2026-11-21). The first draft of the inventory came from a stale copy (`f4b2a36`) and was redone.
-- `docs/spec/v1-inventory.md` redone against `3a637f1` and confirmed (Q-017).
-- `docs/spec/spec.md`: 159 requirements with IDs and checks, no open assumptions.
-- `mockups/`: 19 pages plus `index.html` (the list of pages and URL variants), shared `style.css`, `icons.svg`, `sidebar.js`, `filters.js` and three map pictures. Each page checked in the preview at 1440 px and 390 px. Brandon says they look fine for now.
-- Reference screenshots skipped by Brandon's decision (Q-061): the mockups are the visual reference, and drift in the build is acceptable because it is refined through feedback.
-- Every question logged, Q-001 to Q-061. Decided:
-  - **Name:** The site is Unified DB (Q-060).
-  - **Access:** Nothing public. Five roles (Viewer, Editor, Track Manager, Audit Manager, Admin), assigned by role only. Every role can export and use SQL.
-  - **Map:** MapLibre plus deck.gl. Basemaps as V1. Explore keeps Fullscreen, Screenshot and the Clustering toggle; Measure is dropped.
-  - **Tracks:** One component. Settings (cookie, with per-map toggles): points, timeline events, direction arrows, no-track path (on by default); gap rules by time, distance and speed; gap style dashed, faint line or nothing. One colour from the colour profile; suspect tracks red and dashed. Detail levels as V1; the site reads points from PostGIS, DuckLake is the source of truth.
-  - **Navigation:** Sidebar groups Survey, Photo-ID, Data (Export, SQL) and Manage, with Feedback and Settings at the bottom. Explore is the landing page. Global fuzzy search at the top.
-  - **Records:** An htmx modal. One GPS track per effort.
-  - **Export and SQL:** Whole-table export covers gold tables only, with Parquet added. SQL runs in DuckDB WASM on its own page, with saved queries in cookies, and sends queries to the Export stack.
-  - **Audit:** One log for people and the pipeline. Undo deletes the entry; pipeline entries cannot be undone. History explains the current state. No DB167 write-back, but entries stay complete for a later job.
-  - **Photo-ID:** One combined Individuals list and an Individual page. Catalog data is read only (changes only through dbt). Everyone sees private records. Photos are random-colour whale icons; real photos later (OBIS-SEAMAP lead).
-  - **Admin tools:** Track File Manager kept. Feedback goes to GitHub with pictures attached by `gh` (the site stores none). Server page in the site layout. Users through Django Admin. The Data Pipeline page and read-only record admin are dropped.
-  - **Workflow:** Phase 5 is one step, not one branch per feature (Q-059).
+- Phase 1 complete and approved (spec, inventory, mockups, Q-001 to Q-061).
+- Branch `phase-2-schema` created from `phase-1-spec` (2026-11-27).
+- Step 1: `docs/schema/data-profile.md` and `docs/schema/profile_queries.sql`. Every figure cites a named query. Working scripts are in `scratch/profile/` (`run_queries.py`, `summarize.py`, `track_size.py`).
+- Step 2: six decision records in `docs/schema/decisions/`, each answered by Brandon (Q-062 to Q-077):
+  - **001 Catalogs:** two tables, `individual` (other IDs and `extra` in jsonb) and `identification` (survey and MnID records together), plus `individual_id` and `extra` on `sample`.
+  - **002 Keys:** hashed keys as V1, with the DB167 ID as `legacy_id` for display and URLs.
+  - **003 Tracks:**
+    - DuckLake (catalog in a Postgres schema, `track_point` partitioned by year) is the source of truth.
+    - PostGIS holds every point plus 11 m and 550 m lines whose vertices carry times and step maxima.
+    - Each write rebuilds the track in PostGIS, and a nightly check catches drift.
+    - pg_duckdb and pg_ducklake can't run PostGIS over DuckLake.
+  - **004 Audit:** versioned rows (`valid_from`, `valid_to`, who, why, `change_id`, `deleted`), all versions in one table per record type with a `_current` view.
+    - Restore inserts a copy of any version. Nothing is deleted.
+    - The pipeline loads incrementally and only writes first versions of new records.
+  - **005 SQL page:** Parquet of current rows, 11 m track lines and points by year, served with range requests.
+  - **006 Roles:** six custom permissions on the five Groups, set from code.
+- CR-001 raised: versioned rows change AUD-02, AUD-04, AUD-05, HIST-01 to HIST-03, EDIT-06 and TFM-08 in the frozen spec.
 
 ## Next
 
-- After Brandon approves Phase 1: Phase 2 (Schema And DuckLake) on a new branch `phase-2-schema`, starting with the data profile.
-- Carry into Phase 2: a time on every GPS point (TRACK-06), the PostGIS copy of DuckLake (MAP-06), Parquet refresh for SQL (SQL-01), and complete audit entries (HIST-02). Carry into Phase 4: a recent `gh` and push token on the server (Q-056), and the deploy path.
+- Step 3:
+  - `schema.md` (Mermaid ER diagram and every table, each index with the query it serves).
+  - `schema.sql` (validated on local Postgres 18 for the non-spatial parts).
+  - `ducklake.md` (write and read paths).
+  - `audit.md` (worked examples: a hand edit, a pipeline load, a restore).
+- Step 4: `synthetic-data-profile.md`.
+- Check that every spec page has the data it needs. Then ask Brandon to approve Phase 2.
 
-## Waiting On Brandon
+## Waiting on Brandon
 
-- Approve Phase 1 by adding the line `Phase 1: Approved <date>` to the approvals file in `docs/workflow/` (Brandon-only).
-- Commit the refreshed `V1/` on `phase-1-spec` (the gate stops the agent from doing it).
-- Edit the V1 line in `CLAUDE.md` (Sources section): change `f4b2a36` to `3a637f1` and `2026-09-29` to `2026-11-21`.
-- Optional, Brandon-only docs: `phase-5-build.md` for the one-step build (Q-059), and the screenshot steps in `phase-1-spec-and-mockup.md` and `phase-5-build.md` (Q-061).
+- CR-001: accept or reject. Suggested: collect every spec change from Phase 2 and reopen Phase 1 once, near the end of Phase 2.
+- Edit the V1 line in `CLAUDE.md` (Sources): change `f4b2a36` to `3a637f1` and `2026-09-29` to `2026-11-21`.
+- Optional, Brandon-only docs: `phase-5-build.md` for the one-step build (Q-059), and the screenshot steps (Q-061).
