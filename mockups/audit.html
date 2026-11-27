@@ -12,7 +12,7 @@
 <div class="main">
   <div class="page">
     <div class="page-head">
-      <div><h1>Audit Log</h1><p class="muted">Every change in effect, by people and by the pipeline.</p></div>
+      <div><h1>Audit Log</h1><p class="muted">Every change, by people and by the pipeline.</p></div>
     </div>
 
     <div class="card">
@@ -53,7 +53,7 @@
 </div>
 
 <dialog class="modal" id="entry">
-  <div class="modal-bar"><h1>Audit Entry</h1><div class="actions"><button class="btn btn-danger" type="button">Undo</button><button class="btn btn-quiet" type="button" data-close>Close</button></div></div>
+  <div class="modal-bar"><h1>Audit Entry</h1><div class="actions"><button class="btn" type="button">Restore This Version</button><button class="btn btn-quiet" type="button" data-close>Close</button></div></div>
   <div class="modal-body">
     <div class="card">
       <dl class="pairs">
@@ -73,14 +73,13 @@
         </tbody>
       </table>
     </div>
-    <p class="small muted">Undo puts the old values back and removes this entry from the log.</p>
+    <p class="small muted">Restore This Version makes this version current again, as a new change.</p>
   </div>
 </dialog>
 
 <dialog class="modal" id="pipeline">
-  <div class="modal-bar"><h1>Audit Entry</h1><div class="actions"><button class="btn btn-quiet" type="button" data-close>Close</button></div></div>
+  <div class="modal-bar"><h1>Audit Entry</h1><div class="actions"><button class="btn" type="button">Restore This Version</button><button class="btn btn-quiet" type="button" data-close>Close</button></div></div>
   <div class="modal-body">
-    <div class="notice">Change the pipeline rule to reverse this.</div>
     <div class="card">
       <dl class="pairs">
         <div><dt>When</dt><dd>2026-11-23 02:10</dd></div>
@@ -100,9 +99,8 @@
 </dialog>
 
 <dialog class="modal" id="older">
-  <div class="modal-bar"><h1>Audit Entry</h1><div class="actions"><button class="btn btn-danger" type="button" disabled>Undo</button><button class="btn btn-quiet" type="button" data-close>Close</button></div></div>
+  <div class="modal-bar"><h1>Audit Entry</h1><div class="actions"><button class="btn" type="button">Restore This Version</button><button class="btn btn-quiet" type="button" data-close>Close</button></div></div>
   <div class="modal-body">
-    <div class="notice amber">Undo the newer change first. Sighting 120417 was changed again on 2026-11-24.</div>
     <div class="card">
       <dl class="pairs">
         <div><dt>When</dt><dd>2026-11-20 16:05</dd></div>

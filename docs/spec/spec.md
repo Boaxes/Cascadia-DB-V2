@@ -10,7 +10,7 @@ How to read the requirements: each has a stable ID that Phase 5 tests cite, and 
 
 ### Purpose
 
-Cascadia DB V2 builds **Unified DB**, the internal website of Cascadia Research Collective (Q-060). People use it to explore marine mammal survey records (efforts, sightings, GPS tracks, samples) and the photo-ID catalogs, to fix GPS track files, to review and undo changes, and to take data away for analysis. It is a partial rebuild of V1 to a new spec, with clean, simple code.
+Cascadia DB V2 builds **Unified DB**, the internal website of Cascadia Research Collective (Q-060). People use it to explore marine mammal survey records (efforts, sightings, GPS tracks, samples) and the photo-ID catalogs, to fix GPS track files, to review changes and restore earlier versions, and to take data away for analysis. It is a partial rebuild of V1 to a new spec, with clean, simple code.
 
 ### Goals
 
@@ -51,7 +51,7 @@ Access comes only from roles. A role is a Django Group. One person may hold seve
 | Feedback, Settings, change own password | Yes | Yes | Yes | Yes | Yes |
 | Edit and delete efforts and sightings | | Yes | Yes | Yes | Yes |
 | Track File Manager, and track buttons on effort pages | | | Yes | | Yes |
-| Audit Log page, and Undo of any change | | | | Yes | Yes |
+| Audit Log page, and Restore any version | | | | Yes | Yes |
 | Users and roles | | | | | Admin only |
 | Server page | | | | | Admin only |
 
@@ -177,7 +177,7 @@ Purpose: see survey sightings and tracks on a map and narrow them with filters. 
 | EDIT-03 | Editable effort fields (13): Date, Start Time, End Time, Launch, Locality, Return, Region, Sub-Area, Survey Type, Project or Objective, Personnel, Distance (nm), Comments. | The form has exactly these fields. |
 | EDIT-04 | Two steps: the form (Review Changes is disabled until a value changes), then a Field, From, To table with an optional Why note and Save These Changes. Only changed fields are written, through the audit log. | Saving one change writes one audit entry with one field. |
 | EDIT-05 | Every input is validated. A bad number, date or time is shown against its field and nothing is saved (ERR-05). V1 showed an error page instead. | Latitude "abc" shows a field error. |
-| EDIT-06 | Delete lists the dependent records that go with it, counted per type ("3 sightings, 12 log entries"), takes an optional note, and says the record can be put back from the Audit Log. The record and every dependent row are kept in the audit entry, so Undo restores them. | Delete, then Undo, restores the record and its dependents. |
+| EDIT-06 | Delete lists the dependent records that go with it, counted per type ("3 sightings, 12 log entries"), takes an optional note, and says the record can be put back from the Audit Log. The delete writes a deleted version of the record and of every dependent, under one change, so restoring the version before it brings them all back (CR-001). | Delete, then Restore This Version on the version before it, brings back the record and its dependents. |
 | EDIT-07 | After a save or delete, a message confirms it and the page under the modal reloads. | |
 
 ### 4.8 Individuals (`/individuals/`)
@@ -256,7 +256,7 @@ Track Manager and Admin. V1's Track File Manager kept with all its features (Q-0
 | TFM-05 | Import (one or many CSV files, 25 MB each, 100 MB a batch) with a preview and a suggested effort; Fill From File with a comparison; Change Track File; Match and Unmatch; Create Track From Positions; Delete and Restore. Every action goes through the audit log. | |
 | TFM-06 | One track per effort is enforced (Q-008); a second file for the same effort is refused with a message. | |
 | TFM-07 | Track checks run after every write and nightly. | |
-| TFM-08 | Restoring a deleted file is the Undo of its delete entry, so it follows AUD-04 (Q-057). | |
+| TFM-08 | A deleted file is put back by restoring its last version before the delete, so it follows AUD-04 (Q-057, CR-001). | |
 
 ### 4.14 Audit Log (`/audit/`, `/audit/<id>/`)
 
@@ -265,10 +265,10 @@ Audit Manager and Admin (Q-021, Q-045).
 | ID | Requirement | Check |
 |---|---|---|
 | AUD-01 | Filters: Record (type and number), Who (each person, plus Pipeline), Change type, date range. | Filtering by Pipeline lists only pipeline entries. |
-| AUD-02 | Columns: When, Who, Change, Record, What Changed (first 3 fields), Note. 50 per page with no picker, newest first. | |
+| AUD-02 | Columns: When, Who, Change, Record, What Changed (first 3 fields), Note. 50 per page with no picker, newest first. Every change is listed, including deletes and restores; nothing is ever removed from the log (CR-001). | |
 | AUD-03 | An entry opens in the modal: When, Who, Record (link), Note, a Before and After table, and Removed With It counts for a delete. | |
-| AUD-04 | Undo puts the change back and deletes the entry, so the log lists only changes in effect (Q-044). Undo goes newest first per record: an older entry shows "Undo the newer change first." | Undo of a field edit restores the old value and removes the entry. |
-| AUD-05 | Pipeline entries can be viewed but not undone; they say "Change the pipeline rule to reverse this." (Q-046). | A pipeline entry has no Undo button, and a POST is refused. |
+| AUD-04 | Restore This Version writes a new version that copies the chosen one, with who and why; nothing is deleted (CR-001, replacing Q-044's Undo). Any version can be restored, in any order. Restoring the version before a delete also brings back every record deleted with it. | Restoring the version before a field edit puts the old value back as a new version, and both changes stay in the log. |
+| AUD-05 | Any version can be restored, including one written by the pipeline (Q-069, CR-001, replacing Q-046). | A pipeline version has Restore This Version, and restoring it writes a new version by the person. |
 
 ### 4.15 Users (`/admin/`)
 
@@ -355,9 +355,9 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 
 | ID | Requirement | Check |
 |---|---|---|
-| HIST-01 | One audit log holds every change in effect, by people (edits, deletes, track file actions) and by the pipeline. | |
-| HIST-02 | Each entry holds when, who (a person or Pipeline), the change type, the record (table and key), each changed field's old and new value, an optional note, and for a delete a snapshot of the record and its dependents. This is enough for a later job to write changes back to DB167 (Q-015). | |
-| HIST-03 | Every record page has History, which lists the changes in effect on that record in time order (pipeline changes, then edits, and so on), with who, when, why, and old and new values. It explains the record's current state. Empty: "Nothing has been changed on this record." | |
+| HIST-01 | One audit log holds every change, by people (edits, deletes, restores, track file actions) and by the pipeline. Each change is a version of the record (CR-001). | |
+| HIST-02 | Each version holds the whole record, with when, who (a person or Pipeline), the change type, an optional note, and the change it belongs to. Each changed field's old and new value comes from comparing it with the version before. A delete writes a deleted version of the record and of each dependent under one change (CR-001). This is enough for a later job to write changes back to DB167 (Q-015). | |
+| HIST-03 | Every record page has History, which lists every version of that record in time order (the pipeline load, then edits, deletes and restores), with who, when, why, and old and new values. It explains the record's current state (CR-001). Empty: "Nothing has been changed on this record." | |
 | HIST-04 | There is no DB167 state, no T-SQL script, and no "Original Database" or "After Cleaning" step (Q-015, Q-018). | |
 
 ### 5.6 Global Search (Q-052, Q-053)
@@ -405,7 +405,6 @@ V1's filter panel, kept (Q-017), with the changes below. The same filters drive 
 - Per-user permission grants (Q-013).
 - A page-size picker (Q-024).
 - Measure tool, Density Layer and Dark Mode (Q-031, Q-052).
-- Keeping undone changes in the audit log (Q-044).
 
 ## 7. Assumptions
 

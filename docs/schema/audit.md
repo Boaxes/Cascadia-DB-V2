@@ -98,12 +98,13 @@ A track version works like any other record, and it carries its points in `geom`
 |---|---|
 | Audit Log page (AUD) | `gold.change_log`, newest first, one entry per `change_id`. Filters: record (table and legacy ID), Who (`changed_by`, or Pipeline where it is null), Change type, date range. |
 | History on a record page (HIST-03) | That record's versions by `id`, in time order: pipeline load, then edits, deletes and restores. |
-| Restore This Version | A button on any version, in History and the Audit Log, for Audit Manager and Admin (decision 006, `manage_audit`). |
+| Restore This Version | A button on every Audit Log entry, for Audit Manager and Admin (AUD-04, AUD-05, decision 006, `manage_audit`). |
 
-## Spec Changes This Needs
+## Spec Changes
 
-The frozen spec describes Undo by deletion. CR-001 lists the changes:
+CR-001, accepted on 2026-11-27, brought the spec and mockups in line with this design:
 - AUD-04: Restore writes a new version, and nothing is deleted.
 - AUD-05: pipeline versions can be restored too.
 - AUD-02 and HIST-01 to HIST-03: every version is listed.
 - EDIT-06 and TFM-08: a delete is put back by restoring.
+- The Audit Log mockup has Restore This Version in place of Undo.

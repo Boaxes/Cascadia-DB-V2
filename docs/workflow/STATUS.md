@@ -4,11 +4,12 @@ The agent keeps this file current so any session can pick up where the last one 
 
 ## Current Phase
 
-Phase 2: Schema And DuckLake, on branch `phase-2-schema`. Every exit checklist item is written. Waiting on Brandon: CR-001, the review items below, and approval.
+Phase 2: Schema And DuckLake, on branch `phase-2-schema`. Every exit checklist item is written. Waiting on Brandon: the review items below, and approval.
 
 ## Done
 
 - Phase 1 approved 2026-11-26.
+- CR-001 accepted 2026-11-27 (versioned records replace Undo): `docs/spec/spec.md`, `mockups/audit.html` and `mockups/edit.html` updated. Phase 1 stays approved.
 - **Step 1:** `docs/schema/data-profile.md` and `profile_queries.sql`. Every figure cites a named query. Scripts are in `scratch/profile/`.
 - **Step 2:** decision records 001 to 006 in `docs/schema/decisions/`, answered by Brandon (Q-062 to Q-077).
   - Catalogs: two tables.
@@ -35,13 +36,12 @@ Phase 2: Schema And DuckLake, on branch `phase-2-schema`. Every exit checklist i
 
 ## Waiting on Brandon
 
-- **CR-001** (`docs/workflow/change-requests.md`): versioned rows change AUD-02, AUD-04, AUD-05, HIST-01 to HIST-03, EDIT-06, TFM-08 and the roles table in `docs/spec/spec.md`, and the Undo button and notes in `mockups/audit.html`. Decision 003 keeps MAP-06 as written. Under the new gate (CLAUDE.md, The Gate), Brandon says yes in chat, the agent records it and makes the change, and Phase 1 stays approved.
 - **Review items settled while writing the schema** (not asked as questions):
   - An individual's key is a hash of (catalog, number), and its URL is `/individuals/mn-20417/` (decision 002).
   - Survey dates and times are stored as recorded in the field (no time zone). GPS and version times are stored in UTC.
   - No check constraints on measured values. The pipeline's tests flag oddities.
   - Real species names, event codes and harbour names are used in the synthetic data, because they are reference lists, not records.
-- **Approve Phase 2** by adding `Phase 2: Approved <date>` to the approvals file, after CR-001 is settled.
+- **Approve Phase 2** by adding `Phase 2: Approved <date>` to the approvals file.
 - **Edit the V1 line in `CLAUDE.md`** (Sources): change `f4b2a36` to `3a637f1` and `2026-09-29` to `2026-11-21`.
 - **Optional, Brandon-only docs:** `phase-5-build.md` (Q-059, one-step build) and the screenshot steps (Q-061).
 
