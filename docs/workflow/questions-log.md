@@ -471,3 +471,14 @@ Answer: Brandon asked about pg_duckdb. The point of DuckLake was to get GPS trac
 ### Q-073: Parquet for the SQL Page (Phase 2, Round 3)
 Asked: 2026-11-27
 Answer: Brandon asked what the question meant. Re-asked in round 4 with an explanation.
+
+### Q-074: Parquet for the SQL Page, Re-Asked (Phase 2, Round 4)
+Asked: 2026-11-27
+Options: A current rows of every table, 11 m track lines and all GPS points split by year, fetched by range requests and rewritten after loads and edits (recommended), B the same plus every version, C current rows and lines only
+Answer: A.
+Affects: decision 005 (analysis access), SQL-01
+
+### Q-075: Where GPS Points Live (Phase 2, Round 4)
+Asked: 2026-11-27
+Options: A PostGIS only, dropping DuckLake (recommended), B DuckLake as source of truth plus the PostGIS copy
+Answer: Brandon asked how hard it would be to extend pg_ducklake to support PostGIS queries, and what the pg_duckdb spatial discussion's status means. Researched and answered in round 5.
