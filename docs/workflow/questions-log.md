@@ -450,3 +450,24 @@ Asked: 2026-11-27
 Options: A any version can be restored, one rule for all (recommended), B keep AUD-05: only versions written by people can be restored
 Answer: A. Any version can be restored. AUD-05 changes; added to CR-001.
 Affects: spec.md AUD-05 (through CR-001), audit.md
+
+### Q-070: DuckLake Catalog Location (Phase 2, Round 3)
+Asked: 2026-11-27
+Options: A a `ducklake` schema in the same Postgres database (recommended), B a DuckDB file, C a SQLite file
+Answer: A. Applies only if DuckLake stays in the design (see Q-072).
+Affects: decision 003 (tracks), ducklake.md
+
+### Q-071: What the PostGIS Copy of Tracks Holds (Phase 2, Round 3)
+Asked: 2026-11-27
+Options: A every point plus 11 m and 550 m lines whose vertices carry times and step maxima, so gap rules run in the browser (recommended), B every point only, C lines only
+Answer: A.
+Affects: decision 003 (tracks), schema.md track tables
+
+### Q-072: Keeping PostGIS in Step With DuckLake (Phase 2, Round 3)
+Asked: 2026-11-27
+Options: A write path plus nightly check (recommended), B nightly rebuild, C pg_duckdb with no copy
+Answer: Brandon asked about pg_duckdb. The point of DuckLake was to get GPS tracks out of CSV files so PostGIS can query them; if Postgres can run those queries on DuckLake tables, a full PostGIS copy is redundant. Researched and answered in round 4.
+
+### Q-073: Parquet for the SQL Page (Phase 2, Round 3)
+Asked: 2026-11-27
+Answer: Brandon asked what the question meant. Re-asked in round 4 with an explanation.
