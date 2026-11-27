@@ -7,4 +7,4 @@ To approve a phase, add a line under "Approved" that starts at the very beginnin
 Phases count only in order: approving Phase 3 does nothing until Phase 2 is approved. To reopen a phase, delete its line (and the lines of every later phase). The agent can then edit that phase's files again.
 
 ## Approved
-
+Phase 1: Approved 2026-11-26

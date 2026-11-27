@@ -400,3 +400,29 @@ Affects: spec.md NAV-01, AUTH-01, Purpose; every mockup (sidebar, page titles, S
 Asked: 2026-11-26 (Brandon stopped the screenshot capture)
 Answer: Skip the reference screenshots in `docs/ui/` (Phase 1, step 5). The build will probably not match exactly what Brandon wants, and that is fine: the site is refined through his feedback after it is built, so some drift from the mockups is acceptable. The mockups in `mockups/` stay as the visual reference. `phase-1-spec-and-mockup.md` and `phase-5-build.md` still mention `docs/ui/`; they are Brandon-only, so he updates them if he wants the docs to match.
 Affects: Phase 1 exit checklist (screenshots), Phase 5 "match the approved screenshot" steps
+
+## Phase 2: Schema And DuckLake
+
+### Q-062: Catalog Model (Phase 2, Round 1)
+Asked: 2026-11-27
+Options: A generic tables (catalog, individual, individual_id, catalog_record, catalog_sample) with catalog-only fields in one jsonb `extra` column (recommended), B the same tables with every MnID column as a real column, C a set of tables per catalog
+Answer: Five tables is overkill. The jsonb `extra` column is the right pattern, but the design does far too much. A leaner model goes back to Brandon in round 2.
+Affects: decision 001 (catalogs), schema.md photo-ID tables
+
+### Q-063: Primary Keys (Phase 2, Round 1)
+Asked: 2026-11-27
+Options: A hashed keys as in V1, with the DB167 ID kept as `legacy_id` for display and URLs (recommended), B Postgres identity keys mapped back through a lookup table, C DB167 IDs as primary keys
+Answer: A. Hashed keys, as V1.
+Affects: decision 002 (keys), every survey table
+
+### Q-064: Audit Approach (Phase 2, Round 1)
+Asked: 2026-11-27
+Options: A one `audit_entry` table written by the app and the pipeline (recommended), B django-pghistory, C django-simple-history, D valid-from/valid-to history tables
+Answer: D, with changes. Use valid_from and valid_to, with columns for who and why. Undo does not delete rows: reverting writes a new row that copies the version being reverted to and makes it the valid one. Data rarely changes, so table growth is no concern. Brandon also noted the options did not explain how dbt would write into the design; the next round must.
+Affects: decision 004 (audit), audit.md; conflicts with the frozen spec (AUD-04 and related), raised as CR-001
+
+### Q-065: Rebuild Against Website Edit (Phase 2, Round 1)
+Asked: 2026-11-27
+Options: A replay an edit until the source changes that field, as V1 (recommended), B the edit always wins, C the source always wins
+Answer: None of these. Assume an incremental loading strategy in which the original database is not edited directly. There are no full rebuilds to replay edits over.
+Affects: decision 004 (audit), the pipeline contract in audit.md
