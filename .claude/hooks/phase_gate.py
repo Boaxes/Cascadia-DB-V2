@@ -4,6 +4,10 @@ The work runs in five phases (see CLAUDE.md). Each phase may only write its own
 files, and only Brandon approves a phase, by adding a line such as
 "Phase 1: Approved 2026-11-27" to docs/workflow/APPROVALS.md.
 
+An approved phase's files can still change through a change request: once
+docs/workflow/change-requests.md names a file or folder in backticks, the agent
+may write it. Brandon accepts the request in chat first (CLAUDE.md).
+
 Modes:
   (stdin JSON)   Claude Code PreToolUse hook. Exit 2 blocks the tool call.
   --status       Print the current phase and what it may write (SessionStart hook).
@@ -15,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]  # from the file itself: CLAUDE_PROJECT_DIR can be stale
 V1 = ROOT.parent / "Cascadia-DB"
 APPROVALS = "docs/workflow/APPROVALS.md"
+CHANGE_REQUESTS = "docs/workflow/change-requests.md"
 
 PHASES = {
     1: ("Spec And Mockup", "docs/workflow/phase-1-spec-and-mockup.md", ["docs/spec/", "mockups/", "docs/ui/"]),
@@ -23,8 +28,7 @@ PHASES = {
     4: ("Scaffolding", "docs/workflow/phase-4-scaffolding.md", None),  # None: the rest of the repo
     5: ("Build", "docs/workflow/phase-5-build.md", None),
 }
-ALWAYS = ["docs/workflow/STATUS.md", "docs/workflow/questions-log.md",
-          "docs/workflow/change-requests.md", "scratch/"]
+ALWAYS = ["docs/workflow/STATUS.md", "docs/workflow/questions-log.md", CHANGE_REQUESTS, "scratch/"]
 # Never written by the agent, in any phase.
 PROTECTED = [APPROVALS, ".claude/hooks/", ".githooks/pre-commit", ".env", "Data/", "V1/", "CLAUDE.md",
              "V2Spec.MD"] + [doc for _, doc, _ in PHASES.values()]
@@ -66,6 +70,15 @@ def under(r, paths):
     return any(r.startswith(x) or r == x.rstrip("/") if x.endswith("/") else r == x for x in paths)
 
 
+def in_change_request(r, frozen):
+    """True when change-requests.md names this file, or a folder holding it inside a frozen area, in backticks."""
+    path = ROOT / CHANGE_REQUESTS
+    text = path.read_text(encoding="utf-8") if path.exists() else ""
+    parts = r.split("/")
+    names = [r] + ["/".join(parts[:i]) + "/" for i in range(1, len(parts))]
+    return any(f"`{n}`" in text for n in names if under(n, frozen) or n == r)
+
+
 def write_problem(path):
     """Why the agent may not write this path now, or None if it may."""
     r = rel(path)
@@ -81,12 +94,14 @@ def write_problem(path):
         return None
     name, _, own = PHASES[phase]
     frozen = [p for n in range(1, phase) for p in (PHASES[n][2] or [])]
-    if own is None:
-        return f"{r} belongs to an approved phase and is frozen. Log it in docs/workflow/change-requests.md and ask." if under(r, frozen) else None
-    if under(r, own):
+    if under(r, frozen):
+        return None if in_change_request(r, frozen) else (
+            f"{r} belongs to an approved phase. Add a change request to {CHANGE_REQUESTS} that names it "
+            f"(or its folder) in backticks, and get Brandon's yes in chat first.")
+    if own is None or under(r, own):
         return None
     return (f"Phase {phase} ({name}) may only write {', '.join(own)} and the workflow logs. "
-            f"{r} waits for a later phase, or for a change request if it is frozen.")
+            f"{r} waits for a later phase.")
 
 
 def settings_problem(tool, inp):
@@ -137,8 +152,8 @@ def status():
         return
     name, doc, own = PHASES[phase]
     print(f"Phase gate: current phase is {phase} ({name}). Read {doc} before doing anything.")
-    print(f"Writable now: {', '.join(own) if own else 'the repo, except frozen and protected paths'}; "
-          f"plus {', '.join(ALWAYS)}.")
+    print(f"Writable now: {', '.join(own) if own else 'the repo, except protected paths'}; "
+          f"plus {', '.join(ALWAYS)}; plus approved-phase files named in a change request.")
     print(f"Approved so far: {sorted(approved()) or 'none'}. Only Brandon edits {APPROVALS}.")
 
 

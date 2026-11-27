@@ -8,3 +8,4 @@ Phases count only in order: approving Phase 3 does nothing until Phase 2 is appr
 
 ## Approved
 Phase 1: Approved 2026-11-26
+Phase 2: Approved 2026-11-27

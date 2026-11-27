@@ -23,7 +23,7 @@ The work runs in five phases, and **each ends with Brandon's written approval**.
 `.claude/hooks/phase_gate.py` runs before every file write and shell command. It enforces the following:
 
 - Each phase writes only its own folders, plus `scratch/` (gitignored working space) and the three workflow logs. Writes outside those are refused.
-- Once a phase is approved, its outputs are **frozen**. If a later phase finds something wrong with them, add an entry to [docs/workflow/change-requests.md](docs/workflow/change-requests.md) and ask Brandon. He reopens the phase if he agrees.
+Once a phase is approved, its outputs are frozen. To change one, add an entry to docs/workflow/change-requests.md that names each file or folder in backticks, and ask Brandon in chat. Once he says yes, record his answer in the entry's Decision field and make the change. The phase stays approved.
 - Only Brandon edits [docs/workflow/APPROVALS.md](docs/workflow/APPROVALS.md), this file, `V2Spec.MD`, the phase docs, the gate itself, `Data/` and `V1/`.
 - `.env` (live credentials), `Data/export_databases.py` and anything else that touches the live databases are blocked.
 - Hooks may not be skipped (`--no-verify` and similar), and the agent never commits, merges or pushes on `main`.
