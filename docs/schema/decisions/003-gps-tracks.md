@@ -1,6 +1,6 @@
-# 003: GPS Tracks in DuckLake and PostGIS
+# 003: GPS Tracks in PostGIS, With a DuckLake Copy
 
-**Status:** Decided (2026-11-27, by Brandon, Q-070, Q-071, Q-072, Q-075, Q-076, Q-078)
+**Status:** Decided (2026-11-27, by Brandon, Q-070, Q-071, Q-072, Q-075, Q-076, Q-078, Q-080, Q-082)
 **Phase:** 2
 **Spec requirements served:** MAP-05, MAP-06, TRACK-01 to TRACK-08, TFM-01 to TFM-08, SQL-01
 
@@ -33,23 +33,23 @@ Where the track catalog lives, how points are laid out, which copy is the source
 
 ### Source of Truth and Sync
 
-- **A (chosen): DuckLake is the source of truth.**
-  - Each track write goes to DuckLake in one transaction, then writes a new `gold.track` version with `geom` built from the points and the DuckLake snapshot ID.
-  - A nightly check (TFM-07) writes any version DuckLake has and Postgres lacks.
+- **First choice (Q-075), replaced: DuckLake is the source of truth.** Each write went to DuckLake first, then to a new `gold.track` version carrying the DuckLake snapshot ID, with a nightly job to repair Postgres from DuckLake's commit messages. Once Q-078 put every point of every version in `geom`, DuckLake held the same points and history twice.
+- **A (chosen, Q-082): Postgres is the source of truth, and DuckLake is a copy.**
+  - Each save commits a new `gold.track` version, then rewrites that track's rows in DuckLake from the saved `geom`.
+  - A nightly check (TFM-07) rewrites any track whose copy is missing or out of date, and can rebuild the lake from nothing.
 - **B:** PostGIS only, dropping DuckLake. One store and no sync, but against V2Spec and Q-028.
 - **C:** pg_lake with Iceberg tables. PostGIS works there today, but it's a young, separate service, and Iceberg, not DuckLake.
 
 ## Decision
 
-DuckLake is the source of truth for points. Each `gold.track` version holds its points in `geom`, which the site reads.
+Each `gold.track` version holds its points in `geom`, which the site reads, and is the source of truth. `gold.track` is versioned like every other table (decision 004), with the same four change types, so earlier versions load straight from Postgres (TFM-04). Status is worked out by `track_current`, not stored (Q-080).
 
 **DuckLake layout:**
-- One table, `track_point (track_id, point_time, lon, lat)`, partitioned by year, on the droplet's disk.
-- Every write is a snapshot.
-- `gold.track` is versioned like every other table (decision 004), and each version keeps its own `geom`, so earlier versions load straight from Postgres (TFM-04).
+- One table, `track_point (track_id, version_id, seq, point_time, lon, lat)`, partitioned by year, on the droplet's disk.
+- It holds current tracks only. `version_id` names the `gold.track` version the rows were copied from, which the nightly check compares.
 
 **How the site reads:**
 - Every map reads PostGIS through the one track component (TRACK-01).
-- The SQL page reads points as Parquet exported by year (decision 005).
+- The SQL page reads points as Parquet exported by year (decision 005), and Export's raw GPS files come from the lake.
 
 Details and diagrams: `ducklake.md`.

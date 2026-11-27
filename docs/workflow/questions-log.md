@@ -501,3 +501,27 @@ Asked: 2026-11-27 (Brandon, reviewing the schema)
 Answer: Four tables for tracks is bloat, and 10 million point rows is wrong. Store one track per row as a MultiLineStringM. Replaces Q-071. The agent's design: `gold.track.geom` holds every fix with M = the fix time; a new part starts where fixes are more than 60 s apart (the smallest gap setting), so time gaps fall between parts and each user's rules still apply in the browser; generated columns hold Explore's 550 m line, point count, length and top speed; the three copy tables are gone.
 Affects: schema.sql, schema.md, ducklake.md, audit.md, decision 003
 
+
+### Q-079: Redundant Version Columns (Phase 2, Bloat Pass)
+Asked: 2026-11-27 (after Brandon asked what a "fix" is, the Phase 2 docs say "GPS point" instead; `fix_time` became `point_time`)
+Options: drop `change_source` (same as `changed_by` being empty) and `deleted` (same as `change_type = 'delete'`) from all 11 versioned tables (recommended), drop `change_source` only, keep both
+Answer: Drop both.
+Affects: schema.sql, schema.md, audit.md, decision 004
+
+### Q-080: Track Status and Track-Only Change Types (Phase 2, Bloat Pass)
+Asked: 2026-11-27
+Options: drop `status` (matched = has an effort, blank = no points; all 1,570 V1 tracks fit) and fold import, replace_points, match, unmatch, create_from_positions into edit (recommended), drop status only, keep both
+Answer: Drop both. `track_current` computes the status.
+Affects: schema.sql, schema.md, audit.md, ducklake.md
+
+### Q-081: Summary Views (Phase 2, Bloat Pass)
+Asked: 2026-11-27
+Options: as plain queries on full-size invented rows, place_name took 7 ms, effort_summary 70 ms and individual_summary 320 ms (`scratch/pgcheck/summary_timing.sql`). Make place_name and effort_summary plain views and keep individual_summary materialized (recommended), place_name only, keep all three
+Answer: place_name and effort_summary become plain views. Phase 4 re-times effort_summary on the droplet.
+Affects: schema.sql, schema.md
+
+### Q-082: DuckLake Role for Tracks (Phase 2, Bloat Pass)
+Asked: 2026-11-27
+Options: since Q-078 Postgres holds every point of every track version, so DuckLake duplicates it. A Postgres is the source and DuckLake is a copy rewritten per track after each save, dropping `ducklake_snapshot_id`, the commit-message rule and the repair job (recommended); B drop DuckLake for tracks and write Parquet and raw files from `geom`; C keep DuckLake as the source
+Answer: A.
+Affects: schema.sql, ducklake.md, decision 003, audit.md, synthetic-data-profile.md

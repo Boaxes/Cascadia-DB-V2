@@ -30,20 +30,18 @@ Every data table except the lookups holds one row per version of a record (decis
 | `id` | bigint | The record, shared by all its versions. |
 | `valid_from` | timestamptz | When this version took effect. |
 | `valid_to` | timestamptz, null | When a later version replaced it. Null on the current version. |
-| `deleted` | boolean | True on a version that removes the record. |
-| `change_type` | text | `load`, `edit`, `delete` or `restore`. Tracks also use `import`, `replace_points`, `match`, `unmatch` and `create_from_positions`. |
-| `change_source` | text | `site` or `pipeline`. |
-| `changed_by` | integer, null | The Django user (`auth_user.id`). Required when `change_source` is `site`, and null for the pipeline. |
-| `pipeline_run_id` | text, null | The run that wrote it (`gold.pipeline_run`). |
+| `change_type` | text | `load` (the pipeline's first version), `edit`, `delete` (a version that removes the record) or `restore`. The same four on every table, tracks included (Q-080). |
+| `changed_by` | integer, null | The Django user (`auth_user.id`). Null for the pipeline. |
+| `pipeline_run_id` | text, null | The run that wrote it (`gold.pipeline_run`). Null for the site. |
 | `change_reason` | text, null | The person's note. |
 | `change_id` | uuid | Shared by every row one action wrote. |
 
 **Constraints:**
 - One current version per record: a unique `id` where `valid_to is null`.
 - `valid_to > valid_from`.
-- A site version names its person.
+- Exactly one of `changed_by` and `pipeline_run_id` is set, so every version names a person or a pipeline run.
 
-**Reading:** each table has a `<table>_current` view (`valid_to is null and not deleted`), and every page reads these. The partial indexes repeat the same predicate, so the planner uses them.
+**Reading:** each table has a `<table>_current` view (`valid_to is null and change_type <> 'delete'`), and every page reads these. The partial indexes repeat the same predicate, so the planner uses them.
 
 **Links between records:** links name the record `id`, which repeats across versions, so foreign keys cannot enforce them (Q-067). The pipeline's dbt tests and the Phase 3 checks test every link against the current rows. Lookups (species, vessel, research group, event code, pipeline run) are ordinary foreign keys.
 
@@ -70,7 +68,7 @@ erDiagram
     pipeline_run |o--o{ sighting : "loaded by (every versioned table)"
 ```
 
-The GPS points' source of truth is DuckLake's `track_point` table, outside Postgres. Each `track` version holds a PostGIS copy of its points in `geom`, and `ducklake_snapshot_id` names the DuckLake snapshot it came from (see [ducklake.md](ducklake.md)).
+Each `track` version holds all its GPS points in `geom`, so Postgres is the source of truth for tracks. DuckLake's `track_point` table, outside Postgres, is a copy written after each save, for the SQL page and raw file exports (Q-082, [ducklake.md](ducklake.md)).
 
 ## Tables
 
@@ -86,7 +84,7 @@ The GPS points' source of truth is DuckLake's `track_point` table, outside Postg
 | `individual` | One whale in one catalog (Mn, Bm, Er). `other_ids` holds aliases, retired IDs and cross-catalog IDs as given. `search_ids` holds the same, normalised by `gold.normalize_id()`. | about 22,500 | IND, IDET-01 to IDET-03, SRCH |
 | `identification` | One time an individual was seen: survey identifications (`source = 'survey'`) and catalog photo-ID records (`source` = the catalog code) together. `sighting_id` links a catalog record to a survey sighting where the pipeline matched one. | about 253,000 | IDET-04, IDET-05, IDET-07, SDET-07, FILT-04 |
 | `sample` | Biopsies, eDNA and other samples, from surveys and from catalogs (lab results in `extra`). | about 4,700 | SDET-06, IDET-06, EXP-03 |
-| `track` | One GPS track per row: file name, status, matched effort, the DuckLake snapshot, and `geom`, every GPS point as a `MultiLineStringM` with M = the point's time (seconds since 1970, UTC). A new part starts where two GPS points are more than 60 s apart, the smallest gap the settings allow, so time gaps fall only between parts. Generated columns hold Explore's 550 m line, the point count, the length and the top speed (suspect above 40 kn). | 1,570 rows, 10.4 million vertices | TFM, TRACK, MAP-05, EDET-03, EDET-04, EDET-08, EXPL-02, EXPL-05 |
+| `track` | One GPS track per row: file name, matched effort, and `geom`, every GPS point as a `MultiLineStringM` with M = the point's time (seconds since 1970, UTC). A new part starts where two GPS points are more than 60 s apart, the smallest gap the settings allow, so time gaps fall only between parts. Generated columns hold Explore's 550 m line, the point count, the length and the top speed (suspect above 40 kn). Status is not stored: `track_current` works it out (Not Matched has no effort, Blank has no points). | 1,570 rows, 10.4 million vertices | TFM, TRACK, MAP-05, EDET-03, EDET-04, EDET-08, EXPL-02, EXPL-05 |
 | `species` | Species lookup. | 65 | FILT, SRCH |
 | `vessel` | Vessel lookup, with spellings in `aliases`. | 1,310 | FILT, SRCH |
 | `research_group` | Research group lookup, with sharing status. | 1,093 | FILT-02 |
@@ -104,19 +102,19 @@ Not in gold:
 
 | View | Serves |
 |---|---|
-| `<table>_current` (11 views) | Every page. Current, not deleted. |
-| `change_log` | The Audit Log page: every version of every versioned table with its table, record, legacy ID and version columns, grouped by `change_id` (AUD-01 to AUD-03). Filtering by `changed_by`, `change_source` and `change_type` covers AUD-01's Who and Change Type. |
+| `<table>_current` (11 views) | Every page. Current versions, leaving out deleted records. `track_current` adds `status`. |
+| `change_log` | The Audit Log page: every version of every versioned table with its table, record, legacy ID and version columns, grouped by `change_id` (AUD-01 to AUD-03). Filtering by `changed_by` (null is Pipeline) and `change_type` covers AUD-01's Who and Change Type. |
 | `effort_timeline` | One effort's conditions, log entries and sightings in time order (EDET-09, Show Timeline Events, No-Track Path). |
+| `effort_summary` | Per effort: sightings, animals, track status, track length, suspect. The Efforts list's Track, Sightings and Distance check, and the GPS Track filter (EFF-01, EDET-07, FILT-01). A plain view: 70 ms for the first page sorted by Sightings, on 25,000 invented efforts and 115,000 sightings (Q-081). Phase 4 re-times it on the droplet. |
+| `place_name` | Every (region, sub-area, locality) with its effort count. The filter options, and locality search with typos through `daily_effort_locality_trgm` (SRCH-01, FILT-01). A plain view: 7 ms. |
 
-## Materialized Views
+## Materialized View
 
-These are refreshed `concurrently` (each has a unique index) after every pipeline load, and after every site change to a table they read.
+`individual_summary` is stored, because computing it takes 320 ms on 16,000 invented individuals and 253,000 identifications (Q-081, `scratch/pgcheck/summary_timing.sql`). It is refreshed `concurrently` (it has a unique index) after every pipeline load and every site change to individuals or identifications.
 
 | View | Serves |
 |---|---|
-| `effort_summary` | Per effort: sightings, animals, track status, track length, suspect. The Efforts list's Track, Sightings and Distance check, and the GPS Track filter (EFF-01, EDET-07, FILT-01). |
 | `individual_summary` | Per individual: first and last seen, sighting count, years and regions seen. The Individuals list and its filters (IND-01 to IND-03). |
-| `place_name` | Every (region, sub-area, locality) with its effort count. Locality search with typos, and the filter options (SRCH-01, FILT-01). |
 
 ## Columns and Indexes
 
@@ -157,9 +155,10 @@ Generated from the loaded schema. Each index names the query it serves.
 | `daily_effort_current_id` (unique): `(id) where valid_to is null` | One current version per record and per legacy ID; /efforts/<legacy_id>/ (EDET). |
 | `daily_effort_current_legacy` (unique): `(legacy_id) where valid_to is null` | One current record per DB167 ID; the record URL and ID search (SRCH-01). |
 | `daily_effort_versions`: `(id, valid_from)` | A record's versions in time order (HIST-03, Restore). |
-| `daily_effort_date`: `(effort_date desc) where valid_to is null and not deleted` | Efforts list, newest first, and the Years, Months and Exact Dates filters (EFF-02, FILT-01). |
-| `daily_effort_vessel`: `(vessel_id) where valid_to is null and not deleted` | Vessel and Research Group filters (FILT-01, FILT-02 default CRC). |
-| `daily_effort_research_group`: `(research_group_id, effort_date desc) where valid_to is null and not deleted` |  |
+| `daily_effort_date`: `(effort_date desc) where valid_to is null and change_type <> 'delete'` | Efforts list, newest first, and the Years, Months and Exact Dates filters (EFF-02, FILT-01). |
+| `daily_effort_vessel`: `(vessel_id) where valid_to is null and change_type <> 'delete'` | Vessel and Research Group filters (FILT-01, FILT-02 default CRC). |
+| `daily_effort_research_group`: `(research_group_id, effort_date desc) where valid_to is null and change_type <> 'delete'` |  |
+| `daily_effort_locality_trgm`: `using gin (locality gin_trgm_ops) where valid_to is null and change_type <> 'delete'` | Locality search with typos, through place_name (SRCH-02). |
 | `daily_effort_change`: `(change_id)` | Every row one action wrote, for the Audit Log entry and Restore (AUD-01 to AUD-04). |
 
 #### `gold.sighting`
@@ -206,11 +205,11 @@ Generated from the loaded schema. Each index names the query it serves.
 | `sighting_current_id` (unique): `(id) where valid_to is null` | One current version per record and legacy ID; /sightings/<legacy_id>/ and ID search (SDET, SRCH-01). |
 | `sighting_current_legacy` (unique): `(legacy_id) where valid_to is null` | One current record per DB167 ID; the record URL and ID search (SRCH-01). |
 | `sighting_versions`: `(id, valid_from)` | A record's versions in time order (HIST-03, Restore). |
-| `sighting_effort`: `(daily_effort_id) where valid_to is null and not deleted` | Sightings of one effort: effort page, timeline, Only Efforts With Matching Sightings (EDET-06, EDET-09, FILT-03). |
-| `sighting_date`: `(sighting_date desc, sighting_time desc) where valid_to is null and not deleted` | Sightings list newest first, and the date filters (SIGHT-02). |
-| `sighting_species`: `(species_id, sighting_date desc) where valid_to is null and not deleted` | Species filter and the species legend (FILT-01, EXPL-03). |
-| `sighting_research_group`: `(research_group_id, sighting_date desc) where valid_to is null and not deleted` |  |
-| `sighting_geom`: `using gist (geom) where valid_to is null and not deleted` | Explore: positioned sightings in the map view, and Draw an Area (EXPL-02, EXPL-04). |
+| `sighting_effort`: `(daily_effort_id) where valid_to is null and change_type <> 'delete'` | Sightings of one effort: effort page, timeline, Only Efforts With Matching Sightings (EDET-06, EDET-09, FILT-03). |
+| `sighting_date`: `(sighting_date desc, sighting_time desc) where valid_to is null and change_type <> 'delete'` | Sightings list newest first, and the date filters (SIGHT-02). |
+| `sighting_species`: `(species_id, sighting_date desc) where valid_to is null and change_type <> 'delete'` | Species filter and the species legend (FILT-01, EXPL-03). |
+| `sighting_research_group`: `(research_group_id, sighting_date desc) where valid_to is null and change_type <> 'delete'` |  |
+| `sighting_geom`: `using gist (geom) where valid_to is null and change_type <> 'delete'` | Explore: positioned sightings in the map view, and Draw an Area (EXPL-02, EXPL-04). |
 | `sighting_change`: `(change_id)` | Every row one action wrote, for the Audit Log entry and Restore (AUD-01 to AUD-04). |
 
 #### `gold.daily_condition`
@@ -238,7 +237,7 @@ Generated from the loaded schema. Each index names the query it serves.
 |---|---|
 | `daily_condition_current_id` (unique): `(id) where valid_to is null` | One current version per record; finds a record's current row by its key (every detail page). |
 | `daily_condition_versions`: `(id, valid_from)` | A record's versions in time order (HIST-03, Restore). |
-| `daily_condition_effort`: `(daily_effort_id, observed_at) where valid_to is null and not deleted` | Effort timeline and the Weather sheet, in time order (EDET-09, EXP-03, TRACK-03 timeline events). |
+| `daily_condition_effort`: `(daily_effort_id, observed_at) where valid_to is null and change_type <> 'delete'` | Effort timeline and the Weather sheet, in time order (EDET-09, EXP-03, TRACK-03 timeline events). |
 | `daily_condition_change`: `(change_id)` | Every row one action wrote, for the Audit Log entry and Restore (AUD-01 to AUD-04). |
 
 #### `gold.daily_event`
@@ -264,7 +263,7 @@ Generated from the loaded schema. Each index names the query it serves.
 |---|---|
 | `daily_event_current_id` (unique): `(id) where valid_to is null` | One current version per record; finds a record's current row by its key (every detail page). |
 | `daily_event_versions`: `(id, valid_from)` | A record's versions in time order (HIST-03, Restore). |
-| `daily_event_effort`: `(daily_effort_id, event_at) where valid_to is null and not deleted` | Effort timeline, Timeline sheet and no-track path in time order (EDET-05, EDET-09, TRACK-08). |
+| `daily_event_effort`: `(daily_effort_id, event_at) where valid_to is null and change_type <> 'delete'` | Effort timeline, Timeline sheet and no-track path in time order (EDET-05, EDET-09, TRACK-08). |
 | `daily_event_change`: `(change_id)` | Every row one action wrote, for the Audit Log entry and Restore (AUD-01 to AUD-04). |
 
 #### `gold.sighting_event`
@@ -295,7 +294,7 @@ Generated from the loaded schema. Each index names the query it serves.
 |---|---|
 | `sighting_event_current_id` (unique): `(id) where valid_to is null` | One current version per record; finds a record's current row by its key (every detail page). |
 | `sighting_event_versions`: `(id, valid_from)` | A record's versions in time order (HIST-03, Restore). |
-| `sighting_event_sighting`: `(sighting_id, event_at) where valid_to is null and not deleted` | Sighting Events on the sighting page and sheet (SDET-07, EXP-03). |
+| `sighting_event_sighting`: `(sighting_id, event_at) where valid_to is null and change_type <> 'delete'` | Sighting Events on the sighting page and sheet (SDET-07, EXP-03). |
 | `sighting_event_change`: `(change_id)` | Every row one action wrote, for the Audit Log entry and Restore (AUD-01 to AUD-04). |
 
 #### `gold.other_species`
@@ -321,7 +320,7 @@ Generated from the loaded schema. Each index names the query it serves.
 |---|---|
 | `other_species_current_id` (unique): `(id) where valid_to is null` | One current version per record; finds a record's current row by its key (every detail page). |
 | `other_species_versions`: `(id, valid_from)` | A record's versions in time order (HIST-03, Restore). |
-| `other_species_sighting`: `(sighting_id) where valid_to is null and not deleted` | Other Species Present on the sighting page (SDET-07). |
+| `other_species_sighting`: `(sighting_id) where valid_to is null and change_type <> 'delete'` | Other Species Present on the sighting page (SDET-07). |
 | `other_species_change`: `(change_id)` | Every row one action wrote, for the Audit Log entry and Restore (AUD-01 to AUD-04). |
 
 #### `gold.tag_deployment`
@@ -354,7 +353,7 @@ Generated from the loaded schema. Each index names the query it serves.
 |---|---|
 | `tag_deployment_current_id` (unique): `(id) where valid_to is null` | One current version per record; finds a record's current row by its key (every detail page). |
 | `tag_deployment_versions`: `(id, valid_from)` | A record's versions in time order (HIST-03, Restore). |
-| `tag_deployment_sighting`: `(sighting_id) where valid_to is null and not deleted` | Tag Deployments on the sighting page and the Tags and Samples filter (SDET-07, FILT-01). |
+| `tag_deployment_sighting`: `(sighting_id) where valid_to is null and change_type <> 'delete'` | Tag Deployments on the sighting page and the Tags and Samples filter (SDET-07, FILT-01). |
 | `tag_deployment_change`: `(change_id)` | Every row one action wrote, for the Audit Log entry and Restore (AUD-01 to AUD-04). |
 
 #### `gold.individual`
@@ -381,8 +380,8 @@ Generated from the loaded schema. Each index names the query it serves.
 | `individual_current_id` (unique): `(id) where valid_to is null` | One current version per record; finds a record's current row by its key (every detail page). |
 | `individual_current_number` (unique): `(catalog, catalog_number) where valid_to is null` | One current whale per catalog number; the URL /individuals/<catalog>-<number>/ (IDET). |
 | `individual_versions`: `(id, valid_from)` | A record's versions in time order (HIST-03, Restore). |
-| `individual_search_ids`: `using gin (search_ids) where valid_to is null and not deleted` | Any ID, alias, retired or cross-catalog ID finds the whale (SRCH-02, IND-02, FILT-04). |
-| `individual_species`: `(species_id) where valid_to is null and not deleted` | Species filter on the Individuals list (IND-02). |
+| `individual_search_ids`: `using gin (search_ids) where valid_to is null and change_type <> 'delete'` | Any ID, alias, retired or cross-catalog ID finds the whale (SRCH-02, IND-02, FILT-04). |
+| `individual_species`: `(species_id) where valid_to is null and change_type <> 'delete'` | Species filter on the Individuals list (IND-02). |
 
 #### `gold.identification`
 
@@ -414,8 +413,8 @@ Generated from the loaded schema. Each index names the query it serves.
 |---|---|
 | `identification_current_id` (unique): `(id) where valid_to is null` | One current version per record; finds a record's current row by its key (every detail page). |
 | `identification_versions`: `(id, valid_from)` | A record's versions in time order (HIST-03, Restore). |
-| `identification_individual`: `(individual_id, seen_on desc) where valid_to is null and not deleted` | An individual's sightings newest first, its map, First and Last Seen (IDET-04, IDET-05, IND-01). |
-| `identification_sighting`: `(sighting_id) where valid_to is null and not deleted` | Individuals Identified on a sighting, Individual filter, Survey Sightings (SDET-07, FILT-04, IDET-07). |
+| `identification_individual`: `(individual_id, seen_on desc) where valid_to is null and change_type <> 'delete'` | An individual's sightings newest first, its map, First and Last Seen (IDET-04, IDET-05, IND-01). |
+| `identification_sighting`: `(sighting_id) where valid_to is null and change_type <> 'delete'` | Individuals Identified on a sighting, Individual filter, Survey Sightings (SDET-07, FILT-04, IDET-07). |
 | `identification_change`: `(change_id)` | Every row one action wrote, for the Audit Log entry and Restore (AUD-01 to AUD-04). |
 
 #### `gold.sample`
@@ -448,9 +447,9 @@ Generated from the loaded schema. Each index names the query it serves.
 |---|---|
 | `sample_current_id` (unique): `(id) where valid_to is null` | One current version per record; finds a record's current row by its key (every detail page). |
 | `sample_versions`: `(id, valid_from)` | A record's versions in time order (HIST-03, Restore). |
-| `sample_sighting`: `(sighting_id) where valid_to is null and not deleted` | Samples on the sighting page, the Tags and Samples filter (SDET-06, FILT-01). |
-| `sample_individual`: `(individual_id) where valid_to is null and not deleted` | Samples on the Individual page (IDET-06). |
-| `sample_number_search`: `(gold.normalize_id(sample_number)) where valid_to is null and not deleted` | Sample number search, ignoring case and punctuation (SRCH-01). |
+| `sample_sighting`: `(sighting_id) where valid_to is null and change_type <> 'delete'` | Samples on the sighting page, the Tags and Samples filter (SDET-06, FILT-01). |
+| `sample_individual`: `(individual_id) where valid_to is null and change_type <> 'delete'` | Samples on the Individual page (IDET-06). |
+| `sample_number_search`: `(gold.normalize_id(sample_number)) where valid_to is null and change_type <> 'delete'` | Sample number search, ignoring case and punctuation (SRCH-01). |
 | `sample_change`: `(change_id)` | Every row one action wrote, for the Audit Log entry and Restore (AUD-01 to AUD-04). |
 
 #### `gold.track`
@@ -462,12 +461,10 @@ Generated from the loaded schema. Each index names the query it serves.
 | `legacy_id` | integer | yes |
 | `daily_effort_id` | bigint | yes |
 | `file_name` | text | no |
-| `status` | text | no |
 | `track_source` | text | yes |
 | `complete_code` | text | yes |
 | `usable` | boolean | no |
 | `comments` | text | yes |
-| `ducklake_snapshot_id` | bigint | yes |
 | `geom` | geometry(MultiLineStringM, 4326) | yes |
 | `geom_explore` | geometry, generated: `ST_Simplify(geom, 0.005)` | yes |
 | `point_count` | integer, generated: `ST_NPoints(geom)` | yes |
@@ -479,10 +476,10 @@ Generated from the loaded schema. Each index names the query it serves.
 |---|---|
 | `track_current_id` (unique): `(id) where valid_to is null` | One current version per record; finds a record's current row by its key (every detail page). |
 | `track_versions`: `(id, valid_from)` | A record's versions in time order (HIST-03, Restore). |
-| `track_one_per_effort` (unique): `(daily_effort_id) where valid_to is null and not deleted and daily_effort_id is not null` | One track per effort (TFM-06, Q-008). |
+| `track_one_per_effort` (unique): `(daily_effort_id) where valid_to is null and change_type <> 'delete' and daily_effort_id is not null` | One track per effort (TFM-06, Q-008). |
 | `track_file_name_trgm`: `using gin (file_name gin_trgm_ops) where valid_to is null` | File name search in the Track File Manager (TFM-01). |
-| `track_geom_explore`: `using gist (geom_explore) where valid_to is null and not deleted` | Explore: tracks crossing the map view (EXPL-02). |
-| `track_geom`: `using gist (geom) where valid_to is null and not deleted` | Spatial questions over tracks: which tracks pass through an area (Q-072). |
+| `track_geom_explore`: `using gist (geom_explore) where valid_to is null and change_type <> 'delete'` | Explore: tracks crossing the map view (EXPL-02). |
+| `track_geom`: `using gist (geom) where valid_to is null and change_type <> 'delete'` | Spatial questions over tracks: which tracks pass through an area (Q-072). |
 | `track_change`: `(change_id)` | Every row one action wrote, for the Audit Log entry and Restore (AUD-01 to AUD-04). |
 
 #### `gold.species`
@@ -579,7 +576,7 @@ Generated from the loaded schema. Each index names the query it serves.
 
 ## What Was Checked
 
-- **Load test.** `schema.sql` loaded without errors into a throwaway PostgreSQL 18.0 cluster with `pg_trgm` (`scratch/pgcheck/check.sh`). The cluster was created with `initdb` under `scratch/`, and Brandon's Postgres service was not used.
+- **Load test.** `schema.sql` loaded without errors into a throwaway PostgreSQL 18.6 cluster with `pg_trgm` (`scratch/pgcheck/check.sh`). The cluster was created with `initdb` under `scratch/`, and Brandon's Postgres service was not used.
 - **Not checked: PostGIS.** PostGIS is not installed on this machine (Phase 4 adds it), so the load used a copy (`scratch/pgcheck/prepare.py`) with these changes:
   - `geometry(...)` columns became `bytea`.
   - `ST_Intersects`, `ST_NPoints` and the `&&` operator became stubs.
@@ -588,7 +585,8 @@ Generated from the loaded schema. Each index names the query it serves.
   - So the geometry types, those four indexes, `gold.is_on_land()`, `gold.track_top_knots()`, `gold.track_length_nm()`, and whether `ST_Simplify` keeps M were not tested against PostGIS. Phase 4 loads the unchanged file into PostGIS, tests them on real-sized tracks, and times a `geom` of 49,504 GPS points.
 - **Behaviour test.** `scratch/pgcheck/behaviour.sql` checked the following (results in [audit.md](audit.md)):
   - A pipeline load, a hand edit, a delete with dependents under one `change_id`, and a restore.
-  - That the `_current` views hide deleted records.
+  - That the `_current` views hide deleted records, and that `track_current` works out each track's status.
   - That each guard refuses what it should: a second current version, a site version with no person, and a second track for one effort.
-  - That all three materialized views refresh concurrently.
-- **Not checked: performance at full size.** That needs the synthetic data (Phase 4).
+  - That `effort_summary` and `place_name` read correctly as plain views, and `individual_summary` refreshes concurrently.
+- **Summary timing.** `scratch/pgcheck/summary_timing.sql` filled the schema with full-size invented rows and timed the three summaries as plain queries (Q-081).
+- **Not checked: performance at full size** for everything else. That needs the synthetic data (Phase 4).

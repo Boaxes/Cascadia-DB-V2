@@ -1,6 +1,6 @@
 # 004: Audit by Versioned Rows
 
-**Status:** Decided (2026-11-27, by Brandon, Q-064, Q-065, Q-067, Q-068, Q-069)
+**Status:** Decided (2026-11-27, by Brandon, Q-064, Q-065, Q-067, Q-068, Q-069, Q-079)
 **Phase:** 2
 **Spec requirements served:** HIST-01 to HIST-04, AUD-01 to AUD-05, EDIT-04, EDIT-06, TFM-05, TFM-08 (several change through CR-001)
 
@@ -33,19 +33,21 @@ D, with these rules.
 **Columns on every data table except the lookups** (efforts, sightings, conditions, events, sighting events, other species, tag deployments, individuals, identifications, samples, track metadata):
 - `version_id` (identity) and `id` (the hashed record key, decision 002).
 - `valid_from` and `valid_to` (null on the current version).
-- `changed_by` (a user, or null for the pipeline) and `change_source` (site or pipeline).
-- `change_reason` (the person's note, or the pipeline run) and `change_id` (shared by every row one action writes).
-- `deleted` (true on a version that removes the record).
+- `change_type`: `load`, `edit`, `delete` (a version that removes the record) or `restore`, on every table.
+- `changed_by` (a user, null for the pipeline) and `pipeline_run_id` (the run, null for the site). Exactly one is set.
+- `change_reason` (the person's note) and `change_id` (shared by every row one action writes).
 
-**Layout:** all versions live in one table per record type, with a `<table>_current` view (`valid_to is null and not deleted`). Links between tables point at the record key `id`, so dbt tests check them in place of foreign keys (Q-067).
+Separate `change_source` and `deleted` columns were dropped as repeats of `changed_by` and `change_type` (Q-079).
+
+**Layout:** all versions live in one table per record type, with a `<table>_current` view (`valid_to is null and change_type <> 'delete'`). Links between tables point at the record key `id`, so dbt tests check them in place of foreign keys (Q-067).
 
 **How each change is written:**
 - **Edit:** in one transaction, close the current row (`valid_to = now()`) and insert a copy carrying the new values, who and why.
-- **Delete:** insert a version with `deleted = true` for the record and for each dependent record, all under one `change_id`.
+- **Delete:** insert a `delete` version for the record and for each dependent record, all under one `change_id`.
 - **Restore:** insert a copy of any earlier version, including one the pipeline wrote (Q-069), as the new current version. Restoring a delete restores every record under its `change_id`.
-- **Pipeline:** loading is incremental and only loads data not loaded before (Q-065, Q-068). dbt writes each new record as its first version, with `change_source = 'pipeline'` and the run in `change_reason`. It never rewrites an existing record, so a person's edit is never overwritten and no conflict rule is needed.
+- **Pipeline:** loading is incremental and only loads data not loaded before (Q-065, Q-068). dbt writes each new record as its first version, with `change_type = 'load'` and the run in `pipeline_run_id`. It never rewrites an existing record, so a person's edit is never overwritten and no conflict rule is needed.
 
-**Tracks:** point versions come from DuckLake snapshots (decision 003). The track metadata row records who and why.
+**Tracks:** each `gold.track` version holds its points in `geom`, so a track's versions work like any other record's (decision 003).
 
 **Where it shows:**
 - The Audit Log page lists versions across tables, grouped by `change_id`.

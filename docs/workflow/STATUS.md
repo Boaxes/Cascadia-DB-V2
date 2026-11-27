@@ -13,16 +13,25 @@ Phase 2: Schema And DuckLake, on branch `phase-2-schema`. Every exit checklist i
 - **Step 2:** decision records 001 to 006 in `docs/schema/decisions/`, answered by Brandon (Q-062 to Q-077).
   - Catalogs: two tables.
   - Keys: hashed.
-  - Tracks: DuckLake plus a PostGIS copy.
+  - Tracks: one `gold.track` row per version holding every GPS point (Q-078), with DuckLake as a copy (Q-082).
   - Audit: versioned rows.
   - SQL page: Parquet of current rows, lines and points by year.
   - Roles: six permissions on Groups.
 - **Step 3:**
   - `schema.sql`, `schema.md` (ER diagram, every table and index with the query it serves, page-by-page data check), `ducklake.md` and `audit.md`.
   - `schema.sql` loads into a throwaway PostgreSQL 18.6 cluster with `pg_trgm`, made with `initdb` under `scratch/pgcheck/` (Brandon's service untouched). PostGIS types, the four GiST indexes and `is_on_land()` were stubbed, because PostGIS isn't installed until Phase 4.
-  - `scratch/pgcheck/behaviour.sql` checks load, edit, delete with dependents, restore, the guards, and concurrent refreshes. Its output is in `audit.md`.
+  - `scratch/pgcheck/behaviour.sql` checks load, edit, delete with dependents, restore, the guards, track status and the summary views. Its output is in `audit.md`.
+  - `scratch/pgcheck/summary_timing.sql` times the summaries on full-size invented rows.
   - Rerun with `bash scratch/pgcheck/check.sh` after starting the cluster: `pg_ctl -D scratch/pgcheck/data -o "-p 55432" start`.
 - **Step 4:** `synthetic-data-profile.md`, with full and small sizes, distributions, tracks, photo-ID, edge cases and history scenarios.
+- **Review changes (Q-078 to Q-082):**
+  - Tracks are one row per version (MultiLineStringM).
+  - The docs say "GPS point", not "fix".
+  - Bloat pass:
+    - `change_source`, `deleted` and track `status` dropped.
+    - Four change types on every table.
+    - `effort_summary` and `place_name` are plain views.
+    - Postgres is the source of truth for tracks, and DuckLake is a copy.
 
 ## Waiting on Brandon
 
@@ -45,6 +54,7 @@ Phase 2: Schema And DuckLake, on branch `phase-2-schema`. Every exit checklist i
 - After approval: Phase 3 (Quality Gates) on branch `phase-3-quality`.
 - Carry into Phase 4:
   - Load `schema.sql` unchanged into PostGIS and test the stubbed parts.
-  - Confirm the DuckLake features in `ducklake.md`.
+  - Confirm the DuckLake features in `ducklake.md`, and time a full rebuild of the lake.
+  - Re-time `effort_summary` (a plain view) on the droplet.
   - Choose the land outline.
   - Install a recent `gh` with a push token on the server (Q-056).

@@ -10,7 +10,7 @@ What the Phase 4 generator must produce. It fills the gold schema ([schema.sql](
   - Localities are invented, but sit in the real sub-areas.
 - **Close to the real data in shape.** Volumes, mixes, seasonality and correlations match within about 10%. The generator prints a comparison table against these targets, and a test fails if any target is off by more than 20%.
 - **Deterministic.** One seed gives the same data every time, so tests and screenshots are stable.
-- **Fills every gold table,** lookups included, and writes points to DuckLake, then writes each `gold.track` version with its `geom` through the same function the site uses (ducklake.md, Write Path).
+- **Fills every gold table,** lookups included. Each `gold.track` version, with its `geom`, goes through the same function the site uses, which also writes the DuckLake copy (ducklake.md, Write Path).
 - **Loads through the pipeline's shape.** Every record arrives as a first version (`change_type = 'load'`) under synthetic pipeline runs, then the history scenarios below add site versions.
 
 ## Two Sizes

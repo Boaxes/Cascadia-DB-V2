@@ -9,7 +9,7 @@ The examples below are real output from running `scratch/pgcheck/behaviour.sql` 
 1. **A change never updates data in place.** The only update is setting `valid_to` on the version being replaced. Everything else is an insert.
 2. **One transaction per action.** Closing the old version and inserting the new one happen together. Every row an action writes shares one `change_id`.
 3. **Edits check what the person saw.** The form carries the `version_id` it was opened on. The write closes the current version only `where id = :id and version_id = :seen and valid_to is null`. If no row matches, someone changed the record in the meantime, nothing is saved, and the person sees "This record changed since you opened it." The unique index on current versions backs this up.
-4. **Nothing is deleted, ever.** A delete inserts a version with `deleted = true`. Restore inserts a copy of an earlier version.
+4. **Nothing is deleted, ever.** A delete inserts a version with `change_type = 'delete'`. Restore inserts a copy of an earlier version.
 5. **Any version can be restored,** including one the pipeline wrote (Q-069).
 
 ## Example 1: Pipeline Load
@@ -22,7 +22,7 @@ The pipeline loads effort 20417 and two sightings as first versions (`change_typ
 
 **How dbt writes this.** Each gold table is a dbt incremental model (`materialized='incremental'`, `incremental_strategy='append'`):
 - It selects source rows whose hashed `id` has no version in gold yet. Loading is incremental and never re-sends a loaded record (Q-065, Q-068), so these are always new records.
-- It adds the version columns: `valid_from` = the run's start, `change_type = 'load'`, `change_source = 'pipeline'`, `pipeline_run_id` = the run, `change_id` = one UUID for the run, and `deleted = false`.
+- It adds the version columns: `valid_from` = the run's start, `change_type = 'load'`, `pipeline_run_id` = the run, and `change_id` = one UUID for the run. `changed_by` stays null.
 - The run also inserts its `gold.pipeline_run` row.
 - dbt tests then check every link (for example each current sighting's `daily_effort_id` names a current effort) and the one-current-version rule.
 
@@ -36,8 +36,8 @@ Sam (user 12) changes sighting 120417 from Gray Whale to Humpback Whale, and the
 begin;
 update gold.sighting set valid_to = now() where id = 5001 and version_id = 1 and valid_to is null;
 insert into gold.sighting (id, legacy_id, ..., species_id, est_size_best, valid_from,
-                           change_type, change_source, changed_by, change_reason, change_id)
-select id, legacy_id, ..., 24, 2, now(), 'edit', 'site', 12, 'Fluke photo shows a humpback', :change_id
+                           change_type, changed_by, change_reason, change_id)
+select id, legacy_id, ..., 24, 2, now(), 'edit', 12, 'Fluke photo shows a humpback', :change_id
 from gold.sighting where version_id = 1;
 commit;
 ```
@@ -55,13 +55,13 @@ The field list comes from comparing each version with the one before it, column 
 
 ## Example 3: Delete With Dependents
 
-Sam deletes effort 20417 with the note "Duplicate of effort 20416". Each current dependent (here, two sightings) gets a deleted version under the same `change_id`, in the same transaction.
+Sam deletes effort 20417 with the note "Duplicate of effort 20416". Each current dependent (here, two sightings) gets a `delete` version under the same `change_id`, in the same transaction.
 
-| record_table | legacy_id | change_type | deleted | change_id |
-|---|---:|---|---|---|
-| daily_effort | 20417 | delete | true | …0102 |
-| sighting | 120417 | delete | true | …0102 |
-| sighting | 120418 | delete | true | …0102 |
+| record_table | legacy_id | change_type | change_id |
+|---|---:|---|---|
+| daily_effort | 20417 | delete | …0102 |
+| sighting | 120417 | delete | …0102 |
+| sighting | 120418 | delete | …0102 |
 
 `sighting_current` now shows no sightings for the effort. The Audit Log shows one entry for `…0102`, with "Removed With It: 2 sightings" (AUD-03). The dependents of an effort are its sightings, conditions, events and track, and a sighting's samples, sighting events, other species, tag deployments and identifications.
 
@@ -69,12 +69,12 @@ Sam deletes effort 20417 with the note "Duplicate of effort 20416". Each current
 
 Alex (user 15) restores the delete with the note "Not a duplicate after all". For every record under `…0102`, the version before the delete is copied in as the new current version, under a new `change_id`.
 
-| version_id | legacy_id | species | size | valid_from | valid_to | deleted | change_type | changed_by |
-|---:|---:|---|---:|---|---|---|---|---|
-| 1 | 120417 | Gray Whale | 3 | 2026-11-30 18:10 | 2026-12-03 09:05 | false | load | |
-| 3 | 120417 | Humpback Whale | 2 | 2026-12-03 09:05 | 2026-12-04 01:00 | false | edit | 12 |
-| 4 | 120417 | Humpback Whale | 2 | 2026-12-04 01:00 | 2026-12-05 02:00 | true | delete | 12 |
-| 6 | 120417 | Humpback Whale | 2 | 2026-12-05 02:00 | | false | restore | 15 |
+| version_id | legacy_id | species | size | valid_from | valid_to | change_type | changed_by |
+|---:|---:|---|---:|---|---|---|---|
+| 1 | 120417 | Gray Whale | 3 | 2026-11-30 18:10 | 2026-12-03 09:05 | load | |
+| 3 | 120417 | Humpback Whale | 2 | 2026-12-03 09:05 | 2026-12-04 01:00 | edit | 12 |
+| 4 | 120417 | Humpback Whale | 2 | 2026-12-04 01:00 | 2026-12-05 02:00 | delete | 12 |
+| 6 | 120417 | Humpback Whale | 2 | 2026-12-05 02:00 | | restore | 15 |
 
 Both sightings show again. Sam's edit survives, because the restore copied the version before the delete, which already held the edit. Restoring version 1 instead would put Gray Whale back, as one more version.
 
@@ -85,18 +85,18 @@ Each of these was refused:
 | Attempt | Refused by |
 |---|---|
 | A second current version of sighting 5001 | `sighting_current_id` (unique `id` where `valid_to is null`) |
-| A site edit that names no person | check `(change_source = 'site') = (changed_by is not null)` |
+| A version that names neither a person nor a pipeline run | check `(changed_by is null) = (pipeline_run_id is not null)` |
 | A second track on effort 20417 | `track_one_per_effort` (TFM-06) |
 
 ## Tracks
 
-A track version works like any other record, and it carries its points in `geom`. Restoring a track version copies that row, points included, and writes the points back to DuckLake as a new snapshot ([ducklake.md](ducklake.md#write-path)). The Track File Manager's History lists the `gold.track` versions and can load any of them (TFM-04).
+A track version works like any other record, and it carries its points in `geom`. Matching, unmatching, replacing points and creating from positions are ordinary edits, and History shows what changed by comparing versions. Restoring a track version copies that row, points included, then copies its points to DuckLake ([ducklake.md](ducklake.md#write-path)). The Track File Manager's History lists the `gold.track` versions and can load any of them (TFM-04).
 
 ## Where It Shows
 
 | Place | Reads |
 |---|---|
-| Audit Log page (AUD) | `gold.change_log`, newest first, one entry per `change_id`. Filters: record (table and legacy ID), Who (`changed_by`, or Pipeline for `change_source = 'pipeline'`), Change type, date range. |
+| Audit Log page (AUD) | `gold.change_log`, newest first, one entry per `change_id`. Filters: record (table and legacy ID), Who (`changed_by`, or Pipeline where it is null), Change type, date range. |
 | History on a record page (HIST-03) | That record's versions by `id`, in time order: pipeline load, then edits, deletes and restores. |
 | Restore This Version | A button on any version, in History and the Audit Log, for Audit Manager and Admin (decision 006, `manage_audit`). |
 
