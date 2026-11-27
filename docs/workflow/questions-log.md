@@ -640,3 +640,8 @@ Asked: 2026-11-27 (the Sighting page shown as a plain function and as a class-ba
 Options: A plain functions everywhere (recommended); B class-based views; C a mix
 Answer: A.
 Affects: style-guide.md
+
+### Q-102: Phase 3 Assumptions (Phase 3, Review)
+Asked: 2026-11-27 (ten assumptions listed in STATUS.md and in chat before approval)
+Answer: Brandon approved Phase 3 after they were listed, so all ten stand as written in STATUS.md and the quality documents.
+Affects: quality-gates.md, style-guide.md
