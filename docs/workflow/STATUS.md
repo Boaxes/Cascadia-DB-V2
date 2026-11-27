@@ -4,7 +4,22 @@ The agent keeps this file current so any session can pick up where the last one 
 
 ## Current Phase
 
-Phase 4: Scaffolding, on branch `phase-4-scaffolding`. Starting: plan and first questions.
+Phase 4: Scaffolding, on branch `phase-4-scaffolding`.
+- **Done:**
+  - Skeleton: uv, Django 6.1, apps `core`, `survey`, `photoid`, `analysis` (CR-002) and `manage`, with empty landing pages, sign-in, and the layout and sidebar from the mockups.
+  - Docker stack: `docker-compose.yml` and `Dockerfile`.
+  - GitHub checks: `.github/workflows/ci.yml`.
+  - Permissions migration and the first access tests.
+- **Decided:** a separate project Postgres in `local/` (Q-103), and GeoDjango (Q-104).
+- **Blocked natively** until Brandon installs PostGIS. GeoDjango needs the GDAL and GEOS DLLs it brings.
+- **Next:**
+  - `local/` scripts.
+  - The schema migration from `schema.sql`, with roles and the comparison test.
+  - The versioned write functions.
+  - The DuckLake copy.
+  - The synthetic data generator.
+  - The gate scripts and Claude hooks.
+  - `docs/scaffolding-review.md`.
 
 ## Done
 
@@ -43,6 +58,8 @@ Phase 4: Scaffolding, on branch `phase-4-scaffolding`. Starting: plan and first 
 
 ## Waiting on Brandon
 
+- **Install PostGIS:** Application Stack Builder, PostgreSQL 18, Spatial Extensions, PostGIS 3.6 Bundle.
+- **Restore the gate file:** `git checkout -- .claude/hooks/phase_gate.py` (the formatter reformatted it before it was excluded).
 - **Commit the approvals file** (Phase 3 line).
 - **Edit the V1 line in `CLAUDE.md`** (Sources): change `f4b2a36` to `3a637f1` and `2026-09-29` to `2026-11-21`.
 - **Optional, Brandon-only docs:** `phase-5-build.md` (Q-059, one-step build) and the screenshot steps (Q-061).
