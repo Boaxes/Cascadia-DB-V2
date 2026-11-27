@@ -1,0 +1,32 @@
+{# The page layout every signed-in page extends: sidebar, mobile top bar and the main area. #}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }} | Unified DB</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+    <script src="{% static 'core/menu.js' %}" defer></script>
+  </head>
+  <body>
+    <div class="app">
+      {% include "core/_sidebar.html" %}
+      <div class="main">
+        <div class="topbar">
+          <button class="btn btn-sm" type="button" id="menu-button" aria-label="Menu">
+            <svg class="icon">
+              <use href="{% static 'core/icons.svg' %}#menu" />
+            </svg>
+          </button>
+          <img src="{% static 'core/cascadia-logo.png' %}" alt="">
+          <b>Unified DB</b>
+        </div>
+        <div class="page">
+          {% block content %}
+          {% endblock content %}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

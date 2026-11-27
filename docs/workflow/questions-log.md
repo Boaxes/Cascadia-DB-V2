@@ -645,3 +645,17 @@ Affects: style-guide.md
 Asked: 2026-11-27 (ten assumptions listed in STATUS.md and in chat before approval)
 Answer: Brandon approved Phase 3 after they were listed, so all ten stand as written in STATUS.md and the quality documents.
 Affects: quality-gates.md, style-guide.md
+
+## Phase 4: Scaffolding
+
+### Q-103: Local Database (Phase 4, Round 1)
+Asked: 2026-11-27
+Options: a separate project Postgres run from the installed PostgreSQL 18, with its data in `local/`, its own port, local connections only and no password, started by a script (recommended); a new database in Brandon's existing service, with its password in `.env`
+Answer: Separate project Postgres.
+Affects: local/ setup scripts, settings, gate runner
+
+### Q-104: Map Shapes in Django (Phase 4, Round 1)
+Asked: 2026-11-27
+Options: keep shapes in the database and send GeoJSON, with no GDAL on Windows (recommended); GeoDjango as in V1, needing GDAL and GEOS on Windows
+Answer: GeoDjango. On Windows it uses the GDAL and GEOS DLLs that the PostGIS bundle installs in PostgreSQL's `bin` folder.
+Affects: settings, models, local/ setup, Dockerfile

@@ -1,0 +1,66 @@
+{# The left sidebar (NAV-01 to NAV-03): links in spec order, each shown only to roles that can open it. #}
+{% load static %}
+{% with here=request.resolver_match.view_name icons="core/icons.svg" %}
+  <aside class="sidebar" id="sidebar">
+    <a class="brand"
+       href="{% url 'survey:explore' %}"><img src="{% static 'core/cascadia-logo.png' %}"
+                                              alt=""><span>Unified DB</span></a>
+    {% if perms.core.browse %}
+      <div class="search">
+        <svg class="icon">
+          <use href="{% static icons %}#search" />
+        </svg>
+        <input type="text" placeholder="Search IDs, Vessels, Places">
+      </div>
+      <nav class="nav-group">
+        <h3>Survey</h3>
+        {% include "core/_nav_link.html" with view="survey:explore" label="Explore" icon="explore" %}
+        {% include "core/_nav_link.html" with view="survey:effort_list" label="Efforts" icon="efforts" %}
+        {% include "core/_nav_link.html" with view="survey:sighting_list" label="Sightings" icon="sightings" %}
+      </nav>
+      <nav class="nav-group">
+        <h3>Photo-ID</h3>
+        {% include "core/_nav_link.html" with view="photoid:individual_list" label="Individuals" icon="individuals" %}
+      </nav>
+      <nav class="nav-group">
+        <h3>Data</h3>
+        {% include "core/_nav_link.html" with view="data:export_page" label="Export" icon="export" %}
+        {% include "core/_nav_link.html" with view="data:sql_page" label="SQL" icon="sql" %}
+      </nav>
+    {% endif %}
+    {% if perms.core.manage_tracks or perms.core.manage_audit or perms.core.manage_users or perms.core.view_server %}
+      <nav class="nav-group">
+        <h3>Manage</h3>
+        {% if perms.core.manage_tracks %}
+          {% include "core/_nav_link.html" with view="manage:track_list" label="Track File Manager" icon="tracks" %}
+        {% endif %}
+        {% if perms.core.manage_audit %}
+          {% include "core/_nav_link.html" with view="manage:audit_list" label="Audit Log" icon="audit" %}
+        {% endif %}
+        {% if perms.core.manage_users %}
+          {% include "core/_nav_link.html" with view="admin:index" label="Users" icon="users" %}
+        {% endif %}
+        {% if perms.core.view_server %}
+          {% include "core/_nav_link.html" with view="manage:server_page" label="Server" icon="server" %}
+        {% endif %}
+      </nav>
+    {% endif %}
+    <div class="spacer"></div>
+    {% if perms.core.browse %}
+      <nav class="nav-group">
+        {% include "core/_nav_link.html" with view="core:feedback" label="Feedback" icon="feedback" %}
+        {% include "core/_nav_link.html" with view="core:settings" label="Settings" icon="settings" %}
+      </nav>
+    {% endif %}
+    <form class="user" method="post" action="{% url 'core:logout' %}">
+      {% csrf_token %}
+      <div class="avatar">{{ user.first_name|first }}{{ user.last_name|first }}</div>
+      <div class="who">
+        {{ user.get_full_name|default:user.username }}
+        <br>
+        <small>{{ user.groups.first.name }}</small>
+      </div>
+      <button class="btn btn-sm btn-quiet" type="submit">Sign Out</button>
+    </form>
+  </aside>
+{% endwith %}

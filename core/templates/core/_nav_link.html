@@ -1,0 +1,9 @@
+{# One sidebar link, marked active on its own page (NAV-03). #}
+{% load static %}
+<a class="nav-link{% if view == here %} active{% endif %}"
+   href="{% url view %}">
+  <svg class="icon">
+    <use href="{% static 'core/icons.svg' %}#{{ icon }}" />
+  </svg>
+  {{ label }}
+</a>

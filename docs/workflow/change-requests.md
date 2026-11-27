@@ -22,3 +22,10 @@ Problem: Q-064 chose versioned rows (valid_from, valid_to, who, why) for the aud
 Proposed change: AUD-04 becomes "Restore This Version writes a new version that copies the chosen one, with who and why; nothing is deleted." AUD-02 and HIST-01 to HIST-03 list every version, not only the changes in effect. EDIT-06 and TFM-08 say a deleted record or file is put back by restoring its last version. AUD-05 becomes "Any version can be restored, including one written by the pipeline" (Q-069). The roles table's "Undo of any change" becomes "Restore any version". In `mockups/audit.html`, the Undo button becomes Restore This Version, the notes "Undo puts the old values back and removes this entry from the log" and "Undo the newer change first" are removed, and the subtitle says every change instead of every change in effect.
 Decision: accepted in chat, 2026-11-27. Brandon: "Yes, accept CR-001".
 Also changed, as consequences of the same change: the overview's "review and undo changes" became "review changes and restore earlier versions"; the out-of-scope line "Keeping undone changes in the audit log (Q-044)" was removed; HIST-02 says each version holds the whole record and field changes come from comparing versions; the pipeline entry in `mockups/audit.html` lost "Change the pipeline rule to reverse this." and gained Restore This Version (AUD-05); `mockups/edit.html` says an earlier version can be restored from the Audit Log instead of "undone".
+
+### CR-002: The `data` App Clashes With the `Data/` Folder on Windows
+Raised: 2026-11-27, during Phase 4
+Files: `docs/quality/style-guide.md`
+Problem: the style guide names the Data group's app `data` (Q-097). Windows treats `data/` and `Data/` as the same folder, so the app's files land inside the read-only snapshot folder `Data/`. It happened once while scaffolding; the four files and three empty folders were removed straight away and `Data/` is as it was.
+Proposed change: rename the app to `analysis` (Export and SQL are how people take data away for analysis). The sidebar group is still labelled Data, and the URLs stay `/export/` and `/sql/`. Only the app's folder and Python name change.
+Decision:
