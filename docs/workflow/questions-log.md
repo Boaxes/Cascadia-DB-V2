@@ -489,3 +489,9 @@ Findings shown: pg_duckdb runs a query that touches a DuckLake table in DuckDB's
 Options: A PostGIS only, dropping DuckLake (recommended), B DuckLake as source of truth plus a PostGIS copy, C pg_lake with Iceberg tables
 Answer: B. DuckLake stays the source of truth (V2Spec, Q-028). Each track write goes to DuckLake first and then rebuilds that track in PostGIS, stamped with the DuckLake snapshot; a nightly check rebuilds any track whose stamp differs. This also settles Q-072 (sync) and Q-075.
 Affects: decision 003 (tracks), ducklake.md, schema.md track tables
+
+### Q-077: Roles in Django (Phase 2, Round 6)
+Asked: 2026-11-27
+Options: A six custom permissions (browse, edit_records, manage_tracks, manage_audit, manage_users, view_server) on a tableless model, assigned to the five Groups by a migration from code; views use permission_required; Django Admin checks manage_users instead of is_staff (recommended), B check group names in views, C Django's per-table permissions
+Answer: A.
+Affects: decision 006 (roles), ROLE-01 to ROLE-06
