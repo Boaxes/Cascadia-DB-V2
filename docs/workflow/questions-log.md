@@ -525,3 +525,9 @@ Asked: 2026-11-27
 Options: since Q-078 Postgres holds every point of every track version, so DuckLake duplicates it. A Postgres is the source and DuckLake is a copy rewritten per track after each save, dropping `ducklake_snapshot_id`, the commit-message rule and the repair job (recommended); B drop DuckLake for tracks and write Parquet and raw files from `geom`; C keep DuckLake as the source
 Answer: A.
 Affects: schema.sql, ducklake.md, decision 003, audit.md, synthetic-data-profile.md
+
+### Q-083: Review Items Settled While Writing the Schema (Phase 2, Review)
+Asked: 2026-11-27 (assumptions listed for confirmation before the phase closes)
+Items: (1) an individual's key is a hash of (catalog, number), and its URL is `/individuals/mn-20417/` (decision 002); (2) survey dates and times are stored as recorded, with no time zone, while GPS point times and version times are UTC; (3) no check constraints on measured values, and the pipeline's tests flag oddities; (4) real species names, event codes and harbour names in the synthetic data, as public reference lists, with every record, person and track invented
+Answer: "Yes, all four hold."
+Affects: decision 002, schema.sql, synthetic-data-profile.md

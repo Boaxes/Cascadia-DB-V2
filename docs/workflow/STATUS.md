@@ -4,7 +4,7 @@ The agent keeps this file current so any session can pick up where the last one 
 
 ## Current Phase
 
-Phase 2: Schema And DuckLake, on branch `phase-2-schema`. Every exit checklist item is written. Waiting on Brandon: the review items below, and approval.
+Phase 2: Schema And DuckLake, on branch `phase-2-schema`. Every exit checklist item is done and the review items are confirmed (Q-083). Waiting on Brandon's approval.
 
 ## Done
 
@@ -36,12 +36,8 @@ Phase 2: Schema And DuckLake, on branch `phase-2-schema`. Every exit checklist i
 
 ## Waiting on Brandon
 
-- **Review items settled while writing the schema** (not asked as questions):
-  - An individual's key is a hash of (catalog, number), and its URL is `/individuals/mn-20417/` (decision 002).
-  - Survey dates and times are stored as recorded in the field (no time zone). GPS and version times are stored in UTC.
-  - No check constraints on measured values. The pipeline's tests flag oddities.
-  - Real species names, event codes and harbour names are used in the synthetic data, because they are reference lists, not records.
-- **Approve Phase 2** by adding `Phase 2: Approved <date>` to the approvals file.
+- **Approve Phase 2** by adding `Phase 2: Approved 2026-11-27` to the approvals file.
+- **Commit the gate and CLAUDE.md edits** on `phase-2-schema` (they are protected, so only Brandon commits them).
 - **Edit the V1 line in `CLAUDE.md`** (Sources): change `f4b2a36` to `3a637f1` and `2026-09-29` to `2026-11-21`.
 - **Optional, Brandon-only docs:** `phase-5-build.md` (Q-059, one-step build) and the screenshot steps (Q-061).
 
