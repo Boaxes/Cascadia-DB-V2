@@ -1,6 +1,6 @@
-# GPS Track Storage: DuckLake and the PostGIS Copy
+# GPS Track Storage: DuckLake and PostGIS
 
-How GPS points are stored, written and read (decision 003). DuckLake is the source of truth for points. PostGIS holds a copy that the site and spatial queries read. Track metadata is the versioned `gold.track` table (decision 004).
+How GPS points are stored, written and read (decision 003). DuckLake is the source of truth for points. In Postgres, each version of a track is one row of `gold.track`, and its `geom` holds every fix as a `MultiLineStringM`. The site and spatial queries read that.
 
 ## Pieces
 
@@ -8,8 +8,7 @@ How GPS points are stored, written and read (decision 003). DuckLake is the sour
 |---|---|---|
 | DuckLake catalog | `ducklake` schema in the site's Postgres database | DuckLake's own metadata: tables, snapshots, file lists. It is backed up with the database. |
 | DuckLake data | Parquet files on the droplet's disk, under the data path (for example `/srv/unified-db/ducklake/`) | `track_point`, every GPS point ever written, in every version. |
-| `gold.track` | Postgres | One versioned row per track: file name, status, matched effort, and `ducklake_snapshot_id`, the snapshot holding its current points. |
-| `gold.track_copy`, `track_copy_point`, `track_copy_line` | Postgres with PostGIS | The copy: figures, every point, and the 11 m and 550 m lines. |
+| `gold.track` | Postgres with PostGIS | One row per track version: file name, status, matched effort, `ducklake_snapshot_id`, and `geom`. Generated columns add Explore's line, the point count, the length and the top speed. |
 
 The site attaches the lake with DuckDB:
 
@@ -32,8 +31,32 @@ ALTER TABLE lake.track_point SET PARTITIONED BY (year(fix_time));
 
 - **Partitioned by year.** At V1's volume that's about 1 million points and 10 MB a year, so a year's files stay small, and the SQL page's points-by-year Parquet (decision 005) maps one-to-one.
 - **Sorted.** Rows are written ordered by (`track_id`, `seq`), so reading one track touches few row groups.
-- **Size.** All 10.4 million points take about 116 MB (data profile, `track_parquet_size_estimate`). Every edit keeps the old version, but edits are rare, so growth is negligible.
-- **Snapshots are never expired.** They are the track version history (TFM-04, TFM-08). Merging small files (`ducklake_merge_adjacent_files`) is allowed, because time travel still works after it.
+- **Size.** All 10.4 million points take about 116 MB (data profile, `track_parquet_size_estimate`).
+- **Snapshots are never expired.** Merging small files (`ducklake_merge_adjacent_files`) is allowed.
+
+## The PostGIS Geometry
+
+`gold.track.geom` is a `geometry(MultiLineStringM, 4326)`:
+
+- **Vertices:** one per fix, in file order. X and Y are longitude and latitude, and M is the fix time in seconds since 1970 (UTC). The Track File Manager's line N is vertex N across the parts.
+- **Parts:** a new part starts wherever two consecutive fixes are more than 60 s apart. Sixty seconds is the smallest gap the settings allow (TRACK-04: more than N minutes, N from 1).
+  - Inside a part, no step can ever count as a time gap.
+  - At each part boundary, the browser compares the two M values with the user's minutes, and draws the jump as a gap or as ordinary line (TRACK-05, TRACK-06).
+- **Distance and speed rules:** checked between consecutive vertices of whatever line was sent.
+  - On effort and sighting maps (11 m) and in the Track File Manager (every fix), that is exact or nearly so.
+  - On Explore's 550 m line it is approximate, which is acceptable at that zoom.
+- **Size:** 10.4 million vertices of three doubles is about 250 MB before Postgres compresses it. The largest track (49,504 fixes) is about 1.2 MB.
+
+**Generated columns** need no code to keep them right:
+
+| Column | Expression | Serves |
+|---|---|---|
+| `geom_explore` | `ST_Simplify(geom, 0.005)` (about 550 m) | Explore's tracks, with a GiST index (MAP-05, EXPL-02) |
+| `point_count` | `ST_NPoints(geom)` | Track card, Explore popup (EDET-08, EXPL-05) |
+| `length_nm` | `gold.track_length_nm(geom)`, along the fixes and not across part jumps | Track card, distance check (EDET-07) |
+| `top_knots` | `gold.track_top_knots(geom)`, the fastest step including across part boundaries | Suspect when over 40 kn (TRACK-02) |
+
+Track Health's other counts (fixes out of time order, repeated rows, gaps under the default rules) are computed from `geom` when the Track File Manager opens a track. That's one row, so it's quick.
 
 ## Write Path
 
@@ -41,7 +64,7 @@ Every change to a track's points comes from one of three places:
 - The Track File Manager: import, save, revert, fill from file, create from positions, delete, restore.
 - A pipeline load.
 
-All three go through one function (Phase 5), in this order:
+All three go through one function (Phase 5):
 
 ```mermaid
 flowchart TD
@@ -49,88 +72,56 @@ flowchart TD
     B -- a line fails --> X[Refuse, name the line;<br/>nothing written]
     B -- all pass --> C[DuckLake transaction:<br/>delete track_point rows of this track,<br/>insert the new rows,<br/>commit message names the track and the person]
     C --> D[Snapshot N]
-    D --> E[Postgres transaction:<br/>close the current gold.track version,<br/>insert a new one with ducklake_snapshot_id = N,<br/>who, why, change_type]
-    E --> F[Rebuild the copy for this track:<br/>track_copy, track_copy_point,<br/>track_copy_line at 11 m and 550 m]
-    F --> G[Refresh effort_summary;<br/>rewrite that year's points Parquet]
+    D --> E[Postgres transaction:<br/>close the current gold.track version,<br/>insert a new one with geom built from the points,<br/>ducklake_snapshot_id = N, who, why, change_type]
+    E --> G[Refresh effort_summary;<br/>rewrite that year's points Parquet]
 ```
 
-**Line checks.** These are V1's checks (`datahealth/gps/tracks.py`), audited when the code is written:
-- G1: columns are found by name.
-- G2 and G3: impossible times and coordinates are rejected.
-- G4: positions must be west of 0.
-- G5: gaps are kept as data, not split into files.
+- **Line checks:** V1's checks (`datahealth/gps/tracks.py`), audited when the code is written.
+- **Building `geom`:** the points are sorted by `seq` and split into parts at steps over 60 s, then written as `ST_GeomFromText('MULTILINESTRING M (...)', 4326)` or through `ST_MakeLine` on `ST_MakePointM`. The generated columns fill themselves.
+- **Commit messages:** the DuckLake commit message records the track ID, the person and the action, so the nightly check can rebuild a missing Postgres version from DuckLake alone. Phase 4 confirms the call against the installed version.
+- **Delete:** delete the track's rows in DuckLake (a new snapshot), and insert a `deleted` version of `gold.track`.
+- **Restore:** copy an earlier `gold.track` version, `geom` included, as a new version. Write its points back to DuckLake as a new snapshot.
 
-**Commit messages.** The DuckLake commit message records the track ID, the person and the action (`set_commit_message`, with the details as extra info). This lets the nightly check rebuild a missing Postgres version from DuckLake alone. Phase 4 confirms the call against the installed DuckLake version.
+## Keeping Postgres in Step
 
-**Delete.** A delete removes the track's rows in DuckLake (a new snapshot), writes a `deleted` version of `gold.track`, and drops the track's copy rows. Restore reads the points at the snapshot before the delete (`AT (VERSION => n)`) and writes them back as a new snapshot (TFM-08).
-
-**Building the copy.** For one track, DuckDB reads `lake.track_point` at snapshot N. A short Python step (Phase 5) then:
-1. Computes `track_copy`:
-   - Point count, first and last fix, length in nautical miles, and mean and top speed.
-   - `suspect`: true when any step is over 40 kn (TRACK-02, V1's `IMPLAUSIBLE_SPEED_KN`).
-   - Fixes out of time order, and repeated rows (TFM-04).
-2. Copies every point into `track_copy_point`, in `seq` order.
-3. Simplifies the points in time order with Douglas-Peucker on local metres, at 11 m and at 550 m. For each kept vertex it stores the time, plus the largest time step, distance step and speed among the original fixes since the previous kept vertex. That is how the browser finds gaps with each user's rules on a simplified line (TRACK-04, TRACK-06).
-4. Writes the three tables with `COPY` in one transaction, replacing the track's old rows.
-
-A 49,504-point track (the largest in V1) is a few hundred milliseconds of work. Rebuilding all 1,552 tracks is a few minutes.
-
-## Keeping the Copy in Step
-
-The write path is one function, so the copy normally changes with every write. Two things can still leave it behind:
-- The Postgres step fails after DuckLake committed.
-- Someone changes the lake by hand.
-
-The nightly job, which also runs the Track Health checks (TFM-07), reconciles both:
+The write path is one function, so `geom` normally changes with every write. If the Postgres step fails after DuckLake committed, or someone changes the lake by hand, the nightly job (with TFM-07's checks) repairs it:
 
 1. For each track, find the newest snapshot whose commit names it.
-2. If that is newer than `gold.track.ducklake_snapshot_id`, write the missing track version from the commit message, then rebuild the copy.
-3. If `gold.track_copy.ducklake_snapshot_id` differs from the track's snapshot, rebuild the copy.
-4. Report every repair in the Server event log.
+2. If it is newer than the current version's `ducklake_snapshot_id`, read the points at that snapshot and write the missing version (who and why from the commit message).
+3. Report every repair in the Server event log.
 
 ## Read Path
 
 ```mermaid
 flowchart LR
     subgraph Postgres with PostGIS
-        L[track_copy_line 550 m]
-        M[track_copy_line 11 m]
-        P[track_copy_point]
-        C[track_copy]
+        T[gold.track current rows]
+        V[gold.track all versions]
     end
     subgraph DuckLake
-        T[lake.track_point, all snapshots]
+        L[lake.track_point]
     end
-    L --> EX[Explore map: lines crossing the view, GiST]
-    M --> ED[Effort and sighting maps]
-    C --> EX
-    C --> ED
-    P --> TFM[Track File Manager: every point]
-    P --> SQ[Spatial queries over points]
-    T --> OLD[Track File Manager History: earlier versions]
-    T --> EXP[Export: raw GPS files as datetime_utc,latitude,longitude CSV]
-    T --> PQ[SQL page: points by year as Parquet]
+    T -- geom_explore, GiST --> EX[Explore map]
+    T -- ST_Simplify geom, 11 m --> ED[Effort and sighting maps]
+    T -- geom, every fix --> TFM[Track File Manager]
+    T -- geom, GiST --> SQ[Spatial queries over tracks]
+    V --> OLD[Track File Manager History: earlier versions]
+    L --> EXP[Export: raw GPS files as<br/>datetime_utc,latitude,longitude CSV]
+    L --> PQ[SQL page: points by year as Parquet]
 ```
 
 - **Maps read PostGIS only** (MAP-06), through the one track component (TRACK-01):
-  - Explore sends the view's bounding box and the filters, and gets the 550 m lines of matching efforts that cross it (`track_copy_line_explore`).
-  - Effort and sighting maps get one track's 11 m line.
-  - The Track File Manager gets every point in `seq` order.
-- **DuckLake is read directly in three places,** none of them a map of current data:
-  - The Track File Manager's earlier versions (time travel).
-  - Export's raw GPS files, written in V1's cleaned-file format (EXP-07).
-  - The SQL page's points Parquet, rewritten per year when a track in that year changes.
+  - Explore gets `geom_explore` for the matching efforts whose line crosses the view.
+  - Effort and sighting maps get one track simplified to about 11 m with `ST_Simplify(geom, 0.0001)`, which keeps the M of kept vertices.
+  - The Track File Manager gets `geom` whole.
+- **DuckLake is read for files, not maps:** Export's raw GPS files (V1's cleaned-file format, EXP-07) and the SQL page's points Parquet.
 
 ## Backup and Restore
 
-The DuckLake catalog is in the Postgres dump, and the data path is a folder of Parquet files. Back up both together:
-1. Dump Postgres.
-2. Copy the data path.
-
-Files are only added, never changed in place, so a copy taken after the dump holds every file the dump names. To restore, put back the files, then load the dump. Phase 4 sets this up and tests a restore.
+The DuckLake catalog is in the Postgres dump, and the data path is a folder of Parquet files. Back up both together: dump Postgres first, then copy the data path. Files are only added, never changed in place, so the copy holds every file the dump names. Phase 4 sets this up and tests a restore.
 
 ## What Phase 4 Must Confirm
 
-- The installed DuckLake version supports a Postgres catalog, `SET PARTITIONED BY`, commit messages with extra info, and `AT (VERSION => n)`.
-- The copy rebuild of the largest track stays under a second on the droplet.
+- The installed DuckLake version supports a Postgres catalog, `SET PARTITIONED BY`, and commit messages with extra info.
+- `ST_Simplify` on a `MultiLineStringM` keeps the M values. Building and simplifying the largest track (49,504 fixes) stays well under a second.
 - A restore from backup brings back both the catalog and the files.

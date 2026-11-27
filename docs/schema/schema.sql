@@ -504,7 +504,31 @@ create index sample_individual on gold.sample (individual_id) where valid_to is 
 create index sample_number_search on gold.sample (gold.normalize_id(sample_number)) where valid_to is null and not deleted;
 create index sample_change on gold.sample (change_id);
 
--- GPS tracks (decision 003). DuckLake holds the points; these are the metadata and the copy. ----
+-- GPS tracks (decision 003). One row per track version. DuckLake is the source of truth for the
+-- points; `geom` is the PostGIS copy of all of them, written in the same action as DuckLake.
+--
+-- geom: every fix in file order, with M = the fix time in seconds since 1970 (UTC). A new part
+-- starts wherever two fixes are more than 60 s apart, the smallest gap the settings allow
+-- (TRACK-04), so a time gap can only fall between parts. The browser compares the times either
+-- side of each part boundary with the user's minutes, and checks the distance and speed rules
+-- between consecutive vertices (TRACK-06).
+
+-- Fastest step between consecutive fixes, in knots, across part boundaries (TRACK-02, TFM-04).
+create function gold.track_top_knots(track geometry) returns real
+language sql immutable strict parallel safe as $$
+    select max(knots)::real from (
+        select ST_DistanceSphere(lag(d.geom) over w, d.geom) / 1852.0
+               / nullif(ST_M(d.geom) - lag(ST_M(d.geom)) over w, 0) * 3600.0 as knots
+        from ST_DumpPoints(track) d
+        window w as (order by d.path)
+    ) steps
+$$;
+
+-- Length in nautical miles along the fixes, not counting the jumps between parts.
+create function gold.track_length_nm(track geometry) returns numeric
+language sql immutable strict parallel safe as $$
+    select round((ST_LengthSpheroid(track, 'SPHEROID["WGS 84",6378137,298.257223563]') / 1852.0)::numeric, 3)
+$$;
 
 create table gold.track (
     version_id           bigint generated always as identity primary key,
@@ -518,6 +542,12 @@ create table gold.track (
     usable               boolean not null default true,
     comments             text,
     ducklake_snapshot_id bigint,
+    geom                 geometry(MultiLineStringM, 4326),
+    -- Explore's line, about 550 m (MAP-05). ST_Simplify keeps the M of the vertices it keeps.
+    geom_explore         geometry generated always as (ST_Simplify(geom, 0.005)) stored,
+    point_count          integer generated always as (ST_NPoints(geom)) stored,
+    length_nm            numeric generated always as (gold.track_length_nm(geom)) stored,
+    top_knots            real generated always as (gold.track_top_knots(geom)) stored,
     valid_from       timestamptz not null default now(),
     valid_to         timestamptz,
     deleted          boolean not null default false,
@@ -536,52 +566,14 @@ create index track_versions on gold.track (id, valid_from);
 -- One track per effort (TFM-06, Q-008).
 create unique index track_one_per_effort on gold.track (daily_effort_id)
     where valid_to is null and not deleted and daily_effort_id is not null;
--- File name search and status filter in the Track File Manager (TFM-01).
+-- File name search in the Track File Manager (TFM-01).
 create index track_file_name_trgm on gold.track using gin (file_name gin_trgm_ops) where valid_to is null;
+-- Explore: tracks crossing the map view (EXPL-02).
+create index track_geom_explore on gold.track using gist (geom_explore) where valid_to is null and not deleted;
+-- Spatial questions over tracks: which tracks pass through an area (Q-072).
+create index track_geom on gold.track using gist (geom) where valid_to is null and not deleted;
 create index track_change on gold.track (change_id);
 
--- The PostGIS copy, rebuilt per track from DuckLake (MAP-06). Not versioned: DuckLake snapshots
--- hold the earlier versions of the points.
-create table gold.track_copy (
-    track_id              bigint primary key,
-    ducklake_snapshot_id  bigint not null,
-    point_count           integer not null,
-    first_fix             timestamptz,
-    last_fix              timestamptz,
-    length_nm             numeric(7, 3),
-    mean_knots            real,
-    top_knots             real,
-    suspect               boolean not null,
-    misordered_count      integer not null,
-    repeated_count        integer not null,
-    rebuilt_at            timestamptz not null default now()
-);
-
-create table gold.track_copy_point (
-    track_id  bigint not null references gold.track_copy on delete cascade,
-    seq       integer not null,
-    fix_time  timestamptz not null,
-    geom      geometry(Point, 4326) not null,
-    primary key (track_id, seq)
-);
--- Spatial questions over the points, the reason for the copy (Q-072).
-create index track_copy_point_geom on gold.track_copy_point using gist (geom);
--- Points in a date range across all tracks; fixes arrive in time order, so BRIN stays small.
-create index track_copy_point_time on gold.track_copy_point using brin (fix_time);
-
-create table gold.track_copy_line (
-    track_id          bigint not null references gold.track_copy on delete cascade,
-    tolerance_m       smallint not null check (tolerance_m in (11, 550)),
-    geom              geometry(LineString, 4326) not null,
-    fix_times         timestamptz[] not null,
-    max_step_seconds  real[] not null,
-    max_step_metres   real[] not null,
-    max_step_knots    real[] not null,
-    primary key (track_id, tolerance_m),
-    check (cardinality(fix_times) = ST_NPoints(geom))
-);
--- Explore: tracks crossing the map view at the 550 m level (MAP-05, EXPL-02).
-create index track_copy_line_explore on gold.track_copy_line using gist (geom) where tolerance_m = 550;
 
 -- Current views: what every page reads ---------------------------------------------------------
 
@@ -652,13 +644,12 @@ create materialized view gold.effort_summary as
            coalesce(sum(s.est_size_best), 0) as animals,
            t.id as track_id,
            t.status as track_status,
-           c.length_nm as track_length_nm,
-           coalesce(c.suspect, false) as track_suspect
+           t.length_nm as track_length_nm,
+           coalesce(t.top_knots > 40, false) as track_suspect
     from gold.daily_effort_current e
     left join gold.sighting_current s on s.daily_effort_id = e.id
     left join gold.track_current t on t.daily_effort_id = e.id
-    left join gold.track_copy c on c.track_id = t.id
-    group by e.id, t.id, t.status, c.length_nm, c.suspect;
+    group by e.id, t.id, t.status, t.length_nm, t.top_knots;
 create unique index effort_summary_effort on gold.effort_summary (daily_effort_id);
 -- Sort the Efforts list by Sightings (EFF-02).
 create index effort_summary_sightings on gold.effort_summary (sightings);

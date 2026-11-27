@@ -56,7 +56,7 @@ erDiagram
     daily_effort |o--o{ sighting : "has (optional)"
     daily_effort |o--o{ daily_condition : "weather readings"
     daily_effort |o--o{ daily_event : "log entries"
-    daily_effort |o--o| track : "one GPS track"
+    daily_effort |o--o| track : "one GPS track (every fix as MultiLineStringM)"
     event_code ||--o{ daily_event : "codes"
     species |o--o{ sighting : "of"
     sighting |o--o{ sighting_event : "events"
@@ -67,13 +67,10 @@ erDiagram
     individual |o--o{ identification : "seen"
     individual |o--o{ sample : "sampled"
     species ||--o{ individual : "of"
-    track ||--o| track_copy : "PostGIS copy"
-    track_copy ||--o{ track_copy_point : "every point"
-    track_copy ||--|{ track_copy_line : "11 m and 550 m lines"
     pipeline_run |o--o{ sighting : "loaded by (every versioned table)"
 ```
 
-The GPS points' source of truth is DuckLake's `track_point` table, outside Postgres. `track.ducklake_snapshot_id` names the snapshot that holds a track's current points (see [ducklake.md](ducklake.md)).
+The GPS points' source of truth is DuckLake's `track_point` table, outside Postgres. Each `track` version holds a PostGIS copy of its points in `geom`, and `ducklake_snapshot_id` names the DuckLake snapshot it came from (see [ducklake.md](ducklake.md)).
 
 ## Tables
 
@@ -86,13 +83,10 @@ The GPS points' source of truth is DuckLake's `track_point` table, outside Postg
 | `sighting_event` | Reactions and follow events within a sighting. | 8,098 | SDET-07, EXP-03 |
 | `other_species` | Birds and other animals present at a sighting. | 6,028 | SDET-07, EXP-03 |
 | `tag_deployment` | Tags put on animals. | 1,048 | SDET-07, EXP-03 Tags, FILT Tags and Samples |
-| `individual` | One whale in one catalog (Mn, Bm, Er). `other_ids` holds aliases, retired IDs and cross-catalog IDs as given. `search_ids` holds the same, normalised by `gold.normalize_id()`. | about 16,000 (10,743 MnID plus V1's 11,802, less the 6,633 humpbacks both hold) | IND, IDET-01 to IDET-03, SRCH |
+| `individual` | One whale in one catalog (Mn, Bm, Er). `other_ids` holds aliases, retired IDs and cross-catalog IDs as given. `search_ids` holds the same, normalised by `gold.normalize_id()`. | about 22,500 | IND, IDET-01 to IDET-03, SRCH |
 | `identification` | One time an individual was seen: survey identifications (`source = 'survey'`) and catalog photo-ID records (`source` = the catalog code) together. `sighting_id` links a catalog record to a survey sighting where the pipeline matched one. | about 253,000 | IDET-04, IDET-05, IDET-07, SDET-07, FILT-04 |
 | `sample` | Biopsies, eDNA and other samples, from surveys and from catalogs (lab results in `extra`). | about 4,700 | SDET-06, IDET-06, EXP-03 |
-| `track` | A GPS track's metadata: file name, status, matched effort, the DuckLake snapshot of its points. | 1,570 | TFM, EDET-03, EDET-08 |
-| `track_copy` | Per-track figures computed from the points at each rebuild: count, times, length, speeds, `suspect` (a step over 40 kn), Track Health counts. | 1,552 | TRACK-02, TFM-04, EDET-07, EXPL-05 |
-| `track_copy_point` | Every GPS point, copied from DuckLake. | 10,397,499 | TFM-03, spatial queries over tracks |
-| `track_copy_line` | Each track simplified to 11 m and 550 m. Each vertex carries its time and the largest time step, distance step and speed among the original fixes since the previous vertex (element 0 is 0). The browser applies gap rules from these (TRACK-04, TRACK-06). | 3,104 | MAP-05, TRACK, EXPL-02, EDET-04, SDET-03 |
+| `track` | One GPS track per row: file name, status, matched effort, the DuckLake snapshot, and `geom`, every fix as a `MultiLineStringM` with M = the fix time (seconds since 1970, UTC). A new part starts where two fixes are more than 60 s apart, the smallest gap the settings allow, so time gaps fall only between parts. Generated columns hold Explore's 550 m line, the point count, the length and the top speed (suspect above 40 kn). | 1,570 rows, 10.4 million vertices | TFM, TRACK, MAP-05, EDET-03, EDET-04, EDET-08, EXPL-02, EXPL-05 |
 | `species` | Species lookup. | 65 | FILT, SRCH |
 | `vessel` | Vessel lookup, with spellings in `aliases`. | 1,310 | FILT, SRCH |
 | `research_group` | Research group lookup, with sharing status. | 1,093 | FILT-02 |
@@ -474,6 +468,11 @@ Generated from the loaded schema. Each index names the query it serves.
 | `usable` | boolean | no |
 | `comments` | text | yes |
 | `ducklake_snapshot_id` | bigint | yes |
+| `geom` | geometry(MultiLineStringM, 4326) | yes |
+| `geom_explore` | geometry, generated: `ST_Simplify(geom, 0.005)` | yes |
+| `point_count` | integer, generated: `ST_NPoints(geom)` | yes |
+| `length_nm` | numeric, generated: `gold.track_length_nm(geom)` | yes |
+| `top_knots` | real, generated: `gold.track_top_knots(geom)` | yes |
 | version columns | see Versioned Tables | |
 
 | Index | Serves |
@@ -481,55 +480,10 @@ Generated from the loaded schema. Each index names the query it serves.
 | `track_current_id` (unique): `(id) where valid_to is null` | One current version per record; finds a record's current row by its key (every detail page). |
 | `track_versions`: `(id, valid_from)` | A record's versions in time order (HIST-03, Restore). |
 | `track_one_per_effort` (unique): `(daily_effort_id) where valid_to is null and not deleted and daily_effort_id is not null` | One track per effort (TFM-06, Q-008). |
-| `track_file_name_trgm`: `using gin (file_name gin_trgm_ops) where valid_to is null` | File name search and status filter in the Track File Manager (TFM-01). |
+| `track_file_name_trgm`: `using gin (file_name gin_trgm_ops) where valid_to is null` | File name search in the Track File Manager (TFM-01). |
+| `track_geom_explore`: `using gist (geom_explore) where valid_to is null and not deleted` | Explore: tracks crossing the map view (EXPL-02). |
+| `track_geom`: `using gist (geom) where valid_to is null and not deleted` | Spatial questions over tracks: which tracks pass through an area (Q-072). |
 | `track_change`: `(change_id)` | Every row one action wrote, for the Audit Log entry and Restore (AUD-01 to AUD-04). |
-
-#### `gold.track_copy`
-
-| Column | Type | Null |
-|---|---|---|
-| `track_id` | bigint | no |
-| `ducklake_snapshot_id` | bigint | no |
-| `point_count` | integer | no |
-| `first_fix` | timestamptz | yes |
-| `last_fix` | timestamptz | yes |
-| `length_nm` | numeric | yes |
-| `mean_knots` | real | yes |
-| `top_knots` | real | yes |
-| `suspect` | boolean | no |
-| `misordered_count` | integer | no |
-| `repeated_count` | integer | no |
-| `rebuilt_at` | timestamptz | no |
-
-#### `gold.track_copy_point`
-
-| Column | Type | Null |
-|---|---|---|
-| `track_id` | bigint | no |
-| `seq` | integer | no |
-| `fix_time` | timestamptz | no |
-| `geom` | geometry(Point, 4326) | no |
-
-| Index | Serves |
-|---|---|
-| `track_copy_point_geom`: `using gist (geom)` | Spatial questions over the points, the reason for the copy (Q-072). |
-| `track_copy_point_time`: `using brin (fix_time)` | Points in a date range across all tracks; fixes arrive in time order, so BRIN stays small. |
-
-#### `gold.track_copy_line`
-
-| Column | Type | Null |
-|---|---|---|
-| `track_id` | bigint | no |
-| `tolerance_m` | smallint | no |
-| `geom` | geometry(LineString, 4326) | no |
-| `fix_times` | ARRAY | no |
-| `max_step_seconds` | ARRAY | no |
-| `max_step_metres` | ARRAY | no |
-| `max_step_knots` | ARRAY | no |
-
-| Index | Serves |
-|---|---|
-| `track_copy_line_explore`: `using gist (geom) where tolerance_m = 550` | Explore: tracks crossing the map view at the 550 m level (MAP-05, EXPL-02). |
 
 #### `gold.species`
 
@@ -607,9 +561,9 @@ Generated from the loaded schema. Each index names the query it serves.
 | Page (spec) | Reads |
 |---|---|
 | Sign In, Settings, Feedback (AUTH, SET, FDBK) | Django's tables, cookies, GitHub. No gold tables. |
-| Explore (EXPL, MAP, FILT) | `sighting_current` (`sighting_geom`), `track_copy_line` at 550 m (`track_copy_line_explore`), `track_copy`, `effort_summary`, lookups, `identification_current` (Individual filter), `land_inland` (`on_land`). |
+| Explore (EXPL, MAP, FILT) | `sighting_current` (`sighting_geom`), `track_current.geom_explore` (`track_geom_explore`), `effort_summary`, lookups, `identification_current` (Individual filter), `land_inland` (`on_land`). |
 | Efforts list (EFF) | `daily_effort_current`, `effort_summary`, `vessel`, `place_name`. |
-| Effort (EDET) | `daily_effort_current` by `legacy_id`, `track_current`, `track_copy`, `track_copy_line` at 11 m, `effort_timeline`, `sighting_current` by effort. |
+| Effort (EDET) | `daily_effort_current` by `legacy_id`, `track_current` (`geom` simplified to 11 m on request with `ST_Simplify`), `effort_timeline`, `sighting_current` by effort. |
 | Sightings list (SIGHT) | `sighting_current`, `species`, `vessel`, `identification_current` (Individual filter), `sample_current` and `tag_deployment_current` (Tags and Samples). |
 | Sighting (SDET) | `sighting_current` by `legacy_id`, its effort and track line, `sample_current`, `sighting_event_current`, `other_species_current`, `tag_deployment_current`, `identification_current` with `individual_current`. |
 | Edit and Delete (EDIT) | Writes new versions of `daily_effort` and `sighting` and their dependents (audit.md). |
@@ -617,7 +571,7 @@ Generated from the loaded schema. Each index names the query it serves.
 | Individual (IDET) | `individual_current` by catalog and number, `identification_current` by individual, `sample_current` by individual, survey sightings through `identification.sighting_id`. |
 | Export (EXP) | The current views and lookups. Raw GPS files are written from DuckLake points (ducklake.md). |
 | SQL (SQL) | Parquet of every current view and lookup, track lines and points by year (decision 005). |
-| Track File Manager (TFM) | `track` (all versions), `track_copy`, `track_copy_point`, DuckLake snapshots for earlier versions. |
+| Track File Manager (TFM) | `track`: every version, each with its own `geom`, so earlier versions load straight from Postgres. |
 | Audit Log, History (AUD, HIST) | `change_log`, and each table's versions by `id`. |
 | Users (USER) | Django's tables. |
 | Server (SRV) | `pipeline_run`, and server facts outside the database. |
@@ -625,12 +579,13 @@ Generated from the loaded schema. Each index names the query it serves.
 
 ## What Was Checked
 
-- **Load test.** `schema.sql` loaded without errors into a throwaway PostgreSQL 18.6 cluster with `pg_trgm` (`scratch/pgcheck/check.sh`). The cluster was created with `initdb` under `scratch/`, and Brandon's Postgres service was not used.
+- **Load test.** `schema.sql` loaded without errors into a throwaway PostgreSQL 18.0 cluster with `pg_trgm` (`scratch/pgcheck/check.sh`). The cluster was created with `initdb` under `scratch/`, and Brandon's Postgres service was not used.
 - **Not checked: PostGIS.** PostGIS is not installed on this machine (Phase 4 adds it), so the load used a copy (`scratch/pgcheck/prepare.py`) with these changes:
   - `geometry(...)` columns became `bytea`.
   - `ST_Intersects`, `ST_NPoints` and the `&&` operator became stubs.
-  - The four GiST indexes on geometry were left out: `land_inland_geom`, `sighting_geom`, `track_copy_point_geom` and `track_copy_line_explore`.
-  - So the geometry types, those four indexes, `gold.is_on_land()` and the line check `cardinality(fix_times) = ST_NPoints(geom)` were not tested against PostGIS. Phase 4 loads the unchanged file into PostGIS and checks them.
+  - The four GiST indexes on geometry were left out: `land_inland_geom`, `sighting_geom`, `track_geom_explore` and `track_geom`.
+  - Function bodies were not checked (`check_function_bodies = off`).
+  - So the geometry types, those four indexes, `gold.is_on_land()`, `gold.track_top_knots()`, `gold.track_length_nm()`, and whether `ST_Simplify` keeps M were not tested against PostGIS. Phase 4 loads the unchanged file into PostGIS, tests them on real-sized tracks, and times a `geom` of 49,504 fixes.
 - **Behaviour test.** `scratch/pgcheck/behaviour.sql` checked the following (results in [audit.md](audit.md)):
   - A pipeline load, a hand edit, a delete with dependents under one `change_id`, and a restore.
   - That the `_current` views hide deleted records.

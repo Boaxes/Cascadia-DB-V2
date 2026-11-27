@@ -495,3 +495,9 @@ Asked: 2026-11-27
 Options: A six custom permissions (browse, edit_records, manage_tracks, manage_audit, manage_users, view_server) on a tableless model, assigned to the five Groups by a migration from code; views use permission_required; Django Admin checks manage_users instead of is_staff (recommended), B check group names in views, C Django's per-table permissions
 Answer: A.
 Affects: decision 006 (roles), ROLE-01 to ROLE-06
+
+### Q-078: Track Storage in PostGIS, Rejected as Bloated (Phase 2, Review)
+Asked: 2026-11-27 (Brandon, reviewing the schema)
+Answer: Four tables for tracks is bloat, and 10 million point rows is wrong. Store one track per row as a MultiLineStringM. Replaces Q-071. The agent's design: `gold.track.geom` holds every fix with M = the fix time; a new part starts where fixes are more than 60 s apart (the smallest gap setting), so time gaps fall between parts and each user's rules still apply in the browser; generated columns hold Explore's 550 m line, point count, length and top speed; the three copy tables are gone.
+Affects: schema.sql, schema.md, ducklake.md, audit.md, decision 003
+

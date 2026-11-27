@@ -1,6 +1,6 @@
 # 003: GPS Tracks in DuckLake and PostGIS
 
-**Status:** Decided (2026-11-27, by Brandon, Q-070, Q-071, Q-072, Q-075, Q-076)
+**Status:** Decided (2026-11-27, by Brandon, Q-070, Q-071, Q-072, Q-075, Q-076, Q-078)
 **Phase:** 2
 **Spec requirements served:** MAP-05, MAP-06, TRACK-01 to TRACK-08, TFM-01 to TFM-08, SQL-01
 
@@ -27,28 +27,26 @@ Where the track catalog lives, how points are laid out, which copy is the source
 
 ### What PostGIS Holds
 
-- **A (chosen): every point, plus two precomputed lines per track,** at about 11 m (effort and sighting maps) and about 550 m (Explore).
-  - Each kept vertex carries its time and the largest time step, distance step and speed among the original fixes it stands for. The browser applies each user's gap rules at any level without reloading (TRACK-06).
-  - Cost: about 1 GB in Postgres.
-- **B:** every point only, with lines and gaps computed per request. This breaks TRACK-06 and slows Explore.
-- **C:** lines only. This breaks MAP-06.
+- **First choice (Q-071), replaced:** every point as a row (10.4 million rows), plus 11 m and 550 m lines with per-vertex step maxima, in three copy tables beside `gold.track`. Brandon rejected it as bloated (Q-078).
+- **Chosen (Q-078): one row per track.** `gold.track.geom` is a `MultiLineStringM` holding every fix, with M = the fix time. A new part starts where fixes are more than 60 s apart, the smallest gap the settings allow, so time gaps fall only between parts and the browser applies each user's rules (TRACK-06). Generated columns hold Explore's 550 m line, the point count, the length and the top speed. Effort and sighting maps simplify one track to 11 m on request.
+- **Rejected:** lines only (breaks MAP-06).
 
 ### Source of Truth and Sync
 
 - **A (chosen): DuckLake is the source of truth.**
-  - Each track write goes to DuckLake in one transaction, then rebuilds that track's PostGIS rows, stamped with the DuckLake snapshot ID.
-  - A nightly check (TFM-07) rebuilds any track whose stamp differs.
+  - Each track write goes to DuckLake in one transaction, then writes a new `gold.track` version with `geom` built from the points and the DuckLake snapshot ID.
+  - A nightly check (TFM-07) writes any version DuckLake has and Postgres lacks.
 - **B:** PostGIS only, dropping DuckLake. One store and no sync, but against V2Spec and Q-028.
 - **C:** pg_lake with Iceberg tables. PostGIS works there today, but it's a young, separate service, and Iceberg, not DuckLake.
 
 ## Decision
 
-DuckLake is the source of truth for points, and PostGIS holds the copy the site reads.
+DuckLake is the source of truth for points. Each `gold.track` version holds its points in `geom`, which the site reads.
 
 **DuckLake layout:**
 - One table, `track_point (track_id, fix_time, lon, lat)`, partitioned by year, on the droplet's disk.
-- Every write is a snapshot, so earlier versions of a track come from DuckLake time travel (TFM-04).
-- Track metadata (file name, status, effort, source) is a versioned Postgres table like every other (decision 004).
+- Every write is a snapshot.
+- `gold.track` is versioned like every other table (decision 004), and each version keeps its own `geom`, so earlier versions load straight from Postgres (TFM-04).
 
 **How the site reads:**
 - Every map reads PostGIS through the one track component (TRACK-01).

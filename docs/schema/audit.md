@@ -90,7 +90,7 @@ Each of these was refused:
 
 ## Tracks
 
-A track's metadata versions work like any other record. Each version names `ducklake_snapshot_id`, the DuckLake snapshot holding its points, so restoring a track version also restores its points (by time travel, [ducklake.md](ducklake.md#write-path)). The Track File Manager's History lists the `gold.track` versions and can load the points of any of them (TFM-04).
+A track version works like any other record, and it carries its points in `geom`. Restoring a track version copies that row, points included, and writes the points back to DuckLake as a new snapshot ([ducklake.md](ducklake.md#write-path)). The Track File Manager's History lists the `gold.track` versions and can load any of them (TFM-04).
 
 ## Where It Shows
 
