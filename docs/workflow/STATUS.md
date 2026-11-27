@@ -4,11 +4,18 @@ The agent keeps this file current so any session can pick up where the last one 
 
 ## Current Phase
 
-Phase 2: Schema And DuckLake, on branch `phase-2-schema`. Every exit checklist item is done and the review items are confirmed (Q-083). Waiting on Brandon's approval.
+Phase 3: Quality Gates, on branch `phase-3-quality`. The three documents are written in `docs/quality/`. Waiting on Brandon: confirm the assumptions listed below, then approval.
 
 ## Done
 
-- Phase 1 approved 2026-11-26.
+- Phase 1 approved 2026-11-26. Phase 2 approved 2026-11-27.
+- **Phase 3** (Q-084 to Q-101):
+  - `quality-gates.md`: Claude hooks after each save and before done (blocks until green), the commit check, and GitHub on every push. Brandon's rules: one comment per file, helpers used 3 times, no block of 5+ lines repeated 3 times, a Haiku review of each code-changing turn. mypy (moderate), 85% coverage with every spec ID tested, query counts, Playwright smoke tests.
+  - `style-guide.md`: five apps by sidebar group, plain function views, JavaScript where simpler than htmx.
+  - `definition-of-done.md`.
+
+### Phase 2 Record
+
 - CR-001 accepted 2026-11-27 (versioned records replace Undo): `docs/spec/spec.md`, `mockups/audit.html` and `mockups/edit.html` updated. Phase 1 stays approved.
 - **Step 1:** `docs/schema/data-profile.md` and `profile_queries.sql`. Every figure cites a named query. Scripts are in `scratch/profile/`.
 - **Step 2:** decision records 001 to 006 in `docs/schema/decisions/`, answered by Brandon (Q-062 to Q-077).
@@ -36,15 +43,26 @@ Phase 2: Schema And DuckLake, on branch `phase-2-schema`. Every exit checklist i
 
 ## Waiting on Brandon
 
-- **Approve Phase 2** by adding `Phase 2: Approved 2026-11-27` to the approvals file.
-- **Commit the gate and CLAUDE.md edits** on `phase-2-schema` (they are protected, so only Brandon commits them).
+- **Confirm the Phase 3 assumptions** (decided while writing, not asked):
+  1. Every file must start with its one comment (reading "exactly one comment" as required).
+  2. Thresholds: line length 120, complexity 10, 6 arguments, 12 branches, 50 statements per function; the ruff rule list.
+  3. At most 10 database queries per page unless the test states another number.
+  4. The before-done hook skips turns that changed no files, gives up after 5 blocks in a row and reports, and the Haiku review escalates a point the agent disagrees with twice.
+  5. The repeat rule counts tests too (repeated setup becomes a fixture).
+  6. Apps never import each other; shared code moves to `core`.
+  7. Templates: partials start with `_`, htmx gets the partial from the same URL (`django-htmx`), no inline `style=` or `onclick=`.
+  8. JavaScript: one file per page, no build step.
+  9. One settings file read from environment variables (`django-environ`).
+  10. Tests in `<app>/tests/`, with fixtures built on the synthetic generator.
+- **Approve Phase 3** by adding `Phase 3: Approved <date>` to the approvals file.
 - **Edit the V1 line in `CLAUDE.md`** (Sources): change `f4b2a36` to `3a637f1` and `2026-09-29` to `2026-11-21`.
 - **Optional, Brandon-only docs:** `phase-5-build.md` (Q-059, one-step build) and the screenshot steps (Q-061).
 
 ## Next
 
-- After approval: Phase 3 (Quality Gates) on branch `phase-3-quality`.
+- After approval: Phase 4 (Scaffolding) on branch `phase-4-scaffolding`.
 - Carry into Phase 4:
+  - Wire in every gate in `docs/quality/quality-gates.md`, Claude hooks first.
   - Load `schema.sql` unchanged into PostGIS and test the stubbed parts.
   - Confirm the DuckLake features in `ducklake.md`, and time a full rebuild of the lake.
   - Re-time `effort_summary` (a plain view) on the droplet.

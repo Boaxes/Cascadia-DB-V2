@@ -531,3 +531,112 @@ Asked: 2026-11-27 (assumptions listed for confirmation before the phase closes)
 Items: (1) an individual's key is a hash of (catalog, number), and its URL is `/individuals/mn-20417/` (decision 002); (2) survey dates and times are stored as recorded, with no time zone, while GPS point times and version times are UTC; (3) no check constraints on measured values, and the pipeline's tests flag oddities; (4) real species names, event codes and harbour names in the synthetic data, as public reference lists, with every record, person and track invented
 Answer: "Yes, all four hold."
 Affects: decision 002, schema.sql, synthetic-data-profile.md
+
+## Phase 3: Quality Gates
+
+### Q-084: Type Checking (Phase 3, Round 1)
+Asked: 2026-11-27
+Options: mypy with django-stubs, moderate (check_untyped_defs, warn_unused_ignores, annotations not forced), at commit and in CI (recommended); mypy strict; none
+Answer: mypy moderate.
+Affects: quality-gates.md
+
+### Q-085: Test Bar (Phase 3, Round 1)
+Asked: 2026-11-27
+Options: every one of the 159 spec IDs cited by a test (or mapped to a gate) plus 85% line and branch coverage (recommended); IDs only; IDs plus 95%
+Answer: IDs plus 85% coverage.
+Affects: quality-gates.md, definition-of-done.md
+
+### Q-086: Browser Tests (Phase 3, Round 1)
+Asked: 2026-11-27
+Options: Playwright smoke test per page in CI (loads, no console errors, main element present) (recommended); none; full user flows
+Answer: Playwright smoke.
+Affects: quality-gates.md
+
+### Q-087: Before-Done Claude Hook (Phase 3, Round 2)
+Asked: 2026-11-27 (after Brandon clarified that by "hooks" he means Claude Code hooks)
+Options: a Stop hook that blocks the agent from ending a turn until the full suite (types, Django checks, all tests, browser page checks; about 1-3 min) passes (recommended); run and only warn; per-file checks only
+Answer: Block until green.
+Affects: quality-gates.md
+
+### Q-088: GitHub Checks as a Safety Net (Phase 3, Round 2)
+Asked: 2026-11-27
+Options: GitHub also runs the full suite on every push, for changes made outside the Claude hooks (recommended); Claude hooks only
+Answer: Keep GitHub too.
+Affects: quality-gates.md
+
+### Q-089: Extra Checks (Phase 3, Rounds 1 and 2)
+Asked: 2026-11-27
+Options offered: pip-audit, a speed budget, import-linter, vulture
+Answer: Brandon asked instead for proposals of additional Claude hooks that raise code quality. Asked again as Q-090 and Q-091.
+Affects: quality-gates.md
+
+### Q-090: Brandon's Own Hook Rules (Phase 3, Round 3)
+Asked: 2026-11-27 (in answer to the proposed "stop gaming the checks" hooks)
+Answer, in Brandon's words: "exactly one comment is allowed at the beginner of a file. helper functions blocked if they are not used at least 3 times. other way around applies too, the same code reapplied 3 times is blocked". Scope questions asked as Q-093 to Q-096.
+Affects: quality-gates.md, style-guide.md
+
+### Q-091: AI-Habit Hooks (Phase 3, Round 3)
+Asked: 2026-11-27
+Options: copy-paste detector, second-Claude review, session-start reminder, package security check
+Answer: "Something else", with no detail. Asked again in Q-096.
+Affects: quality-gates.md
+
+### Q-092: Weekly Speed Check (Phase 3, Round 3)
+Asked: 2026-11-27
+Options: weekly GitHub run timing the slowest pages on full-size data (recommended); no
+Answer: No weekly speed check. Per-page query limits in the tests stay.
+Affects: quality-gates.md
+
+### Q-093: One-Comment Rule and Docstrings (Phase 3, Round 4)
+Asked: 2026-11-27
+Options: docstrings banned too; docstrings allowed
+Answer: Docstrings allowed. One comment at the top of each file, nothing else; check-disabling comments (`# noqa`, `# type: ignore` and the like) are therefore banned outright. Applies to Python, templates, JavaScript and CSS.
+Affects: quality-gates.md, style-guide.md
+
+### Q-094: What Counts as a Helper (Phase 3, Round 4)
+Asked: 2026-11-27
+Options: exempt Django entry points (views, model and form methods, template tags, management commands, tests), with calls from tests not counting toward 3 (recommended); every function
+Answer: Exempt Django entry points.
+Affects: quality-gates.md
+
+### Q-095: Repeated Block Size (Phase 3, Round 4)
+Asked: 2026-11-27
+Options: 5 lines or more (recommended); 3 or more; 10 or more
+Answer: 5 lines or more. A block of 5+ lines appearing 3 times is blocked.
+Affects: quality-gates.md
+
+### Q-096: Other Proposed Hooks (Phase 3, Round 4)
+Asked: 2026-11-27
+Options: check settings locked to Brandon; code changes need test changes; new packages, apps and JS files need Brandon's OK; second-Claude review
+Answer: Only the review, as "seocnd claude review, quick Haiku Agent. its asked to follow the style guide, look for logic thats overly complicated, slop, etc". The other three are not chosen.
+Affects: quality-gates.md
+
+### Q-097: App Layout (Phase 3, Round 5)
+Asked: 2026-11-27
+Options: one app per sidebar group (survey, photoid, data, manage, plus core) (recommended); one app per page; one app
+Answer: Per sidebar group.
+Affects: style-guide.md
+
+### Q-098: How Pages Are Written (Phase 3, Round 5)
+Asked: 2026-11-27
+Options: plain functions (recommended); class-based views; a mix
+Answer: Brandon asked for an example first. Asked again with one.
+Affects: style-guide.md
+
+### Q-099: Hand-Written JavaScript (Phase 3, Round 5)
+Asked: 2026-11-27
+Options: maps only with a 1,500-line cap (recommended); maps only, no cap; no extra rule
+Answer: "only when the implementation is genuinely more clean and straightforward then htmx. do not force htmxx for the sake of htmx if a bit of javascript is simplier". No line cap; the choice is judged case by case (the Haiku review checks it).
+Affects: style-guide.md
+
+### Q-100: Package Security Check and Session-Start Reminder (Phase 3, Round 5)
+Asked: 2026-11-27
+Options: package security check (pip-audit) when the package list changes; style rules printed at session start
+Answer: Neither.
+Affects: quality-gates.md
+
+### Q-101: How Pages Are Written, With an Example (Phase 3, Round 6)
+Asked: 2026-11-27 (the Sighting page shown as a plain function and as a class-based view; the question box hid the first example, so it was repeated in plain text)
+Options: A plain functions everywhere (recommended); B class-based views; C a mix
+Answer: A.
+Affects: style-guide.md
